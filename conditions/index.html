@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Site-specific: title, description and app title (see SETUP.md) -->
+  <title>Tampa Bay Boating · Alafia River</title>
+  <meta name="description" content="7-day tides, weather, marine forecast, sun and moon for the Alafia River and Tampa Bay, FL.">
+  <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#0d2a44">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Alafia">
+  <link rel="stylesheet" href="vendor/leaflet/leaflet.css">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <div class="brand">
+        <a class="home-link" id="home-link" hidden></a>
+        <h1 id="site-name"></h1>
+        <p class="sub" id="site-sub"></p>
+      </div>
+      <div class="now" id="now" aria-live="polite"></div>
+    </div>
+  </header>
+
+  <nav class="day-nav" id="day-nav" aria-label="Jump to day"></nav>
+
+  <main class="wrap">
+    <div id="alerts"></div>
+    <details class="synopsis" id="synopsis" hidden>
+      <summary>Marine synopsis · <span id="synopsis-name"></span></summary>
+      <p></p>
+    </details>
+    <div id="days" class="days">
+      <p class="loading">Loading forecast…</p>
+    </div>
+
+    <section class="sources" id="map">
+      <h2>Where the data comes from</h2>
+      <div id="source-map" class="source-map" role="region" aria-label="Map of data sources"></div>
+      <ul id="source-list" class="source-list"></ul>
+    </section>
+  </main>
+
+  <footer class="wrap site-footer">
+    <p id="credits"></p>
+    <section id="currents-explained" class="currents-explained" hidden>
+      <h3>Reading the currents</h3>
+      <table>
+        <thead><tr><th></th><th>Flood (incoming tide)</th><th>Ebb (outgoing tide)</th></tr></thead>
+        <tbody></tbody>
+      </table>
+      <p>Current is the water flowing sideways; tide is it rising and falling. <span id="currents-note"></span></p>
+    </section>
+    <p id="updated"></p>
+    <p class="fine">Not for navigation. Always check official NWS forecasts before heading out.</p>
+  </footer>
+
+  <script src="site-config.js"></script>
+  <script src="vendor/suncalc.js"></script>
+  <script src="icons.js"></script>
+  <script src="vendor/leaflet/leaflet.js"></script>
+  <script src="app.js"></script>
+  <script src="map.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js');
+  </script>
+</body>
+</html>

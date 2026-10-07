@@ -152,6 +152,9 @@ section{padding:56px 0}
 .cart-item .s{font-size:.8rem; color:var(--muted)}
 .cart-item .r{text-align:right; font-weight:700}
 .rm{background:none; border:none; color:var(--coral); cursor:pointer; font-size:.8rem; padding:0}
+.qty-step{display:inline-flex; align-items:center; gap:8px; margin:6px 0 2px}
+.qty-step button{width:26px; height:26px; border-radius:50%; border:1px solid var(--line); background:#fff; font-size:1rem; line-height:1; cursor:pointer; color:var(--navy)}
+.qty-step span{font-weight:700; min-width:18px; text-align:center}
 .cart-foot{padding:18px 20px; border-top:1px solid var(--line)}
 .cart-total{display:flex; justify-content:space-between; font-weight:800; font-size:1.15rem; margin-bottom:12px}
 .checkout{width:100%; background:var(--teal); color:#fff; border:none; padding:14px; border-radius:10px; font-weight:800; font-size:1rem; cursor:pointer}
@@ -1815,14 +1818,17 @@ const MAP_PINS = [["Port32 Tampa","fuel",27.88621,-82.5338,"5200 W Tyson Ave, Ta
 ["Allen Storage","storage",27.8782,-82.7312,"6700 118th Ave N, Pinellas Park","(727) 546-3968","Boat/trailer storage, trailer repair"],
 ["Boat & RV Storage","storage",27.8682,-82.6198,"10900 Gandy Blvd N, St. Pete","(727) 580-5605","Covered storage, wash station"]];
 const MAP_COLORS = {fuel:"#e25822", bait:"#2e9e5b", dine:"#8b5cf6", play:"#0e7490", club:"#d946ef", storage:"#f59e0b"};
-(function(){
+window.tbbMapInit=(function(){
+  var done=false;
+  return function(){
+  if(done) return; done=true;
   const el = document.getElementById('bay-leaflet-map');
   if(!el || typeof L === 'undefined') return;
   const map = window.tbbMap = L.map('bay-leaflet-map').setView([27.85, -82.55], 10);
   const chartBase = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Ocean/World_Ocean_Base/MapServer/tile/{z}/{y}/{x}', {maxZoom: 18, attribution: 'Esri, GEBCO, NOAA, NGS, OSU'}).addTo(map);
   const streetBase = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom: 18, attribution: '&copy; OpenStreetMap contributors'});
   const seamarks = L.tileLayer('https://tiles.openseamap.org/seamark/{z}/{x}/{y}.png', {maxZoom: 18, attribution: 'Seamarks &copy; <a href="https://www.openseamap.org">OpenSeaMap</a> contributors'}).addTo(map);
-  L.control.layers({'\U0001F5FA\uFE0F Navigation chart': chartBase, '\U0001F6E3\uFE0F Street map': streetBase}, {'\U0001F6A9 Chart marks (buoys, beacons, lights)': seamarks}, {collapsed: false}).addTo(map);
+  L.control.layers({'🗺️ Navigation chart': chartBase, '🛣️ Street map': streetBase}, {'🚩 Chart marks (buoys, beacons, lights)': seamarks}, {collapsed: false}).addTo(map);
   const layer = L.layerGroup().addTo(map);
   function draw(cat){
     layer.clearLayers();
@@ -1842,6 +1848,8 @@ const MAP_COLORS = {fuel:"#e25822", bait:"#2e9e5b", dine:"#8b5cf6", play:"#0e749
     b.classList.add('active');
     draw(b.dataset.cat);
   }));
+  setTimeout(function(){ map.invalidateSize(); }, 120);
+  };
 })();
 </script>
 <script>
@@ -2036,12 +2044,14 @@ function updateCartUI(){
   box.innerHTML = cart.map((i,idx)=>{ const p=PRODUCTS.find(x=>x.id===i.id); const cimg = (p.colors && i.color) ? ((p.colors.find(c=>c.n===i.color)||{}).i || p.img) : p.img; return `
     <div class="cart-item">
       <img src="${cimg}" alt="">
-      <div><div class="t">${p.name}</div><div class="s">${i.size}${i.color?" · "+i.color:""} · Qty ${i.qty} · ${money(p.price)}</div>
+      <div><div class="t">${p.name}</div><div class="s">${i.size}${i.color?" · "+i.color:""} · ${money(p.price)}</div>
+      <div class="qty-step"><button onclick="chQty(${idx},-1)" aria-label="Decrease quantity">−</button><span>${i.qty}</span><button onclick="chQty(${idx},1)" aria-label="Increase quantity">+</button></div>
       <button class="rm" onclick="rmItem(${idx})">Remove</button></div>
       <div class="r">${money(p.price*i.qty)}</div>
     </div>`; }).join("");
 }
 function rmItem(idx){ cart.splice(idx,1); updateCartUI(); }
+function chQty(idx,d){ const it=cart[idx]; if(!it) return; it.qty+=d; if(it.qty<1) cart.splice(idx,1); updateCartUI(); }
 function openCart(){ document.getElementById("cart-drawer").classList.add("open"); document.getElementById("cart-back").classList.add("open"); }
 function closeCart(){ document.getElementById("cart-drawer").classList.remove("open"); document.getElementById("cart-back").classList.remove("open"); }
 
@@ -2460,7 +2470,7 @@ function renderGear(){
 function subscribeNL(){
   const e = document.getElementById("nl-email").value.trim();
   if(!e || !e.includes("@")){ alert("Enter a valid email address."); return; }
-  location.href = "mailto:hello@tampabayboating.com?subject=Newsletter%20signup&body=Please%20add%20" + encodeURIComponent(e) + "%20to%20This%20Week%20on%20the%20Water.";
+  location.href = "mailto:david@tampabayboating.com?subject=Newsletter%20signup&body=Please%20add%20" + encodeURIComponent(e) + "%20to%20This%20Week%20on%20the%20Water.";
 }
 
 async function loadForecastBadges(){
@@ -2497,7 +2507,7 @@ function showView(name){
   if(strips) strips.style.display=(name==='home')?'':'none';
   closeExplore();
   window.scrollTo(0,0);
-  if(name==='map'&&window.tbbMap){setTimeout(function(){window.tbbMap.invalidateSize();},150);}
+  if(name==='map'){if(window.tbbMapInit)window.tbbMapInit();setTimeout(function(){if(window.tbbMap)window.tbbMap.invalidateSize();},200);}
 }
 function route(){
   var h=location.hash||'#/';

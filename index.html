@@ -363,6 +363,12 @@ footer.tbb-foot .copy{margin-top:14px;font-size:.85rem}
 #wx-alert-bar .wx-txt b{font-size:.98rem;letter-spacing:.3px}
 #wx-alert-bar .wx-txt span.wx-sub{display:block;font-size:.82rem;opacity:.92;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 #wx-alert-bar .wx-more{font-weight:800;font-size:.85rem;white-space:nowrap;border:2px solid #fff;border-radius:999px;padding:5px 14px}
+#wx-alert-detail{display:none;background:#a51f1f;border-top:1px solid rgba(255,255,255,.3);padding:14px 20px;font-size:.87rem;line-height:1.55;max-height:44vh;overflow:auto;text-align:left}
+#wx-alert-bar.open #wx-alert-detail{display:block}
+#wx-alert-bar.open #wx-more-btn{background:#fff;color:#c62828}
+#wx-alert-detail .wx-d-sec{margin-bottom:10px}
+#wx-alert-detail .wx-d-sec b{display:block;margin-bottom:2px}
+#wx-alert-detail a.wx-d-link{color:#fff;font-weight:800;text-decoration:underline}
 </style>
 <style>
 /* conditions section (transplanted) */
@@ -425,7 +431,7 @@ footer.tbb-foot .copy{margin-top:14px;font-size:.85rem}
     <div class="modal" id="modal"></div>
   </div>
 </div>
-<div id="wx-alert-bar" role="alert"><a href="#/tides" id="wx-alert-link"><span class="wx-icon">⚠️</span><span class="wx-txt"><b id="wx-alert-title"></b><span class="wx-sub" id="wx-alert-sub"></span></span><span class="wx-more">Details →</span></a></div>
+<div id="wx-alert-bar" role="alert"><a href="#/tides" id="wx-alert-link"><span class="wx-icon">⚠️</span><span class="wx-txt"><b id="wx-alert-title"></b><span class="wx-sub" id="wx-alert-sub"></span></span><span class="wx-more" id="wx-more-btn">Details ↓</span></a><div id="wx-alert-detail"></div></div>
 <div id="strips"><a class="forecast-bar" href="#/tides" aria-label="Boating forecast — tap for full details">
   <span class="fb-badge" id="fb-tide">🌊 <b>Loading tide…</b></span>
   <span class="fb-badge" id="fb-wx">🌡️ <b>Loading…</b></span>
@@ -2546,6 +2552,22 @@ route();
       if(feats.length>1) sub+=' (+'+(feats.length-1)+' more alert'+(feats.length>2?'s':'')+')';
       document.getElementById('wx-alert-sub').textContent=sub;
       document.getElementById('wx-alert-bar').classList.add('show');
+      /* build expandable details */
+      const esc=s=>String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/\n/g,'<br>');
+      let det='';
+      feats.slice(0,3).forEach(p=>{
+        const pr=p.properties||{};
+        det+='<div class="wx-d-sec"><b>'+esc(pr.event)+'</b>'+esc(pr.headline||'');
+        if(pr.description) det+='<br><br>'+esc(pr.description);
+        if(pr.instruction) det+='<br><br><i>'+esc(pr.instruction)+'</i>';
+        det+='</div>';
+      });
+      det+='<div class="wx-d-sec"><a class="wx-d-link" href="#/tides">View full forecast →</a></div>';
+      document.getElementById('wx-alert-detail').innerHTML=det;
+      document.getElementById('wx-alert-link').addEventListener('click',function(e){
+        e.preventDefault();e.stopPropagation();
+        document.getElementById('wx-alert-bar').classList.toggle('open');
+      });
     })
     .catch(()=>{});
 })();

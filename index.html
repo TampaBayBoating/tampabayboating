@@ -677,13 +677,13 @@ footer.tbb-foot .copy{margin-top:14px;font-size:.85rem}
       <p>Fuel docks, bait shops, dock &amp; dine spots, and the places everyone goes. Tap a pin for details.</p>
     </div>
     <div class="map-filters" style="text-align:center; margin-bottom:10px">
-      <button class="map-filter active" data-cat="all">All</button>
-      <button class="map-filter" data-cat="fuel">⛽ Fuel</button>
-      <button class="map-filter" data-cat="bait">🦐 Bait</button>
-      <button class="map-filter" data-cat="dine">🍽️ Dock &amp; Dine</button>
-      <button class="map-filter" data-cat="play">🏝️ Destinations</button>
-      <button class="map-filter" data-cat="club">🛥️ Boat Clubs</button>
-      <button class="map-filter" data-cat="storage">🅿️ Storage</button>
+      <button class="map-filter active" data-cat="all" onclick="mapFilter('all',this)">All</button>
+      <button class="map-filter" data-cat="fuel" onclick="mapFilter('fuel',this)">⛽ Fuel</button>
+      <button class="map-filter" data-cat="bait" onclick="mapFilter('bait',this)">🦐 Bait</button>
+      <button class="map-filter" data-cat="dine" onclick="mapFilter('dine',this)">🍽️ Dock &amp; Dine</button>
+      <button class="map-filter" data-cat="play" onclick="mapFilter('play',this)">🏝️ Destinations</button>
+      <button class="map-filter" data-cat="club" onclick="mapFilter('club',this)">🛥️ Boat Clubs</button>
+      <button class="map-filter" data-cat="storage" onclick="mapFilter('storage',this)">🅿️ Storage</button>
     </div>
     <div id="bay-leaflet-map" style="height:480px; border-radius:14px; border:1px solid var(--line); z-index:1"></div>
     <p style="text-align:center; color:var(--muted); font-size:.82rem; margin-top:10px">40 pinned locations · fuel prices change — call ahead · dock &amp; dine listings are paid placements</p>
@@ -1827,6 +1827,12 @@ const MAP_PINS = [["Port32 Tampa","fuel",27.88621,-82.5338,"5200 W Tyson Ave, Ta
 ["Allen Storage","storage",27.8782,-82.7312,"6700 118th Ave N, Pinellas Park","(727) 546-3968","Boat/trailer storage, trailer repair"],
 ["Boat & RV Storage","storage",27.8682,-82.6198,"10900 Gandy Blvd N, St. Pete","(727) 580-5605","Covered storage, wash station"]];
 const MAP_COLORS = {fuel:"#e25822", bait:"#2e9e5b", dine:"#8b5cf6", play:"#0e7490", club:"#d946ef", storage:"#f59e0b"};
+window.mapFilter=function(cat,btn){
+  document.querySelectorAll('.map-filter').forEach(x => x.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  if(window.tbbMapInit) window.tbbMapInit();
+  if(window.tbbDraw) window.tbbDraw(cat);
+};
 window.tbbMapInit=(function(){
   var done=false;
   return function(){
@@ -1848,15 +1854,12 @@ window.tbbMapInit=(function(){
       if(p[6]) html += '<br><i>'+p[6]+'</i>';
       if(p[5]) html += '<br><a href="tel:'+p[5].replace(/[^0-9]/g,'')+'">'+p[5]+'</a>';
       m.bindPopup(html);
+      m.on('click', function(e){ L.popup({maxWidth:260}).setLatLng(e.latlng).setContent(html).openOn(map); });
       layer.add(m);
     });
   }
   draw('all');
-  document.querySelectorAll('.map-filter').forEach(b => b.addEventListener('click', () => {
-    document.querySelectorAll('.map-filter').forEach(x => x.classList.remove('active'));
-    b.classList.add('active');
-    draw(b.dataset.cat);
-  }));
+  window.tbbDraw = draw;
   setTimeout(function(){ map.invalidateSize(); }, 120);
   };
 })();

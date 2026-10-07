@@ -1843,7 +1843,7 @@ window.tbbMapInit=(function(){
   const chartBase = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Ocean/World_Ocean_Base/MapServer/tile/{z}/{y}/{x}', {maxZoom: 18, attribution: 'Esri, GEBCO, NOAA, NGS, OSU'}).addTo(map);
   const streetBase = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom: 18, attribution: '&copy; OpenStreetMap contributors'});
   const seamarks = L.tileLayer('https://tiles.openseamap.org/seamark/{z}/{x}/{y}.png', {maxZoom: 18, attribution: 'Seamarks &copy; <a href="https://www.openseamap.org">OpenSeaMap</a> contributors'}).addTo(map);
-  L.control.layers({'🗺️ Navigation chart': chartBase, '🛣️ Street map': streetBase}, {'🚩 Chart marks (buoys, beacons, lights)': seamarks}, {collapsed: false}).addTo(map);
+  L.control.layers({'🗺️ Navigation chart': chartBase, '🛣️ Street map': streetBase}, {'🚩 Chart marks (buoys, beacons, lights)': seamarks}, {collapsed: true}).addTo(map);
   const layer = L.layerGroup().addTo(map);
   function draw(cat){
     layer.clearLayers();

@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Tampa Bay Boating — @tampabayboating</title>
-<meta name="description" content="Tampa Bay Boating — we do boat stuff. Official merch, videos, and Tampa Bay charter directory.">
+<meta name="description" content="Your Tampa Bay boating launch point — live conditions, fishing reports, events, dock & dine, local directories, and merch. We do boat stuff.">
 <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16x16.png">
 <link rel="shortcut icon" href="assets/favicon.ico">
@@ -239,173 +239,248 @@ footer .soc svg{width:20px; height:20px}
   ]
 }
 </script>
-</head>
-<body>
 
-<!-- ============ NAV ============ -->
-<nav class="topnav">
-  <div class="wrap nav-bar">
-    <a href="#top" class="nav-brand">⛵ Tampa Bay Boating</a>
-    <div class="nav-actions">
-      <button class="nav-menu-btn" onclick="toggleNavMenu(event)">☰ Menu</button>
-      <button class="cart-btn" onclick="openCart()">Cart (<span id="cart-count">0</span>)</button>
-    </div>
-  </div>
-  <div class="nav-dropdown" id="nav-dropdown">
-    <a href="#shop" onclick="closeNavMenu()">🛍️ Shop Merch</a>
-    <a href="#videos" onclick="closeNavMenu()">🎥 Videos</a>
-    <a href="#events" onclick="closeNavMenu()">📅 Events</a>
-    <a href="#charters" onclick="closeNavMenu()">🚤 Charters</a>
-    <a href="#dining" onclick="closeNavMenu()">🍔 Dock &amp; Dine</a>
-    <a href="#fuel" onclick="closeNavMenu()">⛽ Fuel &amp; Bait</a>
-    <a href="#services" onclick="closeNavMenu()">🔧 Boat Services</a>
-    <a href="#advertise" onclick="closeNavMenu()">📣 Advertise</a>
-    <a href="#boatsales" onclick="closeNavMenu()">🛥️ Boats for Sale</a>
-    <a href="#gear" onclick="closeNavMenu()">🎒 Gear Guide</a>
-    <a href="#safety" onclick="closeNavMenu()">🛟 Safety</a>
-    <a href="#navigation" onclick="closeNavMenu()">🧭 Navigation Basics</a>
-    <a href="#nav-charts" onclick="closeNavMenu()">🗺️ Navigation Charts</a>
-    <a href="#tips" onclick="closeNavMenu()">💡 Tips &amp; Tricks</a>
-    <a href="#paddling" onclick="closeNavMenu()">🛶 Kayak &amp; SUP</a>
-    <a href="#meetups" onclick="closeNavMenu()">🤝 Meetups</a>
-    <a href="#news" onclick="closeNavMenu()">📰 Boating News</a>
-    <a href="#boat-clubs" onclick="closeNavMenu()">🛥️ Boat Clubs</a>
-    <a href="#storage" onclick="closeNavMenu()">🅿️ Boat Storage</a>
-    <a href="#parts" onclick="closeNavMenu()">⚙️ Marine Parts</a>
-    <a href="#bridges" onclick="closeNavMenu()">📻 VHF &amp; Bridges</a>
-    <a href="#fishing" onclick="closeNavMenu()">🎣 Fishing Report</a>
-    <a href="#baymap" onclick="closeNavMenu()">🗺️ Bay Map</a>
-    <a href="#stopped" onclick="closeNavMenu()">🚨 If You're Stopped</a>
-    <a href="#ramps" onclick="closeNavMenu()">🚤 Boat Ramps</a>
-    <a href="#manatee" onclick="closeNavMenu()">🐢 Manatee & Slow Zones</a>
-    <a href="#courses" onclick="closeNavMenu()">🎓 Boating Courses</a>
-    <a href="#hurricane" onclick="closeNavMenu()">🛟 Hurricane Prep</a>
-    <a href="#insurance" onclick="closeNavMenu()">🛡️ Boaters Insurance</a>
-    <a href="#logbook" onclick="closeNavMenu()">📓 My Boating Log</a>
-  </div>
-</nav>
-<a class="forecast-bar" href="#conditions" aria-label="Boating forecast — tap for full details">
-  <span class="fb-badge" id="fb-tide">🌊 <b>Loading tide…</b></span>
-  <span class="fb-badge" id="fb-wx">🌡️ <b>Loading…</b></span>
-  <span class="fb-badge" id="fb-wind">💨 <b>Loading…</b></span>
-  <span class="fb-more">Full forecast →</span>
-</a>
-
-<!-- BITE-STRIP-START (auto-updated every morning ~6am ET) -->
-<a href="#fishing" class="bite-strip">🎣 <b>Today's bite:</b> Kings at Egmont Key &middot; Reds schooling the flats &middot; Snook on the dock lights &nbsp;→&nbsp; <u>Full daily report</u></a>
-<!-- BITE-STRIP-END -->
-
-<!-- ============ HERO (from tampabayboating.com) ============ -->
 <style>
-.hero{min-height:96vh; background:url('assets/hero-skyway.jpg') no-repeat center center/cover; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; color:#fff; position:relative; padding:40px 20px}
-.hero::after{content:''; position:absolute; inset:0; background:rgba(0,0,0,.35)}
-.hero>*{position:relative; z-index:1}
-.hero-logo{width:150px; margin-bottom:10px; filter:drop-shadow(0 4px 12px rgba(0,0,0,.5))}
-.hero h1{font-size:3.2rem; font-weight:800; line-height:1.1; text-shadow:0 3px 14px rgba(0,0,0,.6); margin-bottom:18px}
-.hero .socials{margin-bottom:22px}
-.conditions-btn{display:inline-block; padding:13px 32px; border:2px solid #fff; border-radius:999px; color:#fff; text-decoration:none; font-weight:700; margin-bottom:14px; background:rgba(0,0,0,.25)}
-.conditions-btn:hover{background:var(--coral); border-color:var(--coral)}
-.scroll-hint{color:#fff; text-decoration:none; font-size:.9rem; opacity:.85}
-.creator-bar{display:flex; align-items:center; gap:18px; padding:26px 0; flex-wrap:wrap}
-.creator-bar .avatar{width:84px; height:84px; border-radius:50%; object-fit:cover; border:3px solid var(--sun); margin:0}
-.creator-bar .handle{font-size:1.3rem; font-weight:800; color:var(--navy)}
-.creator-bar .bio{color:var(--muted)}
-.creator-bar .stats{margin-left:auto; display:flex; gap:22px}
-.creator-bar .stats b{display:block; font-size:1.15rem; color:var(--navy)}
-.creator-bar .stats span{font-size:.72rem; text-transform:uppercase; letter-spacing:1px; color:var(--muted)}
-/* conditions strip */
-#conditions{background:linear-gradient(120deg,var(--navy),var(--navy2)); color:#fff; padding:44px 0}
-#conditions h2{color:#fff; text-align:center; margin-bottom:4px}
-#conditions .sub{text-align:center; color:#a9c6c5; margin-bottom:22px}
-.cond-grid{display:grid; grid-template-columns:1fr 1fr; gap:18px; max-width:960px; margin:0 auto}
-.cond-card{background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.16); border-radius:14px; padding:20px}
-.cond-card h3{font-size:.8rem; text-transform:uppercase; letter-spacing:2px; color:var(--sun); margin-bottom:10px}
-.tide-row{display:flex; justify-content:space-between; padding:7px 0; border-bottom:1px solid rgba(255,255,255,.1); font-size:.95rem}
+/* ---- streamline: chapters + accordions ---- */
+section{padding:40px 0}
+.chapter{padding:36px 0}
+.chapter > h2{text-align:center}
+.chapter-sub{text-align:center;color:var(--muted);margin:6px auto 20px;max-width:640px}
+.acc-list{max-width:880px;margin:0 auto;display:flex;flex-direction:column;gap:10px}
+.acc-item{background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.acc-head{width:100%;display:flex;align-items:center;gap:12px;padding:15px 18px;background:none;border:none;font:inherit;cursor:pointer;text-align:left;color:var(--navy)}
+.acc-head:hover{background:rgba(10,37,64,.03)}
+.acc-title{font-size:1.08rem;font-weight:800}
+.acc-chev{margin-left:auto;color:var(--muted);transition:transform .18s;font-size:1.1rem}
+.acc-item.open .acc-chev{transform:rotate(180deg)}
+.acc-body{display:none;padding:0 18px 20px}
+.acc-item.open .acc-body{display:block}
+.dir-card{box-shadow:0 1px 3px rgba(10,37,64,.07)}
+</style>
+
+</head>
+
+<style>
+/* ---------- SPA chrome: approved app-style redesign ---------- */
+.view{display:none}
+.view.active{display:block}
+.tbb-topbar{position:sticky;top:0;z-index:60;background:#0a2540;border-bottom:3px solid #f5b301}
+.tb-row{display:flex;align-items:center;gap:10px;padding:8px 20px;max-width:1180px;margin:0 auto}
+.tb-brand{display:flex;align-items:center;gap:10px;color:#fff;text-decoration:none;font-weight:800;font-size:1.02rem;margin-right:auto}
+.tb-brand img{width:42px;height:42px;border-radius:50%;object-fit:cover;border:2px solid #f5b301;background:#fff}
+.tb-socials{display:flex;gap:8px}
+.tb-socials a{width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.14);display:flex;align-items:center;justify-content:center;transition:.2s}
+.tb-socials a:hover{background:#ff6b4a}
+.tb-socials svg{width:17px;height:17px;fill:#fff}
+.tb-explore{background:rgba(255,255,255,.14);border:none;color:#fff;font-weight:700;padding:9px 16px;border-radius:999px;cursor:pointer;font-size:.92rem;white-space:nowrap}
+.tb-advertise{border:2px solid #f5b301;color:#f5b301;text-decoration:none;font-weight:800;padding:7px 16px;border-radius:999px;font-size:.9rem;white-space:nowrap}
+.tb-advertise:hover{background:#f5b301;color:#0a2540}
+.tb-bag{background:#f5b301;border:none;color:#3a2503;font-weight:800;padding:9px 18px;border-radius:999px;cursor:pointer;font-size:.92rem;white-space:nowrap}
+.tb-mega{display:none;background:#0a2540;border-top:1px solid rgba(255,255,255,.12);padding:18px 20px 24px}
+.tb-mega.open{display:block}
+.tb-mega-grid{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.tb-mega h4{color:#f5b301;font-size:.75rem;letter-spacing:2px;text-transform:uppercase;margin-bottom:8px}
+.tb-mega a{display:block;color:#fff;text-decoration:none;padding:7px 0;font-size:.93rem}
+.tb-mega a:hover{color:#ff9a3c}
+.hero2{position:relative;min-height:92vh;display:flex;align-items:center;background:url('assets/hero-skyway.jpg') no-repeat center center/cover;color:#fff;overflow:hidden}
+.hero2::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(4,20,36,.55),rgba(4,20,36,.22) 45%,rgba(4,20,36,.68))}
+.hero2-inner{position:relative;z-index:1;max-width:1180px;margin:0 auto;padding:70px 20px;width:100%}
+.hero2-top{display:flex;align-items:center;gap:14px;margin-bottom:26px}
+.hero2-badge{width:88px;height:88px;border-radius:50%;object-fit:cover;border:3px solid #f5b301;background:#fff;box-shadow:0 8px 24px rgba(0,0,0,.4)}
+.hero2-socials{display:flex;gap:10px}
+.hero2-socials a{width:46px;height:46px;border-radius:50%;background:rgba(0,0,0,.45);border:2px solid rgba(255,255,255,.55);display:flex;align-items:center;justify-content:center;transition:.2s}
+.hero2-socials a:hover{background:#ff6b4a;border-color:#ff6b4a;transform:translateY(-2px)}
+.hero2-socials svg{width:22px;height:22px;fill:#fff}
+.hero2-kicker{color:#7fd1c0;letter-spacing:3px;font-size:.78rem;font-weight:800;text-transform:uppercase;margin-bottom:12px}
+.hero2 h1{font-family:Georgia,'Times New Roman',serif;font-size:3.4rem;line-height:1.08;margin-bottom:14px;text-shadow:0 3px 16px rgba(0,0,0,.65)}
+.hero2-sub{font-size:1.12rem;color:#e8f1f5;max-width:560px;margin-bottom:28px}
+.hero2-cta{display:inline-block;background:#f5b301;color:#3a2503;font-weight:800;padding:15px 36px;border-radius:999px;text-decoration:none;font-size:1.05rem;margin:0 14px 10px 0}
+.hero2-cta:hover{background:#ff9a3c}
+.hero2-map{color:#fff;font-weight:700;font-size:1.02rem}
+.hero2-browse{display:inline-block;margin-top:28px;color:#fff;opacity:.9;text-decoration:none;font-size:.93rem}
+.ad-card{max-width:1180px;margin:26px auto 0;padding:0 20px}
+.ad-card-inner{background:#fff;border:1px solid #e6ded1;border-left:6px solid #f5b301;border-radius:14px;padding:22px 24px;display:flex;gap:18px;align-items:center;box-shadow:0 6px 18px rgba(10,37,64,.07)}
+.ad-card-ico{flex:0 0 auto;width:56px;height:56px;border-radius:50%;background:#0e7c7b;display:flex;align-items:center;justify-content:center;font-size:1.6rem}
+.ad-card-eyebrow{font-size:.72rem;letter-spacing:2.5px;font-weight:800;color:#0e7c7b;text-transform:uppercase}
+.ad-card h3{color:#0a2540;font-size:1.25rem;margin:4px 0}
+.ad-card p{color:#5b6b7c;font-size:.95rem;margin-bottom:12px}
+.ad-card-btn{display:inline-block;background:#f5b301;color:#3a2503;font-weight:800;padding:11px 26px;border-radius:999px;text-decoration:none;margin-right:14px}
+.ad-card-mail{font-weight:700;color:#0e7c7b}
+.home-intro{text-align:center;padding:44px 20px 8px;max-width:760px;margin:0 auto}
+.home-intro .kick{color:#0e7c7b;letter-spacing:3px;font-size:.75rem;font-weight:800;text-transform:uppercase}
+.home-intro h2{font-family:Georgia,serif;color:#0a2540;font-size:2.1rem;margin:8px 0}
+.home-intro p{color:#5b6b7c}
+.today-tabs{max-width:1180px;margin:26px auto 0;padding:0 20px}
+.today-tabs .tabs-label{font-size:.78rem;letter-spacing:2px;text-transform:uppercase;color:#0a2540;font-weight:800;margin-bottom:10px}
+.today-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.today-tab{background:#0a2540;border-radius:14px;padding:20px 14px;text-align:center;text-decoration:none;color:#fff;transition:.2s;border:2px solid transparent}
+.today-tab:hover{border-color:#f5b301;transform:translateY(-3px)}
+.today-tab .t-ico{font-size:2rem;display:block;margin-bottom:8px}
+.today-tab b{display:block;font-size:1.02rem}
+.today-tab i{display:block;font-style:normal;font-size:.82rem;color:#9fb6c9;margin-top:2px}
+.cat-cards{max-width:1180px;margin:30px auto 0;padding:0 20px 60px}
+.cat-cards .tabs-label{font-size:.78rem;letter-spacing:2px;text-transform:uppercase;color:#0a2540;font-weight:800;margin-bottom:10px}
+.cat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.cat-card{background:#fff;border:2px solid #e6ded1;border-radius:14px;padding:22px 14px;text-align:center;text-decoration:none;color:#0a2540;transition:.2s}
+.cat-card:hover{border-color:#0e7c7b;transform:translateY(-3px);box-shadow:0 10px 24px rgba(10,37,64,.1)}
+.cat-card .c-ico{font-size:2.2rem;display:block;margin-bottom:8px}
+.cat-card b{display:block;font-size:1.05rem}
+.cat-card i{display:block;font-style:normal;font-size:.82rem;color:#5b6b7c;margin-top:2px}
+.hub-head{max-width:1180px;margin:0 auto;padding:34px 20px 6px}
+.hub-head h2{font-family:Georgia,serif;color:#0a2540;font-size:2rem}
+.hub-head p{color:#5b6b7c}
+.tile-grid{max-width:1180px;margin:0 auto;padding:18px 20px 60px;display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px}
+.tile{background:#fff;border:2px solid #e6ded1;border-radius:14px;padding:22px 16px;text-align:center;text-decoration:none;color:#0a2540;transition:.2s}
+.tile:hover{border-color:#0e7c7b;transform:translateY(-3px);box-shadow:0 10px 24px rgba(10,37,64,.1)}
+.tile .t-ico{font-size:2.2rem;display:block;margin-bottom:8px}
+.tile b{display:block;font-size:1.02rem}
+.tile i{display:block;font-style:normal;font-size:.83rem;color:#5b6b7c;margin-top:2px}
+.back-link{display:inline-block;margin:26px 0 0 20px;color:#0e7c7b;font-weight:700;text-decoration:none;font-size:.95rem}
+.view .acc-item{border:none;background:transparent}
+.view .acc-item .acc-head{pointer-events:none;padding-left:0}
+.view .acc-item .acc-head .acc-chev{display:none}
+.view .acc-item .acc-body{display:block;padding:0}
+footer.tbb-foot{background:#0a2540;color:#8fa8bd;text-align:center;padding:44px 20px 34px}
+footer.tbb-foot .socials{display:flex;gap:12px;justify-content:center;margin-bottom:18px}
+footer.tbb-foot .soc{width:46px;height:46px;border-radius:50%;border:2px solid rgba(255,255,255,.35);display:flex;align-items:center;justify-content:center;background:transparent}
+footer.tbb-foot .soc svg{width:20px;height:20px;fill:#fff}
+footer.tbb-foot .brandline{color:#fff;font-weight:800;font-size:1.1rem}
+footer.tbb-foot .tagline{margin:4px 0 10px}
+footer.tbb-foot a.mail{color:#f5b301;font-weight:800;text-decoration:none;font-size:1.05rem}
+footer.tbb-foot .copy{margin-top:14px;font-size:.85rem}
+.ad-group{color:#0a2540;font-size:1.3rem;margin:30px 0 4px;text-align:center}
+.ad-group-sub{text-align:center;color:#5b6b7c;margin-bottom:6px}
+#strips .forecast-bar{display:block}
+@media(max-width:860px){.today-grid,.cat-grid{grid-template-columns:1fr 1fr}.hero2 h1{font-size:2.3rem}.tb-mega-grid{grid-template-columns:1fr 1fr}.tb-brand span{display:none}.tb-advertise{display:none}}
+@media(max-width:768px){.hero2{background-image:url('assets/hero-skyway-mobile.jpg');min-height:80vh}}
+</style>
+<style>
+/* conditions section (transplanted) */
+#conditions{background:linear-gradient(120deg,var(--navy),var(--navy2));color:#fff;padding:44px 0}
+#conditions h2{color:#fff;text-align:center;margin-bottom:4px}
+#conditions .sub{text-align:center;color:#a9c6c5;margin-bottom:22px}
+.cond-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;max-width:960px;margin:0 auto}
+.cond-card{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);border-radius:14px;padding:20px}
+.cond-card h3{font-size:.8rem;text-transform:uppercase;letter-spacing:2px;color:var(--sun);margin-bottom:10px}
+.tide-row{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.1);font-size:.95rem}
 .tide-row:last-child{border:none}
 .tide-type{font-weight:800}
 .tide-H{color:#7fd4ff}.tide-L{color:var(--sun)}
 .marine-p{margin-bottom:12px}
 .marine-p b{color:#7fd4ff}
-.marine-p p{font-size:.92rem; color:#d7e6e5}
-.cond-link{text-align:center; margin-top:20px}
-.cond-link a{color:#fff; font-weight:700; text-decoration:none; border-bottom:2px solid var(--sun)}
-.cond-fallback{color:#a9c6c5; font-size:.9rem}
-@media(max-width:860px){ .cond-grid{grid-template-columns:1fr} .hero h1{font-size:2.4rem} .creator-bar .stats{margin-left:0} }
-@media(max-width:768px){ .hero{background-image:url('assets/hero-skyway-mobile.jpg'); background-position:center center; min-height:70vh} }
+.marine-p p{font-size:.92rem;color:#d7e6e5}
+.cond-link{text-align:center;margin-top:20px}
+.cond-link a{color:#fff;font-weight:700;text-decoration:none;border-bottom:2px solid var(--sun)}
+.cond-fallback{color:#a9c6c5;font-size:.9rem}
+@media(max-width:860px){.cond-grid{grid-template-columns:1fr}}
 </style>
-<header class="hero" id="top">
-  <img class="hero-logo" src="assets/logo-tbb.png" alt="Tampa Bay Boating logo">
-  <h1>Tampa Bay<br>Boating</h1>
-  <div class="socials">
-    <a class="soc" href="https://www.tiktok.com/@tampabayboating" target="_blank" rel="noopener" aria-label="TikTok">
-      <svg viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/></svg>
-    </a>
-    <a class="soc" href="https://www.instagram.com/tampabayboating/" target="_blank" rel="noopener" aria-label="Instagram">
-      <svg viewBox="0 0 24 24"><path d="M12 2.16c3.2 0 3.58.01 4.85.07 3.25.15 4.77 1.69 4.92 4.92.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.15 3.23-1.66 4.77-4.92 4.92-1.27.06-1.64.07-4.85.07s-3.58-.01-4.85-.07c-3.26-.15-4.77-1.7-4.92-4.92C2.17 15.58 2.16 15.2 2.16 12s.01-3.58.07-4.85C2.38 3.92 3.9 2.38 7.15 2.23 8.42 2.17 8.8 2.16 12 2.16M12 0C8.74 0 8.33.01 7.05.07 2.7.27.27 2.69.07 7.05.01 8.33 0 8.74 0 12s.01 3.67.07 4.95c.2 4.36 2.62 6.78 6.98 6.98C8.33 23.99 8.74 24 12 24s3.67-.01 4.95-.07c4.35-.2 6.78-2.62 6.98-6.98.06-1.28.07-1.69.07-4.95s-.01-3.67-.07-4.95C23.73 2.7 21.31.27 16.95.07 15.67.01 15.26 0 12 0zm0 5.84A6.16 6.16 0 1 0 18.16 12 6.16 6.16 0 0 0 12 5.84zm0 10.15A4 4 0 1 1 16 12a4 4 0 0 1-4 3.99zm7.85-10.4a1.44 1.44 0 1 1-2.88 0 1.44 1.44 0 0 1 2.88 0z"/></svg>
-    </a>
-    <a class="soc" href="https://www.facebook.com/tampabayboating" target="_blank" rel="noopener" aria-label="Facebook">
-      <svg viewBox="0 0 24 24"><path d="M24 12.07C24 5.4 18.63 0 12 0S0 5.4 0 12.07C0 18.1 4.39 23.09 10.13 24v-8.44H7.08v-3.49h3.04V9.41c0-3.02 1.8-4.7 4.54-4.7 1.31 0 2.68.24 2.68.24v2.97h-1.5c-1.5 0-1.96.93-1.96 1.89v2.26h3.32l-.53 3.49h-2.79V24C19.61 23.09 24 18.1 24 12.07z"/></svg>
-    </a>
+<body>
+
+<header class="tbb-topbar" id="top">
+  <div class="tb-row">
+    <button class="tb-explore" onclick="toggleExplore(event)">&#9638; Explore &#9662;</button>
+    <a class="tb-brand" href="#/"><img src="assets/tbb-social-logo.jpg" alt="Tampa Bay Boating circular badge with a boat and the Sunshine Skyway Bridge"><span>Tampa Bay Boating</span></a>
+    <div class="tb-socials">
+    <a href="https://www.tiktok.com/@tampabayboating" target="_blank" rel="noopener" aria-label="TikTok"><svg viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/></svg></a>
+    <a href="https://www.instagram.com/tampabayboating/" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24"><path d="M12 2.16c3.2 0 3.58.01 4.85.07 3.25.15 4.77 1.69 4.92 4.92.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.15 3.23-1.66 4.77-4.92 4.92-1.27.06-1.64.07-4.85.07s-3.58-.01-4.85-.07c-3.26-.15-4.77-1.7-4.92-4.92C2.17 15.58 2.16 15.2 2.16 12s.01-3.58.07-4.85C2.38 3.92 3.9 2.38 7.15 2.23 8.42 2.17 8.8 2.16 12 2.16M12 0C8.74 0 8.33.01 7.05.07 2.7.27.27 2.69.07 7.05.01 8.33 0 8.74 0 12s.01 3.67.07 4.95c.2 4.36 2.62 6.78 6.98 6.98C8.33 23.99 8.74 24 12 24s3.67-.01 4.95-.07c4.35-.2 6.78-2.62 6.98-6.98.06-1.28.07-1.69.07-4.95s-.01-3.67-.07-4.95C23.73 2.7 21.31.27 16.95.07 15.67.01 15.26 0 12 0zm0 5.84A6.16 6.16 0 1 0 18.16 12 6.16 6.16 0 0 0 12 5.84zm0 10.15A4 4 0 1 1 16 12a4 4 0 0 1-4 3.99zm7.85-10.4a1.44 1.44 0 1 1-2.88 0 1.44 1.44 0 0 1 2.88 0z"/></svg></a>
+    <a href="https://www.facebook.com/tampabayboating" target="_blank" rel="noopener" aria-label="Facebook"><svg viewBox="0 0 24 24"><path d="M24 12.07C24 5.4 18.63 0 12 0S0 5.4 0 12.07C0 18.1 4.39 23.09 10.13 24v-8.44H7.08v-3.49h3.04V9.41c0-3.02 1.8-4.7 4.54-4.7 1.31 0 2.68.24 2.68.24v2.97h-1.5c-1.5 0-1.96.93-1.96 1.89v2.26h3.32l-.53 3.49h-2.79V24C19.61 23.09 24 18.1 24 12.07z"/></svg></a></div>
+    <a class="tb-advertise" href="#/advertise">Advertise</a>
+    <button class="tb-bag" onclick="openCart()">Bag (<span id="cart-count">0</span>)</button>
   </div>
-  <a class="conditions-btn" href="#conditions">Tides &amp; Forecast →</a><br>
-  <a class="scroll-hint" href="#shop">Shop the merch ↓</a>
+  <div class="tb-mega" id="tb-mega">
+    <div class="tb-mega-grid">
+      <div><h4>Plan Your Day</h4>
+        <a href="#/tides">Tides &amp; Forecast</a><a href="#/fishing">Fishing Report</a><a href="#/events">Events</a><a href="#/dining">Dock &amp; Dine</a><a href="#/map">Boater's Map</a><a href="#/paddling">Kayak &amp; SUP</a><a href="#/logbook">My Boating Log</a></div>
+      <div><h4>Find Local</h4>
+        <a href="#/charters">Charters</a><a href="#/fuel">Fuel &amp; Bait</a><a href="#/services">Boat Services</a><a href="#/ramps">Boat Ramps</a><a href="#/storage">Boat Storage</a><a href="#/parts">Marine Parts</a><a href="#/boat-clubs">Boat Clubs</a></div>
+      <div><h4>Boat Smart</h4>
+        <a href="#/safety">Safety</a><a href="#/navigation">Navigation Basics</a><a href="#/tips">Tips &amp; Tricks</a><a href="#/bridges">VHF &amp; Bridges</a><a href="#/manatee">Slow-Speed Zones</a><a href="#/hurricane">Hurricane Prep</a><a href="#/courses">Boating Courses</a><a href="#/insurance">Boaters Insurance</a><a href="#/stopped">If You're Stopped</a></div>
+      <div><h4>Shop &amp; Connect</h4>
+        <a href="#/shop">Official Merch</a><a href="#/boatsales">Boats for Sale</a><a href="#/gear">Gear Guide</a><a href="#/videos">Videos</a><a href="#/meetups">Meetups</a><a href="#/news">Boating News</a><a href="#/newsletter">Newsletter</a><a href="#/advertise">Advertise</a><a href="#/contact">Contact</a></div>
+    </div>
+  </div>
 </header>
-
-<div class="wrap">
-  <!-- SPONSOR: replace this placeholder with the paying sponsor's banner -->
-  <div class="sponsor-banner" id="sponsor-banner">📣 <b>Your business here</b> — <a href="#advertise">Homepage Banner · $149/mo</a></div>
+<aside class="cart-drawer" id="cart-drawer">
+  <div class="cart-head"><h3>Your Cart</h3><button class="modal-close" style="position:static" onclick="closeCart()">&times;</button></div>
+  <div class="cart-items" id="cart-items"></div>
+  <div class="cart-foot">
+    <div class="cart-total"><span>Total</span><span id="cart-total">$0.00</span></div>
+    <button class="checkout" type="button" disabled aria-disabled="true">Checkout via Shopify — coming soon</button>
+  </div>
+</aside>
+<div class="cart-back" id="cart-back" onclick="closeCart()"></div>
+<div class="modal-back" id="modal-back" onclick="if(event.target===this)closeModal()">
+  <div class="modal-wrap">
+    <button class="modal-close" onclick="closeModal()">&times;</button>
+    <div class="modal" id="modal"></div>
+  </div>
 </div>
-
-<!-- ============ EXPLORE HUB ============ -->
-<section id="explore">
-  <div class="wrap">
-    <div class="sec-head" style="margin-bottom:18px">
-      <span class="sec-kicker">Start Here</span>
-      <h2>What are you looking for?</h2>
+<div id="strips"><a class="forecast-bar" href="#/tides" aria-label="Boating forecast — tap for full details">
+  <span class="fb-badge" id="fb-tide">🌊 <b>Loading tide…</b></span>
+  <span class="fb-badge" id="fb-wx">🌡️ <b>Loading…</b></span>
+  <span class="fb-badge" id="fb-wind">💨 <b>Loading…</b></span>
+  <span class="fb-more">Full forecast →</span>
+</a><!-- BITE-STRIP-START (auto-updated every morning ~6am ET) -->
+<a href="#/fishing" class="bite-strip">🎣 <b>Today's bite:</b> Kings at Egmont Key &middot; Reds schooling the flats &middot; Snook on the dock lights &nbsp;→&nbsp; <u>Full daily report</u></a>
+<!-- BITE-STRIP-END --></div>
+<div class="view active" id="view-home">
+<section class="hero2">
+  <div class="hero2-inner">
+    <div class="hero2-top">
+      <img class="hero2-badge" src="assets/tbb-social-logo.jpg" alt="Tampa Bay Boating circular badge with a boat and the Sunshine Skyway Bridge">
+      <div class="hero2-socials">
+    <a href="https://www.tiktok.com/@tampabayboating" target="_blank" rel="noopener" aria-label="TikTok"><svg viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/></svg></a>
+    <a href="https://www.instagram.com/tampabayboating/" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24"><path d="M12 2.16c3.2 0 3.58.01 4.85.07 3.25.15 4.77 1.69 4.92 4.92.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.15 3.23-1.66 4.77-4.92 4.92-1.27.06-1.64.07-4.85.07s-3.58-.01-4.85-.07c-3.26-.15-4.77-1.7-4.92-4.92C2.17 15.58 2.16 15.2 2.16 12s.01-3.58.07-4.85C2.38 3.92 3.9 2.38 7.15 2.23 8.42 2.17 8.8 2.16 12 2.16M12 0C8.74 0 8.33.01 7.05.07 2.7.27.27 2.69.07 7.05.01 8.33 0 8.74 0 12s.01 3.67.07 4.95c.2 4.36 2.62 6.78 6.98 6.98C8.33 23.99 8.74 24 12 24s3.67-.01 4.95-.07c4.35-.2 6.78-2.62 6.98-6.98.06-1.28.07-1.69.07-4.95s-.01-3.67-.07-4.95C23.73 2.7 21.31.27 16.95.07 15.67.01 15.26 0 12 0zm0 5.84A6.16 6.16 0 1 0 18.16 12 6.16 6.16 0 0 0 12 5.84zm0 10.15A4 4 0 1 1 16 12a4 4 0 0 1-4 3.99zm7.85-10.4a1.44 1.44 0 1 1-2.88 0 1.44 1.44 0 0 1 2.88 0z"/></svg></a>
+    <a href="https://www.facebook.com/tampabayboating" target="_blank" rel="noopener" aria-label="Facebook"><svg viewBox="0 0 24 24"><path d="M24 12.07C24 5.4 18.63 0 12 0S0 5.4 0 12.07C0 18.1 4.39 23.09 10.13 24v-8.44H7.08v-3.49h3.04V9.41c0-3.02 1.8-4.7 4.54-4.7 1.31 0 2.68.24 2.68.24v2.97h-1.5c-1.5 0-1.96.93-1.96 1.89v2.26h3.32l-.53 3.49h-2.79V24C19.61 23.09 24 18.1 24 12.07z"/></svg></a></div>
     </div>
-    <div class="hub-grid">
-      <a class="hub-card" href="#shop"><span class="hub-emoji">🛍️</span><b>Shop Merch</b><i>Tees, tanks, hats &amp; more</i></a>
-      <a class="hub-card" href="#videos"><span class="hub-emoji">🎥</span><b>Videos</b><i>Boat life around the bay</i></a>
-      <a class="hub-card" href="#events"><span class="hub-emoji">📅</span><b>Events</b><i>Boat shows &amp; tournaments</i></a>
-      <a class="hub-card" href="#charters"><span class="hub-emoji">🚤</span><b>Charters</b><i>Book a trip</i></a>
-      <a class="hub-card" href="#dining"><span class="hub-emoji">🍔</span><b>Dock &amp; Dine</b><i>Restaurants by boat</i></a>
-      <a class="hub-card" href="#fuel"><span class="hub-emoji">⛽</span><b>Fuel &amp; Bait</b><i>Fill up on the water</i></a>
-      <a class="hub-card" href="#services"><span class="hub-emoji">🔧</span><b>Boat Services</b><i>Mechanics &amp; more</i></a>
-      <a class="hub-card" href="#advertise"><span class="hub-emoji">📣</span><b>Advertise</b><i>Reach local boaters</i></a>
-      <a class="hub-card" href="#boatsales"><span class="hub-emoji">🛥️</span><b>Boats for Sale</b><i>Buy &amp; sell locally</i></a>
-      <a class="hub-card" href="#gear"><span class="hub-emoji">🎒</span><b>Gear Guide</b><i>Boater must-haves</i></a>
-      <a class="hub-card" href="#safety"><span class="hub-emoji">🛟</span><b>Safety</b><i>USCG requirements</i></a>
-      <a class="hub-card" href="#bridges"><span class="hub-emoji">📻</span><b>VHF &amp; Bridges</b><i>Channels &amp; openings</i></a>
-      <a class="hub-card" href="#fishing"><span class="hub-emoji">🎣</span><b>Fishing</b><i>Bites &amp; limits</i></a>
-      <a class="hub-card" href="#baymap"><span class="hub-emoji">🗺️</span><b>Bay Map</b><i>Fuel, bait &amp; sandbars</i></a>
-      <a class="hub-card" href="#stopped"><span class="hub-emoji">🚨</span><b>Stopped?</b><i>FWC &amp; Coast Guard</i></a>
-      <a class="hub-card" href="#navigation"><span class="hub-emoji">🧭</span><b>Navigation</b><i>Markers &amp; charts</i></a>
-      <a class="hub-card" href="#tips"><span class="hub-emoji">💡</span><b>Tips &amp; Tricks</b><i>Boat smarts</i></a>
-      <a class="hub-card" href="#paddling"><span class="hub-emoji">🛶</span><b>Paddling</b><i>Kayak &amp; SUP</i></a>
-      <a class="hub-card" href="#meetups"><span class="hub-emoji">🤝</span><b>Meetups</b><i>Find your crew</i></a>
-      <a class="hub-card" href="#news"><span class="hub-emoji">📰</span><b>News</b><i>Daily headlines</i></a>
-      <a class="hub-card" href="#boat-clubs"><span class="hub-emoji">🛥️</span><b>Boat Clubs</b><i>Boat without owning</i></a>
-      <a class="hub-card" href="#storage"><span class="hub-emoji">🅿️</span><b>Storage</b><i>Park your boat</i></a>
-      <a class="hub-card" href="#parts"><span class="hub-emoji">⚙️</span><b>Parts</b><i>Supply &amp; fabrication</i></a>
-      <a class="hub-card" href="#ramps"><span class="hub-emoji">🚤</span><b>Boat Ramps</b><i>Where to launch</i></a>
-      <a class="hub-card" href="#manatee"><span class="hub-emoji">🐢</span><b>Slow Zones</b><i>Manatee areas</i></a>
-      <a class="hub-card" href="#courses"><span class="hub-emoji">🎓</span><b>Courses</b><i>Get certified</i></a>
-      <a class="hub-card" href="#hurricane"><span class="hub-emoji">🛟</span><b>Hurricane</b><i>Storm prep</i></a>
-      <a class="hub-card" href="#insurance"><span class="hub-emoji">🛡️</span><b>Insurance</b><i>Protect the boat</i></a>
-      <a class="hub-card" href="#logbook"><span class="hub-emoji">📓</span><b>Logbook</b><i>Track your hours</i></a>
-    </div>
+    <div class="hero2-kicker">For Boaters, Families &amp; Weekend Explorers</div>
+    <h1>Your Tampa Bay boating launch point.</h1>
+    <p class="hero2-sub">Conditions, local knowledge, places to go, people to call &mdash; and the gear to bring it all together.</p>
+    <a class="hero2-cta" href="#/tides">Check tides &amp; forecast</a>
+    <a class="hero2-map" href="#/map">Open the boater's map</a><br>
+    <a class="hero2-browse" href="#browse">Browse every category &darr;</a>
   </div>
 </section>
-
-<div class="wrap">
-  <div class="creator-bar">
-    <img class="avatar" src="assets/tbb-social-logo.jpg" alt="Tampa Bay Boating creator logo">
-    <div><div class="handle">@tampabayboating</div><div class="bio">We do boat stuff. Tampa Bay Area.</div></div>
+<div class="ad-card">
+  <div class="ad-card-inner">
+    <div class="ad-card-ico">&#127978;</div>
+    <div>
+      <div class="ad-card-eyebrow">Advertising placement available</div>
+      <h3>Put your company in front of Tampa Bay boaters.</h3>
+      <p>Feature a boating business, event, restaurant, marina, product, or local service right here.</p>
+      <a class="ad-card-btn" href="#/advertise">View advertising options</a>
+      <a class="ad-card-mail" href="mailto:david@tampabayboating.com">Email David</a>
+    </div>
   </div>
 </div>
-
-<!-- ============ LIVE CONDITIONS ============ -->
-<section id="conditions">
+<div class="home-intro">
+  <div class="kick">Tampa Bay, Organized</div>
+  <h2>Tap in. Find it fast.</h2>
+  <p>Start with today's essentials, or choose a category. The site opens one useful page at a time &mdash; no endless scrolling.</p>
+</div>
+<div class="today-tabs" id="browse">
+  <div class="tabs-label">Today on the bay</div>
+  <div class="today-grid">
+    <a class="today-tab" href="#/tides"><span class="t-ico">&#127754;</span><b>Tides &amp; Forecast</b><i>Plan around the water</i></a>
+    <a class="today-tab" href="#/fishing"><span class="t-ico">&#127908;</span><b>Fishing Report</b><i>See what's biting</i></a>
+    <a class="today-tab" href="#/events"><span class="t-ico">&#128197;</span><b>Events</b><i>See what's happening</i></a>
+    <a class="today-tab" href="#/dining"><span class="t-ico">&#127869;</span><b>Dock &amp; Dine</b><i>Find a boat-up meal</i></a>
+  </div>
+</div>
+<div class="cat-cards">
+  <div class="tabs-label">Browse boating categories</div>
+  <div class="cat-grid">
+    <a class="cat-card" href="#/plan"><span class="c-ico">&#129517;</span><b>Plan a Day</b><i>Weather, water &amp; places to go</i></a>
+    <a class="cat-card" href="#/local"><span class="c-ico">&#128205;</span><b>Find Local</b><i>Captains, fuel, service &amp; storage</i></a>
+    <a class="cat-card" href="#/smart"><span class="c-ico">&#128752;</span><b>Boat Smart</b><i>Safety, nav &amp; local know-how</i></a>
+    <a class="cat-card" href="#/shopc"><span class="c-ico">&#128717;</span><b>Shop &amp; Connect</b><i>Merch, boats &amp; community</i></a>
+  </div>
+</div></div>
+<div class="view" id="view-plan"><div class="wrap"><a class="back-link" href="#/">&#8249; All categories</a></div><div class="hub-head"><h2>Plan a Day</h2><p>Weather, water, launches and places to go.</p></div><div class="tile-grid"><a class="tile" href="#/tides"><span class="t-ico">🌊</span><b>Tides & Forecast</b><i>Plan around the water</i></a><a class="tile" href="#/fishing"><span class="t-ico">🎣</span><b>Fishing Report</b><i>See what's biting</i></a><a class="tile" href="#/events"><span class="t-ico">📅</span><b>Events</b><i>See what's happening</i></a><a class="tile" href="#/dining"><span class="t-ico">🍽</span><b>Dock & Dine</b><i>Find a boat-up meal</i></a><a class="tile" href="#/map"><span class="t-ico">🗺</span><b>Boater's Map</b><i>Fuel, bait, dining & more</i></a><a class="tile" href="#/paddling"><span class="t-ico">🛶</span><b>Kayak & SUP</b><i>Local paddle launches</i></a><a class="tile" href="#/ramps"><span class="t-ico">🚤</span><b>Boat Ramps</b><i>Launch around the bay</i></a><a class="tile" href="#/bridges"><span class="t-ico">📻</span><b>VHF & Bridges</b><i>Channels & openings</i></a><a class="tile" href="#/logbook"><span class="t-ico">📓</span><b>My Boating Log</b><i>Track your hours</i></a></div></div>
+<div class="view" id="view-local"><div class="wrap"><a class="back-link" href="#/">&#8249; All categories</a></div><div class="hub-head"><h2>Find Local</h2><p>Captains, fuel, service, parts and storage.</p></div><div class="tile-grid"><a class="tile" href="#/charters"><span class="t-ico">🚤</span><b>Charters</b><i>Fishing, cruising & tours</i></a><a class="tile" href="#/fuel"><span class="t-ico">⛽</span><b>Fuel & Bait</b><i>Stops around Tampa Bay</i></a><a class="tile" href="#/services"><span class="t-ico">🔧</span><b>Boat Services</b><i>Repair, electronics & detail</i></a><a class="tile" href="#/parts"><span class="t-ico">⚙</span><b>Marine Parts</b><i>Stores, canvas & fabrication</i></a><a class="tile" href="#/storage"><span class="t-ico">🅿</span><b>Boat Storage</b><i>Dry stack, slips & lots</i></a><a class="tile" href="#/boat-clubs"><span class="t-ico">🛥</span><b>Boat Clubs</b><i>Boat without owning</i></a></div></div>
+<div class="view" id="view-smart"><div class="wrap"><a class="back-link" href="#/">&#8249; All categories</a></div><div class="hub-head"><h2>Boat Smart</h2><p>Safety, navigation and practical local know-how.</p></div><div class="tile-grid"><a class="tile" href="#/navigation"><span class="t-ico">🧭</span><b>Navigation Basics</b><i>Markers & right of way</i></a><a class="tile" href="#/tips"><span class="t-ico">💡</span><b>Tips & Tricks</b><i>Launching, docking & knots</i></a><a class="tile" href="#/safety"><span class="t-ico">🛟</span><b>Safety Essentials</b><i>Equipment & smart habits</i></a><a class="tile" href="#/stopped"><span class="t-ico">🚨</span><b>If You're Stopped</b><i>What to expect</i></a><a class="tile" href="#/manatee"><span class="t-ico">🐢</span><b>Slow-Speed Zones</b><i>Manatee areas</i></a><a class="tile" href="#/courses"><span class="t-ico">🎓</span><b>Boating Courses</b><i>Learn & get certified</i></a><a class="tile" href="#/hurricane"><span class="t-ico">🌀</span><b>Hurricane Prep</b><i>Plan before the storm</i></a><a class="tile" href="#/insurance"><span class="t-ico">🛡</span><b>Boaters Insurance</b><i>Coverage basics</i></a></div></div>
+<div class="view" id="view-shopc"><div class="wrap"><a class="back-link" href="#/">&#8249; All categories</a></div><div class="hub-head"><h2>Shop & Connect</h2><p>Merch, boats, community and business opportunities.</p></div><div class="tile-grid"><a class="tile" href="#/shop"><span class="t-ico">🛍</span><b>Official Merch</b><i>Wear Tampa Bay Boating</i></a><a class="tile" href="#/boatsales"><span class="t-ico">🛥</span><b>Boats for Sale</b><i>Owners & local dealers</i></a><a class="tile" href="#/gear"><span class="t-ico">🎒</span><b>Gear Guide</b><i>Useful boating picks</i></a><a class="tile" href="#/videos"><span class="t-ico">🎥</span><b>Videos</b><i>Tampa Bay from the water</i></a><a class="tile" href="#/meetups"><span class="t-ico">🤝</span><b>Meetups</b><i>Find your local crew</i></a><a class="tile" href="#/news"><span class="t-ico">📰</span><b>Boating News</b><i>Around the bay</i></a><a class="tile" href="#/newsletter"><span class="t-ico">✉</span><b>Newsletter</b><i>This Week on the Water</i></a><a class="tile" href="#/advertise"><span class="t-ico">📣</span><b>Advertise</b><i>Monthly plans & placements</i></a><a class="tile" href="#/contact"><span class="t-ico">👋</span><b>Contact David</b><i>Questions & partnerships</i></a></div></div>
+<div class="view" id="view-tides"><div class="wrap"><a class="back-link" href="#/">&#8249; All categories</a></div><section id="conditions">
   <div class="wrap">
     <h2>Tampa Bay Tides &amp; Marine Forecast</h2>
     <div class="sub">Live from NOAA &amp; the National Weather Service · East Bay / Tampa Bay</div>
@@ -421,15 +496,12 @@ footer .soc svg{width:20px; height:20px}
     </div>
     <div class="cond-link"><a href="https://tampabayboating.com/conditions/" target="_blank" rel="noopener">Full 7-day tides, weather &amp; marine forecast →</a></div>
   </div>
-</section>
-
-
-<!-- ============ FISHING REPORT ============ -->
-<section id="fishing">
+</section></div>
+<div class="view" id="view-fishing"><div class="wrap"><a class="back-link" href="#/">&#8249; All categories</a></div><section id="fishing">
   <div class="wrap">
     <div class="sec-head">
       <span class="sec-kicker">Tight Lines</span>
-      <h2>🎣 Tampa Bay Fishing Report</h2>
+      <h2>Tampa Bay Fishing Report</h2>
       <p>What's biting right now — plus the size and bag limits you need to stay legal.</p>
     </div>
     <div class="dir-grid">
@@ -529,74 +601,667 @@ footer .soc svg{width:20px; height:20px}
     </div>
     <p style="text-align:center; color:var(--muted); font-size:.82rem; margin-top:16px">Regulations summarized from FWC for Gulf state waters — verify current rules at myfwc.com before your trip.</p>
   </div>
-</section>
-
-<!-- ============ BOATING SAFETY ============ -->
-<section id="safety" style="background:#fff; border-top:1px solid var(--line); border-bottom:1px solid var(--line)">
+</section></div>
+<div class="view" id="view-events"><div class="wrap"><a class="back-link" href="#/">&#8249; All categories</a></div><section id="events">
   <div class="wrap">
     <div class="sec-head">
-      <span class="sec-kicker">Boat Smart</span>
-      <h2>🛟 Boating Safety</h2>
-      <p>What the U.S. Coast Guard requires on your boat — plus Florida rules and smart habits for Tampa Bay waters.</p>
+      <span class="sec-kicker">On The Water</span>
+      <h2>Boating Events Calendar</h2>
+      <p>Boat shows, concerts on the water, tournaments &amp; anything boating-related around Tampa Bay. Companies can pay to list their events here.</p>
+    </div>
+    <div class="cal-wrap">
+      <div class="cal-box">
+        <div id="calendar"></div>
+        <div class="day-events" id="day-events"></div>
+      </div>
+      <div>
+        <h3 style="color:var(--navy); margin-bottom:10px">Upcoming Events</h3>
+        <div class="day-events" id="upcoming-events"></div>
+        <h3 style="color:var(--navy); margin:20px 0 6px">List Your Event</h3>
+        <p style="color:var(--muted); font-size:.93rem">Get your boat show, concert, tournament or boating event in front of Tampa Bay's boating audience.</p>
+        <div class="ev-pricing">
+          <div class="ev-tier">
+            <h4>Standard Listing</h4><div class="p">$29</div>
+            <p>Per event. Date on the calendar + full event detail page.</p>
+          </div>
+          <div class="ev-tier hot">
+            <h4>Featured Event</h4><div class="p">$79</div>
+            <p>Per event. Gold highlight, top of upcoming list + homepage mention.</p>
+          </div>
+        </div>
+        <div class="ad-cta" style="text-align:left">
+          <a href="mailto:events@tampabayboating.com?subject=Event%20Listing%20—%20Tampa%20Bay%20Boating">List your event</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section></div>
+<div class="view" id="view-map"><div class="wrap"><a class="back-link" href="#/">&#8249; All categories</a></div><section id="baymap">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-kicker">Explore</span>
+      <h2>Tampa Bay Boater's Map</h2>
+      <p>Fuel docks, bait shops, dock &amp; dine spots, and the places everyone goes. Tap a pin for details.</p>
+    </div>
+    <div class="map-filters" style="text-align:center; margin-bottom:10px">
+      <button class="map-filter active" data-cat="all">All</button>
+      <button class="map-filter" data-cat="fuel">⛽ Fuel</button>
+      <button class="map-filter" data-cat="bait">🦐 Bait</button>
+      <button class="map-filter" data-cat="dine">🍽️ Dock &amp; Dine</button>
+      <button class="map-filter" data-cat="play">🏝️ Destinations</button>
+      <button class="map-filter" data-cat="club">🛥️ Boat Clubs</button>
+      <button class="map-filter" data-cat="storage">🅿️ Storage</button>
+    </div>
+    <div id="bay-leaflet-map" style="height:480px; border-radius:14px; border:1px solid var(--line); z-index:1"></div>
+    <p style="text-align:center; color:var(--muted); font-size:.82rem; margin-top:10px">40 pinned locations · fuel prices change — call ahead · dock &amp; dine listings are paid placements</p>
+  </div>
+</section></div>
+<div class="view" id="view-logbook"><div class="wrap"><a class="back-link" href="#/">&#8249; All categories</a></div><section id="logbook">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-kicker">Your Time on the Water</span>
+      <h2>My Boating Log</h2>
+      <p>Log every trip — hours add up toward experience, insurance discounts, and bragging rights. Saved on this device.</p>
+    </div>
+    <div class="dir-grid" style="grid-template-columns:1fr">
+      <div class="dir-card">
+        <div class="type">
+          <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:8px; margin-bottom:10px">
+            <label style="font-size:.8rem">Date<br><input id="log-date" type="date" style="width:100%; padding:8px; border:1px solid var(--line); border-radius:8px"></label>
+            <label style="font-size:.8rem">Hours<br><input id="log-hours" type="number" min="0" step="0.5" placeholder="4" style="width:100%; padding:8px; border:1px solid var(--line); border-radius:8px"></label>
+            <label style="font-size:.8rem">Where<br><input id="log-where" type="text" placeholder="Egmont Key" style="width:100%; padding:8px; border:1px solid var(--line); border-radius:8px"></label>
+            <label style="font-size:.8rem">Notes<br><input id="log-notes" type="text" placeholder="Kings on the troll" style="width:100%; padding:8px; border:1px solid var(--line); border-radius:8px"></label>
+          </div>
+          <button onclick="addLogEntry()" style="background:var(--teal); color:#fff; border:none; border-radius:999px; padding:10px 26px; font-size:.95rem; cursor:pointer">+ Log this trip</button>
+          <span id="log-total" style="margin-left:14px; font-weight:700"></span>
+        </div>
+        <div id="log-list" style="margin-top:12px"></div>
+      </div>
+    </div>
+    <p style="text-align:center; color:var(--muted); font-size:.82rem; margin-top:10px">Entries are stored in this browser only — they don't sync between devices.</p>
+  </div>
+</section></div>
+<div class="view" id="view-shop"><div class="wrap"><a class="back-link" href="#/">&#8249; All categories</a></div><section id="shop">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-kicker">Official Merch</span>
+      <h2>The Ship's Store</h2>
+      <p>Gear for Tampa Bay boaters — designed for the sandbar crowd. Fulfilled via our Shopify store (coming soon).</p>
+    </div>
+    <div class="shop-tools">
+      <div class="search">
+        <input id="search-input" type="text" placeholder="Search shirts, hats, koozies..." oninput="renderGrid()">
+        <button onclick="renderGrid()">Search</button>
+      </div>
+    </div>
+    <div class="shop-layout">
+      <aside class="filters">
+        <h3>Category</h3>
+        <div id="cat-filters"></div>
+        <h3>Price</h3>
+        <label><input type="checkbox" class="price-f" value="0-15" onchange="renderGrid()"> Under $15</label>
+        <label><input type="checkbox" class="price-f" value="15-30" onchange="renderGrid()"> $15 – $30</label>
+        <label><input type="checkbox" class="price-f" value="30-100" onchange="renderGrid()"> Over $30</label>
+      </aside>
+      <div class="grid" id="product-grid"></div>
+    </div>
+  </div>
+</section></div>
+<div class="view" id="view-gear"><div class="wrap"><a class="back-link" href="#/">&#8249; All categories</a></div><section id="gear">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-kicker">Boater Must-Haves</span>
+      <h2>Gear We Love</h2>
+      <p>Boating, beach & fishing must-haves for Tampa Bay. Tap to check the price.</p>
+    </div>
+    <div class="dir-grid" id="gear-grid"></div>
+    <!-- AFFILIATE: join Amazon Associates, then append &tag=YOURTAG to each amazon.com link in GEAR below -->
+  </div>
+</section></div>
+<div class="view" id="view-videos"><div class="wrap"><a class="back-link" href="#/">&#8249; All categories</a></div><section id="videos">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-kicker">From TikTok</span>
+      <h2>Featured Videos</h2>
+      <p>The hits from @tampabayboating. More on TikTok, Instagram &amp; Facebook.</p>
+    </div>
+    <div class="vid-grid">
+      <div class="vid-card">
+        <video controls preload="none" poster="assets/tiktok-beercanisland.jpg" playsinline>
+          <source src="assets/tiktok-beercanisland.mp4" type="video/mp4">
+        </video>
+        <div class="cap">Beer Can Island — the legendary sandbar party</div>
+      </div>
+      <div class="vid-card">
+        <video controls preload="none" poster="assets/tiktok-alafia-river.jpg" playsinline>
+          <source src="assets/tiktok-alafia-river.mp4" type="video/mp4">
+        </video>
+        <div class="cap">Running the Alafia River</div>
+      </div>
+    </div>
+  </div>
+</section></div>
+<div class="view" id="view-meetups"><div class="wrap"><a class="back-link" href="#/">&#8249; All categories</a></div><section id="meetups" style="background:#fff; border-top:1px solid var(--line); border-bottom:1px solid var(--line)">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-kicker">Find Your Crew</span>
+      <h2>Boating &amp; Paddling Meetups</h2>
+      <p>Group paddles, sandbar hangs, and powerboat runs — find your people on the water.</p>
     </div>
     <div class="dir-grid">
       <div class="dir-card">
-        <div class="city">Federal law</div><h4>✅ Required by the U.S. Coast Guard</h4>
-        <div class="type">
-          • One USCG-approved <b>life jacket per person</b> — right size, accessible, in good condition<br>
-          • Kids <b>under 13 must wear one</b> while underway<br>
-          • <b>Throwable flotation device</b> (boats 16 ft and longer)<br>
-          • <b>Fire extinguisher</b>, marine-rated — charged and not expired (12-year max)<br>
-          • <b>Sound device</b> — horn or whistle (40 ft+ also needs a bell)<br>
-          • <b>Visual distress signals</b> — day + night on coastal waters<br>
-          • <b>Navigation lights</b> from sunset to sunrise<br>
-          • <b>Kill-switch lanyard</b> attached (boats under 26 ft)<br>
-          • <b>Registration</b> numbers displayed and papers aboard
-        </div>
-        <div class="contact">🔗 <a href="https://uscgboating.org/" target="_blank" rel="noopener">USCG Boating Safety Center</a></div>
+        <div class="city">Paddling</div><h4>🛶 Paddleboard Tampa</h4>
+        <div class="type">Paddles 3–4 times a week — sunset paddles, technique classes, full moon paddles, fitness sessions. Varied locations around the bay.</div>
+        <div class="contact">🔗 <a href="https://www.meetup.com/paddleboard-tampa/join/" target="_blank" rel="noopener">Join on Meetup</a></div>
       </div>
       <div class="dir-card">
-        <div class="city">Florida</div><h4>🌴 Florida Rules to Know</h4>
-        <div class="type">
-          • Born on/after <b>Jan 1, 1988</b>? You need a Boating Safety Education ID card to operate 10 HP+<br>
-          • Kids <b>under 6 must wear</b> a life jacket while underway (vessels under 26 ft)<br>
-          • <b>BUI = DUI</b> — 0.08 limit, same as the road<br>
-          • Fly a <b>divers-down flag</b> when anyone's snorkeling or diving<br>
-          • Obey <b>no-wake and manatee zones</b> — they're everywhere in the bay
-        </div>
-        <div class="contact">🔗 <a href="https://myfwc.com/boating/" target="_blank" rel="noopener">FWC Boating Regulations</a></div>
+        <div class="city">Paddling</div><h4>🌊 Upper Tampa Bay Paddle Sports</h4>
+        <div class="type">The primary sister group to Paddleboard Tampa — group tours, lessons, and progression for all levels.</div>
+        <div class="contact">🔗 <a href="https://www.meetup.com/" target="_blank" rel="noopener">Find them on Meetup.com</a></div>
       </div>
       <div class="dir-card">
-        <div class="city">Before you go</div><h4>📋 Leave-the-Dock Checklist</h4>
-        <div class="type">
-          • <b>Check the forecast</b> — <a href="#conditions">see today's tides &amp; marine weather</a><br>
-          • <b>File a float plan</b> — tell someone where you're going and when you'll be back<br>
-          • <b>Fuel rule:</b> ⅓ out, ⅓ back, ⅓ in reserve<br>
-          • Walk through the <b>USCG checklist</b> above — every trip<br>
-          • Charge phones, bring water, sun protection
-        </div>
+        <div class="city">Paddling</div><h4>🏄 PADL St. Pete Beach</h4>
+        <div class="type">SUP meetups + app-based board rentals at St. Pete Beach stations. Bring your own board or rent on the spot.</div>
+        <div class="contact">🔗 <a href="https://www.meetup.com/en-au/padl-st-pete-beach-self-service-paddleboard-rentals/" target="_blank" rel="noopener">Join on Meetup</a></div>
       </div>
       <div class="dir-card">
-        <div class="city">On the water</div><h4>🧠 Smart Habits</h4>
+        <div class="city">Kayaking</div><h4>🚣 Tampa Bay Kayaking &amp; Paddling</h4>
+        <div class="type">Active Facebook community sharing trip photos, launch ideas, and impromptu group paddles around the bay.</div>
+        <div class="contact">🔗 <a href="https://www.facebook.com/" target="_blank" rel="noopener">Find the group on Facebook</a></div>
+      </div>
+      <div class="dir-card">
+        <div class="city">Powerboating</div><h4>🚤 Florida Powerboat Club</h4>
+        <div class="type">Organized Tampa Bay fun runs and powerboat events — the go-fast crowd's home base.</div>
+        <div class="contact">🔗 <a href="https://www.meetup.com/" target="_blank" rel="noopener">Find them on Meetup.com</a></div>
+      </div>
+      <div class="dir-card" style="border:2px solid var(--teal)">
+        <div class="city">Host your own</div><h4>📣 List Your Meetup — Free</h4>
         <div class="type">
-          • <b>Wear the life jacket</b> — the best one is the one you'll actually put on<br>
-          • <b>Kill switch on</b>, every single trip<br>
-          • <b>Watch the sky</b> — Tampa Bay storms build fast; head in early<br>
-          • <b>Engine off</b> when swimmers are near the boat<br>
-          • <b>Never BUI</b> — designate a sober skipper
+          Run a weekly paddle, a sandbar hang, a fishing crew? <b>List it here free.</b><br><br>
+          Email <b>meetups@tampabayboating.com</b> with: group name, what/where/when, and a link to join. We'll add it to this page.<br><br>
+          🎪 <b>Hosting a TBB official meetup?</b> <a href="#advertise">Talk to us</a> about a featured spotlight.
         </div>
       </div>
     </div>
-    <p style="text-align:center; color:var(--muted); font-size:.82rem; margin-top:16px">Federal minimums summarized for recreational boats — always check current USCG and FWC regulations before you go.</p>
+    <p style="text-align:center; color:var(--muted); font-size:.82rem; margin-top:16px">Community listings are free — groups are responsible for their own events and safety.</p>
   </div>
-</section>
+</section></div>
+<div class="view" id="view-news"><div class="wrap"><a class="back-link" href="#/">&#8249; All categories</a></div><section id="news">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-kicker">Around the Bay</span>
+      <h2>Tampa Bay Boating News</h2>
+      <p>Today's boating headlines — incidents, openings, and everything making waves. Updated daily.</p>
+    </div>
+    <!-- NEWS-START (auto-updated every morning) -->
+    <div class="dir-grid" id="news-grid">
+      <div class="dir-card">
+        <div class="city">Oct 6, 2026 · Tampa Bay 28</div><h4>Boater dies after capsizing near Davis Islands</h4>
+        <div class="type">Six people were found clinging to a buoy in Hillsborough Bay; five rescued, one did not survive. FWC investigating the cause.</div>
+        <div class="contact">🔗 <a href="https://www.tampabay28.com/news/region-tampa/one-person-is-dead-after-a-boating-accident-near-davis-islands" target="_blank" rel="noopener">Read the full story</a></div>
+      </div>
+      <div class="dir-card">
+        <div class="city">Oct 6, 2026 · Tampa Bay 28</div><h4>Three injured as boat strikes rocks on Hillsborough River</h4>
+        <div class="type">A 19-foot vessel hit rocks near Ignacio Haya Linear Park at night; three hospitalized. FWC preliminary report.</div>
+        <div class="contact">🔗 <a href="https://www.tampabay28.com/news/region-hillsborough/three-people-injured-after-boat-crashed-into-rocks-on-hillsborough-river-fwc" target="_blank" rel="noopener">Read the full story</a></div>
+      </div>
+      <div class="dir-card">
+        <div class="city">Safety reminder</div><h4>🦺 Learn From These</h4>
+        <div class="type">Both recent incidents involved <b>rough water and nighttime operation</b>. Check <a href="#conditions">conditions</a> before you go, wear PFDs, and review the <a href="#safety">safety checklist</a>.</div>
+      </div>
+    </div>
+    <!-- NEWS-END -->
+    <p style="text-align:center; color:var(--muted); font-size:.82rem; margin-top:16px">Headlines link to the original publishers — we summarize, they report.</p>
+  </div>
+</section></div>
+<div class="view" id="view-newsletter"><div class="wrap"><a class="back-link" href="#/">&#8249; All categories</a></div><section id="newsletter" style="background:#fff; border-top:1px solid var(--line); border-bottom:1px solid var(--line)">
+  <div class="wrap" style="text-align:center; padding:44px 20px">
+    <span class="sec-kicker">Stay in the loop</span>
+    <h2 style="margin:8px 0">This Week on the Water</h2>
+    <p style="color:var(--muted); max-width:520px; margin:0 auto 18px">One short email a week: boating events, sandbar conditions, new boat listings and local deals. No spam, ever.</p>
+    <div style="max-width:420px; margin:0 auto; display:flex; gap:8px">
+      <input id="nl-email" type="email" placeholder="you@email.com" style="flex:1; padding:12px 16px; border:2px solid var(--line); border-radius:10px; font-size:1rem">
+      <button class="pill sel" style="white-space:nowrap" onclick="subscribeNL()">Sign up</button>
+    </div>
+  </div>
+</section></div>
+<div class="view" id="view-advertise"><div class="wrap"><a class="back-link" href="#/">&#8249; All categories</a></div>
+<section id="advertise">
+<div class="wrap">
+<div class="sec-head"><span class="sec-kicker" style="background:var(--sun); color:#3a2503">For Businesses</span>
+<h2>Reach Tampa Bay Boaters</h2>
+<p>Promote a boating event, charter, marina, restaurant, dealer, service company, product, or any business &mdash; right here.</p></div>
 
-<!-- ============ NAVIGATION BASICS ============ -->
-<section id="navigation">
+<h3 class="ad-group">Ongoing exposure</h3>
+<p class="ad-group-sub">Monthly subscriptions &mdash; stay visible month after month. Plans renew monthly; change or cancel anytime.</p>
+<div class="price-grid">
+<div class="price-card hot"><h4>Featured Listing</h4><div class="p">$99</div><div class="per">/month</div>
+<p class="desc">Your business at the top of our directories &mdash; charters, restaurants, fuel, bait &amp; marine services. Photo, badge &amp; link.</p></div>
+<div class="price-card"><h4>Homepage Spotlight</h4><div class="p">$199</div><div class="per">/month</div>
+<p class="desc">Your company showcased front and center on the homepage.</p></div>
+<div class="price-card"><h4>Homepage Banner</h4><div class="p">$149</div><div class="per">/month</div>
+<p class="desc">Your banner at the top of the homepage &mdash; the first thing visitors see.</p></div>
+<div class="price-card"><h4>Section Sponsor</h4><div class="p">$149</div><div class="per">/month</div>
+<p class="desc">Your brand on the Fishing Report, Boats for Sale, or any section &mdash; exclusive.</p></div>
+<div class="price-card hot"><h4>Category Sponsor</h4><div class="p">$299</div><div class="per">/month</div>
+<p class="desc">Exclusive sponsorship of one category (towing, fuel, charters&hellip;) &mdash; directory badge, homepage banner, newsletter feature &amp; a TikTok-style promo video. One sponsor per category.</p></div>
+<div class="price-card"><h4>Newsletter Sponsor</h4><div class="p">$99</div><div class="per">/issue</div>
+<p class="desc">Your logo + link in &ldquo;This Week on the Water,&rdquo; our weekly boater email.</p></div>
+</div>
+<div class="ad-cta"><a href="mailto:david@tampabayboating.com?subject=Monthly%20Advertising%20Plan%20%E2%80%94%20Tampa%20Bay%20Boating">Start a monthly plan</a></div>
+
+<h3 class="ad-group">Promote one moment</h3>
+<p class="ad-group-sub">One-time placements &mdash; ideal for a single event, launch, promotion, or piece of content.</p>
+<div class="price-grid">
+<div class="price-card"><h4>Event Listing</h4><div class="p">$29</div><div class="per">/event</div>
+<p class="desc">Your boating event on our calendar with date, details &amp; link.</p></div>
+<div class="price-card"><h4>Featured Event</h4><div class="p">$79</div><div class="per">/event</div>
+<p class="desc">Top placement on the events calendar + homepage feature.</p></div>
+<div class="price-card"><h4>Video Spotlight</h4><div class="p">$249</div><div class="per">one-time</div>
+<p class="desc">We turn your photos and videos into a TikTok-style promo &mdash; posted to @tampabayboating, and yours to keep.</p></div>
+<div class="price-card"><h4>Sponsored TikTok Post</h4><div class="p">$349</div><div class="per">one-time</div>
+<p class="desc">A dedicated video about your business, posted to @tampabayboating.</p></div>
+</div>
+<div class="ad-cta"><a href="mailto:david@tampabayboating.com?subject=One-Time%20Placement%20%E2%80%94%20Tampa%20Bay%20Boating">Book a one-time placement</a></div>
+
+<p style="text-align:center; color:var(--muted); font-size:.9rem; margin-top:26px">Need something custom? We do <b>partnerships</b>, <b>map placements</b>, <b>dealer inventory features</b>, and <b>product launches</b> too.</p>
+<p style="text-align:center; color:var(--muted); font-size:.88rem; margin-top:10px">Charter companies: founding members lock in <b>$49/mo for 12 months</b> &mdash; first 10 only.</p>
+<p style="text-align:center; font-size:.95rem; margin-top:10px">Not sure where you fit? <a href="mailto:david@tampabayboating.com" style="font-weight:700">Email david@tampabayboating.com</a> and tell us what you want to promote.</p>
+</div>
+</section></div>
+<div class="view" id="view-contact"><div class="wrap"><a class="back-link" href="#/">&#8249; All categories</a></div><section id="contact">
+<div class="wrap">
+<div class="sec-head"><span class="sec-kicker">Get In Touch</span>
+<h2>Contact</h2>
+<p>Questions, story tips, partnership ideas, or just want to talk boating — send me an email.</p></div>
+<div class="ad-cta">
+<a href="mailto:david@tampabayboating.com">✉️ david@tampabayboating.com</a>
+</div>
+</div>
+</section></div>
+<div class="view" id="view-dining"><div class="wrap"><a class="back-link" href="#/">&#8249; All categories</a></div><div class="acc-item open" id="dining">
+  <button class="acc-head" aria-expanded="false" onclick="toggleAcc(this)">
+    <span class="acc-title">Waterfront Restaurants</span>
+    <span class="acc-chev" aria-hidden="true">▾</span>
+  </button>
+  <div class="acc-body">
+
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-kicker">Dock &amp; Dine</span>
+      
+      <p>Tampa Bay's top restaurants accessible by boat — pull up, tie off, and eat. Featured partners only.</p>
+    </div>
+    <div class="dine-grid" id="dine-grid">
+      <div class="dine-spot">
+        <img src="assets/dining/armature-works.jpg" alt="Armature Works on the Hillsborough River" loading="lazy">
+        <div class="dine-spot-body">
+          <b>Armature Works</b>
+          <span class="dine-water">Hillsborough River · Tampa</span>
+          <p>Historic brick streetcar depot turned riverfront food hall — Heights Public Market, lawns, and the pier.</p>
+          <span class="dine-tag">Featured spot</span>
+        </div>
+      </div>
+      <div class="dine-spot">
+        <img src="assets/dining/ricks-on-the-river.jpg" alt="Rick's on the River marina and restaurant" loading="lazy">
+        <div class="dine-spot-body">
+          <b>Rick's on the River</b>
+          <span class="dine-water">Hillsborough River · Tampa</span>
+          <p>Free docking while you dine, full marina on site — the classic boat-up bar &amp; grille, est. 1994.</p>
+          <span class="dine-tag">Featured spot</span>
+        </div>
+      </div>
+      <div class="dine-slot"><div class="plus">+</div><b>Your restaurant here</b><p>Boat-accessible waterfront dining, featured for Tampa Bay boaters.</p><a href="mailto:dine@tampabayboating.com?subject=Dock%20%26%20Dine%20Listing">Reserve this spot — $99/mo</a></div>
+      <div class="dine-slot"><div class="plus">+</div><b>Your restaurant here</b><p>Boat-accessible waterfront dining, featured for Tampa Bay boaters.</p><a href="mailto:dine@tampabayboating.com?subject=Dock%20%26%20Dine%20Listing">Reserve this spot — $99/mo</a></div>
+      <div class="dine-slot"><div class="plus">+</div><b>Your restaurant here</b><p>Boat-accessible waterfront dining, featured for Tampa Bay boaters.</p><a href="mailto:dine@tampabayboating.com?subject=Dock%20%26%20Dine%20Listing">Reserve this spot — $99/mo</a></div>
+    </div>
+    <p style="text-align:center; color:var(--muted); margin-top:20px; font-size:.92rem">Own a waterfront restaurant boaters can reach? <a href="mailto:dine@tampabayboating.com?subject=Dock%20%26%20Dine%20Listing" style="font-weight:700">Get listed</a> — paid partners only.<br><span style="font-size:.85rem">🎥 Ask about our <b>Video Spotlight</b> — we turn your photos and videos into a promo for your business.</span></p>
+  </div>
+
+  </div>
+</div></div>
+<div class="view" id="view-paddling"><div class="wrap"><a class="back-link" href="#/">&#8249; All categories</a></div><div class="acc-item open" id="paddling">
+  <button class="acc-head" aria-expanded="false" onclick="toggleAcc(this)">
+    <span class="acc-title">Kayak &amp; Paddleboard</span>
+    <span class="acc-chev" aria-hidden="true">▾</span>
+  </button>
+  <div class="acc-body">
+
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-kicker">Paddle Up</span>
+      
+      <p>Launch areas, mangrove tunnels, and paddling safety around Tampa Bay.</p>
+    </div>
+    <div class="search-row"><input id="paddle-input" type="search" placeholder="Search launch spots…" oninput="renderPaddle()"></div>
+    <div class="dir-grid" id="paddle-grid"></div>
+    <div class="dir-grid" style="margin-top:18px">
+      <div class="dir-card">
+        <div class="city">Stay safe</div><h4>🦺 Paddling Safety</h4>
+        <div class="type">
+          • <b>Wear your PFD</b> — Florida requires one aboard; wearing it is what saves lives<br>
+          • Carry a <b>whistle</b> and a <b>white light</b> if you're out near dark<br>
+          • <b>Stay out of marked channels</b> — you're invisible to fast boats; cross quickly at right angles<br>
+          • Check <b>wind before you go</b> — a 15-knot bay breeze against you is a long paddle home<br>
+          • Tell someone your <b>float plan</b>: where you're launching and when you'll be back<br>
+          • <b>Hydrate + sun protection</b> — the bay reflects sun from every direction
+        </div>
+      </div>
+      <div class="dir-card">
+        <div class="city">No gear?</div><h4>🏄 Rentals &amp; Lessons</h4>
+        <div class="type">
+          • Kayak, SUP, and canoe <b>rentals are available</b> at Weedon Island and Honeymoon Island<br>
+          • Local outfitters around the bay offer <b>guided mangrove tunnel tours</b> — great first trip<br>
+          • Many <b>bait &amp; tackle shops</b> know who rents nearby — ask when you grab bait<br>
+          • Try before you buy: renting a few times tells you whether you want a <b>sit-on-top, touring kayak, or SUP</b>
+        </div>
+      </div>
+      <div class="dir-card">
+        <div class="city">Pro tip</div><h4>🌊 Tides Matter</h4>
+        <div class="type">
+          • Mangrove tunnels need <b>water</b> — go at <b>mid to high tide</b> or you'll be dragging<br>
+          • <a href="#conditions">Check today's tides</a> before heading to Weedon Island or Cockroach Bay<br>
+          • <b>Early morning</b> = calmest water, best wildlife, fewer boats<br>
+          • Incoming tide <b>pushes you in</b>, outgoing <b>pulls you out</b> — plan the easy direction home
+        </div>
+      </div>
+    </div>
+  </div>
+
+  </div>
+</div></div>
+<div class="view" id="view-ramps"><div class="wrap"><a class="back-link" href="#/">&#8249; All categories</a></div><div class="acc-item open" id="ramps">
+  <button class="acc-head" aria-expanded="false" onclick="toggleAcc(this)">
+    <span class="acc-title">Public Boat Ramps</span>
+    <span class="acc-chev" aria-hidden="true">▾</span>
+  </button>
+  <div class="acc-body">
+
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-kicker">Launch It</span>
+      
+      <p>Where to launch around Tampa Bay — lanes, fees, and parking. Fees change, so call ahead.</p>
+    </div>
+    <div class="search-row"><input id="ramp-input" type="search" placeholder="Search ramps…" oninput="renderRamps()"></div>
+    <div class="dir-grid" id="ramp-grid"></div>
+    <p style="text-align:center; color:var(--muted); font-size:.82rem; margin-top:16px">Fee and hours data from FWC and county sources — verify locally before trailering over. Pinellas ramp parking rises to $12/day Dec 1, 2026.</p>
+  </div>
+
+  </div>
+</div></div>
+<div class="view" id="view-bridges"><div class="wrap"><a class="back-link" href="#/">&#8249; All categories</a></div><div class="acc-item open" id="bridges">
+  <button class="acc-head" aria-expanded="false" onclick="toggleAcc(this)">
+    <span class="acc-title">VHF Channels &amp; Bridge Openings</span>
+    <span class="acc-chev" aria-hidden="true">▾</span>
+  </button>
+  <div class="acc-body">
+
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-kicker">On the Radio</span>
+      
+      <p>The channels every Tampa Bay boater should know — and how to get bridges opened.</p>
+    </div>
+    <div class="dir-grid">
+      <div class="dir-card">
+        <div class="city">Know your channels</div><h4>📡 Key VHF Channels</h4>
+        <div class="type">
+          • <b>Ch 16</b> — Distress, safety &amp; hailing. Monitor it whenever you're underway<br>
+          • <b>Ch 9</b> — Bridge tenders &amp; secondary calling (use this to hail drawbridges)<br>
+          • <b>Ch 13</b> — Commercial vessel traffic ("bridge-to-bridge")<br>
+          • <b>Ch 22A</b> — U.S. Coast Guard working channel (after first contact on 16)<br>
+          • <b>Ch 68 / 69 / 71 / 72</b> — Recreational working channels<br>
+          • <b>WX 1–7</b> — NOAA weather broadcasts, 24/7
+        </div>
+      </div>
+      <div class="dir-card">
+        <div class="city">How to hail a bridge</div><h4>🗣️ Asking for an Opening</h4>
+        <div class="type">
+          Switch to <b>VHF Ch 9</b>, then say the bridge name three times followed by your vessel name:<br><br>
+          <i>"Alafia Railroad Bridge, Alafia Railroad Bridge, Alafia Railroad Bridge — this is Sea Breeze."</i><br><br>
+          Tell them your direction of travel and ask for their next opening. Approach slow, go through at no-wake speed once it's fully open. Most bay bridges (Skyway, Gandy, Howard Frankland, Courtney Campbell) are fixed high spans — no opening needed.
+        </div>
+      </div>
+      <div class="dir-card">
+        <div class="city">Alafia River</div><h4>🚂 Alafia River Railroad Bridge (CSX)</h4>
+        <div class="type">The train bridge near the mouth of the Alafia. Hail on <b>VHF Ch 9</b> or call the bridge house directly.</div>
+        <div class="contact">📞 (813) 677-3974<br>📍 Bridge house: 9427 US Hwy 41 S, Riverview</div>
+      </div>
+      <div class="dir-card">
+        <div class="city">Hillsborough River, Tampa</div><h4>🌉 Downtown Drawbridges</h4>
+        <div class="type">Platt St, Brorein St, Kennedy Blvd, Cass St, Laurel St, Columbus Dr &amp; Hillsborough Ave — open on signal with <b>at least 2 hours notice</b> (federal reg 33 CFR 117.291). Hail on <b>VHF Ch 9</b>. The CSX railroad bridge (mile 0.7) is normally kept fully open.</div>
+      </div>
+      <div class="dir-card">
+        <div class="city">Broke down?</div><h4>🛟 On-Water Towing</h4>
+        <div class="type">
+          <b>True emergency</b> (sinking, fire, medical): <b>VHF Ch 16</b> or call 911 — reach the Coast Guard first.<br><br>
+          <b>Just need a tow</b> (dead engine, ran aground, out of fuel) — hail on <b>VHF Ch 16</b> or call:<br>
+          • <b>Sea Tow Tampa Bay</b> — 24/7, (727) 547-1868<br>
+          • <b>TowBoatUS Tampa Bay</b> — 24-hr dispatch (800) 391-4869<br><br>
+          A membership (~$165–$249/yr) covers unlimited towing — one tow without it can run $600+. Worth every penny.
+        </div>
+        <div class="contact">🔗 <a href="https://www.seatow.com/tampa-bay" target="_blank" rel="noopener">Sea Tow Tampa Bay</a> · 🔗 <a href="http://towboat.us/" target="_blank" rel="noopener">TowBoatUS Tampa Bay</a></div>
+      </div>
+    </div>
+    <p style="text-align:center; color:var(--muted); font-size:.82rem; margin-top:16px">Bridge schedules and tender numbers can change — confirm on VHF Ch 9 before you go.</p>
+  </div>
+
+  </div>
+</div></div>
+<div class="view" id="view-charters"><div class="wrap"><a class="back-link" href="#/">&#8249; All categories</a></div><div class="acc-item open" id="charters">
+  <button class="acc-head" aria-expanded="false" onclick="toggleAcc(this)">
+    <span class="acc-title">Tampa Bay Charter Directory</span>
+    <span class="acc-chev" aria-hidden="true">▾</span>
+  </button>
+  <div class="acc-body">
+
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-kicker">Get On The Water</span>
+      
+      <p>Local fishing charters, sunset cruises, dolphin tours &amp; more. Featured advertising for charter companies coming soon.</p>
+    </div>
+    <div class="phase-note"><b>Phase 2 — coming soon:</b> featured listings, homepage spotlights &amp; sponsored posts for Tampa Bay charter companies.</div>
+    <div class="dir-search">
+      <input id="dir-input" type="text" placeholder="Search charters by name, city, or type..." oninput="renderDir()">
+      <button onclick="renderDir()">Search</button>
+    </div>
+    <div class="dir-grid" id="dir-grid"></div>
+  </div>
+
+  </div>
+</div></div>
+<div class="view" id="view-fuel"><div class="wrap"><a class="back-link" href="#/">&#8249; All categories</a></div><div class="acc-item open" id="fuel">
+  <button class="acc-head" aria-expanded="false" onclick="toggleAcc(this)">
+    <span class="acc-title">Fuel &amp; Bait</span>
+    <span class="acc-chev" aria-hidden="true">▾</span>
+  </button>
+  <div class="acc-body">
+
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-kicker">On The Water</span>
+      
+      <p>Where to fill up and load live bait around Tampa Bay. Fuel docks change often — call ahead.</p>
+    </div>
+    <div class="pill-row">
+      <button class="pill sel" id="pill-fuel" onclick="fuelTab('fuel')">⛽ Fuel Docks</button>
+      <button class="pill" id="pill-bait" onclick="fuelTab('bait')">🦐 Bait Shops</button>
+    </div>
+    <div class="search" style="margin:14px 0"><input id="fuel-input" type="text" placeholder="Search by name or area..." oninput="renderFuel()"></div>
+    <div class="dir-grid" id="fuel-grid"></div>
+    <p class="dir-note">Own a marina or bait shop? <a href="mailto:advertise@tampabayboating.com?subject=Featured%20Listing%20—%20Fuel%20%2F%20Bait">Get a featured listing</a>.</p>
+  </div>
+
+  </div>
+</div></div>
+<div class="view" id="view-services"><div class="wrap"><a class="back-link" href="#/">&#8249; All categories</a></div><div class="acc-item open" id="services">
+  <button class="acc-head" aria-expanded="false" onclick="toggleAcc(this)">
+    <span class="acc-title">Marine Services</span>
+    <span class="acc-chev" aria-hidden="true">▾</span>
+  </button>
+  <div class="acc-body">
+
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-kicker">Keep Her Running</span>
+      
+      <p>Mechanics, electronics installers, detailers, and canvas shops around Tampa Bay.</p>
+    </div>
+    <div class="pill-row">
+      <button class="pill sel" id="pill-mech" onclick="svcTab('Mechanics')">🔧 Mechanics</button>
+      <button class="pill" id="pill-elec" onclick="svcTab('Electronics')">📡 Electronics</button>
+      <button class="pill" id="pill-det" onclick="svcTab('Detailing')">✨ Detailing</button>
+      <button class="pill" id="pill-can" onclick="svcTab('Canvas')">⛵ Canvas</button>
+    </div>
+    <div class="search" style="margin:14px 0"><input id="svc-input" type="text" placeholder="Search by name or area..." oninput="renderSvc()"></div>
+    <div class="dir-grid" id="svc-grid"></div>
+    <p class="dir-note">Run a marine business? <a href="mailto:advertise@tampabayboating.com?subject=Featured%20Listing%20—%20Marine%20Services">Get a featured listing</a>.</p>
+  </div>
+
+  </div>
+</div></div>
+<div class="view" id="view-parts"><div class="wrap"><a class="back-link" href="#/">&#8249; All categories</a></div><div class="acc-item open" id="parts">
+  <button class="acc-head" aria-expanded="false" onclick="toggleAcc(this)">
+    <span class="acc-title">Marine Parts &amp; Supply</span>
+    <span class="acc-chev" aria-hidden="true">▾</span>
+  </button>
+  <div class="acc-body">
+
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-kicker">Fix It Up</span>
+      
+      <p>Everywhere to buy boat parts around Tampa Bay — plus the fabricators, canvas shops, and upholsterers who build and rebuild.</p>
+    </div>
+    <div class="pill-row" style="text-align:center; margin-bottom:14px">
+      <button class="pill sel" id="pill-parts" onclick="partTab('Parts')">🔩 Parts Stores</button>
+      <button class="pill" id="pill-fab" onclick="partTab('Fab')">🏗️ Fabrication</button>
+      <button class="pill" id="pill-canvas" onclick="partTab('Canvas')">🧵 Canvas &amp; Upholstery</button>
+    </div>
+    <div class="dir-search"><input id="part-input" type="search" placeholder="Search parts & supply..." oninput="renderParts()"></div>
+    <div class="dir-grid" id="part-grid"></div>
+    <p style="text-align:center; color:var(--muted); font-size:.82rem; margin-top:16px">Know a shop we're missing? Email <b>listings@tampabayboating.com</b>. Parts suppliers — ask about <a href="#advertise">featured placement</a>.</p>
+  </div>
+
+  </div>
+</div></div>
+<div class="view" id="view-storage"><div class="wrap"><a class="back-link" href="#/">&#8249; All categories</a></div><div class="acc-item open" id="storage">
+  <button class="acc-head" aria-expanded="false" onclick="toggleAcc(this)">
+    <span class="acc-title">Boat Storage Around Tampa Bay</span>
+    <span class="acc-chev" aria-hidden="true">▾</span>
+  </button>
+  <div class="acc-body">
+
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-kicker">Park It Right</span>
+      
+      <p>Dry stack, wet slips, and land lots — where to keep your boat when you're not on it.</p>
+    </div>
+    <div class="dir-card" style="margin-bottom:18px">
+      <div class="city">Advice</div><h4>🤔 Which Storage Is Right for You?</h4>
+      <div class="type">
+        • <b>Dry stack:</b> forklift puts your boat on a rack indoors. Best hurricane protection, no bottom paint needed, call-ahead launch. Usually 20–30 ft boats.<br>
+        • <b>Wet slip:</b> your boat lives in the water at a marina. Most convenient — walk on and go — but needs bottom paint, zincs, and a <b>hurricane plan</b>.<br>
+        • <b>Land lot:</b> park the boat on its trailer in a gated lot. Cheapest option, great if you trailer to different ramps. Check <b>gate hours</b> and whether wash-down water is available.<br>
+        • Ask every facility: <b>hurricane policy, insurance requirements, access hours, and waitlists</b> — the good ones fill up before storm season.
+      </div>
+    </div>
+    <div class="pill-row" style="text-align:center; margin-bottom:14px">
+      <button class="pill sel" id="pill-dry" onclick="storTab('Dry')">🏢 Dry Stack</button>
+      <button class="pill" id="pill-wet" onclick="storTab('Wet')">🌊 Wet Slips</button>
+      <button class="pill" id="pill-lot" onclick="storTab('Lot')">🚧 Land Lots</button>
+    </div>
+    <div class="dir-search"><input id="stor-input" type="search" placeholder="Search storage..." oninput="renderStor()"></div>
+    <div class="dir-grid" id="stor-grid"></div>
+    <p style="text-align:center; color:var(--muted); font-size:.82rem; margin-top:16px">Call ahead for current rates and availability — storage fills fast before hurricane season. Also plotted on the <a href="#baymap">boater's map</a> under 🅿️ Storage.</p>
+  </div>
+
+  </div>
+</div></div>
+<div class="view" id="view-boat-clubs"><div class="wrap"><a class="back-link" href="#/">&#8249; All categories</a></div><div class="acc-item open" id="boat-clubs">
+  <button class="acc-head" aria-expanded="false" onclick="toggleAcc(this)">
+    <span class="acc-title">Tampa Bay Boat Clubs</span>
+    <span class="acc-chev" aria-hidden="true">▾</span>
+  </button>
+  <div class="acc-body">
+
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-kicker">Boat Without Owning</span>
+      
+      <p>All of the boating, none of the boat payment, insurance, storage, or maintenance. Here's how the club model works and who's who around the bay.</p>
+    </div>
+    <div class="dir-grid">
+      <div class="dir-card">
+        <div class="city">How it works</div><h4>⚙️ The Boat Club Model</h4>
+        <div class="type">
+          • Pay a <b>one-time entry fee + monthly dues</b> — then reserve boats online, show up, and go<br>
+          • The club handles <b>fuel, cleaning, maintenance, insurance, and storage</b><br>
+          • Most clubs cap you at <b>~4 rolling reservations</b> so no one hogs the fleet<br>
+          • Boats typically <b>back at the dock by sunset</b> — this is daytime boating<br>
+          • Many memberships include <b>reciprocal access</b> at other locations or even nationwide
+        </div>
+      </div>
+      <div class="dir-card">
+        <div class="city">Is it worth it?</div><h4>💰 Club vs. Owning</h4>
+        <div class="type">
+          • One analysis put <b>5 years of club membership at ~$30–35K all-in</b> vs. <b>$90–140K</b> to own a comparable 22-ft center console kept in a marina<br>
+          • Owning wins if you have <b>a dock behind your house</b>, go <b>80+ days a year</b>, or run <b>offshore</b> regularly<br>
+          • The club wins for <b>weekend warriors</b> who want variety — fish one day, tube the next, sail the next<br>
+          • <b>Try before you buy:</b> a year in a club teaches you exactly what boat you'd actually want to own
+        </div>
+      </div>
+      <div class="dir-card">
+        <div class="city">Biggest network</div><h4>🌊 Freedom Boat Club</h4>
+        <div class="type">The world's largest boat club — <b>30+ Tampa Bay locations</b> (downtown Tampa, St. Pete, Clearwater, Tarpon Springs, Ruskin, Gulfport…) plus 450+ clubs worldwide with reciprocal access. Owned by Brunswick.</div>
+        <div class="contact">🔗 <a href="https://www.freedomboatclub.com/learning-center/ultimate-guide-to-joining-freedom-boat-club-in-tampa" target="_blank" rel="noopener">Tampa guide &amp; locations</a></div>
+      </div>
+      <div class="dir-card">
+        <div class="city">Premium</div><h4>✨ Gulf Stream Boat Club</h4>
+        <div class="type">Premium positioning — newer boats, concierge service, on-site restaurants. Locations in <b>Tampa, St. Pete–Tierra Verde, and Bradenton</b>. Reciprocal access with Nautical Boat Club.</div>
+        <div class="contact">🔗 <a href="https://www.gulfstreamboatclub.com/memberships/" target="_blank" rel="noopener">Memberships</a></div>
+      </div>
+      <div class="dir-card">
+        <div class="city">North Pinellas</div><h4>⚓ Marker 26 Boat Club &amp; Rental</h4>
+        <div class="type">Palm Harbor–based club and rental operation serving Pinellas and Hillsborough boaters — fishing, cruising, and island days without ownership. Search "Marker 26 Boat Club" for current membership details.</div>
+      </div>
+      <div class="dir-card">
+        <div class="city">Social-first</div><h4>🎉 Waves Boat &amp; Social Club</h4>
+        <div class="type">Sarasota-area club built around the <b>social side</b> — group trips to beaches and restaurants, sunset and moonlight cruises, fishing charters. Locally family-owned since 2004.</div>
+      </div>
+      <div class="dir-card">
+        <div class="city">National network</div><h4>🧭 Carefree Boat Club</h4>
+        <div class="type">Members-only boat share with locations nationwide — join locally, boat anywhere in the network at a fraction of ownership cost.</div>
+        <div class="contact">🔗 <a href="https://carefreeboats.com" target="_blank" rel="noopener">carefreeboats.com</a></div>
+      </div>
+      <div class="dir-card" style="border:2px solid var(--teal)">
+        <div class="city">For boat clubs</div><h4>📣 Reach Tampa Bay Boaters</h4>
+        <div class="type">
+          Run a boat club? Our audience is <b>exactly your customer</b> — people who love boating and haven't bought (yet).<br><br>
+          🏆 <b>Official Boat Club Partner</b> — category-exclusive spotlight, featured placement here, and a TikTok video tour of your fleet.<br>
+          📧 <b>clubs@tampabayboating.com</b> — ask about partner rates.
+        </div>
+      </div>
+    </div>
+    <p style="text-align:center; color:var(--muted); font-size:.82rem; margin-top:16px">Pricing changes often — confirm current entry fees and dues directly with each club. Not a paid endorsement; clubs can upgrade to featured placement.</p>
+  </div>
+
+  </div>
+</div></div>
+<div class="view" id="view-navigation"><div class="wrap"><a class="back-link" href="#/">&#8249; All categories</a></div><div class="acc-item open" id="navigation">
+  <button class="acc-head" aria-expanded="false" onclick="toggleAcc(this)">
+    <span class="acc-title">Navigation Basics</span>
+    <span class="acc-chev" aria-hidden="true">▾</span>
+  </button>
+  <div class="acc-body">
+
   <div class="wrap">
     <div class="sec-head">
       <span class="sec-kicker">Under Safety</span>
-      <h2>🧭 Navigation Basics</h2>
+      
       <p>Read the water like a local — markers, charts, and the rules that keep everyone safe.</p>
     </div>
     <div class="dir-grid">
@@ -653,14 +1318,20 @@ footer .soc svg{width:20px; height:20px}
     </div>
     <p style="text-align:center; color:var(--muted); font-size:.82rem; margin-top:16px">The best education is hands-on — consider a local on-water course or a trip with a licensed captain.</p>
   </div>
-</section>
 
-<!-- ============ TIPS & TRICKS ============ -->
-<section id="tips">
+  </div>
+</div></div>
+<div class="view" id="view-tips"><div class="wrap"><a class="back-link" href="#/">&#8249; All categories</a></div><div class="acc-item open" id="tips">
+  <button class="acc-head" aria-expanded="false" onclick="toggleAcc(this)">
+    <span class="acc-title">Tips &amp; Tricks</span>
+    <span class="acc-chev" aria-hidden="true">▾</span>
+  </button>
+  <div class="acc-body">
+
   <div class="wrap">
     <div class="sec-head">
       <span class="sec-kicker">Boat Smarts</span>
-      <h2>💡 Tips &amp; Tricks</h2>
+      
       <p>Everything they don't teach you at the dealership — launching, anchoring, docking, knots, and keeping her running.</p>
     </div>
     <div class="dir-grid">
@@ -724,303 +1395,86 @@ footer .soc svg{width:20px; height:20px}
       </div>
     </div>
   </div>
-</section>
 
-<!-- ============ KAYAKING & PADDLEBOARD ============ -->
-<section id="paddling">
-  <div class="wrap">
-    <div class="sec-head">
-      <span class="sec-kicker">Paddle Up</span>
-      <h2>🛶 Kayak &amp; Paddleboard</h2>
-      <p>Launch areas, mangrove tunnels, and paddling safety around Tampa Bay.</p>
-    </div>
-    <div class="search-row"><input id="paddle-input" type="search" placeholder="Search launch spots…" oninput="renderPaddle()"></div>
-    <div class="dir-grid" id="paddle-grid"></div>
-    <div class="dir-grid" style="margin-top:18px">
-      <div class="dir-card">
-        <div class="city">Stay safe</div><h4>🦺 Paddling Safety</h4>
-        <div class="type">
-          • <b>Wear your PFD</b> — Florida requires one aboard; wearing it is what saves lives<br>
-          • Carry a <b>whistle</b> and a <b>white light</b> if you're out near dark<br>
-          • <b>Stay out of marked channels</b> — you're invisible to fast boats; cross quickly at right angles<br>
-          • Check <b>wind before you go</b> — a 15-knot bay breeze against you is a long paddle home<br>
-          • Tell someone your <b>float plan</b>: where you're launching and when you'll be back<br>
-          • <b>Hydrate + sun protection</b> — the bay reflects sun from every direction
-        </div>
-      </div>
-      <div class="dir-card">
-        <div class="city">No gear?</div><h4>🏄 Rentals &amp; Lessons</h4>
-        <div class="type">
-          • Kayak, SUP, and canoe <b>rentals are available</b> at Weedon Island and Honeymoon Island<br>
-          • Local outfitters around the bay offer <b>guided mangrove tunnel tours</b> — great first trip<br>
-          • Many <b>bait &amp; tackle shops</b> know who rents nearby — ask when you grab bait<br>
-          • Try before you buy: renting a few times tells you whether you want a <b>sit-on-top, touring kayak, or SUP</b>
-        </div>
-      </div>
-      <div class="dir-card">
-        <div class="city">Pro tip</div><h4>🌊 Tides Matter</h4>
-        <div class="type">
-          • Mangrove tunnels need <b>water</b> — go at <b>mid to high tide</b> or you'll be dragging<br>
-          • <a href="#conditions">Check today's tides</a> before heading to Weedon Island or Cockroach Bay<br>
-          • <b>Early morning</b> = calmest water, best wildlife, fewer boats<br>
-          • Incoming tide <b>pushes you in</b>, outgoing <b>pulls you out</b> — plan the easy direction home
-        </div>
-      </div>
-    </div>
   </div>
-</section>
+</div></div>
+<div class="view" id="view-safety"><div class="wrap"><a class="back-link" href="#/">&#8249; All categories</a></div><div class="acc-item open" id="safety">
+  <button class="acc-head" aria-expanded="false" onclick="toggleAcc(this)">
+    <span class="acc-title">Boating Safety</span>
+    <span class="acc-chev" aria-hidden="true">▾</span>
+  </button>
+  <div class="acc-body">
 
-<!-- ============ MEETUPS ============ -->
-<section id="meetups" style="background:#fff; border-top:1px solid var(--line); border-bottom:1px solid var(--line)">
   <div class="wrap">
     <div class="sec-head">
-      <span class="sec-kicker">Find Your Crew</span>
-      <h2>🤝 Boating &amp; Paddling Meetups</h2>
-      <p>Group paddles, sandbar hangs, and powerboat runs — find your people on the water.</p>
+      <span class="sec-kicker">Boat Smart</span>
+      
+      <p>What the U.S. Coast Guard requires on your boat — plus Florida rules and smart habits for Tampa Bay waters.</p>
     </div>
     <div class="dir-grid">
       <div class="dir-card">
-        <div class="city">Paddling</div><h4>🛶 Paddleboard Tampa</h4>
-        <div class="type">Paddles 3–4 times a week — sunset paddles, technique classes, full moon paddles, fitness sessions. Varied locations around the bay.</div>
-        <div class="contact">🔗 <a href="https://www.meetup.com/paddleboard-tampa/join/" target="_blank" rel="noopener">Join on Meetup</a></div>
-      </div>
-      <div class="dir-card">
-        <div class="city">Paddling</div><h4>🌊 Upper Tampa Bay Paddle Sports</h4>
-        <div class="type">The primary sister group to Paddleboard Tampa — group tours, lessons, and progression for all levels.</div>
-        <div class="contact">🔗 <a href="https://www.meetup.com/" target="_blank" rel="noopener">Find them on Meetup.com</a></div>
-      </div>
-      <div class="dir-card">
-        <div class="city">Paddling</div><h4>🏄 PADL St. Pete Beach</h4>
-        <div class="type">SUP meetups + app-based board rentals at St. Pete Beach stations. Bring your own board or rent on the spot.</div>
-        <div class="contact">🔗 <a href="https://www.meetup.com/en-au/padl-st-pete-beach-self-service-paddleboard-rentals/" target="_blank" rel="noopener">Join on Meetup</a></div>
-      </div>
-      <div class="dir-card">
-        <div class="city">Kayaking</div><h4>🚣 Tampa Bay Kayaking &amp; Paddling</h4>
-        <div class="type">Active Facebook community sharing trip photos, launch ideas, and impromptu group paddles around the bay.</div>
-        <div class="contact">🔗 <a href="https://www.facebook.com/" target="_blank" rel="noopener">Find the group on Facebook</a></div>
-      </div>
-      <div class="dir-card">
-        <div class="city">Powerboating</div><h4>🚤 Florida Powerboat Club</h4>
-        <div class="type">Organized Tampa Bay fun runs and powerboat events — the go-fast crowd's home base.</div>
-        <div class="contact">🔗 <a href="https://www.meetup.com/" target="_blank" rel="noopener">Find them on Meetup.com</a></div>
-      </div>
-      <div class="dir-card" style="border:2px solid var(--teal)">
-        <div class="city">Host your own</div><h4>📣 List Your Meetup — Free</h4>
+        <div class="city">Federal law</div><h4>✅ Required by the U.S. Coast Guard</h4>
         <div class="type">
-          Run a weekly paddle, a sandbar hang, a fishing crew? <b>List it here free.</b><br><br>
-          Email <b>meetups@tampabayboating.com</b> with: group name, what/where/when, and a link to join. We'll add it to this page.<br><br>
-          🎪 <b>Hosting a TBB official meetup?</b> <a href="#advertise">Talk to us</a> about a featured spotlight.
+          • One USCG-approved <b>life jacket per person</b> — right size, accessible, in good condition<br>
+          • Kids <b>under 13 must wear one</b> while underway<br>
+          • <b>Throwable flotation device</b> (boats 16 ft and longer)<br>
+          • <b>Fire extinguisher</b>, marine-rated — charged and not expired (12-year max)<br>
+          • <b>Sound device</b> — horn or whistle (40 ft+ also needs a bell)<br>
+          • <b>Visual distress signals</b> — day + night on coastal waters<br>
+          • <b>Navigation lights</b> from sunset to sunrise<br>
+          • <b>Kill-switch lanyard</b> attached (boats under 26 ft)<br>
+          • <b>Registration</b> numbers displayed and papers aboard
         </div>
-      </div>
-    </div>
-    <p style="text-align:center; color:var(--muted); font-size:.82rem; margin-top:16px">Community listings are free — groups are responsible for their own events and safety.</p>
-  </div>
-</section>
-
-<!-- ============ BOATING NEWS ============ -->
-<section id="news">
-  <div class="wrap">
-    <div class="sec-head">
-      <span class="sec-kicker">Around the Bay</span>
-      <h2>📰 Tampa Bay Boating News</h2>
-      <p>Today's boating headlines — incidents, openings, and everything making waves. Updated daily.</p>
-    </div>
-    <!-- NEWS-START (auto-updated every morning) -->
-    <div class="dir-grid" id="news-grid">
-      <div class="dir-card">
-        <div class="city">Oct 6, 2026 · Tampa Bay 28</div><h4>Boater dies after capsizing near Davis Islands</h4>
-        <div class="type">Six people were found clinging to a buoy in Hillsborough Bay; five rescued, one did not survive. FWC investigating the cause.</div>
-        <div class="contact">🔗 <a href="https://www.tampabay28.com/news/region-tampa/one-person-is-dead-after-a-boating-accident-near-davis-islands" target="_blank" rel="noopener">Read the full story</a></div>
+        <div class="contact">🔗 <a href="https://uscgboating.org/" target="_blank" rel="noopener">USCG Boating Safety Center</a></div>
       </div>
       <div class="dir-card">
-        <div class="city">Oct 6, 2026 · Tampa Bay 28</div><h4>Three injured as boat strikes rocks on Hillsborough River</h4>
-        <div class="type">A 19-foot vessel hit rocks near Ignacio Haya Linear Park at night; three hospitalized. FWC preliminary report.</div>
-        <div class="contact">🔗 <a href="https://www.tampabay28.com/news/region-hillsborough/three-people-injured-after-boat-crashed-into-rocks-on-hillsborough-river-fwc" target="_blank" rel="noopener">Read the full story</a></div>
-      </div>
-      <div class="dir-card">
-        <div class="city">Safety reminder</div><h4>🦺 Learn From These</h4>
-        <div class="type">Both recent incidents involved <b>rough water and nighttime operation</b>. Check <a href="#conditions">conditions</a> before you go, wear PFDs, and review the <a href="#safety">safety checklist</a>.</div>
-      </div>
-    </div>
-    <!-- NEWS-END -->
-    <p style="text-align:center; color:var(--muted); font-size:.82rem; margin-top:16px">Headlines link to the original publishers — we summarize, they report.</p>
-  </div>
-</section>
-
-<!-- ============ BOAT CLUBS ============ -->
-<section id="boat-clubs" style="background:#fff; border-top:1px solid var(--line); border-bottom:1px solid var(--line)">
-  <div class="wrap">
-    <div class="sec-head">
-      <span class="sec-kicker">Boat Without Owning</span>
-      <h2>🛥️ Tampa Bay Boat Clubs</h2>
-      <p>All of the boating, none of the boat payment, insurance, storage, or maintenance. Here's how the club model works and who's who around the bay.</p>
-    </div>
-    <div class="dir-grid">
-      <div class="dir-card">
-        <div class="city">How it works</div><h4>⚙️ The Boat Club Model</h4>
+        <div class="city">Florida</div><h4>🌴 Florida Rules to Know</h4>
         <div class="type">
-          • Pay a <b>one-time entry fee + monthly dues</b> — then reserve boats online, show up, and go<br>
-          • The club handles <b>fuel, cleaning, maintenance, insurance, and storage</b><br>
-          • Most clubs cap you at <b>~4 rolling reservations</b> so no one hogs the fleet<br>
-          • Boats typically <b>back at the dock by sunset</b> — this is daytime boating<br>
-          • Many memberships include <b>reciprocal access</b> at other locations or even nationwide
+          • Born on/after <b>Jan 1, 1988</b>? You need a Boating Safety Education ID card to operate 10 HP+<br>
+          • Kids <b>under 6 must wear</b> a life jacket while underway (vessels under 26 ft)<br>
+          • <b>BUI = DUI</b> — 0.08 limit, same as the road<br>
+          • Fly a <b>divers-down flag</b> when anyone's snorkeling or diving<br>
+          • Obey <b>no-wake and manatee zones</b> — they're everywhere in the bay
+        </div>
+        <div class="contact">🔗 <a href="https://myfwc.com/boating/" target="_blank" rel="noopener">FWC Boating Regulations</a></div>
+      </div>
+      <div class="dir-card">
+        <div class="city">Before you go</div><h4>📋 Leave-the-Dock Checklist</h4>
+        <div class="type">
+          • <b>Check the forecast</b> — <a href="#conditions">see today's tides &amp; marine weather</a><br>
+          • <b>File a float plan</b> — tell someone where you're going and when you'll be back<br>
+          • <b>Fuel rule:</b> ⅓ out, ⅓ back, ⅓ in reserve<br>
+          • Walk through the <b>USCG checklist</b> above — every trip<br>
+          • Charge phones, bring water, sun protection
         </div>
       </div>
       <div class="dir-card">
-        <div class="city">Is it worth it?</div><h4>💰 Club vs. Owning</h4>
+        <div class="city">On the water</div><h4>🧠 Smart Habits</h4>
         <div class="type">
-          • One analysis put <b>5 years of club membership at ~$30–35K all-in</b> vs. <b>$90–140K</b> to own a comparable 22-ft center console kept in a marina<br>
-          • Owning wins if you have <b>a dock behind your house</b>, go <b>80+ days a year</b>, or run <b>offshore</b> regularly<br>
-          • The club wins for <b>weekend warriors</b> who want variety — fish one day, tube the next, sail the next<br>
-          • <b>Try before you buy:</b> a year in a club teaches you exactly what boat you'd actually want to own
-        </div>
-      </div>
-      <div class="dir-card">
-        <div class="city">Biggest network</div><h4>🌊 Freedom Boat Club</h4>
-        <div class="type">The world's largest boat club — <b>30+ Tampa Bay locations</b> (downtown Tampa, St. Pete, Clearwater, Tarpon Springs, Ruskin, Gulfport…) plus 450+ clubs worldwide with reciprocal access. Owned by Brunswick.</div>
-        <div class="contact">🔗 <a href="https://www.freedomboatclub.com/learning-center/ultimate-guide-to-joining-freedom-boat-club-in-tampa" target="_blank" rel="noopener">Tampa guide &amp; locations</a></div>
-      </div>
-      <div class="dir-card">
-        <div class="city">Premium</div><h4>✨ Gulf Stream Boat Club</h4>
-        <div class="type">Premium positioning — newer boats, concierge service, on-site restaurants. Locations in <b>Tampa, St. Pete–Tierra Verde, and Bradenton</b>. Reciprocal access with Nautical Boat Club.</div>
-        <div class="contact">🔗 <a href="https://www.gulfstreamboatclub.com/memberships/" target="_blank" rel="noopener">Memberships</a></div>
-      </div>
-      <div class="dir-card">
-        <div class="city">North Pinellas</div><h4>⚓ Marker 26 Boat Club &amp; Rental</h4>
-        <div class="type">Palm Harbor–based club and rental operation serving Pinellas and Hillsborough boaters — fishing, cruising, and island days without ownership. Search "Marker 26 Boat Club" for current membership details.</div>
-      </div>
-      <div class="dir-card">
-        <div class="city">Social-first</div><h4>🎉 Waves Boat &amp; Social Club</h4>
-        <div class="type">Sarasota-area club built around the <b>social side</b> — group trips to beaches and restaurants, sunset and moonlight cruises, fishing charters. Locally family-owned since 2004.</div>
-      </div>
-      <div class="dir-card">
-        <div class="city">National network</div><h4>🧭 Carefree Boat Club</h4>
-        <div class="type">Members-only boat share with locations nationwide — join locally, boat anywhere in the network at a fraction of ownership cost.</div>
-        <div class="contact">🔗 <a href="https://carefreeboats.com" target="_blank" rel="noopener">carefreeboats.com</a></div>
-      </div>
-      <div class="dir-card" style="border:2px solid var(--teal)">
-        <div class="city">For boat clubs</div><h4>📣 Reach Tampa Bay Boaters</h4>
-        <div class="type">
-          Run a boat club? Our audience is <b>exactly your customer</b> — people who love boating and haven't bought (yet).<br><br>
-          🏆 <b>Official Boat Club Partner</b> — category-exclusive spotlight, featured placement here, and a TikTok video tour of your fleet.<br>
-          📧 <b>clubs@tampabayboating.com</b> — ask about partner rates.
+          • <b>Wear the life jacket</b> — the best one is the one you'll actually put on<br>
+          • <b>Kill switch on</b>, every single trip<br>
+          • <b>Watch the sky</b> — Tampa Bay storms build fast; head in early<br>
+          • <b>Engine off</b> when swimmers are near the boat<br>
+          • <b>Never BUI</b> — designate a sober skipper
         </div>
       </div>
     </div>
-    <p style="text-align:center; color:var(--muted); font-size:.82rem; margin-top:16px">Pricing changes often — confirm current entry fees and dues directly with each club. Not a paid endorsement; clubs can upgrade to featured placement.</p>
+    <p style="text-align:center; color:var(--muted); font-size:.82rem; margin-top:16px">Federal minimums summarized for recreational boats — always check current USCG and FWC regulations before you go.</p>
   </div>
-</section>
 
-<!-- ============ BOAT STORAGE ============ -->
-<section id="storage">
-  <div class="wrap">
-    <div class="sec-head">
-      <span class="sec-kicker">Park It Right</span>
-      <h2>🅿️ Boat Storage Around Tampa Bay</h2>
-      <p>Dry stack, wet slips, and land lots — where to keep your boat when you're not on it.</p>
-    </div>
-    <div class="dir-card" style="margin-bottom:18px">
-      <div class="city">Advice</div><h4>🤔 Which Storage Is Right for You?</h4>
-      <div class="type">
-        • <b>Dry stack:</b> forklift puts your boat on a rack indoors. Best hurricane protection, no bottom paint needed, call-ahead launch. Usually 20–30 ft boats.<br>
-        • <b>Wet slip:</b> your boat lives in the water at a marina. Most convenient — walk on and go — but needs bottom paint, zincs, and a <b>hurricane plan</b>.<br>
-        • <b>Land lot:</b> park the boat on its trailer in a gated lot. Cheapest option, great if you trailer to different ramps. Check <b>gate hours</b> and whether wash-down water is available.<br>
-        • Ask every facility: <b>hurricane policy, insurance requirements, access hours, and waitlists</b> — the good ones fill up before storm season.
-      </div>
-    </div>
-    <div class="pill-row" style="text-align:center; margin-bottom:14px">
-      <button class="pill sel" id="pill-dry" onclick="storTab('Dry')">🏢 Dry Stack</button>
-      <button class="pill" id="pill-wet" onclick="storTab('Wet')">🌊 Wet Slips</button>
-      <button class="pill" id="pill-lot" onclick="storTab('Lot')">🚧 Land Lots</button>
-    </div>
-    <div class="dir-search"><input id="stor-input" type="search" placeholder="Search storage..." oninput="renderStor()"></div>
-    <div class="dir-grid" id="stor-grid"></div>
-    <p style="text-align:center; color:var(--muted); font-size:.82rem; margin-top:16px">Call ahead for current rates and availability — storage fills fast before hurricane season. Also plotted on the <a href="#baymap">boater's map</a> under 🅿️ Storage.</p>
   </div>
-</section>
-<script>
-const STORAGE = [
- ["Loggerhead St. Petersburg Marina","St. Pete","Dry","327-boat dry stack, protected harbor, pool, pump-out","5821 32nd Way S","(727) 867-2600"],
- ["Mar Marina","Tarpon Springs","Dry","Dry rack + full-service boatyard, 35-ton lifts","761 Anclote Rd","(727) 939-1589"],
- ["Vinoy Marina","St. Pete","Wet","74 slips downtown, up to 120 ft, resort amenities next door","502 5th Ave NE","(727) 824-8022"],
- ["Loggerhead St. Petersburg Marina","St. Pete","Wet","Wet slips in protected harbor, 18-ft bridge clearance","5821 32nd Way S","(727) 867-2600"],
- ["Mar Marina","Tarpon Springs","Wet","Wet slips, clean docks, minutes from downtown","761 Anclote Rd","(727) 939-1589"],
- ["Buc-A-Day Boat/RV Storage","Ruskin","Lot","Outdoor boat/RV parking, gated, from 12x26 spaces","1415 3rd St NE","(813) 798-5196"],
- ["RV Port Storage","Pinellas Park","Lot","24-hr gated access, reserve & pay by app","6030 45th St N","(727) 341-9967"],
- ["Allen Storage","Pinellas Park","Lot","Boat/trailer storage + on-site trailer repair","6700 118th Ave N","(727) 546-3968"],
- ["Boat & RV Storage","St. Pete","Lot","Covered storage, wash station, rated top local pick","10900 Gandy Blvd N","(727) 580-5605"]
-];
-let storMode = "Dry";
-function storTab(m){ storMode=m; ["Dry","Wet","Lot"].forEach(c=>{ const el=document.getElementById("pill-"+(c==="Dry"?"dry":c==="Wet"?"wet":"lot")); if(el) el.classList.toggle("sel",c===m); }); renderStor(); }
-function renderStor(){
-  const q = document.getElementById("stor-input").value.trim().toLowerCase();
-  const list = STORAGE.filter(b => b[2]===storMode && (!q || (b[0]+" "+b[1]+" "+b[3]).toLowerCase().includes(q)));
-  document.getElementById("stor-grid").innerHTML = list.length ? list.map(b =>
-    '<div class="dir-card"><div class="city">'+b[1]+'</div><h4>'+b[0]+'</h4><div class="type">'+b[3]+'</div><div class="contact">📍 '+b[4]+(b[5]?' · <a href="tel:'+b[5].replace(/[^0-9]/g,'')+'">'+b[5]+'</a>':'')+'</div></div>'
-  ).join("") : '<div class="no-results">No matches — try clearing the search.</div>';
-}
-renderStor();
-</script>
+</div></div>
+<div class="view" id="view-stopped"><div class="wrap"><a class="back-link" href="#/">&#8249; All categories</a></div><div class="acc-item open" id="stopped">
+  <button class="acc-head" aria-expanded="false" onclick="toggleAcc(this)">
+    <span class="acc-title">Stopped by FWC or the Coast Guard?</span>
+    <span class="acc-chev" aria-hidden="true">▾</span>
+  </button>
+  <div class="acc-body">
 
-<!-- ============ MARINE PARTS ============ -->
-<section id="parts" style="background:#fff; border-top:1px solid var(--line); border-bottom:1px solid var(--line)">
-  <div class="wrap">
-    <div class="sec-head">
-      <span class="sec-kicker">Fix It Up</span>
-      <h2>⚙️ Marine Parts &amp; Supply</h2>
-      <p>Everywhere to buy boat parts around Tampa Bay — plus the fabricators, canvas shops, and upholsterers who build and rebuild.</p>
-    </div>
-    <div class="pill-row" style="text-align:center; margin-bottom:14px">
-      <button class="pill sel" id="pill-parts" onclick="partTab('Parts')">🔩 Parts Stores</button>
-      <button class="pill" id="pill-fab" onclick="partTab('Fab')">🏗️ Fabrication</button>
-      <button class="pill" id="pill-canvas" onclick="partTab('Canvas')">🧵 Canvas &amp; Upholstery</button>
-    </div>
-    <div class="dir-search"><input id="part-input" type="search" placeholder="Search parts & supply..." oninput="renderParts()"></div>
-    <div class="dir-grid" id="part-grid"></div>
-    <p style="text-align:center; color:var(--muted); font-size:.82rem; margin-top:16px">Know a shop we're missing? Email <b>listings@tampabayboating.com</b>. Parts suppliers — ask about <a href="#advertise">featured placement</a>.</p>
-  </div>
-</section>
-<script>
-const PARTS = [
- ["West Marine — Tampa","Tampa","Parts","The big-box chandlery: parts, electronics, safety gear, maintenance","3905 W Cypress St","(813) 348-0521"],
- ["West Marine — St. Petersburg","St. Pete","Parts","Full parts & accessories counter, fishing and paddling gear","2010 Tyrone Blvd N","(727) 342-8001"],
- ["West Marine — Clearwater","Clearwater","Parts","Boat parts, sailing gear, paddling accessories, fishing","2128 Gulf to Bay Blvd",""],
- ["West Marine — Apollo Beach","Apollo Beach","Parts","South-shore parts & supplies near the Alafia","6492 N US Hwy 41","(813) 645-6144"],
- ["West Marine — Bradenton","Bradenton","Parts","Parts & accessories for the Manatee River crowd","3622 1st St","(941) 357-1657"],
- ["West Coast Marine","Tampa","Parts","Boat dealer + marine supply store and service center","5240 W Tyson Ave","(813) 373-6137"],
- ["Tampa Bay Marine Center","Pinellas Park","Fab","Custom boat shop: dash refits, rigging, powder coating, wraps","10408 66th St N",""],
- ["T-Top Welding LLC","Tampa","Fab","T-tops, towers, railings, powder coating","1418 Bush Blvd","(813) 498-9391"],
- ["Aqua Shade / T-Tops for Sale","Sarasota","Fab","T-tops, bay & half towers, hardtops, baitwells + in-house canvas","1848 Gillespie Ave","(941) 266-0903"],
- ["Quality Marine Fabricators","Tarpon Springs","Fab","Custom marine fabrication","Tarpon Springs",""],
- ["Quality T Tops","Tarpon Springs","Fab","Custom T-tops","Tarpon Springs",""],
- ["All Marine Canvas","Clearwater","Canvas","Custom canvas: bimini tops, sunshades, covers + dockside service","62nd St N",""],
- ["Seamores Canvas Shop","Tampa","Canvas","Canvas work, 30+ years in business","4712 N Clark Ave","(813) 237-2660"],
- ["Bay Canvas Works","Tampa","Canvas","Marine canvas fabrication","Tampa",""],
- ["American Canvas","Tampa","Canvas","Canvas products & repairs","Tampa",""],
- ["Sea Breeze Marine Canvas Co","Bradenton","Canvas","Marine canvas shop","Bradenton",""],
- ["Adriatic Lux Marine Canvas","Tarpon Springs","Canvas","Full-service custom canvas design, install & repair","1240 N Pinellas Ave","(727) 218-7157"],
- ["Custom Marine Upholstery","Tarpon Springs","Canvas","All phases of boat upholstery","Tarpon Springs",""],
- ["Marine Sewing & Upholstery Pasadena","South Pasadena","Canvas","Custom fabrication, 30+ years in the trade","6801 Gulfport Blvd S Ste 7","(727) 345-6994"],
- ["On-Site Marine Upholstery","St. Pete","Canvas","Repair or replace upholstery, tenders to superyachts","5500 100th Way N","(727) 251-3448"]
-];
-let partMode = "Parts";
-function partTab(m){ partMode=m; ["Parts","Fab","Canvas"].forEach(c=>{ const el=document.getElementById("pill-"+(c==="Parts"?"parts":c==="Fab"?"fab":"canvas")); if(el) el.classList.toggle("sel",c===m); }); renderParts(); }
-function renderParts(){
-  const q = document.getElementById("part-input").value.trim().toLowerCase();
-  const list = PARTS.filter(b => b[2]===partMode && (!q || (b[0]+" "+b[1]+" "+b[3]).toLowerCase().includes(q)));
-  document.getElementById("part-grid").innerHTML = list.length ? list.map(b =>
-    '<div class="dir-card"><div class="city">'+b[1]+'</div><h4>'+b[0]+'</h4><div class="type">'+b[3]+'</div><div class="contact">📍 '+b[4]+(b[5]?' · <a href="tel:'+b[5].replace(/[^0-9]/g,'')+'">'+b[5]+'</a>':'')+'</div></div>'
-  ).join("") : '<div class="no-results">No matches — try clearing the search.</div>';
-}
-renderParts();
-</script>
-
-<!-- ============ IF YOU'RE STOPPED ============ -->
-<section id="stopped" style="background:#fff; border-top:1px solid var(--line); border-bottom:1px solid var(--line)">
   <div class="wrap">
     <div class="sec-head">
       <span class="sec-kicker">Know Before You Go</span>
-      <h2>🚨 Stopped by FWC or the Coast Guard?</h2>
+      
       <p>What to expect, what they'll check, and what you need aboard. Stay calm — most stops end with a wave.</p>
     </div>
     <div class="dir-grid">
@@ -1072,28 +1526,20 @@ renderParts();
     </div>
     <p style="text-align:center; color:var(--muted); font-size:.82rem; margin-top:16px">General information only — <b>not legal advice, and we are not lawyers</b>. Laws and court rulings change; verify current rules at uscg.mil and myfwc.com, and consult a maritime attorney with legal questions.</p>
   </div>
-</section>
 
-<!-- ============ BOAT RAMPS ============ -->
-<section id="ramps">
-  <div class="wrap">
-    <div class="sec-head">
-      <span class="sec-kicker">Launch It</span>
-      <h2>🚤 Public Boat Ramps</h2>
-      <p>Where to launch around Tampa Bay — lanes, fees, and parking. Fees change, so call ahead.</p>
-    </div>
-    <div class="search-row"><input id="ramp-input" type="search" placeholder="Search ramps…" oninput="renderRamps()"></div>
-    <div class="dir-grid" id="ramp-grid"></div>
-    <p style="text-align:center; color:var(--muted); font-size:.82rem; margin-top:16px">Fee and hours data from FWC and county sources — verify locally before trailering over. Pinellas ramp parking rises to $12/day Dec 1, 2026.</p>
   </div>
-</section>
+</div></div>
+<div class="view" id="view-manatee"><div class="wrap"><a class="back-link" href="#/">&#8249; All categories</a></div><div class="acc-item open" id="manatee">
+  <button class="acc-head" aria-expanded="false" onclick="toggleAcc(this)">
+    <span class="acc-title">Manatee &amp; Slow-Speed Zones</span>
+    <span class="acc-chev" aria-hidden="true">▾</span>
+  </button>
+  <div class="acc-body">
 
-<!-- ============ MANATEE & SLOW ZONES ============ -->
-<section id="manatee">
   <div class="wrap">
     <div class="sec-head">
       <span class="sec-kicker">Slow Down</span>
-      <h2>🐢 Manatee &amp; Slow-Speed Zones</h2>
+      
       <p>Tampa Bay's speed zones change with the calendar — here's how to stay legal and keep the sea cows safe.</p>
     </div>
     <div class="dir-grid">
@@ -1126,14 +1572,20 @@ renderParts();
       </div>
     </div>
   </div>
-</section>
 
-<!-- ============ BOATING COURSES ============ -->
-<section id="courses" style="background:#fff; border-top:1px solid var(--line); border-bottom:1px solid var(--line)">
+  </div>
+</div></div>
+<div class="view" id="view-courses"><div class="wrap"><a class="back-link" href="#/">&#8249; All categories</a></div><div class="acc-item open" id="courses">
+  <button class="acc-head" aria-expanded="false" onclick="toggleAcc(this)">
+    <span class="acc-title">Boating Safety Courses</span>
+    <span class="acc-chev" aria-hidden="true">▾</span>
+  </button>
+  <div class="acc-body">
+
   <div class="wrap">
     <div class="sec-head">
       <span class="sec-kicker">Get Legal</span>
-      <h2>🎓 Boating Safety Courses</h2>
+      
       <p>Florida law requires it for most operators — here's the rule and where to get certified.</p>
     </div>
     <div class="dir-grid">
@@ -1166,14 +1618,20 @@ renderParts();
       </div>
     </div>
   </div>
-</section>
 
-<!-- ============ HURRICANE PREP ============ -->
-<section id="hurricane">
+  </div>
+</div></div>
+<div class="view" id="view-hurricane"><div class="wrap"><a class="back-link" href="#/">&#8249; All categories</a></div><div class="acc-item open" id="hurricane">
+  <button class="acc-head" aria-expanded="false" onclick="toggleAcc(this)">
+    <span class="acc-title">Hurricane Prep for Boaters</span>
+    <span class="acc-chev" aria-hidden="true">▾</span>
+  </button>
+  <div class="acc-body">
+
   <div class="wrap">
     <div class="sec-head">
       <span class="sec-kicker">Storm Season</span>
-      <h2>🛟 Hurricane Prep for Boaters</h2>
+      
       <p>June through November. Have a plan <b>before</b> the cone points at Tampa Bay.</p>
     </div>
     <div class="dir-grid">
@@ -1208,421 +1666,20 @@ renderParts();
       </div>
     </div>
   </div>
-</section>
 
-<!-- ============ VHF & BRIDGES ============ -->
-<section id="bridges">
-  <div class="wrap">
-    <div class="sec-head">
-      <span class="sec-kicker">On the Radio</span>
-      <h2>📻 VHF Channels &amp; Bridge Openings</h2>
-      <p>The channels every Tampa Bay boater should know — and how to get bridges opened.</p>
-    </div>
-    <div class="dir-grid">
-      <div class="dir-card">
-        <div class="city">Know your channels</div><h4>📡 Key VHF Channels</h4>
-        <div class="type">
-          • <b>Ch 16</b> — Distress, safety &amp; hailing. Monitor it whenever you're underway<br>
-          • <b>Ch 9</b> — Bridge tenders &amp; secondary calling (use this to hail drawbridges)<br>
-          • <b>Ch 13</b> — Commercial vessel traffic ("bridge-to-bridge")<br>
-          • <b>Ch 22A</b> — U.S. Coast Guard working channel (after first contact on 16)<br>
-          • <b>Ch 68 / 69 / 71 / 72</b> — Recreational working channels<br>
-          • <b>WX 1–7</b> — NOAA weather broadcasts, 24/7
-        </div>
-      </div>
-      <div class="dir-card">
-        <div class="city">How to hail a bridge</div><h4>🗣️ Asking for an Opening</h4>
-        <div class="type">
-          Switch to <b>VHF Ch 9</b>, then say the bridge name three times followed by your vessel name:<br><br>
-          <i>"Alafia Railroad Bridge, Alafia Railroad Bridge, Alafia Railroad Bridge — this is Sea Breeze."</i><br><br>
-          Tell them your direction of travel and ask for their next opening. Approach slow, go through at no-wake speed once it's fully open. Most bay bridges (Skyway, Gandy, Howard Frankland, Courtney Campbell) are fixed high spans — no opening needed.
-        </div>
-      </div>
-      <div class="dir-card">
-        <div class="city">Alafia River</div><h4>🚂 Alafia River Railroad Bridge (CSX)</h4>
-        <div class="type">The train bridge near the mouth of the Alafia. Hail on <b>VHF Ch 9</b> or call the bridge house directly.</div>
-        <div class="contact">📞 (813) 677-3974<br>📍 Bridge house: 9427 US Hwy 41 S, Riverview</div>
-      </div>
-      <div class="dir-card">
-        <div class="city">Hillsborough River, Tampa</div><h4>🌉 Downtown Drawbridges</h4>
-        <div class="type">Platt St, Brorein St, Kennedy Blvd, Cass St, Laurel St, Columbus Dr &amp; Hillsborough Ave — open on signal with <b>at least 2 hours notice</b> (federal reg 33 CFR 117.291). Hail on <b>VHF Ch 9</b>. The CSX railroad bridge (mile 0.7) is normally kept fully open.</div>
-      </div>
-      <div class="dir-card">
-        <div class="city">Broke down?</div><h4>🛟 On-Water Towing</h4>
-        <div class="type">
-          <b>True emergency</b> (sinking, fire, medical): <b>VHF Ch 16</b> or call 911 — reach the Coast Guard first.<br><br>
-          <b>Just need a tow</b> (dead engine, ran aground, out of fuel) — hail on <b>VHF Ch 16</b> or call:<br>
-          • <b>Sea Tow Tampa Bay</b> — 24/7, (727) 547-1868<br>
-          • <b>TowBoatUS Tampa Bay</b> — 24-hr dispatch (800) 391-4869<br><br>
-          A membership (~$165–$249/yr) covers unlimited towing — one tow without it can run $600+. Worth every penny.
-        </div>
-        <div class="contact">🔗 <a href="https://www.seatow.com/tampa-bay" target="_blank" rel="noopener">Sea Tow Tampa Bay</a> · 🔗 <a href="http://towboat.us/" target="_blank" rel="noopener">TowBoatUS Tampa Bay</a></div>
-      </div>
-    </div>
-    <p style="text-align:center; color:var(--muted); font-size:.82rem; margin-top:16px">Bridge schedules and tender numbers can change — confirm on VHF Ch 9 before you go.</p>
   </div>
-</section>
+</div></div>
+<div class="view" id="view-insurance"><div class="wrap"><a class="back-link" href="#/">&#8249; All categories</a></div><div class="acc-item open" id="insurance">
+  <button class="acc-head" aria-expanded="false" onclick="toggleAcc(this)">
+    <span class="acc-title">Boaters Insurance</span>
+    <span class="acc-chev" aria-hidden="true">▾</span>
+  </button>
+  <div class="acc-body">
 
-<!-- ============ SHOP ============ -->
-<section id="events">
-  <div class="wrap">
-    <div class="sec-head">
-      <span class="sec-kicker">On The Water</span>
-      <h2>Boating Events Calendar</h2>
-      <p>Boat shows, concerts on the water, tournaments &amp; anything boating-related around Tampa Bay. Companies can pay to list their events here.</p>
-    </div>
-    <div class="cal-wrap">
-      <div class="cal-box">
-        <div id="calendar"></div>
-        <div class="day-events" id="day-events"></div>
-      </div>
-      <div>
-        <h3 style="color:var(--navy); margin-bottom:10px">Upcoming Events</h3>
-        <div class="day-events" id="upcoming-events"></div>
-        <h3 style="color:var(--navy); margin:20px 0 6px">List Your Event</h3>
-        <p style="color:var(--muted); font-size:.93rem">Get your boat show, concert, tournament or boating event in front of Tampa Bay's boating audience.</p>
-        <div class="ev-pricing">
-          <div class="ev-tier">
-            <h4>Standard Listing</h4><div class="p">$29</div>
-            <p>Per event. Date on the calendar + full event detail page.</p>
-          </div>
-          <div class="ev-tier hot">
-            <h4>Featured Event</h4><div class="p">$79</div>
-            <p>Per event. Gold highlight, top of upcoming list + homepage mention.</p>
-          </div>
-        </div>
-        <div class="ad-cta" style="text-align:left">
-          <a href="mailto:events@tampabayboating.com?subject=Event%20Listing%20—%20Tampa%20Bay%20Boating">List your event</a>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ============ VIDEOS ============ -->
-<section id="videos">
-  <div class="wrap">
-    <div class="sec-head">
-      <span class="sec-kicker">From TikTok</span>
-      <h2>Featured Videos</h2>
-      <p>The hits from @tampabayboating. More on TikTok, Instagram &amp; Facebook.</p>
-    </div>
-    <div class="vid-grid">
-      <div class="vid-card">
-        <video controls preload="none" poster="assets/tiktok-beercanisland.jpg" playsinline>
-          <source src="assets/tiktok-beercanisland.mp4" type="video/mp4">
-        </video>
-        <div class="cap">Beer Can Island — the legendary sandbar party</div>
-      </div>
-      <div class="vid-card">
-        <video controls preload="none" poster="assets/tiktok-alafia-river.jpg" playsinline>
-          <source src="assets/tiktok-alafia-river.mp4" type="video/mp4">
-        </video>
-        <div class="cap">Running the Alafia River</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ============ CHARTER DIRECTORY ============ -->
-<section id="shop">
-  <div class="wrap">
-    <div class="sec-head">
-      <span class="sec-kicker">Official Merch</span>
-      <h2>The Ship's Store</h2>
-      <p>Gear for Tampa Bay boaters — designed for the sandbar crowd. Fulfilled via our Shopify store (coming soon).</p>
-    </div>
-    <div class="shop-tools">
-      <div class="search">
-        <input id="search-input" type="text" placeholder="Search shirts, hats, koozies..." oninput="renderGrid()">
-        <button onclick="renderGrid()">Search</button>
-      </div>
-    </div>
-    <div class="shop-layout">
-      <aside class="filters">
-        <h3>Category</h3>
-        <div id="cat-filters"></div>
-        <h3>Price</h3>
-        <label><input type="checkbox" class="price-f" value="0-15" onchange="renderGrid()"> Under $15</label>
-        <label><input type="checkbox" class="price-f" value="15-30" onchange="renderGrid()"> $15 – $30</label>
-        <label><input type="checkbox" class="price-f" value="30-100" onchange="renderGrid()"> Over $30</label>
-      </aside>
-      <div class="grid" id="product-grid"></div>
-    </div>
-  </div>
-</section>
-
-<!-- Product modal -->
-<div class="modal-back" id="modal-back" onclick="if(event.target===this)closeModal()">
-  <div class="modal-wrap">
-    <button class="modal-close" onclick="closeModal()">&times;</button>
-    <div class="modal" id="modal"></div>
-  </div>
-</div>
-
-<!-- Cart -->
-<div class="cart-back" id="cart-back" onclick="closeCart()"></div>
-<aside class="cart-drawer" id="cart-drawer">
-  <div class="cart-head"><h3>Your Cart</h3><button class="modal-close" style="position:static" onclick="closeCart()">&times;</button></div>
-  <div class="cart-items" id="cart-items"></div>
-  <div class="cart-foot">
-    <div class="cart-total"><span>Total</span><span id="cart-total">$0.00</span></div>
-    <button class="checkout" type="button" disabled aria-disabled="true">Checkout via Shopify — coming soon</button>
-  </div>
-</aside>
-<!-- ============ BOATS FOR SALE ============ -->
-<section id="boatsales" style="background:#fff; border-top:1px solid var(--line); border-bottom:1px solid var(--line)">
-  <div class="wrap">
-    <div class="sec-head">
-      <span class="sec-kicker">Buy &amp; Sell</span>
-      <h2>🛥️ Boats for Sale</h2>
-      <p>Boats for sale by owner around Tampa Bay — plus trusted local dealers.</p>
-    </div>
-    <div class="pill-row">
-      <button class="pill sel" id="pill-owner" onclick="boatTab('owner')">🎣 For Sale by Owner</button>
-      <button class="pill" id="pill-dealer" onclick="boatTab('dealer')">🏪 Local Dealers</button>
-    </div>
-    <div id="owner-pane">
-      <div class="search" style="margin:14px 0"><input id="owner-input" type="text" placeholder="Search boats..." oninput="renderOwner()"></div>
-      <div class="dir-grid" id="owner-grid"></div>
-      <div class="ad-cta" style="margin-top:20px">
-        <a href="mailto:sell@tampabayboating.com?subject=Boat%20for%20sale%20listing&body=Boat%20(year%2Fmake%2Fmodel)%3A%0APrice%3A%0ALocation%3A%0ADescription%3A%0APhotos%3A%20(attach%20a%20few%20photos)">List your boat — $29 for 30 days</a>
-      </div>
-      <p style="text-align:center; color:var(--muted); font-size:.85rem; margin-top:10px">Your boat with photos, in front of Tampa Bay boaters. Dealers: ask about monthly plans.</p>
-    </div>
-    <div id="dealer-pane" style="display:none">
-      <div class="search" style="margin:14px 0"><input id="dealer-input" type="text" placeholder="Search dealers..." oninput="renderDealers()"></div>
-      <div class="dir-grid" id="dealer-grid"></div>
-    </div>
-  </div>
-</section>
-
-<!-- ============ GEAR GUIDE ============ -->
-<section id="gear">
-  <div class="wrap">
-    <div class="sec-head">
-      <span class="sec-kicker">Boater Must-Haves</span>
-      <h2>🎒 Gear We Love</h2>
-      <p>Boating, beach & fishing must-haves for Tampa Bay. Tap to check the price.</p>
-    </div>
-    <div class="dir-grid" id="gear-grid"></div>
-    <!-- AFFILIATE: join Amazon Associates, then append &tag=YOURTAG to each amazon.com link in GEAR below -->
-  </div>
-</section>
-
-<!-- ============ NEWSLETTER ============ -->
-<section id="newsletter" style="background:#fff; border-top:1px solid var(--line); border-bottom:1px solid var(--line)">
-  <div class="wrap" style="text-align:center; padding:44px 20px">
-    <span class="sec-kicker">Stay in the loop</span>
-    <h2 style="margin:8px 0">📬 This Week on the Water</h2>
-    <p style="color:var(--muted); max-width:520px; margin:0 auto 18px">One short email a week: boating events, sandbar conditions, new boat listings and local deals. No spam, ever.</p>
-    <div style="max-width:420px; margin:0 auto; display:flex; gap:8px">
-      <input id="nl-email" type="email" placeholder="you@email.com" style="flex:1; padding:12px 16px; border:2px solid var(--line); border-radius:10px; font-size:1rem">
-      <button class="pill sel" style="white-space:nowrap" onclick="subscribeNL()">Sign up</button>
-    </div>
-  </div>
-</section>
-
-<section id="charters" style="background:#fff; border-top:1px solid var(--line); border-bottom:1px solid var(--line)">
-  <div class="wrap">
-    <div class="sec-head">
-      <span class="sec-kicker">Get On The Water</span>
-      <h2>Tampa Bay Charter Directory</h2>
-      <p>Local fishing charters, sunset cruises, dolphin tours &amp; more. Featured advertising for charter companies coming soon.</p>
-    </div>
-    <div class="phase-note"><b>Phase 2 — coming soon:</b> featured listings, homepage spotlights &amp; sponsored posts for Tampa Bay charter companies.</div>
-    <div class="dir-search">
-      <input id="dir-input" type="text" placeholder="Search charters by name, city, or type..." oninput="renderDir()">
-      <button onclick="renderDir()">Search</button>
-    </div>
-    <div class="dir-grid" id="dir-grid"></div>
-  </div>
-</section>
-
-<!-- ============ DOCK & DINE ============ -->
-<style>
-#dining{background:#fff; border-top:1px solid var(--line); border-bottom:1px solid var(--line)}
-.dine-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:16px}
-.dine-slot{border:2px dashed var(--line); border-radius:12px; padding:34px 20px; text-align:center; color:var(--muted); background:var(--sand)}
-.dine-slot .plus{font-size:2.2rem; color:var(--sun); font-weight:300}
-.dine-slot b{display:block; color:var(--navy); margin:8px 0 4px}
-.dine-slot p{font-size:.88rem}
-.dine-slot a{font-weight:700; font-size:.9rem}
-.dine-spot{border:1px solid var(--line); border-radius:12px; overflow:hidden; background:#fff}
-.dine-spot img{width:100%; height:170px; object-fit:cover; display:block}
-.dine-spot-body{padding:16px 18px}
-.dine-spot-body b{color:var(--navy); font-size:1.05rem}
-.dine-water{display:block; font-size:.78rem; text-transform:uppercase; letter-spacing:1px; color:var(--teal); font-weight:700; margin:4px 0 8px}
-.dine-spot-body p{font-size:.88rem; color:var(--muted); margin-bottom:10px}
-.dine-tag{display:inline-block; font-size:.75rem; font-weight:800; text-transform:uppercase; letter-spacing:1px; color:#3a2503; background:var(--sun); border-radius:999px; padding:4px 12px}
-</style>
-<section id="dining">
-  <div class="wrap">
-    <div class="sec-head">
-      <span class="sec-kicker">Dock &amp; Dine</span>
-      <h2>Waterfront Restaurants</h2>
-      <p>Tampa Bay's top restaurants accessible by boat — pull up, tie off, and eat. Featured partners only.</p>
-    </div>
-    <div class="dine-grid" id="dine-grid">
-      <div class="dine-spot">
-        <img src="assets/dining/armature-works.jpg" alt="Armature Works on the Hillsborough River" loading="lazy">
-        <div class="dine-spot-body">
-          <b>Armature Works</b>
-          <span class="dine-water">Hillsborough River · Tampa</span>
-          <p>Historic brick streetcar depot turned riverfront food hall — Heights Public Market, lawns, and the pier.</p>
-          <span class="dine-tag">Featured spot</span>
-        </div>
-      </div>
-      <div class="dine-spot">
-        <img src="assets/dining/ricks-on-the-river.jpg" alt="Rick's on the River marina and restaurant" loading="lazy">
-        <div class="dine-spot-body">
-          <b>Rick's on the River</b>
-          <span class="dine-water">Hillsborough River · Tampa</span>
-          <p>Free docking while you dine, full marina on site — the classic boat-up bar &amp; grille, est. 1994.</p>
-          <span class="dine-tag">Featured spot</span>
-        </div>
-      </div>
-      <div class="dine-slot"><div class="plus">+</div><b>Your restaurant here</b><p>Boat-accessible waterfront dining, featured for Tampa Bay boaters.</p><a href="mailto:dine@tampabayboating.com?subject=Dock%20%26%20Dine%20Listing">Reserve this spot — $99/mo</a></div>
-      <div class="dine-slot"><div class="plus">+</div><b>Your restaurant here</b><p>Boat-accessible waterfront dining, featured for Tampa Bay boaters.</p><a href="mailto:dine@tampabayboating.com?subject=Dock%20%26%20Dine%20Listing">Reserve this spot — $99/mo</a></div>
-      <div class="dine-slot"><div class="plus">+</div><b>Your restaurant here</b><p>Boat-accessible waterfront dining, featured for Tampa Bay boaters.</p><a href="mailto:dine@tampabayboating.com?subject=Dock%20%26%20Dine%20Listing">Reserve this spot — $99/mo</a></div>
-    </div>
-    <p style="text-align:center; color:var(--muted); margin-top:20px; font-size:.92rem">Own a waterfront restaurant boaters can reach? <a href="mailto:dine@tampabayboating.com?subject=Dock%20%26%20Dine%20Listing" style="font-weight:700">Get listed</a> — paid partners only.<br><span style="font-size:.85rem">🎥 Ask about our <b>Video Spotlight</b> — we turn your photos and videos into a promo for your business.</span></p>
-  </div>
-</section>
-
-<!-- ============ EVENTS CALENDAR ============ -->
-<style>
-#events{background:#fff; border-top:1px solid var(--line); border-bottom:1px solid var(--line)}
-.cal-wrap{display:grid; grid-template-columns:1fr 1fr; gap:28px; align-items:start}
-.cal-box{background:var(--sand); border:1px solid var(--line); border-radius:14px; padding:20px}
-.cal-head{display:flex; justify-content:space-between; align-items:center; margin-bottom:12px}
-.cal-head b{font-size:1.15rem; color:var(--navy)}
-.cal-head button{background:var(--navy); color:#fff; border:none; width:36px; height:36px; border-radius:8px; font-size:1.3rem; cursor:pointer}
-.cal-grid{display:grid; grid-template-columns:repeat(7,1fr); gap:4px; text-align:center}
-.cal-dow span{font-size:.72rem; font-weight:800; color:var(--muted); text-transform:uppercase; padding:4px 0}
-.cal-day{position:relative; padding:9px 0; border-radius:8px; font-size:.92rem; background:#fff; border:1px solid transparent}
-.cal-day.empty{background:none}
-.cal-day.today{background:var(--navy); color:#fff; font-weight:800}
-.cal-day.has-ev{background:#fff4e0; border:1px solid var(--sun); cursor:pointer; font-weight:700}
-.cal-day.has-ev:hover{background:#ffe9c4}
-.dot{position:absolute; bottom:3px; left:50%; transform:translateX(-50%); width:6px; height:6px; border-radius:50%; background:var(--coral)}
-.day-events{margin-top:14px; display:flex; flex-direction:column; gap:10px}
-.ev-card{background:#fff; border:1px solid var(--line); border-left:4px solid var(--teal); border-radius:10px; padding:12px 14px}
-.ev-card.featured{border-left-color:var(--gold); background:#fffdf4}
-.ev-card h4{color:var(--navy); font-size:1rem}
-.ev-card .when{font-size:.82rem; color:var(--teal); font-weight:700}
-.ev-card .where{font-size:.85rem; color:var(--muted)}
-.ev-card p{font-size:.88rem; margin-top:4px}
-.ev-card a{font-size:.85rem; font-weight:700}
-.ev-photo{width:100%; height:150px; object-fit:cover; border-radius:8px; margin-bottom:10px}
-.ev-pricing{display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:18px 0}
-.ev-tier{background:var(--sand); border:1px solid var(--line); border-radius:12px; padding:16px; text-align:center}
-.ev-tier.hot{border:2px solid var(--gold); background:#fffdf4}
-.ev-tier h4{color:var(--navy)}
-.ev-tier .p{font-size:1.5rem; font-weight:800; color:var(--teal); margin:4px 0}
-.ev-tier p{font-size:.85rem; color:var(--muted)}
-@media(max-width:860px){ .cal-wrap{grid-template-columns:1fr} }
-</style>
-<!-- ============ FUEL & BAIT ============ -->
-<section id="fuel" style="background:#fff; border-top:1px solid var(--line); border-bottom:1px solid var(--line)">
-  <div class="wrap">
-    <div class="sec-head">
-      <span class="sec-kicker">On The Water</span>
-      <h2>⛽ Fuel &amp; 🦐 Bait</h2>
-      <p>Where to fill up and load live bait around Tampa Bay. Fuel docks change often — call ahead.</p>
-    </div>
-    <div class="pill-row">
-      <button class="pill sel" id="pill-fuel" onclick="fuelTab('fuel')">⛽ Fuel Docks</button>
-      <button class="pill" id="pill-bait" onclick="fuelTab('bait')">🦐 Bait Shops</button>
-    </div>
-    <div class="search" style="margin:14px 0"><input id="fuel-input" type="text" placeholder="Search by name or area..." oninput="renderFuel()"></div>
-    <div class="dir-grid" id="fuel-grid"></div>
-    <p class="dir-note">Own a marina or bait shop? <a href="mailto:advertise@tampabayboating.com?subject=Featured%20Listing%20—%20Fuel%20%2F%20Bait">Get a featured listing</a>.</p>
-  </div>
-</section>
-
-<!-- ============ MARINE SERVICES ============ -->
-<section id="services">
-  <div class="wrap">
-    <div class="sec-head">
-      <span class="sec-kicker">Keep Her Running</span>
-      <h2>🔧 Marine Services</h2>
-      <p>Mechanics, electronics installers, detailers, and canvas shops around Tampa Bay.</p>
-    </div>
-    <div class="pill-row">
-      <button class="pill sel" id="pill-mech" onclick="svcTab('Mechanics')">🔧 Mechanics</button>
-      <button class="pill" id="pill-elec" onclick="svcTab('Electronics')">📡 Electronics</button>
-      <button class="pill" id="pill-det" onclick="svcTab('Detailing')">✨ Detailing</button>
-      <button class="pill" id="pill-can" onclick="svcTab('Canvas')">⛵ Canvas</button>
-    </div>
-    <div class="search" style="margin:14px 0"><input id="svc-input" type="text" placeholder="Search by name or area..." oninput="renderSvc()"></div>
-    <div class="dir-grid" id="svc-grid"></div>
-    <p class="dir-note">Run a marine business? <a href="mailto:advertise@tampabayboating.com?subject=Featured%20Listing%20—%20Marine%20Services">Get a featured listing</a>.</p>
-  </div>
-</section>
-
-<section id="advertise">
-  <div class="wrap">
-    <div class="sec-head">
-      <span class="sec-kicker" style="background:var(--sun); color:#3a2503">For Businesses</span>
-      <h2>Advertise With Us</h2>
-      <p>Put your business in front of Tampa Bay's boating audience. Simple options, no contracts.</p>
-    </div>
-    <div class="price-grid">
-      <div class="price-card hot">
-        <h4>Featured Listing</h4>
-        <div class="p">$99</div><div class="per">/month</div>
-        <p class="desc">Your business at the top of our directories — charters, restaurants, fuel, bait &amp; marine services. Photo, badge &amp; link.</p>
-      </div>
-      <div class="price-card">
-        <h4>Video Spotlight</h4>
-        <div class="p">$249</div><div class="per">one-time</div>
-        <p class="desc">We turn your photos and videos into a TikTok-style promo — posted to @tampabayboating, and yours to keep.</p>
-      </div>
-      <div class="price-card">
-        <h4>Homepage Spotlight</h4>
-        <div class="p">$199</div><div class="per">/month</div>
-        <p class="desc">Your company showcased front and center on the homepage.</p>
-      </div>
-      <div class="price-card">
-        <h4>Sponsored TikTok Post</h4>
-        <div class="p">$349</div><div class="per">one-time</div>
-        <p class="desc">A dedicated video about your business, posted to @tampabayboating.</p>
-      </div>
-      <div class="price-card">
-        <h4>Newsletter Sponsor</h4>
-        <div class="p">$99</div><div class="per">/issue</div>
-        <p class="desc">Your logo + link in "This Week on the Water," our weekly boater email.</p>
-      </div>
-      <div class="price-card">
-        <h4>Section Sponsor</h4>
-        <div class="p">$149</div><div class="per">/month</div>
-        <p class="desc">Your brand on the Fishing Report, Boats for Sale, or any section — exclusive.</p>
-      </div>
-      <div class="price-card">
-        <h4>Homepage Banner</h4>
-        <div class="p">$149</div><div class="per">/month</div>
-        <p class="desc">Your banner at the top of the homepage — the first thing visitors see.</p>
-      </div>
-      <div class="price-card hot">
-        <h4>Category Sponsor</h4>
-        <div class="p">$299</div><div class="per">/month</div>
-        <p class="desc">Exclusive sponsorship of one category (towing, fuel, charters…) — directory badge, homepage banner, newsletter feature &amp; a TikTok-style promo video. One sponsor per category.</p>
-      </div>
-    </div>
-    <p style="text-align:center; color:var(--muted); font-size:.88rem; margin-top:14px">Charter companies: founding members lock in <b>$49/mo for 12 months</b> — first 10 only.</p>
-    <div class="ad-cta">
-      <a href="mailto:advertise@tampabayboating.com?subject=Advertising%20Inquiry%20—%20Tampa%20Bay%20Boating">Get in touch to advertise</a>
-    </div>
-  </div>
-</section>
-
-<!-- ============ BOAT INSURANCE ============ -->
-<section id="insurance" style="background:#fff; border-top:1px solid var(--line); border-bottom:1px solid var(--line)">
   <div class="wrap">
     <div class="sec-head">
       <span class="sec-kicker">Protect It</span>
-      <h2>🛡️ Boaters Insurance</h2>
+      
       <p>What to look for in a boat policy — especially in hurricane country.</p>
     </div>
     <div class="dir-grid">
@@ -1657,34 +1714,54 @@ renderParts();
       </div>
     </div>
   </div>
-</section>
 
-<!-- ============ BOATING LOGBOOK ============ -->
-<section id="logbook">
+  </div>
+</div></div>
+<div class="view" id="view-boatsales"><div class="wrap"><a class="back-link" href="#/">&#8249; All categories</a></div><div class="acc-item open" id="boatsales">
+  <button class="acc-head" aria-expanded="false" onclick="toggleAcc(this)">
+    <span class="acc-title">Boats for Sale</span>
+    <span class="acc-chev" aria-hidden="true">▾</span>
+  </button>
+  <div class="acc-body">
+
   <div class="wrap">
     <div class="sec-head">
-      <span class="sec-kicker">Your Time on the Water</span>
-      <h2>📓 My Boating Log</h2>
-      <p>Log every trip — hours add up toward experience, insurance discounts, and bragging rights. Saved on this device.</p>
+      <span class="sec-kicker">Buy &amp; Sell</span>
+      
+      <p>Boats for sale by owner around Tampa Bay — plus trusted local dealers.</p>
     </div>
-    <div class="dir-grid" style="grid-template-columns:1fr">
-      <div class="dir-card">
-        <div class="type">
-          <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:8px; margin-bottom:10px">
-            <label style="font-size:.8rem">Date<br><input id="log-date" type="date" style="width:100%; padding:8px; border:1px solid var(--line); border-radius:8px"></label>
-            <label style="font-size:.8rem">Hours<br><input id="log-hours" type="number" min="0" step="0.5" placeholder="4" style="width:100%; padding:8px; border:1px solid var(--line); border-radius:8px"></label>
-            <label style="font-size:.8rem">Where<br><input id="log-where" type="text" placeholder="Egmont Key" style="width:100%; padding:8px; border:1px solid var(--line); border-radius:8px"></label>
-            <label style="font-size:.8rem">Notes<br><input id="log-notes" type="text" placeholder="Kings on the troll" style="width:100%; padding:8px; border:1px solid var(--line); border-radius:8px"></label>
-          </div>
-          <button onclick="addLogEntry()" style="background:var(--teal); color:#fff; border:none; border-radius:999px; padding:10px 26px; font-size:.95rem; cursor:pointer">+ Log this trip</button>
-          <span id="log-total" style="margin-left:14px; font-weight:700"></span>
-        </div>
-        <div id="log-list" style="margin-top:12px"></div>
+    <div class="pill-row">
+      <button class="pill sel" id="pill-owner" onclick="boatTab('owner')">🎣 For Sale by Owner</button>
+      <button class="pill" id="pill-dealer" onclick="boatTab('dealer')">🏪 Local Dealers</button>
+    </div>
+    <div id="owner-pane">
+      <div class="search" style="margin:14px 0"><input id="owner-input" type="text" placeholder="Search boats..." oninput="renderOwner()"></div>
+      <div class="dir-grid" id="owner-grid"></div>
+      <div class="ad-cta" style="margin-top:20px">
+        <a href="mailto:sell@tampabayboating.com?subject=Boat%20for%20sale%20listing&body=Boat%20(year%2Fmake%2Fmodel)%3A%0APrice%3A%0ALocation%3A%0ADescription%3A%0APhotos%3A%20(attach%20a%20few%20photos)">List your boat — $29 for 30 days</a>
       </div>
+      <p style="text-align:center; color:var(--muted); font-size:.85rem; margin-top:10px">Your boat with photos, in front of Tampa Bay boaters. Dealers: ask about monthly plans.</p>
     </div>
-    <p style="text-align:center; color:var(--muted); font-size:.82rem; margin-top:10px">Entries are stored in this browser only — they don't sync between devices.</p>
+    <div id="dealer-pane" style="display:none">
+      <div class="search" style="margin:14px 0"><input id="dealer-input" type="text" placeholder="Search dealers..." oninput="renderDealers()"></div>
+      <div class="dir-grid" id="dealer-grid"></div>
+    </div>
   </div>
-</section>
+
+  </div>
+</div></div>
+
+<footer class="tbb-foot">
+  <div class="socials">
+    <a href="https://www.tiktok.com/@tampabayboating" target="_blank" rel="noopener" aria-label="TikTok"><svg viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/></svg></a>
+    <a href="https://www.instagram.com/tampabayboating/" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24"><path d="M12 2.16c3.2 0 3.58.01 4.85.07 3.25.15 4.77 1.69 4.92 4.92.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.15 3.23-1.66 4.77-4.92 4.92-1.27.06-1.64.07-4.85.07s-3.58-.01-4.85-.07c-3.26-.15-4.77-1.7-4.92-4.92C2.17 15.58 2.16 15.2 2.16 12s.01-3.58.07-4.85C2.38 3.92 3.9 2.38 7.15 2.23 8.42 2.17 8.8 2.16 12 2.16M12 0C8.74 0 8.33.01 7.05.07 2.7.27.27 2.69.07 7.05.01 8.33 0 8.74 0 12s.01 3.67.07 4.95c.2 4.36 2.62 6.78 6.98 6.98C8.33 23.99 8.74 24 12 24s3.67-.01 4.95-.07c4.35-.2 6.78-2.62 6.98-6.98.06-1.28.07-1.69.07-4.95s-.01-3.67-.07-4.95C23.73 2.7 21.31.27 16.95.07 15.67.01 15.26 0 12 0zm0 5.84A6.16 6.16 0 1 0 18.16 12 6.16 6.16 0 0 0 12 5.84zm0 10.15A4 4 0 1 1 16 12a4 4 0 0 1-4 3.99zm7.85-10.4a1.44 1.44 0 1 1-2.88 0 1.44 1.44 0 0 1 2.88 0z"/></svg></a>
+    <a href="https://www.facebook.com/tampabayboating" target="_blank" rel="noopener" aria-label="Facebook"><svg viewBox="0 0 24 24"><path d="M24 12.07C24 5.4 18.63 0 12 0S0 5.4 0 12.07C0 18.1 4.39 23.09 10.13 24v-8.44H7.08v-3.49h3.04V9.41c0-3.02 1.8-4.7 4.54-4.7 1.31 0 2.68.24 2.68.24v2.97h-1.5c-1.5 0-1.96.93-1.96 1.89v2.26h3.32l-.53 3.49h-2.79V24C19.61 23.09 24 18.1 24 12.07z"/></svg></a></div>
+  <div class="brandline">Tampa Bay Boating</div>
+  <div class="tagline">Tampa Bay, Florida &middot; We do boat stuff.</div>
+  <a class="mail" href="mailto:david@tampabayboating.com">david@tampabayboating.com</a>
+  <div class="copy">&copy; 2026 Tampa Bay Boating</div>
+</footer>
+<script>function toggleAcc(btn){var item=btn.closest(".acc-item");var open=item.classList.toggle("open");btn.setAttribute("aria-expanded",open);}</script>
 <script>
 function getLog(){ try { return JSON.parse(localStorage.getItem('tbb-logbook')||'[]'); } catch(e){ return []; } }
 function saveLog(l){ localStorage.setItem('tbb-logbook', JSON.stringify(l)); }
@@ -1709,30 +1786,6 @@ function addLogEntry(){
 function delLogEntry(i){ const log=getLog(); log.splice(i,1); saveLog(log); renderLog(); }
 document.addEventListener('DOMContentLoaded', renderLog);
 </script>
-
-<!-- ============ BAY MAP ============ -->
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-<section id="baymap">
-  <div class="wrap">
-    <div class="sec-head">
-      <span class="sec-kicker">Explore</span>
-      <h2>🗺️ Tampa Bay Boater's Map</h2>
-      <p>Fuel docks, bait shops, dock &amp; dine spots, and the places everyone goes. Tap a pin for details.</p>
-    </div>
-    <div class="map-filters" style="text-align:center; margin-bottom:10px">
-      <button class="map-filter active" data-cat="all">All</button>
-      <button class="map-filter" data-cat="fuel">⛽ Fuel</button>
-      <button class="map-filter" data-cat="bait">🦐 Bait</button>
-      <button class="map-filter" data-cat="dine">🍽️ Dock &amp; Dine</button>
-      <button class="map-filter" data-cat="play">🏝️ Destinations</button>
-      <button class="map-filter" data-cat="club">🛥️ Boat Clubs</button>
-      <button class="map-filter" data-cat="storage">🅿️ Storage</button>
-    </div>
-    <div id="bay-leaflet-map" style="height:480px; border-radius:14px; border:1px solid var(--line); z-index:1"></div>
-    <p style="text-align:center; color:var(--muted); font-size:.82rem; margin-top:10px">40 pinned locations · fuel prices change — call ahead · dock &amp; dine listings are paid placements</p>
-  </div>
-</section>
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
 const MAP_PINS = [["Port32 Tampa","fuel",27.88621,-82.5338,"5200 W Tyson Ave, Tampa","(813) 831-1200","Ethanol-free Rec 90 + diesel, ship's store"],["Marjorie Park Yacht Basin","fuel",27.92413,-82.45272,"Davis Islands, Tampa","","Temporarily closed as of Oct 2026 \u2014 call before heading over"],["St. Petersburg Municipal Marina","fuel",27.76996,-82.63116,"Downtown St. Pete","(727) 893-7329","Non-ethanol 90 octane, ValvTect gas & diesel"],["O'Neill's Marina","fuel",27.70736,-82.68045,"6701 Sunshine Skyway Ln S, St. Pete","(727) 867-2585","Ethanol-free fuel + bait & tackle shop, boat ramp"],["Loggerhead Marina \u2013 St. Petersburg","fuel",27.71392,-82.6782,"5821 32nd Way S, St. Pete","(727) 867-2600","Non-ethanol 90 octane, ValvTect"],["Pass-A-Grille Marina","fuel",27.69487,-82.73593,"St. Pete Beach","","6 fuel pumps; non-ethanol 87/90/93 + marine diesel"],["Gulfport Municipal Marina","fuel",27.74062,-82.69615,"4630 29th Ave S, Gulfport","","Fuel dock (Waterway Guide) \u2014 call ahead"],["Maximo Marina (IGY)","fuel",27.72507,-82.68223,"St. Petersburg, Boca Ciega Bay","","Fuel dock (Waterway Guide) \u2014 call ahead"],["The Harborage at Waterview Marinas","fuel",27.75905,-82.63661,"Downtown St. Pete","","Fuel dock (Waterway Guide) \u2014 call ahead"],["Clearwater Beach Municipal Marina","fuel",27.97684,-82.82639,"25 Causeway Blvd, Clearwater Beach","","Fuel dock (Waterway Guide) \u2014 call ahead"],["John's Pass Marina","fuel",27.78349,-82.78015,"12795 Kingfish Dr, Treasure Island","","Fuel dock (Waterway Guide) \u2014 call ahead"],["Madeira Beach Municipal Marina","fuel",27.80425,-82.79613,"503 150th Ave, Madeira Beach","","Fuel dock (Waterway Guide) \u2014 call ahead"],["Anclote Village Marina","fuel",28.17303,-82.78574,"Tarpon Springs, Anclote River","","Fuel dock (FL Marine Guide) \u2014 call ahead"],["Turtle Cove Marina","fuel",28.15322,-82.76239,"Tarpon Springs, Anclote River","","Fuel dock (FL Marine Guide) \u2014 call ahead"],["Anclote Harbors Marina","fuel",28.16012,-82.76498,"Tarpon Springs, Anclote River","","Fuel dock (FL Marine Guide) \u2014 call ahead"],["Bradenton Marina Exxon","fuel",27.41663,-82.57524,"6920 14th St W, Bradenton","(941) 900-1459","REC 90 non-ethanol, 24 hrs"],["Bradenton Beach Marina","fuel",27.46779,-82.69711,"402 Church St N, Bradenton Beach","(941) 778-2288","Full-service marina with fuel dock"],["Keyes Marina","fuel",27.50794,-82.71399,"5501 Marina Dr, Holmes Beach","(941) 779-2838","Marine-grade fuel + live bait & tackle, ice"],["Marina Jack Yacht Basin","fuel",27.33263,-82.54338,"2 Marina Plaza, Sarasota","(941) 365-4232","24-hr self-serve fueling; hi-flow diesel + 90 octane"],["Lands End Marina","fuel",27.78103,-82.42305,"Apollo Beach","(813) 645-5594","Non-ethanol gas + diesel on the seawall"],["One Stop Bait Shop","bait",27.96348,-82.47418,"2305 N Willow Ave, Tampa","(813) 867-8613","Live shrimp, fiddler crabs, frozen bait, tackle, ice"],["Reel Them In Bait and Tackle","bait",27.85377,-82.38332,"9851 US-41 S, Gibsonton","(813) 513-3823","Live shrimp, greenbacks, frozen bait, rods/reels"],["Riviera Bait & Tackle","bait",27.85742,-82.64879,"1106 94th Ave N, St. Pete","(727) 954-6365","Live shrimp, tackle, custom rods, reel repair"],["O'Neill's Marina Bait Shop","bait",27.70736,-82.68045,"6701 Sunshine Skyway Ln S, St. Pete","(727) 867-2585","Live & frozen bait + tackle at the fuel dock"],["Clearwater Bait and Tackle","bait",27.96036,-82.71274,"2999 Gulf to Bay Blvd, Clearwater","(727) 669-5455","Live & frozen bait, tackle, apparel"],["Bluffs Tackle and Marine","bait",27.91707,-82.81621,"2715 W Bay Dr, Belleair Bluffs","(727) 877-8626","Bait, tackle & full marine store"],["FISHSTALKERZ Bait & Tackle","bait",28.04601,-82.782,"2436 Bayshore Blvd, Dunedin","(727) 637-9971","Live shrimp, pinfish, grunts, fiddlers"],["Tarpon Trading Company","bait",28.15988,-82.75705,"1197 N Pinellas Ave, Tarpon Springs","(727) 937-1488","Live shrimp (3 sizes), pinfish, big tackle wall"],["Get Bent Live Bait","bait",28.17683,-82.78528,"1119 Baillies Bluff Rd, Holiday","(727) 597-9073","Pull-up-by-boat live bait; text-ahead pre-order"],["Island Discount Tackle","bait",27.50799,-82.71397,"5503 Marina Dr, Holmes Beach","(941) 779-2838","Live & frozen bait, fishing licenses"],["Bait and Tackle of Apollo Beach","bait",27.76464,-82.3957,"6040 N US-41, Apollo Beach","(813) 296-7735","Live & frozen bait, tackle, custom rods"],["5 Boys Bait & Tackle","bait",27.72278,-82.43337,"467 N US-41, Ruskin","(813) 486-4121","Live shrimp, greenbacks; famous for after-hours bait"],["Hart's Landing","bait",27.33556,-82.55083,"920 John Ringling Cswy, Sarasota","(941) 330-0650","Historic waterfront bait shop + bar"],["Armature Works","dine",27.961,-82.46376,"1910 N Ola Ave, Tampa Heights","","Food hall on the Hillsborough River"],["Rick's on the River","dine",27.96348,-82.47418,"2305 N Willow Ave, Tampa","","Classic boat-up spot on the Hillsborough River"],["Beer Can Island","play",27.43775,-82.68779,"Greer Island, Longboat Key","","Famous party sandbar"],["Egmont Key","play",27.58692,-82.76081,"Mouth of Tampa Bay","","Snorkeling, ruins & beaches \u2014 boat access only"],["Fort De Soto Park","play",27.64802,-82.71538,"3500 Pinellas Bayway S, St. Petersburg","","Beaches, Bunces Pass sandbar, fishing piers"],["Weedon Island Preserve","play",27.8477,-82.60708,"1800 Weedon Dr NE, St. Petersburg","","Mangrove paddling trails & fishing"],["Jewfish Key","play",27.43098,-82.67525,"Longboat Key","","Popular sandbar hangout"],
 ["Passage Key","play",27.55556,-82.74306,"Off Anna Maria Island, Manatee County","","National Wildlife Refuge (est. 1905) \u2014 closed to public landing during nesting season; best viewed by boat"],
@@ -1754,7 +1807,7 @@ const MAP_COLORS = {fuel:"#e25822", bait:"#2e9e5b", dine:"#8b5cf6", play:"#0e749
 (function(){
   const el = document.getElementById('bay-leaflet-map');
   if(!el || typeof L === 'undefined') return;
-  const map = L.map('bay-leaflet-map').setView([27.85, -82.55], 10);
+  const map = window.tbbMap = L.map('bay-leaflet-map').setView([27.85, -82.55], 10);
   const chartBase = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Ocean/World_Ocean_Base/MapServer/tile/{z}/{y}/{x}', {maxZoom: 18, attribution: 'Esri, GEBCO, NOAA, NGS, OSU'}).addTo(map);
   const streetBase = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom: 18, attribution: '&copy; OpenStreetMap contributors'});
   const seamarks = L.tileLayer('https://tiles.openseamap.org/seamark/{z}/{x}/{y}.png', {maxZoom: 18, attribution: 'Seamarks &copy; <a href="https://www.openseamap.org">OpenSeaMap</a> contributors'}).addTo(map);
@@ -1780,71 +1833,63 @@ const MAP_COLORS = {fuel:"#e25822", bait:"#2e9e5b", dine:"#8b5cf6", play:"#0e749
   }));
 })();
 </script>
-<!-- ============ FOOTER QUICK LINKS ============ -->
-<section id="quicklinks" style="background:#0f2a3d; color:#cfe3ee; padding:44px 0 8px">
-<div class="wrap">
-<div class="sec-head" style="margin-bottom:18px"><span class="sec-kicker" style="color:#7fd1c0">Quick Links</span>
-<h2 style="color:#fff">Shop &amp; Book</h2></div>
-<div class="dir-grid" style="grid-template-columns:repeat(auto-fit,minmax(220px,1fr))">
-<div><h4 style="color:#fff; margin-bottom:10px">🛒 Our Amazon Picks</h4>
-<p style="color:#7fd1c0; font-size:.8rem; font-weight:700; margin:12px 0 4px">🚤 Boating</p>
-<a href="https://www.amazon.com/s?k=yeti+tundra+45+hard+cooler" target="_blank" rel="noopener nofollow" style="display:block; color:#cfe3ee; font-size:.88rem; padding:3px 0; text-decoration:none">🧊 YETI Tundra 45 Cooler</a>
-<a href="https://www.amazon.com/s?k=costa+del+mar+sunglasses+polarized" target="_blank" rel="noopener nofollow" style="display:block; color:#cfe3ee; font-size:.88rem; padding:3px 0; text-decoration:none">🕶️ Costa Del Mar Sunglasses</a>
-<a href="https://www.amazon.com/s?k=onyx+movevent+life+jacket" target="_blank" rel="noopener nofollow" style="display:block; color:#cfe3ee; font-size:.88rem; padding:3px 0; text-decoration:none">🦺 Onyx MoveVent Life Jacket</a>
-<a href="https://www.amazon.com/s?k=jbl+flip+6+waterproof+portable+speaker" target="_blank" rel="noopener nofollow" style="display:block; color:#cfe3ee; font-size:.88rem; padding:3px 0; text-decoration:none">🔊 JBL Flip 6 Waterproof Speaker</a>
-<a href="https://www.amazon.com/s?k=yeti+rambler+30+oz+tumbler" target="_blank" rel="noopener nofollow" style="display:block; color:#cfe3ee; font-size:.88rem; padding:3px 0; text-decoration:none">🥤 YETI Rambler 30 oz Tumbler</a>
-<a href="https://www.amazon.com/s?k=waterproof+dry+bag+20l+boating" target="_blank" rel="noopener nofollow" style="display:block; color:#cfe3ee; font-size:.88rem; padding:3px 0; text-decoration:none">🎒 20L Waterproof Dry Bag</a>
-<a href="https://www.amazon.com/s?k=anker+portable+charger+power+bank" target="_blank" rel="noopener nofollow" style="display:block; color:#cfe3ee; font-size:.88rem; padding:3px 0; text-decoration:none">🔋 Anker Portable Power Bank</a>
-<p style="color:#7fd1c0; font-size:.8rem; font-weight:700; margin:12px 0 4px">🏖️ Beach</p>
-<a href="https://www.amazon.com/s?k=beach+umbrella+with+sand+anchor+windproof" target="_blank" rel="noopener nofollow" style="display:block; color:#cfe3ee; font-size:.88rem; padding:3px 0; text-decoration:none">⛱️ Beach Umbrella with Sand Anchor</a>
-<a href="https://www.amazon.com/s?k=folding+beach+chair+low+profile" target="_blank" rel="noopener nofollow" style="display:block; color:#cfe3ee; font-size:.88rem; padding:3px 0; text-decoration:none">🪑 Folding Beach Chair</a>
-<a href="https://www.amazon.com/s?k=snorkel+mask+set+adult+dry+top" target="_blank" rel="noopener nofollow" style="display:block; color:#cfe3ee; font-size:.88rem; padding:3px 0; text-decoration:none">🤿 Snorkel Mask Set</a>
-<a href="https://www.amazon.com/s?k=waterproof+phone+pouch+lanyard+2+pack" target="_blank" rel="noopener nofollow" style="display:block; color:#cfe3ee; font-size:.88rem; padding:3px 0; text-decoration:none">📱 Waterproof Phone Pouch</a>
-<a href="https://www.amazon.com/s?k=reef+safe+sunscreen+waterproof+spf+50" target="_blank" rel="noopener nofollow" style="display:block; color:#cfe3ee; font-size:.88rem; padding:3px 0; text-decoration:none">🧴 Reef-Safe Sunscreen</a>
-<a href="https://www.amazon.com/s?k=beach+wagon+cart+big+wheels+folding" target="_blank" rel="noopener nofollow" style="display:block; color:#cfe3ee; font-size:.88rem; padding:3px 0; text-decoration:none">🛒 Beach Wagon with Big Wheels</a>
-<p style="color:#7fd1c0; font-size:.8rem; font-weight:700; margin:12px 0 4px">🎣 Fishing</p>
-<a href="https://www.amazon.com/s?k=bubba+blade+fillet+knife" target="_blank" rel="noopener nofollow" style="display:block; color:#cfe3ee; font-size:.88rem; padding:3px 0; text-decoration:none">🔪 Bubba Blade Fillet Knife</a>
-<a href="https://www.amazon.com/s?k=ugly+stik+inshore+spinning+combo" target="_blank" rel="noopener nofollow" style="display:block; color:#cfe3ee; font-size:.88rem; padding:3px 0; text-decoration:none">🎣 Inshore Spinning Combo</a>
-<a href="https://www.amazon.com/s?k=doa+shrimp+lure+3+pack" target="_blank" rel="noopener nofollow" style="display:block; color:#cfe3ee; font-size:.88rem; padding:3px 0; text-decoration:none">🦐 DOA Shrimp Lures</a>
-<a href="https://www.amazon.com/s?k=heddon+super+spook+topwater+plug" target="_blank" rel="noopener nofollow" style="display:block; color:#cfe3ee; font-size:.88rem; padding:3px 0; text-decoration:none">🐟 Topwater Plug</a>
-<a href="https://www.amazon.com/s?k=fishing+tackle+backpack+waterproof" target="_blank" rel="noopener nofollow" style="display:block; color:#cfe3ee; font-size:.88rem; padding:3px 0; text-decoration:none">🧰 Tackle Backpack</a>
-<a href="https://www.amazon.com/s?k=fishing+pliers+saltwater+with+sheath" target="_blank" rel="noopener nofollow" style="display:block; color:#cfe3ee; font-size:.88rem; padding:3px 0; text-decoration:none">🔧 Fishing Pliers</a>
-<a href="https://www.amazon.com/s?k=powerpro+braided+fishing+line+150+yd" target="_blank" rel="noopener nofollow" style="display:block; color:#cfe3ee; font-size:.88rem; padding:3px 0; text-decoration:none">🧵 Braided Fishing Line</a>
-<p style="font-size:.72rem; color:#8aa5b5; margin-top:12px">As an Amazon Associate we earn from qualifying purchases.</p></div>
-<div><h4 style="color:#fff; margin-bottom:10px">🎣 Charter Companies</h4>
-<a href="http://www.shallowpointcharters.com/" target="_blank" rel="noopener" style="display:block; color:#cfe3ee; font-size:.88rem; padding:3px 0; text-decoration:none">Shallow Point Tampa Fishing Charters <span style="color:#8aa5b5">· Tampa</span></a>
-<a href="http://lighttackleadventures.com/" target="_blank" rel="noopener" style="display:block; color:#cfe3ee; font-size:.88rem; padding:3px 0; text-decoration:none">Light Tackle Adventures <span style="color:#8aa5b5">· Tampa</span></a>
-<a href="https://www.swiftfishcharters.com/" target="_blank" rel="noopener" style="display:block; color:#cfe3ee; font-size:.88rem; padding:3px 0; text-decoration:none">Swift Fish Charters <span style="color:#8aa5b5">· Tampa</span></a>
-<a href="http://www.captainwoodygore.com/" target="_blank" rel="noopener" style="display:block; color:#cfe3ee; font-size:.88rem; padding:3px 0; text-decoration:none">Tampa Flats Fishing Charters <span style="color:#8aa5b5">· Tampa</span></a>
-<a href="https://www.madredcharters.com/" target="_blank" rel="noopener" style="display:block; color:#cfe3ee; font-size:.88rem; padding:3px 0; text-decoration:none">Mad Red Fishing Charters <span style="color:#8aa5b5">· Tampa</span></a>
-<a href="http://www.fin-sanitycharters.com/" target="_blank" rel="noopener" style="display:block; color:#cfe3ee; font-size:.88rem; padding:3px 0; text-decoration:none">FinSanity Charters <span style="color:#8aa5b5">· Tampa</span></a>
-<a href="http://afishionado.com/" target="_blank" rel="noopener" style="display:block; color:#cfe3ee; font-size:.88rem; padding:3px 0; text-decoration:none">Afishionado Guide Services <span style="color:#8aa5b5">· Tampa</span></a>
-<a href="http://fishthisinshorecharters.com/" target="_blank" rel="noopener" style="display:block; color:#cfe3ee; font-size:.88rem; padding:3px 0; text-decoration:none">Fish This Inshore Charters <span style="color:#8aa5b5">· Apollo Beach</span></a>
-<a href="https://sarasotafishingtours.com/" target="_blank" rel="noopener" style="display:block; color:#cfe3ee; font-size:.88rem; padding:3px 0; text-decoration:none">Sarasota Fishing Tours <span style="color:#8aa5b5">· Sarasota</span></a>
-<a href="https://SeaSpree.com/" target="_blank" rel="noopener" style="display:block; color:#cfe3ee; font-size:.88rem; padding:3px 0; text-decoration:none">SeaSpree <span style="color:#8aa5b5">· Palmetto</span></a>
-<a href="http://thepelicanstpete.com/" target="_blank" rel="noopener" style="display:block; color:#cfe3ee; font-size:.88rem; padding:3px 0; text-decoration:none">The Pelican St. Pete <span style="color:#8aa5b5">· St. Petersburg</span></a>
-<a href="https://www.islandtimetoursfl.com/" target="_blank" rel="noopener" style="display:block; color:#cfe3ee; font-size:.88rem; padding:3px 0; text-decoration:none">Island Time Tours FL <span style="color:#8aa5b5">· St. Petersburg</span></a>
-<a href="https://www.tampabaysunsetsail.com/" target="_blank" rel="noopener" style="display:block; color:#cfe3ee; font-size:.88rem; padding:3px 0; text-decoration:none">Tampa Bay Sunset Sail <span style="color:#8aa5b5">· St. Petersburg</span></a>
-<a href="https://www.totallytikitours.com/" target="_blank" rel="noopener" style="display:block; color:#cfe3ee; font-size:.88rem; padding:3px 0; text-decoration:none">Totally Tiki Tours <span style="color:#8aa5b5">· St. Petersburg</span></a>
-<a href="https://www.stpeteboattour.com/" target="_blank" rel="noopener" style="display:block; color:#cfe3ee; font-size:.88rem; padding:3px 0; text-decoration:none">St. Pete Boat Tours <span style="color:#8aa5b5">· St. Petersburg</span></a>
-<a href="http://shipsahoycharter.com/" target="_blank" rel="noopener" style="display:block; color:#cfe3ee; font-size:.88rem; padding:3px 0; text-decoration:none">Ships Ahoy Charter <span style="color:#8aa5b5">· St. Petersburg</span></a>
-<a href="http://foxtalecharters.com/" target="_blank" rel="noopener" style="display:block; color:#cfe3ee; font-size:.88rem; padding:3px 0; text-decoration:none">Fox Tale Charters <span style="color:#8aa5b5">· St. Petersburg</span></a>
-<a href="http://www.seascreamer.com/" target="_blank" rel="noopener" style="display:block; color:#cfe3ee; font-size:.88rem; padding:3px 0; text-decoration:none">Sea Screamer <span style="color:#8aa5b5">· Clearwater</span></a>
-<a href="http://www.littletoot.us/" target="_blank" rel="noopener" style="display:block; color:#cfe3ee; font-size:.88rem; padding:3px 0; text-decoration:none">Little Toot Dolphin Adventure <span style="color:#8aa5b5">· Clearwater</span></a>
-<a href="https://www.starlitecruises.com/" target="_blank" rel="noopener" style="display:block; color:#cfe3ee; font-size:.88rem; padding:3px 0; text-decoration:none">Calypso Queen <span style="color:#8aa5b5">· Clearwater</span></a>
-<a href="http://www.missjohnspass.com/" target="_blank" rel="noopener" style="display:block; color:#cfe3ee; font-size:.88rem; padding:3px 0; text-decoration:none">Miss John's Pass Charter Boat <span style="color:#8aa5b5">· Treasure Island</span></a>
-<a href="http://www.captainfins.net/" target="_blank" rel="noopener" style="display:block; color:#cfe3ee; font-size:.88rem; padding:3px 0; text-decoration:none">Captain Fin's Sightseeing and Boat Tours <span style="color:#8aa5b5">· Bradenton Beach</span></a>
-<a href="https://localguideami.com/" target="_blank" rel="noopener" style="display:block; color:#cfe3ee; font-size:.88rem; padding:3px 0; text-decoration:none">Local Guide AMI <span style="color:#8aa5b5">· Bradenton / Anna Maria Island</span></a>
-<a href="#charters" style="display:inline-block; margin-top:10px; color:#7fd1c0; font-size:.88rem">See all in the directory →</a></div>
-</div></div></section>
-<footer>
-  <div class="socials">
-    <a class="soc" href="https://www.tiktok.com/@tampabayboating" target="_blank" rel="noopener" aria-label="TikTok"><svg viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/></svg></a>
-    <a class="soc" href="https://www.instagram.com/tampabayboating/" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24"><path d="M12 2.16c3.2 0 3.58.01 4.85.07 3.25.15 4.77 1.69 4.92 4.92.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.15 3.23-1.66 4.77-4.92 4.92-1.27.06-1.64.07-4.85.07s-3.58-.01-4.85-.07c-3.26-.15-4.77-1.7-4.92-4.92C2.17 15.58 2.16 15.2 2.16 12s.01-3.58.07-4.85C2.38 3.92 3.9 2.38 7.15 2.23 8.42 2.17 8.8 2.16 12 2.16M12 0C8.74 0 8.33.01 7.05.07 2.7.27.27 2.69.07 7.05.01 8.33 0 8.74 0 12s.01 3.67.07 4.95c.2 4.36 2.62 6.78 6.98 6.98C8.33 23.99 8.74 24 12 24s3.67-.01 4.95-.07c4.35-.2 6.78-2.62 6.98-6.98.06-1.28.07-1.69.07-4.95s-.01-3.67-.07-4.95C23.73 2.7 21.31.27 16.95.07 15.67.01 15.26 0 12 0zm0 5.84A6.16 6.16 0 1 0 18.16 12 6.16 6.16 0 0 0 12 5.84zm0 10.15A4 4 0 1 1 16 12a4 4 0 0 1-4 3.99zm7.85-10.4a1.44 1.44 0 1 1-2.88 0 1.44 1.44 0 0 1 2.88 0z"/></svg></a>
-    <a class="soc" href="https://www.facebook.com/tampabayboating" target="_blank" rel="noopener" aria-label="Facebook"><svg viewBox="0 0 24 24"><path d="M24 12.07C24 5.4 18.63 0 12 0S0 5.4 0 12.07C0 18.1 4.39 23.09 10.13 24v-8.44H7.08v-3.49h3.04V9.41c0-3.02 1.8-4.7 4.54-4.7 1.31 0 2.68.24 2.68.24v2.97h-1.5c-1.5 0-1.96.93-1.96 1.89v2.26h3.32l-.53 3.49h-2.79V24C19.61 23.09 24 18.1 24 12.07z"/></svg></a>
-  </div>
-  <div>&copy; 2026 Tampa Bay Boating · Tampa Bay, Florida · We do boat stuff.</div>
-</footer>
+<script>
+const STORAGE = [
+ ["Loggerhead St. Petersburg Marina","St. Pete","Dry","327-boat dry stack, protected harbor, pool, pump-out","5821 32nd Way S","(727) 867-2600"],
+ ["Mar Marina","Tarpon Springs","Dry","Dry rack + full-service boatyard, 35-ton lifts","761 Anclote Rd","(727) 939-1589"],
+ ["Vinoy Marina","St. Pete","Wet","74 slips downtown, up to 120 ft, resort amenities next door","502 5th Ave NE","(727) 824-8022"],
+ ["Loggerhead St. Petersburg Marina","St. Pete","Wet","Wet slips in protected harbor, 18-ft bridge clearance","5821 32nd Way S","(727) 867-2600"],
+ ["Mar Marina","Tarpon Springs","Wet","Wet slips, clean docks, minutes from downtown","761 Anclote Rd","(727) 939-1589"],
+ ["Buc-A-Day Boat/RV Storage","Ruskin","Lot","Outdoor boat/RV parking, gated, from 12x26 spaces","1415 3rd St NE","(813) 798-5196"],
+ ["RV Port Storage","Pinellas Park","Lot","24-hr gated access, reserve & pay by app","6030 45th St N","(727) 341-9967"],
+ ["Allen Storage","Pinellas Park","Lot","Boat/trailer storage + on-site trailer repair","6700 118th Ave N","(727) 546-3968"],
+ ["Boat & RV Storage","St. Pete","Lot","Covered storage, wash station, rated top local pick","10900 Gandy Blvd N","(727) 580-5605"]
+];
+let storMode = "Dry";
+function storTab(m){ storMode=m; ["Dry","Wet","Lot"].forEach(c=>{ const el=document.getElementById("pill-"+(c==="Dry"?"dry":c==="Wet"?"wet":"lot")); if(el) el.classList.toggle("sel",c===m); }); renderStor(); }
+function renderStor(){
+  const q = document.getElementById("stor-input").value.trim().toLowerCase();
+  const list = STORAGE.filter(b => b[2]===storMode && (!q || (b[0]+" "+b[1]+" "+b[3]).toLowerCase().includes(q)));
+  document.getElementById("stor-grid").innerHTML = list.length ? list.map(b =>
+    '<div class="dir-card"><div class="city">'+b[1]+'</div><h4>'+b[0]+'</h4><div class="type">'+b[3]+'</div><div class="contact">📍 '+b[4]+(b[5]?' · <a href="tel:'+b[5].replace(/[^0-9]/g,'')+'">'+b[5]+'</a>':'')+'</div></div>'
+  ).join("") : '<div class="no-results">No matches — try clearing the search.</div>';
+}
+renderStor();
+</script>
+<script>
+const PARTS = [
+ ["West Marine — Tampa","Tampa","Parts","The big-box chandlery: parts, electronics, safety gear, maintenance","3905 W Cypress St","(813) 348-0521"],
+ ["West Marine — St. Petersburg","St. Pete","Parts","Full parts & accessories counter, fishing and paddling gear","2010 Tyrone Blvd N","(727) 342-8001"],
+ ["West Marine — Clearwater","Clearwater","Parts","Boat parts, sailing gear, paddling accessories, fishing","2128 Gulf to Bay Blvd",""],
+ ["West Marine — Apollo Beach","Apollo Beach","Parts","South-shore parts & supplies near the Alafia","6492 N US Hwy 41","(813) 645-6144"],
+ ["West Marine — Bradenton","Bradenton","Parts","Parts & accessories for the Manatee River crowd","3622 1st St","(941) 357-1657"],
+ ["West Coast Marine","Tampa","Parts","Boat dealer + marine supply store and service center","5240 W Tyson Ave","(813) 373-6137"],
+ ["Tampa Bay Marine Center","Pinellas Park","Fab","Custom boat shop: dash refits, rigging, powder coating, wraps","10408 66th St N",""],
+ ["T-Top Welding LLC","Tampa","Fab","T-tops, towers, railings, powder coating","1418 Bush Blvd","(813) 498-9391"],
+ ["Aqua Shade / T-Tops for Sale","Sarasota","Fab","T-tops, bay & half towers, hardtops, baitwells + in-house canvas","1848 Gillespie Ave","(941) 266-0903"],
+ ["Quality Marine Fabricators","Tarpon Springs","Fab","Custom marine fabrication","Tarpon Springs",""],
+ ["Quality T Tops","Tarpon Springs","Fab","Custom T-tops","Tarpon Springs",""],
+ ["All Marine Canvas","Clearwater","Canvas","Custom canvas: bimini tops, sunshades, covers + dockside service","62nd St N",""],
+ ["Seamores Canvas Shop","Tampa","Canvas","Canvas work, 30+ years in business","4712 N Clark Ave","(813) 237-2660"],
+ ["Bay Canvas Works","Tampa","Canvas","Marine canvas fabrication","Tampa",""],
+ ["American Canvas","Tampa","Canvas","Canvas products & repairs","Tampa",""],
+ ["Sea Breeze Marine Canvas Co","Bradenton","Canvas","Marine canvas shop","Bradenton",""],
+ ["Adriatic Lux Marine Canvas","Tarpon Springs","Canvas","Full-service custom canvas design, install & repair","1240 N Pinellas Ave","(727) 218-7157"],
+ ["Custom Marine Upholstery","Tarpon Springs","Canvas","All phases of boat upholstery","Tarpon Springs",""],
+ ["Marine Sewing & Upholstery Pasadena","South Pasadena","Canvas","Custom fabrication, 30+ years in the trade","6801 Gulfport Blvd S Ste 7","(727) 345-6994"],
+ ["On-Site Marine Upholstery","St. Pete","Canvas","Repair or replace upholstery, tenders to superyachts","5500 100th Way N","(727) 251-3448"]
+];
+let partMode = "Parts";
+function partTab(m){ partMode=m; ["Parts","Fab","Canvas"].forEach(c=>{ const el=document.getElementById("pill-"+(c==="Parts"?"parts":c==="Fab"?"fab":"canvas")); if(el) el.classList.toggle("sel",c===m); }); renderParts(); }
+function renderParts(){
+  const q = document.getElementById("part-input").value.trim().toLowerCase();
+  const list = PARTS.filter(b => b[2]===partMode && (!q || (b[0]+" "+b[1]+" "+b[3]).toLowerCase().includes(q)));
+  document.getElementById("part-grid").innerHTML = list.length ? list.map(b =>
+    '<div class="dir-card"><div class="city">'+b[1]+'</div><h4>'+b[0]+'</h4><div class="type">'+b[3]+'</div><div class="contact">📍 '+b[4]+(b[5]?' · <a href="tel:'+b[5].replace(/[^0-9]/g,'')+'">'+b[5]+'</a>':'')+'</div></div>'
+  ).join("") : '<div class="no-results">No matches — try clearing the search.</div>';
+}
+renderParts();
+</script>
 <script>
 /* ================= PRODUCTS ================= */
 const PRODUCTS = [
@@ -2428,5 +2473,42 @@ async function loadForecastBadges(){
 /* ---- init ---- */
 renderGrid(); renderDir(); updateCartUI(); renderCalendar(); loadTides(); loadMarine(); loadForecastBadges(); renderFuel(); renderSvc(); renderOwner(); renderDealers(); renderGear();
 </script>
-</body>
-</html>
+
+<script>
+/* ---- SPA router: approved app-style redesign ---- */
+const ID2VIEW = {conditions:'tides',fishing:'fishing',events:'events',dining:'dining',baymap:'map',paddling:'paddling',ramps:'ramps',bridges:'bridges',logbook:'logbook',charters:'charters',fuel:'fuel',services:'services',parts:'parts',storage:'storage','boat-clubs':'boat-clubs',navigation:'navigation',tips:'tips',safety:'safety',stopped:'stopped',manatee:'manatee',courses:'courses',hurricane:'hurricane',insurance:'insurance',shop:'shop',boatsales:'boatsales',gear:'gear',videos:'videos',meetups:'meetups',news:'news',newsletter:'newsletter',advertise:'advertise',contact:'contact','nav-charts':'navigation'};
+const VIEWS = ['home','plan','local','smart','shopc','tides','fishing','events','dining','map','paddling','ramps','bridges','logbook','charters','fuel','services','parts','storage','boat-clubs','navigation','tips','safety','stopped','manatee','courses','hurricane','insurance','shop','boatsales','gear','videos','meetups','news','newsletter','advertise','contact'];
+function showView(name){
+  if(VIEWS.indexOf(name)<0) name='home';
+  document.querySelectorAll('.view').forEach(function(v){v.classList.remove('active');});
+  document.getElementById('view-'+name).classList.add('active');
+  var strips=document.getElementById('strips');
+  if(strips) strips.style.display=(name==='home')?'':'none';
+  closeExplore();
+  window.scrollTo(0,0);
+  if(name==='map'&&window.tbbMap){setTimeout(function(){window.tbbMap.invalidateSize();},150);}
+}
+function route(){
+  var h=location.hash||'#/';
+  if(h.indexOf('#/')===0){showView(h.slice(2)||'home');return;}
+  var id=h.slice(1);
+  if(id&&ID2VIEW[id]){showView(ID2VIEW[id]);}
+}
+function toggleExplore(e){if(e)e.stopPropagation();document.getElementById('tb-mega').classList.toggle('open');}
+function closeExplore(){var m=document.getElementById('tb-mega');if(m)m.classList.remove('open');}
+document.addEventListener('click',function(e){
+  var a=e.target.closest('a[href^="#"]');if(!a)return;
+  var href=a.getAttribute('href');
+  if(href.indexOf('#/')===0)return;
+  if(href==='#'||href==='#browse')return;
+  var id=href.slice(1);
+  if(id&&ID2VIEW[id]){e.preventDefault();closeExplore();location.hash='#/'+ID2VIEW[id];}
+});
+window.addEventListener('hashchange',route);
+document.addEventListener('click',function(e){
+  var ex=document.getElementById('tb-mega');
+  if(ex&&ex.classList.contains('open')&&!e.target.closest('.tbb-topbar'))closeExplore();
+});
+route();
+</script>
+</body></html>

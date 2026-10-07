@@ -5,6 +5,26 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Tampa Bay Boating — @tampabayboating</title>
 <meta name="description" content="Tampa Bay Boating — we do boat stuff. Official merch, videos, and Tampa Bay charter directory.">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16x16.png">
+<link rel="shortcut icon" href="assets/favicon.ico">
+<link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
+<meta name="theme-color" content="#0a2540">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Tampa Bay Boating">
+<meta property="og:url" content="https://tampabayboating.com/">
+<meta property="og:title" content="Tampa Bay Boating — @tampabayboating">
+<meta property="og:description" content="Boating guides, local directories, events calendar, and merch for Tampa Bay boaters. We do boat stuff.">
+<meta property="og:image" content="https://tampabayboating.com/assets/og-image.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Sunshine Skyway Bridge at golden hour — Tampa Bay Boating">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:url" content="https://tampabayboating.com/">
+<meta name="twitter:title" content="Tampa Bay Boating — @tampabayboating">
+<meta name="twitter:description" content="Boating guides, local directories, events calendar, and merch for Tampa Bay boaters. We do boat stuff.">
+<meta name="twitter:image" content="https://tampabayboating.com/assets/og-image.jpg">
+<meta name="twitter:image:alt" content="Sunshine Skyway Bridge at golden hour — Tampa Bay Boating">
 <style>
 :root{
   --navy:#0a2540; --navy2:#103a5f; --teal:#0e7c7b; --teal-lt:#14b8a6;
@@ -222,6 +242,59 @@ footer .soc svg{width:20px; height:20px}
 </head>
 <body>
 
+<!-- ============ NAV ============ -->
+<nav class="topnav">
+  <div class="wrap nav-bar">
+    <a href="#top" class="nav-brand">⛵ Tampa Bay Boating</a>
+    <div class="nav-actions">
+      <button class="nav-menu-btn" onclick="toggleNavMenu(event)">☰ Menu</button>
+      <button class="cart-btn" onclick="openCart()">Cart (<span id="cart-count">0</span>)</button>
+    </div>
+  </div>
+  <div class="nav-dropdown" id="nav-dropdown">
+    <a href="#shop" onclick="closeNavMenu()">🛍️ Shop Merch</a>
+    <a href="#videos" onclick="closeNavMenu()">🎥 Videos</a>
+    <a href="#events" onclick="closeNavMenu()">📅 Events</a>
+    <a href="#charters" onclick="closeNavMenu()">🚤 Charters</a>
+    <a href="#dining" onclick="closeNavMenu()">🍔 Dock &amp; Dine</a>
+    <a href="#fuel" onclick="closeNavMenu()">⛽ Fuel &amp; Bait</a>
+    <a href="#services" onclick="closeNavMenu()">🔧 Boat Services</a>
+    <a href="#advertise" onclick="closeNavMenu()">📣 Advertise</a>
+    <a href="#boatsales" onclick="closeNavMenu()">🛥️ Boats for Sale</a>
+    <a href="#gear" onclick="closeNavMenu()">🎒 Gear Guide</a>
+    <a href="#safety" onclick="closeNavMenu()">🛟 Safety</a>
+    <a href="#navigation" onclick="closeNavMenu()">🧭 Navigation Basics</a>
+    <a href="#nav-charts" onclick="closeNavMenu()">🗺️ Navigation Charts</a>
+    <a href="#tips" onclick="closeNavMenu()">💡 Tips &amp; Tricks</a>
+    <a href="#paddling" onclick="closeNavMenu()">🛶 Kayak &amp; SUP</a>
+    <a href="#meetups" onclick="closeNavMenu()">🤝 Meetups</a>
+    <a href="#news" onclick="closeNavMenu()">📰 Boating News</a>
+    <a href="#boat-clubs" onclick="closeNavMenu()">🛥️ Boat Clubs</a>
+    <a href="#storage" onclick="closeNavMenu()">🅿️ Boat Storage</a>
+    <a href="#parts" onclick="closeNavMenu()">⚙️ Marine Parts</a>
+    <a href="#bridges" onclick="closeNavMenu()">📻 VHF &amp; Bridges</a>
+    <a href="#fishing" onclick="closeNavMenu()">🎣 Fishing Report</a>
+    <a href="#baymap" onclick="closeNavMenu()">🗺️ Bay Map</a>
+    <a href="#stopped" onclick="closeNavMenu()">🚨 If You're Stopped</a>
+    <a href="#ramps" onclick="closeNavMenu()">🚤 Boat Ramps</a>
+    <a href="#manatee" onclick="closeNavMenu()">🐢 Manatee & Slow Zones</a>
+    <a href="#courses" onclick="closeNavMenu()">🎓 Boating Courses</a>
+    <a href="#hurricane" onclick="closeNavMenu()">🛟 Hurricane Prep</a>
+    <a href="#insurance" onclick="closeNavMenu()">🛡️ Boaters Insurance</a>
+    <a href="#logbook" onclick="closeNavMenu()">📓 My Boating Log</a>
+  </div>
+</nav>
+<a class="forecast-bar" href="#conditions" aria-label="Boating forecast — tap for full details">
+  <span class="fb-badge" id="fb-tide">🌊 <b>Loading tide…</b></span>
+  <span class="fb-badge" id="fb-wx">🌡️ <b>Loading…</b></span>
+  <span class="fb-badge" id="fb-wind">💨 <b>Loading…</b></span>
+  <span class="fb-more">Full forecast →</span>
+</a>
+
+<!-- BITE-STRIP-START (auto-updated every morning ~6am ET) -->
+<a href="#fishing" class="bite-strip">🎣 <b>Today's bite:</b> Kings at Egmont Key &middot; Reds schooling the flats &middot; Snook on the dock lights &nbsp;→&nbsp; <u>Full daily report</u></a>
+<!-- BITE-STRIP-END -->
+
 <!-- ============ HERO (from tampabayboating.com) ============ -->
 <style>
 .hero{min-height:96vh; background:url('assets/hero-skyway.jpg') no-repeat center center/cover; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; color:#fff; position:relative; padding:40px 20px}
@@ -350,58 +423,6 @@ footer .soc svg{width:20px; height:20px}
   </div>
 </section>
 
-<!-- ============ NAV ============ -->
-<nav class="topnav">
-  <div class="wrap nav-bar">
-    <a href="#top" class="nav-brand">⛵ Tampa Bay Boating</a>
-    <div class="nav-actions">
-      <button class="nav-menu-btn" onclick="toggleNavMenu(event)">☰ Menu</button>
-      <button class="cart-btn" onclick="openCart()">Cart (<span id="cart-count">0</span>)</button>
-    </div>
-  </div>
-  <div class="nav-dropdown" id="nav-dropdown">
-    <a href="#shop" onclick="closeNavMenu()">🛍️ Shop Merch</a>
-    <a href="#videos" onclick="closeNavMenu()">🎥 Videos</a>
-    <a href="#events" onclick="closeNavMenu()">📅 Events</a>
-    <a href="#charters" onclick="closeNavMenu()">🚤 Charters</a>
-    <a href="#dining" onclick="closeNavMenu()">🍔 Dock &amp; Dine</a>
-    <a href="#fuel" onclick="closeNavMenu()">⛽ Fuel &amp; Bait</a>
-    <a href="#services" onclick="closeNavMenu()">🔧 Boat Services</a>
-    <a href="#advertise" onclick="closeNavMenu()">📣 Advertise</a>
-    <a href="#boatsales" onclick="closeNavMenu()">🛥️ Boats for Sale</a>
-    <a href="#gear" onclick="closeNavMenu()">🎒 Gear Guide</a>
-    <a href="#safety" onclick="closeNavMenu()">🛟 Safety</a>
-    <a href="#navigation" onclick="closeNavMenu()">🧭 Navigation Basics</a>
-    <a href="#nav-charts" onclick="closeNavMenu()">🗺️ Navigation Charts</a>
-    <a href="#tips" onclick="closeNavMenu()">💡 Tips &amp; Tricks</a>
-    <a href="#paddling" onclick="closeNavMenu()">🛶 Kayak &amp; SUP</a>
-    <a href="#meetups" onclick="closeNavMenu()">🤝 Meetups</a>
-    <a href="#news" onclick="closeNavMenu()">📰 Boating News</a>
-    <a href="#boat-clubs" onclick="closeNavMenu()">🛥️ Boat Clubs</a>
-    <a href="#storage" onclick="closeNavMenu()">🅿️ Boat Storage</a>
-    <a href="#parts" onclick="closeNavMenu()">⚙️ Marine Parts</a>
-    <a href="#bridges" onclick="closeNavMenu()">📻 VHF &amp; Bridges</a>
-    <a href="#fishing" onclick="closeNavMenu()">🎣 Fishing Report</a>
-    <a href="#baymap" onclick="closeNavMenu()">🗺️ Bay Map</a>
-    <a href="#stopped" onclick="closeNavMenu()">🚨 If You're Stopped</a>
-    <a href="#ramps" onclick="closeNavMenu()">🚤 Boat Ramps</a>
-    <a href="#manatee" onclick="closeNavMenu()">🐢 Manatee & Slow Zones</a>
-    <a href="#courses" onclick="closeNavMenu()">🎓 Boating Courses</a>
-    <a href="#hurricane" onclick="closeNavMenu()">🛟 Hurricane Prep</a>
-    <a href="#insurance" onclick="closeNavMenu()">🛡️ Boaters Insurance</a>
-    <a href="#logbook" onclick="closeNavMenu()">📓 My Boating Log</a>
-  </div>
-</nav>
-<a class="forecast-bar" href="#conditions" aria-label="Boating forecast — tap for full details">
-  <span class="fb-badge" id="fb-tide">🌊 <b>Loading tide…</b></span>
-  <span class="fb-badge" id="fb-wx">🌡️ <b>Loading…</b></span>
-  <span class="fb-badge" id="fb-wind">💨 <b>Loading…</b></span>
-  <span class="fb-more">Full forecast →</span>
-</a>
-
-<!-- BITE-STRIP-START (auto-updated every morning ~6am ET) -->
-<a href="#fishing" class="bite-strip">🎣 <b>Today's bite:</b> Kings at Egmont Key &middot; Reds schooling the flats &middot; Snook on the dock lights &nbsp;→&nbsp; <u>Full daily report</u></a>
-<!-- BITE-STRIP-END -->
 
 <!-- ============ FISHING REPORT ============ -->
 <section id="fishing">

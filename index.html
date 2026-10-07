@@ -1848,13 +1848,13 @@ window.tbbMapInit=(function(){
   function draw(cat){
     layer.clearLayers();
     MAP_PINS.filter(p => cat==='all' || p[1]===cat).forEach(p => {
-      const m = L.circleMarker([p[2], p[3]], {radius: 8, color: '#fff', weight: 2, fillColor: MAP_COLORS[p[1]]||'#666', fillOpacity: .95});
+      const icon = L.divIcon({className:'tbb-pin', html:'<div style="width:14px;height:14px;border-radius:50%;background:'+(MAP_COLORS[p[1]]||'#666')+';border:2px solid #fff;box-shadow:0 1px 5px rgba(0,0,0,.45)"></div>', iconSize:[18,18], iconAnchor:[9,9]});
+      const m = L.marker([p[2], p[3]], {icon:icon, title:p[0]});
       let html = '<b>'+p[0]+'</b>';
       if(p[4]) html += '<br>'+p[4];
       if(p[6]) html += '<br><i>'+p[6]+'</i>';
       if(p[5]) html += '<br><a href="tel:'+p[5].replace(/[^0-9]/g,'')+'">'+p[5]+'</a>';
-      m.bindPopup(html);
-      m.on('click', function(e){ L.popup({maxWidth:260}).setLatLng(e.latlng).setContent(html).openOn(map); });
+      m.bindPopup(html, {maxWidth:260});
       layer.add(m);
     });
   }

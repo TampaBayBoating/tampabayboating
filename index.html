@@ -676,6 +676,7 @@ footer.tbb-foot .copy{margin-top:14px;font-size:.85rem}
       <h2>Tampa Bay Boater's Map</h2>
       <p>Fuel docks, bait shops, dock &amp; dine spots, and the places everyone goes. Tap a pin for details.</p>
     </div>
+    <div style="text-align:center;font-size:.8rem;color:var(--muted)" id="pin-count"></div>
     <div class="map-filters" style="text-align:center; margin-bottom:10px">
       <button class="map-filter active" data-cat="all" onclick="mapFilter('all',this)">All</button>
       <button class="map-filter" data-cat="fuel" onclick="mapFilter('fuel',this)">⛽ Fuel</button>
@@ -1846,8 +1847,12 @@ window.tbbMapInit=(function(){
   L.control.layers({'🗺️ Navigation chart': chartBase, '🛣️ Street map': streetBase}, {'🚩 Chart marks (buoys, beacons, lights)': seamarks}, {collapsed: false}).addTo(map);
   const layer = L.layerGroup().addTo(map);
   function draw(cat){
+    try{
     layer.clearLayers();
-    MAP_PINS.filter(p => cat==='all' || p[1]===cat).forEach(p => {
+    const list = MAP_PINS.filter(p => cat==='all' || p[1]===cat);
+    const pc = document.getElementById('pin-count');
+    if(pc) pc.textContent = list.length + ' pinned locations (' + cat + ')';
+    list.forEach(p => {
       const icon = L.divIcon({className:'tbb-pin', html:'<div style="width:14px;height:14px;border-radius:50%;background:'+(MAP_COLORS[p[1]]||'#666')+';border:2px solid #fff;box-shadow:0 1px 5px rgba(0,0,0,.45)"></div>', iconSize:[18,18], iconAnchor:[9,9]});
       const m = L.marker([p[2], p[3]], {icon:icon, title:p[0]});
       let html = '<b>'+p[0]+'</b>';
@@ -1857,6 +1862,7 @@ window.tbbMapInit=(function(){
       m.bindPopup(html, {maxWidth:260});
       layer.add(m);
     });
+    }catch(err){ const pc2=document.getElementById('pin-count'); if(pc2) pc2.textContent='Map error: '+err.message; }
   }
   draw('all');
   window.tbbDraw = draw;

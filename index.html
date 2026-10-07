@@ -676,7 +676,8 @@ footer.tbb-foot .copy{margin-top:14px;font-size:.85rem}
       <h2>Tampa Bay Boater's Map</h2>
       <p>Fuel docks, bait shops, dock &amp; dine spots, and the places everyone goes. Tap a pin for details.</p>
     </div>
-    <div style="text-align:center;font-size:.8rem;color:var(--muted)" id="pin-count"></div>
+    <div id="pin-count" style="text-align:center;font-size:.85rem;font-weight:700;color:#0a2540;background:#fff3cd;border:2px solid #f5b301;border-radius:8px;padding:6px;margin:0 auto 8px;max-width:420px">map loading…</div>
+    <div id="js-err" style="display:none;text-align:center;font-size:.8rem;font-weight:700;color:#fff;background:#c0392b;border-radius:8px;padding:6px;margin:0 auto 8px;max-width:520px"></div>
     <div class="map-filters" style="text-align:center; margin-bottom:10px">
       <button class="map-filter active" data-cat="all" onclick="mapFilter('all',this)">All</button>
       <button class="map-filter" data-cat="fuel" onclick="mapFilter('fuel',this)">⛽ Fuel</button>
@@ -1827,6 +1828,7 @@ const MAP_PINS = [["Port32 Tampa","fuel",27.88621,-82.5338,"5200 W Tyson Ave, Ta
 ["RV Port Storage","storage",27.8265,-82.695,"6030 45th St N, Pinellas Park","(727) 341-9967","24-hr gated access, app-based"],
 ["Allen Storage","storage",27.8782,-82.7312,"6700 118th Ave N, Pinellas Park","(727) 546-3968","Boat/trailer storage, trailer repair"],
 ["Boat & RV Storage","storage",27.8682,-82.6198,"10900 Gandy Blvd N, St. Pete","(727) 580-5605","Covered storage, wash station"]];
+window.addEventListener('error',function(e){ var d=document.getElementById('js-err'); if(d){ d.style.display='block'; d.textContent='JS error: '+(e.message||'unknown')+' @ '+(e.lineno||'?'); } });
 const MAP_COLORS = {fuel:"#e25822", bait:"#2e9e5b", dine:"#8b5cf6", play:"#0e7490", club:"#d946ef", storage:"#f59e0b"};
 window.mapFilter=function(cat,btn){
   document.querySelectorAll('.map-filter').forEach(x => x.classList.remove('active'));

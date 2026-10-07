@@ -353,6 +353,16 @@ footer.tbb-foot .copy{margin-top:14px;font-size:.85rem}
 #strips .forecast-bar{display:block}
 @media(max-width:860px){.today-grid,.cat-grid{grid-template-columns:1fr 1fr}.hero2 h1{font-size:2.3rem}.tb-mega-grid{grid-template-columns:1fr 1fr}.tb-brand span{display:none}.tb-advertise{display:none}}
 @media(max-width:768px){.hero2{background-image:url('assets/hero-skyway-mobile.jpg');min-height:80vh}}
+/* NWS marine weather alert bar */
+#wx-alert-bar{display:none;background:#c62828;color:#fff}
+#wx-alert-bar.show{display:block}
+#wx-alert-bar a{display:flex;align-items:center;gap:12px;max-width:1180px;margin:0 auto;padding:11px 20px;color:#fff;text-decoration:none}
+#wx-alert-bar .wx-icon{font-size:1.4rem;flex:0 0 auto;animation:wxblink 1.6s infinite}
+@keyframes wxblink{0%,100%{opacity:1}50%{opacity:.55}}
+#wx-alert-bar .wx-txt{flex:1;min-width:0}
+#wx-alert-bar .wx-txt b{font-size:.98rem;letter-spacing:.3px}
+#wx-alert-bar .wx-txt span.wx-sub{display:block;font-size:.82rem;opacity:.92;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#wx-alert-bar .wx-more{font-weight:800;font-size:.85rem;white-space:nowrap;border:2px solid #fff;border-radius:999px;padding:5px 14px}
 </style>
 <style>
 /* conditions section (transplanted) */
@@ -415,6 +425,7 @@ footer.tbb-foot .copy{margin-top:14px;font-size:.85rem}
     <div class="modal" id="modal"></div>
   </div>
 </div>
+<div id="wx-alert-bar" role="alert"><a href="#/tides" id="wx-alert-link"><span class="wx-icon">⚠️</span><span class="wx-txt"><b id="wx-alert-title"></b><span class="wx-sub" id="wx-alert-sub"></span></span><span class="wx-more">Details →</span></a></div>
 <div id="strips"><a class="forecast-bar" href="#/tides" aria-label="Boating forecast — tap for full details">
   <span class="fb-badge" id="fb-tide">🌊 <b>Loading tide…</b></span>
   <span class="fb-badge" id="fb-wx">🌡️ <b>Loading…</b></span>
@@ -2500,5 +2511,43 @@ document.addEventListener('click',function(e){
   if(ex&&ex.classList.contains('open')&&!e.target.closest('.tbb-topbar'))closeExplore();
 });
 route();
+</script>
+<script>
+/* ---- NWS marine weather alert bar ---- */
+(function(){
+  function rank(ev){
+    const e=(ev||'').toLowerCase();
+    if(/hurricane.*warning/.test(e)) return 0;
+    if(/tropical storm.*warning/.test(e)) return 1;
+    if(/storm warning/.test(e)) return 2;
+    if(/gale/.test(e)) return 3;
+    if(/hurricane.*watch/.test(e)) return 4;
+    if(/tropical storm.*watch/.test(e)) return 5;
+    if(/small craft/.test(e)) return 6;
+    if(/special marine/.test(e)) return 7;
+    if(/severe thunderstorm|tornado|waterspout/.test(e)) return 8;
+    if(/warning/.test(e)) return 9;
+    if(/watch/.test(e)) return 10;
+    return 11;
+  }
+  fetch('https://api.weather.gov/alerts/active?point=27.9,-82.6')
+    .then(r=>r.json())
+    .then(d=>{
+      const feats=(d.features||[]).filter(f=>{
+        const ev=(f.properties&&f.properties.event)||'';
+        return /small craft|gale|storm|hurricane|tropical|marine|thunderstorm|tornado|waterspout|wind|surge|flood/i.test(ev);
+      });
+      if(!feats.length) return;
+      feats.sort((a,b)=>rank(a.properties.event)-rank(b.properties.event));
+      const top=feats[0].properties;
+      document.getElementById('wx-alert-title').textContent=top.event;
+      let sub=(top.headline||'').replace(/\s+/g,' ').trim();
+      if(sub.length>140) sub=sub.slice(0,137)+'…';
+      if(feats.length>1) sub+=' (+'+(feats.length-1)+' more alert'+(feats.length>2?'s':'')+')';
+      document.getElementById('wx-alert-sub').textContent=sub;
+      document.getElementById('wx-alert-bar').classList.add('show');
+    })
+    .catch(()=>{});
+})();
 </script>
 </body></html>

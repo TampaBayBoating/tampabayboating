@@ -1,0 +1,362 @@
+[
+ {
+  "name": "Port32 Tampa",
+  "cat": "fuel",
+  "lat": 27.88621,
+  "lng": -82.5338,
+  "addr": "5200 W Tyson Ave, Tampa",
+  "phone": "(813) 831-1200",
+  "note": "Ethanol-free Rec 90 + diesel, ship's store"
+ },
+ {
+  "name": "Marjorie Park Yacht Basin",
+  "cat": "fuel",
+  "lat": 27.92413,
+  "lng": -82.45272,
+  "addr": "Davis Islands, Tampa",
+  "phone": "",
+  "note": "Temporarily closed as of Oct 2026 \u2014 call before heading over"
+ },
+ {
+  "name": "St. Petersburg Municipal Marina",
+  "cat": "fuel",
+  "lat": 27.76996,
+  "lng": -82.63116,
+  "addr": "Downtown St. Pete",
+  "phone": "(727) 893-7329",
+  "note": "Non-ethanol 90 octane, ValvTect gas & diesel"
+ },
+ {
+  "name": "O'Neill's Marina",
+  "cat": "fuel",
+  "lat": 27.70736,
+  "lng": -82.68045,
+  "addr": "6701 Sunshine Skyway Ln S, St. Pete",
+  "phone": "(727) 867-2585",
+  "note": "Ethanol-free fuel + bait & tackle shop, boat ramp"
+ },
+ {
+  "name": "Loggerhead Marina \u2013 St. Petersburg",
+  "cat": "fuel",
+  "lat": 27.71392,
+  "lng": -82.6782,
+  "addr": "5821 32nd Way S, St. Pete",
+  "phone": "(727) 867-2600",
+  "note": "Non-ethanol 90 octane, ValvTect"
+ },
+ {
+  "name": "Pass-A-Grille Marina",
+  "cat": "fuel",
+  "lat": 27.69487,
+  "lng": -82.73593,
+  "addr": "St. Pete Beach",
+  "phone": "",
+  "note": "6 fuel pumps; non-ethanol 87/90/93 + marine diesel"
+ },
+ {
+  "name": "Gulfport Municipal Marina",
+  "cat": "fuel",
+  "lat": 27.74062,
+  "lng": -82.69615,
+  "addr": "4630 29th Ave S, Gulfport",
+  "phone": "",
+  "note": "Fuel dock (Waterway Guide) \u2014 call ahead"
+ },
+ {
+  "name": "Maximo Marina (IGY)",
+  "cat": "fuel",
+  "lat": 27.72507,
+  "lng": -82.68223,
+  "addr": "St. Petersburg, Boca Ciega Bay",
+  "phone": "",
+  "note": "Fuel dock (Waterway Guide) \u2014 call ahead"
+ },
+ {
+  "name": "The Harborage at Waterview Marinas",
+  "cat": "fuel",
+  "lat": 27.75905,
+  "lng": -82.63661,
+  "addr": "Downtown St. Pete",
+  "phone": "",
+  "note": "Fuel dock (Waterway Guide) \u2014 call ahead"
+ },
+ {
+  "name": "Clearwater Beach Municipal Marina",
+  "cat": "fuel",
+  "lat": 27.97684,
+  "lng": -82.82639,
+  "addr": "25 Causeway Blvd, Clearwater Beach",
+  "phone": "",
+  "note": "Fuel dock (Waterway Guide) \u2014 call ahead"
+ },
+ {
+  "name": "John's Pass Marina",
+  "cat": "fuel",
+  "lat": 27.78349,
+  "lng": -82.78015,
+  "addr": "12795 Kingfish Dr, Treasure Island",
+  "phone": "",
+  "note": "Fuel dock (Waterway Guide) \u2014 call ahead"
+ },
+ {
+  "name": "Madeira Beach Municipal Marina",
+  "cat": "fuel",
+  "lat": 27.80425,
+  "lng": -82.79613,
+  "addr": "503 150th Ave, Madeira Beach",
+  "phone": "",
+  "note": "Fuel dock (Waterway Guide) \u2014 call ahead"
+ },
+ {
+  "name": "Anclote Village Marina",
+  "cat": "fuel",
+  "lat": 28.17303,
+  "lng": -82.78574,
+  "addr": "Tarpon Springs, Anclote River",
+  "phone": "",
+  "note": "Fuel dock (FL Marine Guide) \u2014 call ahead"
+ },
+ {
+  "name": "Turtle Cove Marina",
+  "cat": "fuel",
+  "lat": 28.15322,
+  "lng": -82.76239,
+  "addr": "Tarpon Springs, Anclote River",
+  "phone": "",
+  "note": "Fuel dock (FL Marine Guide) \u2014 call ahead"
+ },
+ {
+  "name": "Anclote Harbors Marina",
+  "cat": "fuel",
+  "lat": 28.16012,
+  "lng": -82.76498,
+  "addr": "Tarpon Springs, Anclote River",
+  "phone": "",
+  "note": "Fuel dock (FL Marine Guide) \u2014 call ahead"
+ },
+ {
+  "name": "Bradenton Marina Exxon",
+  "cat": "fuel",
+  "lat": 27.41663,
+  "lng": -82.57524,
+  "addr": "6920 14th St W, Bradenton",
+  "phone": "(941) 900-1459",
+  "note": "REC 90 non-ethanol, 24 hrs"
+ },
+ {
+  "name": "Bradenton Beach Marina",
+  "cat": "fuel",
+  "lat": 27.46779,
+  "lng": -82.69711,
+  "addr": "402 Church St N, Bradenton Beach",
+  "phone": "(941) 778-2288",
+  "note": "Full-service marina with fuel dock"
+ },
+ {
+  "name": "Keyes Marina",
+  "cat": "fuel",
+  "lat": 27.50794,
+  "lng": -82.71399,
+  "addr": "5501 Marina Dr, Holmes Beach",
+  "phone": "(941) 779-2838",
+  "note": "Marine-grade fuel + live bait & tackle, ice"
+ },
+ {
+  "name": "Marina Jack Yacht Basin",
+  "cat": "fuel",
+  "lat": 27.33263,
+  "lng": -82.54338,
+  "addr": "2 Marina Plaza, Sarasota",
+  "phone": "(941) 365-4232",
+  "note": "24-hr self-serve fueling; hi-flow diesel + 90 octane"
+ },
+ {
+  "name": "Lands End Marina",
+  "cat": "fuel",
+  "lat": 27.78103,
+  "lng": -82.42305,
+  "addr": "Apollo Beach",
+  "phone": "(813) 645-5594",
+  "note": "Non-ethanol gas + diesel on the seawall"
+ },
+ {
+  "name": "One Stop Bait Shop",
+  "cat": "bait",
+  "lat": 27.96348,
+  "lng": -82.47418,
+  "addr": "2305 N Willow Ave, Tampa",
+  "phone": "(813) 867-8613",
+  "note": "Live shrimp, fiddler crabs, frozen bait, tackle, ice"
+ },
+ {
+  "name": "Reel Them In Bait and Tackle",
+  "cat": "bait",
+  "lat": 27.85377,
+  "lng": -82.38332,
+  "addr": "9851 US-41 S, Gibsonton",
+  "phone": "(813) 513-3823",
+  "note": "Live shrimp, greenbacks, frozen bait, rods/reels"
+ },
+ {
+  "name": "Riviera Bait & Tackle",
+  "cat": "bait",
+  "lat": 27.85742,
+  "lng": -82.64879,
+  "addr": "1106 94th Ave N, St. Pete",
+  "phone": "(727) 954-6365",
+  "note": "Live shrimp, tackle, custom rods, reel repair"
+ },
+ {
+  "name": "O'Neill's Marina Bait Shop",
+  "cat": "bait",
+  "lat": 27.70736,
+  "lng": -82.68045,
+  "addr": "6701 Sunshine Skyway Ln S, St. Pete",
+  "phone": "(727) 867-2585",
+  "note": "Live & frozen bait + tackle at the fuel dock"
+ },
+ {
+  "name": "Clearwater Bait and Tackle",
+  "cat": "bait",
+  "lat": 27.96036,
+  "lng": -82.71274,
+  "addr": "2999 Gulf to Bay Blvd, Clearwater",
+  "phone": "(727) 669-5455",
+  "note": "Live & frozen bait, tackle, apparel"
+ },
+ {
+  "name": "Bluffs Tackle and Marine",
+  "cat": "bait",
+  "lat": 27.91707,
+  "lng": -82.81621,
+  "addr": "2715 W Bay Dr, Belleair Bluffs",
+  "phone": "(727) 877-8626",
+  "note": "Bait, tackle & full marine store"
+ },
+ {
+  "name": "FISHSTALKERZ Bait & Tackle",
+  "cat": "bait",
+  "lat": 28.04601,
+  "lng": -82.782,
+  "addr": "2436 Bayshore Blvd, Dunedin",
+  "phone": "(727) 637-9971",
+  "note": "Live shrimp, pinfish, grunts, fiddlers"
+ },
+ {
+  "name": "Tarpon Trading Company",
+  "cat": "bait",
+  "lat": 28.15988,
+  "lng": -82.75705,
+  "addr": "1197 N Pinellas Ave, Tarpon Springs",
+  "phone": "(727) 937-1488",
+  "note": "Live shrimp (3 sizes), pinfish, big tackle wall"
+ },
+ {
+  "name": "Get Bent Live Bait",
+  "cat": "bait",
+  "lat": 28.17683,
+  "lng": -82.78528,
+  "addr": "1119 Baillies Bluff Rd, Holiday",
+  "phone": "(727) 597-9073",
+  "note": "Pull-up-by-boat live bait; text-ahead pre-order"
+ },
+ {
+  "name": "Island Discount Tackle",
+  "cat": "bait",
+  "lat": 27.50799,
+  "lng": -82.71397,
+  "addr": "5503 Marina Dr, Holmes Beach",
+  "phone": "(941) 779-2838",
+  "note": "Live & frozen bait, fishing licenses"
+ },
+ {
+  "name": "Bait and Tackle of Apollo Beach",
+  "cat": "bait",
+  "lat": 27.76464,
+  "lng": -82.3957,
+  "addr": "6040 N US-41, Apollo Beach",
+  "phone": "(813) 296-7735",
+  "note": "Live & frozen bait, tackle, custom rods"
+ },
+ {
+  "name": "5 Boys Bait & Tackle",
+  "cat": "bait",
+  "lat": 27.72278,
+  "lng": -82.43337,
+  "addr": "467 N US-41, Ruskin",
+  "phone": "(813) 486-4121",
+  "note": "Live shrimp, greenbacks; famous for after-hours bait"
+ },
+ {
+  "name": "Hart's Landing",
+  "cat": "bait",
+  "lat": 27.33556,
+  "lng": -82.55083,
+  "addr": "920 John Ringling Cswy, Sarasota",
+  "phone": "(941) 330-0650",
+  "note": "Historic waterfront bait shop + bar"
+ },
+ {
+  "name": "Armature Works",
+  "cat": "dine",
+  "lat": 27.961,
+  "lng": -82.46376,
+  "addr": "1910 N Ola Ave, Tampa Heights",
+  "phone": "",
+  "note": "Food hall on the Hillsborough River"
+ },
+ {
+  "name": "Rick's on the River",
+  "cat": "dine",
+  "lat": 27.96348,
+  "lng": -82.47418,
+  "addr": "2305 N Willow Ave, Tampa",
+  "phone": "",
+  "note": "Classic boat-up spot on the Hillsborough River"
+ },
+ {
+  "name": "Beer Can Island",
+  "cat": "play",
+  "lat": 27.43775,
+  "lng": -82.68779,
+  "addr": "Greer Island, Longboat Key",
+  "phone": "",
+  "note": "Famous party sandbar"
+ },
+ {
+  "name": "Egmont Key",
+  "cat": "play",
+  "lat": 27.58692,
+  "lng": -82.76081,
+  "addr": "Mouth of Tampa Bay",
+  "phone": "",
+  "note": "Snorkeling, ruins & beaches \u2014 boat access only"
+ },
+ {
+  "name": "Fort De Soto Park",
+  "cat": "play",
+  "lat": 27.64802,
+  "lng": -82.71538,
+  "addr": "3500 Pinellas Bayway S, St. Petersburg",
+  "phone": "",
+  "note": "Beaches, Bunces Pass sandbar, fishing piers"
+ },
+ {
+  "name": "Weedon Island Preserve",
+  "cat": "play",
+  "lat": 27.8477,
+  "lng": -82.60708,
+  "addr": "1800 Weedon Dr NE, St. Petersburg",
+  "phone": "",
+  "note": "Mangrove paddling trails & fishing"
+ },
+ {
+  "name": "Jewfish Key",
+  "cat": "play",
+  "lat": 27.43098,
+  "lng": -82.67525,
+  "addr": "Longboat Key",
+  "phone": "",
+  "note": "Popular sandbar hangout"
+ }
+]

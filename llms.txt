@@ -1,0 +1,38 @@
+# Tampa Bay Boating
+
+> Tampa Bay Boating (@tampabayboating) is a local boating media brand for the Tampa Bay, Florida region. The site offers boating guides, directories of local marine businesses, a events calendar, an online merch shop, and advertising opportunities for local companies. It is not a charter or boat rental operator.
+
+## Boating Guides
+- [Navigation Basics](https://tampabayboating.com/#navigation): channel markers, rules of the road, and Tampa Bay local knowledge.
+- [Tips & Tricks](https://tampabayboating.com/#tips): launching, anchoring, knots, docking, maintenance, and fueling advice.
+- [Kayak & Paddleboard](https://tampabayboating.com/#paddle): 10 searchable paddle launch spots plus safety and tide guidance.
+- [VHF Channels & Bridge Openings](https://tampabayboating.com/#vhf): key VHF channels, how to hail a bridge, and local bridge contact info.
+- [Boating News](https://tampabayboating.com/#news): current local boating headlines with source links. Only stories published within the last 14 days.
+
+## Local Directories (Tampa Bay area)
+- [Charters](https://tampabayboating.com/#charters): searchable directory of Tampa Bay fishing charter companies.
+- [Fuel & Bait](https://tampabayboating.com/#fuel): where to get fuel and bait on the water, including non-ethanol fuel and 24-hour spots.
+- [Marine Services](https://tampabayboating.com/#services): marine mechanics, electronics installers, boat detailers, and canvas/upholstery shops.
+- [Marine Parts & Supply](https://tampabayboating.com/#parts): parts stores, fabrication, and canvas/upholstery suppliers.
+- [Boat Clubs](https://tampabayboating.com/#clubs): boat club options in Tampa Bay with club-vs-owning cost guidance.
+- [Boat Storage](https://tampabayboating.com/#storage): dry stack, wet slip, and land lot storage options.
+- [Boats for Sale](https://tampabayboating.com/#boats): for-sale-by-owner listings and local dealers.
+
+## Community
+- [Events](https://tampabayboating.com/#events): Tampa Bay boating events calendar (boat shows, tournaments, on-the-water concerts).
+- [Meetups](https://tampabayboating.com/#meetups): local boating and paddling groups.
+- [My Boating Log](https://tampabayboating.com/#log): personal trip logbook (stored in the visitor's own browser).
+
+## Shop & Gear
+- [Merch Shop](https://tampabayboating.com/#shop): Tampa Bay Boating apparel and accessories (pocket tees, tanks, performance shirts, hats, koozies).
+- [Gear Guide](https://tampabayboating.com/#gear): recommended boating, beach, and fishing gear.
+
+## For Businesses
+- [Advertise](https://tampabayboating.com/#advertise): featured listings, video spotlights, and sponsorship packages for Tampa Bay marine and waterfront businesses.
+- [Dock & Dine](https://tampabayboating.com/#dockdine): waterfront restaurant directory (paid listings).
+
+## Brand
+- Website: https://tampabayboating.com
+- TikTok: https://www.tiktok.com/@tampabayboating
+- Instagram: https://www.instagram.com/tampabayboating/
+- Facebook: https://www.facebook.com/tampabayboating

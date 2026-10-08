@@ -675,7 +675,7 @@ footer.tbb-foot .copy{margin-top:14px;font-size:.85rem}
         <a href="https://www.facebook.com/reel/2241762100011859/" target="_blank" rel="noopener" class="wub-btn">&#9654; Watch the John's Pass recap</a>
         <a href="https://nuggetpartytime.com/pages/wub-island" target="_blank" rel="noopener" class="wub-btn ghost">Join the waitlist for the next one</a>
       </div>
-      <p class="wub-note">Coverage in collaboration with DJ Nugget &mdash; future Wub Island events will be listed here first.</p>
+      <p class="wub-note">Coverage of DJ Nugget's Wub Island, shared with his permission &mdash; we'll post future events as they're confirmed.</p>
     </div>
     <div class="cal-wrap">
       <div class="cal-box">
@@ -2377,8 +2377,7 @@ const EVENTS = [
   url:"https://spyc.org/regattas", featured:false},
  {start:"2027-07-04", end:"2027-07-04", title:"Tampa 4th of July Boat Parade", when:"Jul 4, 2027", where:"Hillsborough River, Tampa",
   desc:"The annual Independence Day boat parade on the Hillsborough River, hosted by Tampa Riverwalk.",
-  url:"https://tampaloop.com/p/tampa-christmas-lights-guide-2026", featured:false}
-];
+  url:"https://tampaloop.com/p/tampa-christmas-lights-guide-2026", featured:false},
  {start:"2026-10-08", end:"2026-10-08", title:"Lightning vs Minnesota Wild \u2014 Home Opener", when:"Oct 8, 2026", where:"Benchmark International Arena, 401 Channelside Dr, Tampa",
   desc:"Tampa Bay Lightning 2026-27 home opener. The arena sits on the Garrison Channel waterfront \u2014 arrive by boat and dock nearby.",
   url:"https://www.nhl.com/lightning/news/tampa-bay-lightning-announce-2026-27-season-schedule-presented-by-adventhealth", featured:true},
@@ -2471,7 +2470,9 @@ const EVENTS = [
   url:"https://www.nhl.com/lightning/news/tampa-bay-lightning-announce-2026-27-season-schedule-presented-by-adventhealth", featured:false},
  {start:"2027-04-10", end:"2027-04-10", title:"Lightning vs Boston Bruins \u2014 Home Finale", when:"Apr 10, 2027 \u00b7 8pm", where:"Benchmark International Arena, 401 Channelside Dr, Tampa",
   desc:"Home finale on ABC \u2014 arrive by boat via Garrison Channel.",
-  url:"https://www.nhl.com/lightning/news/tampa-bay-lightning-announce-2026-27-season-schedule-presented-by-adventhealth", featured:false},
+  url:"https://www.nhl.com/lightning/news/tampa-bay-lightning-announce-2026-27-season-schedule-presented-by-adventhealth", featured:false}
+];
+
 /* EVENTS-END */
 let calY, calM;
 function evOn(ds){ return EVENTS.filter(e=>ds>=e.start && ds<=e.end); }

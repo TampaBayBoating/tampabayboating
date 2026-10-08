@@ -407,6 +407,42 @@ footer.tbb-foot .copy{margin-top:14px;font-size:.85rem}
 #wx-alert-detail .wx-d-sec{margin-bottom:10px}
 #wx-alert-detail .wx-d-sec b{display:block;margin-bottom:2px}
 #wx-alert-detail a.wx-d-link{color:#fff;font-weight:800;text-decoration:underline}
+
+/* ---------- Events Calendar ---------- */
+.cal-wrap{display:grid; grid-template-columns:1fr 1fr; gap:28px; margin-top:18px}
+@media(max-width:820px){ .cal-wrap{grid-template-columns:1fr} }
+.cal-box{background:var(--white); border:1px solid var(--line); border-radius:14px; padding:18px; box-shadow:0 2px 10px rgba(10,37,64,.06)}
+.cal-head{display:flex; align-items:center; justify-content:space-between; margin-bottom:12px}
+.cal-head b{font-size:1.15rem; color:var(--navy)}
+.cal-head button{background:var(--navy); color:#fff; border:none; border-radius:8px; width:36px; height:36px; font-size:1.2rem; cursor:pointer; line-height:1}
+.cal-head button:hover{background:var(--navy2)}
+.cal-grid{display:grid; grid-template-columns:repeat(7,1fr); gap:4px}
+.cal-dow{margin-bottom:6px}
+.cal-dow span{text-align:center; font-size:.72rem; font-weight:700; color:var(--muted); text-transform:uppercase; padding:4px 0}
+.cal-day{aspect-ratio:1; display:flex; align-items:center; justify-content:center; font-size:.9rem; border-radius:8px; color:var(--ink); position:relative; background:transparent; border:none; padding:0}
+.cal-day.empty{background:transparent}
+.cal-day.has-ev{cursor:pointer; font-weight:700; color:var(--navy)}
+.cal-day.has-ev:hover{background:var(--sand)}
+.cal-day.has-ev .dot{position:absolute; bottom:5px; left:50%; transform:translateX(-50%); width:6px; height:6px; border-radius:50%; background:var(--teal)}
+.cal-day.today{background:var(--navy); color:#fff; font-weight:700}
+.cal-day.today.has-ev .dot{background:var(--sun)}
+.day-events{margin-top:14px; display:flex; flex-direction:column; gap:12px}
+#upcoming-events{max-height:560px; overflow-y:auto; padding-right:4px}
+.ev-card{background:var(--white); border:1px solid var(--line); border-radius:12px; padding:14px 16px; box-shadow:0 1px 6px rgba(10,37,64,.05)}
+.ev-card.featured{border:2px solid var(--gold); background:linear-gradient(180deg,#fffdf5,var(--white))}
+.ev-card .ev-photo{width:100%; height:150px; object-fit:cover; border-radius:8px; margin-bottom:10px}
+.ev-card .when{font-size:.8rem; color:var(--teal); font-weight:700; margin-bottom:4px}
+.ev-card h4{font-size:1.02rem; color:var(--navy); margin:0 0 4px}
+.ev-card .where{font-size:.85rem; color:var(--muted); margin-bottom:6px}
+.ev-card p{font-size:.88rem; color:var(--ink); margin:0 0 8px}
+.ev-card a{font-size:.88rem; font-weight:700}
+.ev-pricing{display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:12px 0}
+.ev-tier{background:var(--white); border:1px solid var(--line); border-radius:10px; padding:14px; text-align:center}
+.ev-tier.hot{border:2px solid var(--gold)}
+.ev-tier h4{color:var(--navy); margin:0 0 4px; font-size:.95rem}
+.ev-tier .p{font-size:1.5rem; font-weight:800; color:var(--navy)}
+.ev-tier p{font-size:.82rem; color:var(--muted); margin:6px 0 0}
+
 </style>
 <style>
 /* conditions section (transplanted) */

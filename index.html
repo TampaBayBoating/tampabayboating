@@ -1086,6 +1086,29 @@ body.dark .trust-bar b{color:#e8eef4}
 <p style="text-align:center; font-size:.95rem; margin-top:10px">Not sure where you fit? <a href="mailto:david@tampabayboating.com" style="font-weight:700">Contact us</a> and tell us what you want to promote.</p>
 </div>
 </section></div>
+<div class="view" id="view-about"><div class="wrap"><a class="back-link" href="#/">&#8249; Home</a></div><section id="about">
+<div class="wrap">
+<div class="sec-head"><span class="sec-kicker">Our Story</span>
+<h2>About Tampa Bay Boating</h2></div>
+<div style="max-width:680px;margin:0 auto;font-size:1.02rem;line-height:1.7">
+<p>I'm David — I boat Tampa Bay every chance I get, and I was tired of piecing everything together from ten different websites before heading out.</p>
+<p>So I built <b>TampaBayBoating.com</b> to put it all in one place:</p>
+<ul style="margin:16px 0;padding-left:22px">
+<li>🌊 <b>Live tides &amp; marine forecast</b> — know before you go</li>
+<li>🎣 <b>Daily fishing reports</b> — what's biting and where</li>
+<li>📅 <b>Events calendar</b> — everything happening on the water</li>
+<li>🍔 <b>Dock &amp; Dine</b> — waterfront restaurants you can pull your boat up to</li>
+<li>🗺️ <b>Boater's map</b> — ramps, fuel docks, bait shops, and more</li>
+<li>🛟 <b>Safety &amp; local knowledge</b> — VHF channels, bridge schedules, navigation tips</li>
+</ul>
+<p>Whether you're a weekend warrior, a seasoned angler, or just getting into boating — this site is for you.</p>
+<p style="margin-top:20px"><b>Bringing the boating community together.</b> 🌊</p>
+<div class="ad-cta" style="margin-top:24px">
+<a href="#/contact">✉️ Get in touch</a>
+</div>
+</div>
+</div>
+</section></div>
 <div class="view" id="view-contact"><div class="wrap"><a class="back-link" href="#/">&#8249; All categories</a></div><section id="contact">
 <div class="wrap">
 <div class="sec-head"><span class="sec-kicker">Get In Touch</span>
@@ -2014,7 +2037,7 @@ body.dark .trust-bar b{color:#e8eef4}
       </div>
     </div>
     <div><h4>Explore</h4><a href="#/tides">Tides &amp; Forecast</a><a href="#/fishing">Fishing Report</a><a href="#/events">Events</a><a href="#/map">Boater&apos;s Map</a><a href="#/dining">Dock &amp; Dine</a></div>
-    <div><h4>Company</h4><a href="#/newsletter">Newsletter</a><a href="#/advertise">Advertise</a><a href="#/contact">Contact Us</a><a href="#/shop">Shop Merch</a></div>
+    <div><h4>Company</h4><a href="#/about">About</a><a href="#/newsletter">Newsletter</a><a href="#/advertise">Advertise</a><a href="#/contact">Contact Us</a><a href="#/shop">Shop Merch</a></div>
     <div><h4>Legal</h4><a href="#/privacy">Privacy Policy</a><a href="#/terms">Terms of Service</a><br><button id="dark-toggle" onclick="toggleDark()" style="background:transparent;border:2px solid #8fa8bd;color:#8fa8bd;border-radius:999px;padding:8px 22px;cursor:pointer;font-size:.85rem;font-weight:700;margin-top:4px">🌙 Dark Mode</button></div>
   </div>
   <div class="foot-bottom"><span>&copy; 2020-2026 Tampa Bay Boating. All rights reserved.</span><span>Tampa Bay, Florida</span></div>
@@ -2849,7 +2872,7 @@ renderGrid(); renderDir(); updateCartUI(); renderCalendar(); loadTides(); loadMa
 <script>
 /* ---- SPA router: approved app-style redesign ---- */
 const ID2VIEW = {conditions:'tides',fishing:'fishing',events:'events',dining:'dining',baymap:'map',paddling:'paddling',ramps:'ramps',bridges:'bridges',logbook:'logbook',charters:'charters',fuel:'fuel',services:'services',parts:'parts',storage:'storage','boat-clubs':'boat-clubs',navigation:'navigation',tips:'tips',safety:'safety',stopped:'stopped',manatee:'manatee',courses:'courses',hurricane:'hurricane',insurance:'insurance',shop:'shop',boatsales:'boatsales',gear:'gear',videos:'videos',meetups:'meetups',news:'news',newsletter:'newsletter',advertise:'advertise',contact:'contact','nav-charts':'navigation'};
-const VIEWS = ['home','plan','local','smart','shopc','tides','fishing','events','dining','map','paddling','ramps','bridges','logbook','charters','fuel','services','parts','storage','boat-clubs','navigation','tips','safety','stopped','manatee','courses','hurricane','insurance','shop','boatsales','gear','videos','meetups','news','newsletter','advertise','contact','privacy','terms'];
+const VIEWS = ['home','plan','local','smart','shopc','tides','fishing','events','dining','map','paddling','ramps','bridges','logbook','charters','fuel','services','parts','storage','boat-clubs','navigation','tips','safety','stopped','manatee','courses','hurricane','insurance','shop','boatsales','gear','videos','meetups','news','newsletter','advertise','contact','about','privacy','terms'];
 function showView(name){
   if(VIEWS.indexOf(name)<0) name='home';
   document.querySelectorAll('.view').forEach(function(v){v.classList.remove('active');});

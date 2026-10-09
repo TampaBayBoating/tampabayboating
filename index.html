@@ -355,14 +355,15 @@ body{top:0 !important}
 .today-tab .t-ico{font-size:2rem;display:block;margin-bottom:8px}
 .today-tab b{display:block;font-size:1.02rem}
 .today-tab i{display:block;font-style:normal;font-size:.82rem;color:#9fb6c9;margin-top:2px}
-.cat-cards{max-width:1180px;margin:30px auto 0;padding:0 20px 60px}
-.cat-cards .tabs-label{font-size:.78rem;letter-spacing:2px;text-transform:uppercase;color:#0a2540;font-weight:800;margin-bottom:10px}
+.cat-cards{max-width:1180px;margin:30px auto 0;padding:34px 20px 60px;background:#0d1420;position:relative}
+.cat-cards::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#8fd0f0,#0e7c7b,#ff6b4a)}
+.cat-cards .tabs-label{font-size:.75rem;letter-spacing:4px;text-transform:uppercase;color:#8fd0f0;font-weight:800;margin-bottom:18px;text-align:center}
 .cat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
-.cat-card{background:#fff;border:2px solid #e6ded1;border-radius:14px;padding:22px 14px;text-align:center;text-decoration:none;color:#0a2540;transition:.2s}
-.cat-card:hover{border-color:#0e7c7b;transform:translateY(-3px);box-shadow:0 10px 24px rgba(10,37,64,.1)}
-.cat-card .c-ico{font-size:2.2rem;display:block;margin-bottom:8px}
-.cat-card b{display:block;font-size:1.05rem}
-.cat-card i{display:block;font-style:normal;font-size:.82rem;color:#5b6b7c;margin-top:2px}
+.cat-card{background:#141d2b;border:1px solid #243447;padding:26px 14px;text-align:center;text-decoration:none;color:#fff;transition:.2s;clip-path:polygon(0 0,calc(100% - 14px) 0,100% 14px,100% 100%,14px 100%,0 calc(100% - 14px))}
+.cat-card:hover{border-color:#8fd0f0;transform:translateY(-3px)}
+.cat-card .c-ico{font-size:2.2rem;display:block;margin-bottom:8px;filter:drop-shadow(0 0 8px rgba(143,208,240,.4))}
+.cat-card b{display:block;font-size:1.05rem;letter-spacing:1.5px;text-transform:uppercase;font-weight:800}
+.cat-card i{display:block;font-style:normal;font-size:.82rem;color:#8fa8bd;margin-top:4px}
 .hub-head{max-width:1180px;margin:0 auto;padding:34px 20px 6px}
 .hub-head h2{font-family:Georgia,serif;color:#0a2540;font-size:2rem}
 .hub-head p{color:#5b6b7c}

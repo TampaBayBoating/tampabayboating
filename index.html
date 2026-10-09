@@ -364,6 +364,17 @@ body{top:0 !important}
 .cat-card b{display:block;font-size:1rem;letter-spacing:1.5px;text-transform:uppercase;font-weight:800}
 .cat-card i{display:block;font-style:normal;font-size:.78rem;color:#4a6a8a;margin-top:4px}
 .section-divider{height:1px;background:#e6ded1;max-width:1180px;margin:28px auto 0}
+
+/* ---------- Dark mode ---------- */
+body.dark{--sand:#0b1220;--white:#16202e;--ink:#e8eef4;--muted:#8fa8bd;--line:#2a3a4f}
+body.dark .today-tab,body.dark .cat-card{background:#1a2740;border-color:#2a3a4f}
+body.dark .today-tab b,body.dark .cat-card b{color:#e8eef4}
+body.dark .today-tab i,body.dark .cat-card i{color:#8fa8bd}
+body.dark .cat-cards{background:#0b1220}
+body.dark .cat-cards .tabs-label,body.dark .today-tabs .tabs-label{color:#8fd0f0}
+body.dark .section-divider{background:#2a3a4f}
+body.dark .home-intro .kick{color:#8fd0f0}
+body.dark a{color:#8fd0f0}
 .hub-head{max-width:1180px;margin:0 auto;padding:34px 20px 6px}
 .hub-head h2{font-family:Georgia,serif;color:#0a2540;font-size:2rem}
 .hub-head p{color:#5b6b7c}
@@ -1946,9 +1957,12 @@ footer.tbb-foot .copy{margin-top:14px;font-size:.85rem}
   <div class="tagline">Tampa Bay, Florida &middot; We do boat stuff.</div>
   <a class="mail" href="#/contact">Contact Us</a>
   <div style="margin-top:10px;font-size:.85rem"><a href="#/privacy" style="color:#8fa8bd;text-decoration:underline">Privacy Policy</a> &middot; <a href="#/terms" style="color:#8fa8bd;text-decoration:underline">Terms of Service</a></div>
+  <div style="margin-top:16px"><button id="dark-toggle" onclick="toggleDark()" style="background:transparent;border:2px solid #8fa8bd;color:#8fa8bd;border-radius:999px;padding:8px 22px;cursor:pointer;font-size:.85rem;font-weight:700">🌙 Dark Mode</button></div>
   <div class="copy">&copy; 2026 Tampa Bay Boating</div>
 </footer>
-<script>function toggleAcc(btn){var item=btn.closest(".acc-item");var open=item.classList.toggle("open");btn.setAttribute("aria-expanded",open);}</script>
+<script>function toggleAcc(btn){var item=btn.closest(".acc-item");var open=item.classList.toggle("open");btn.setAttribute("aria-expanded",open);}
+function toggleDark(){var d=document.body.classList.toggle("dark");try{localStorage.setItem("tbb-dark",d?"1":"0");}catch(e){}var b=document.getElementById("dark-toggle");if(b)b.textContent=d?"\u2600\uFE0F Light Mode":"\uD83C\uDF19 Dark Mode";}
+try{if(localStorage.getItem("tbb-dark")==="1"){document.body.classList.add("dark");var bt=document.getElementById("dark-toggle");if(bt)bt.textContent="\u2600\uFE0F Light Mode";}}catch(e){}</script>
 <script>
 function getLog(){ try { return JSON.parse(localStorage.getItem('tbb-logbook')||'[]'); } catch(e){ return []; } }
 function saveLog(l){ localStorage.setItem('tbb-logbook', JSON.stringify(l)); }

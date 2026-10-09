@@ -437,6 +437,15 @@ footer.tbb-foot a.soc svg{width:15px!important;height:15px!important;fill:#fff!i
 #wx-alert-bar .wx-txt b{font-size:.98rem;letter-spacing:.3px}
 #wx-alert-bar .wx-txt span.wx-sub{display:block;font-size:.82rem;opacity:.92;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 #wx-alert-bar .wx-more{font-weight:800;font-size:.85rem;white-space:nowrap;border:2px solid #fff;border-radius:999px;padding:5px 14px}
+#storm-banner{background:#1a3a5c;color:#fff;border-bottom:3px solid #e67e22}
+#storm-banner .sb-inner{max-width:1180px;margin:0 auto;padding:14px 20px}
+#storm-banner .sb-row{display:flex;align-items:center;gap:12px}
+#storm-banner .sb-icon{font-size:1.8rem;flex:0 0 auto}
+#storm-banner .sb-text{flex:1;min-width:0}
+#storm-banner .sb-text b{display:block;font-size:.95rem;margin-bottom:2px}
+#storm-banner .sb-text span{font-size:.82rem;color:#b8d4e8}
+#storm-banner .sb-link{display:inline-block;margin-top:8px;background:#e67e22;color:#fff;font-weight:700;font-size:.82rem;padding:8px 16px;border-radius:8px;text-decoration:none}
+body.dark #storm-banner{background:#14293f}
 #wx-alert-detail{display:none;background:#a51f1f;border-top:1px solid rgba(255,255,255,.3);padding:14px 20px;font-size:.87rem;line-height:1.55;max-height:44vh;overflow:auto;text-align:left}
 #wx-alert-bar.open #wx-alert-detail{display:block}
 #wx-alert-bar.open #wx-more-btn{background:#fff;color:#c62828}
@@ -570,6 +579,7 @@ body.dark .trust-bar b{color:#e8eef4}
   </div>
 </div>
 <div id="wx-alert-bar" role="alert"><a href="#/tides" id="wx-alert-link"><span class="wx-icon">⚠️</span><span class="wx-txt"><b id="wx-alert-title"></b><span class="wx-sub" id="wx-alert-sub"></span></span><span class="wx-more" id="wx-more-btn">Details ↓</span></a><div id="wx-alert-detail"></div></div>
+<div id="storm-banner"><div class="sb-inner"><div class="sb-row"><span class="sb-icon">🌀</span><div class="sb-text"><b>Hurricane Isaias — Cat 3, landfall tonight near Pensacola</b><span>Tampa Bay: gusty winds &amp; rough seas on the east side. Not a direct hit — but check your lines today.</span></div></div><a class="sb-link" href="https://www.nhc.noaa.gov/" target="_blank" rel="noopener">Track the storm →</a></div></div>
 <div id="strips"><a class="forecast-bar" href="#/tides" aria-label="Boating forecast — tap for full details">
   <span class="fb-badge" id="fb-tide">🌊 <b>Loading tide…</b></span>
   <span class="fb-badge" id="fb-wx">🌡️ <b>Loading…</b></span>

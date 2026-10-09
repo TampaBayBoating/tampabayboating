@@ -408,7 +408,7 @@ footer.tbb-foot a.soc svg{width:15px!important;height:15px!important;fill:#fff!i
 @media(max-width:700px){footer.tbb-foot .foot-grid{grid-template-columns:1fr 1fr;gap:20px}}
 .ad-group{color:#0a2540;font-size:1.3rem;margin:30px 0 4px;text-align:center}
 .ad-group-sub{text-align:center;color:#5b6b7c;margin-bottom:6px}
-#strips @media(max-width:860px){.today-grid,.cat-grid{grid-template-columns:1fr 1fr}.hero2 h1{font-size:2.3rem}.tb-brand span{display:none}.tb-row{gap:8px;padding:8px 12px}.tb-socials{gap:6px;margin-left:2px}.tb-socials a{width:32px;height:32px}.tb-wx{width:32px;height:32px}.tb-lang{font-size:.85rem;padding:6px 8px}.bite-hero{font-size:.9rem;padding:12px 28px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}}
+@media(max-width:860px){.today-grid,.cat-grid{grid-template-columns:1fr 1fr}.hero2 h1{font-size:2.3rem}.tb-brand span{display:none}.tb-row{gap:8px;padding:8px 12px}.tb-socials{gap:6px;margin-left:2px}.tb-socials a{width:32px;height:32px}.tb-wx{width:32px;height:32px}.tb-lang{font-size:.85rem;padding:6px 8px}.bite-hero{font-size:.9rem;padding:12px 28px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}}
 @media(max-width:768px){.hero2{background-image:url('assets/hero-skyway-mobile.jpg');min-height:80vh}}
 /* NWS marine weather alert bar */
 .hero2-slogan{font-size:1.15rem;font-style:italic;color:#ffd54f;font-weight:600;margin:10px 0 4px;text-shadow:0 1px 8px rgba(0,0,0,.55)}
@@ -3080,9 +3080,6 @@ function showView(name){
   if(VIEWS.indexOf(name)<0) name='home';
   document.querySelectorAll('.view').forEach(function(v){v.classList.remove('active');});
   document.getElementById('view-'+name).classList.add('active');
-  var strips=document.getElementById('strips');
-  if(strips) strips.style.display=(name==='home')?'':'none';
-  closeExplore();
   window.scrollTo(0,0);
   if(name==='map'){if(window.tbbMapInit)window.tbbMapInit();setTimeout(function(){if(window.tbbMap)window.tbbMap.invalidateSize();},200);}
 }

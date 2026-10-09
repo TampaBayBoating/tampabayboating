@@ -302,22 +302,15 @@ section{padding:40px 0}
 .goog-te-banner-frame{display:none !important}
 body{top:0 !important}
 .tb-row{display:flex;align-items:center;gap:10px;padding:8px 20px;max-width:1180px;margin:0 auto}
-.tb-brand{display:flex;align-items:center;gap:10px;color:#fff;text-decoration:none;font-weight:800;font-size:1.02rem;margin-right:auto}
+.tb-brand{display:flex;align-items:center;gap:10px;color:#fff;text-decoration:none;font-weight:800;font-size:1.02rem}
 .tb-brand img{width:42px;height:42px;border-radius:50%;object-fit:cover;border:2px solid #8fd0f0;background:#fff}
-.tb-socials{display:flex;gap:8px}
+.tb-socials{display:flex;gap:8px;margin-left:4px}
 .tb-socials a{width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.14);display:flex;align-items:center;justify-content:center;transition:.2s}
 .tb-socials a:hover{background:#ff6b4a}
 .tb-socials svg{width:17px;height:17px;fill:#fff}
-.tb-explore{background:rgba(255,255,255,.14);border:none;color:#fff;font-weight:700;padding:9px 16px;border-radius:999px;cursor:pointer;font-size:.92rem;white-space:nowrap}
-.tb-advertise{border:2px solid #8fd0f0;color:#8fd0f0;text-decoration:none;font-weight:800;padding:7px 16px;border-radius:999px;font-size:.9rem;white-space:nowrap}
-.tb-advertise:hover{background:#8fd0f0;color:#0a2540}
-.tb-bag{background:#8fd0f0;border:none;color:#0a2540;font-weight:800;padding:9px 18px;border-radius:999px;cursor:pointer;font-size:.92rem;white-space:nowrap}
-.tb-mega{display:none;background:#0a2540;border-top:1px solid rgba(255,255,255,.12);padding:18px 20px 24px}
-.tb-mega.open{display:block}
-.tb-mega-grid{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
-.tb-mega h4{color:#8fd0f0;font-size:.75rem;letter-spacing:2px;text-transform:uppercase;margin-bottom:8px}
-.tb-mega a{display:block;color:#fff;text-decoration:none;padding:7px 0;font-size:.93rem}
-.tb-mega a:hover{color:#a5dcf5}
+.tb-wx{width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.14);display:flex;align-items:center;justify-content:center;text-decoration:none;margin-left:auto}
+.tb-wx svg{width:18px;height:18px;stroke:#fff;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.tb-wx:hover{background:rgba(255,255,255,.28)}
 .hero2{position:relative;min-height:92vh;display:flex;align-items:center;background:url('assets/hero-skyway.jpg') no-repeat center center/cover;color:#fff;overflow:hidden}
 .hero2::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(4,20,36,.55),rgba(4,20,36,.22) 45%,rgba(4,20,36,.68))}
 .hero2-inner{position:relative;z-index:1;max-width:1180px;margin:0 auto;padding:70px 20px;width:100%}
@@ -424,7 +417,7 @@ footer.tbb-foot a.soc svg{width:15px!important;height:15px!important;fill:#fff!i
 .ad-group{color:#0a2540;font-size:1.3rem;margin:30px 0 4px;text-align:center}
 .ad-group-sub{text-align:center;color:#5b6b7c;margin-bottom:6px}
 #strips .forecast-bar{display:block}
-@media(max-width:860px){.today-grid,.cat-grid{grid-template-columns:1fr 1fr}.hero2 h1{font-size:2.3rem}.tb-mega-grid{grid-template-columns:1fr 1fr}.tb-brand span{display:none}.tb-advertise{display:none}.tb-row{gap:8px;padding:8px 12px}.tb-socials{display:none}.tb-explore{padding:8px 12px;font-size:.85rem}.tb-bag{padding:8px 14px;font-size:.85rem}.tb-lang{font-size:.85rem;padding:6px 8px}#strips .forecast-bar{display:flex;overflow-x:auto;justify-content:flex-start;padding:8px 10px;gap:6px}.fb-badge{font-size:.78rem;padding:5px 10px;flex-shrink:0}.fb-more{font-size:.75rem;flex-shrink:0}.bite-strip{font-size:.78rem;padding:6px 10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}}
+@media(max-width:860px){.today-grid,.cat-grid{grid-template-columns:1fr 1fr}.hero2 h1{font-size:2.3rem}.tb-brand span{display:none}.tb-row{gap:8px;padding:8px 12px}.tb-socials{gap:6px;margin-left:2px}.tb-socials a{width:32px;height:32px}.tb-wx{width:32px;height:32px}.tb-lang{font-size:.85rem;padding:6px 8px}#strips .forecast-bar{display:flex;overflow-x:auto;justify-content:flex-start;padding:8px 10px;gap:6px}.fb-badge{font-size:.78rem;padding:5px 10px;flex-shrink:0}.fb-more{font-size:.75rem;flex-shrink:0}.bite-strip{font-size:.78rem;padding:6px 10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}}
 @media(max-width:768px){.hero2{background-image:url('assets/hero-skyway-mobile.jpg');min-height:80vh}}
 /* NWS marine weather alert bar */
 .hero2-slogan{font-size:1.15rem;font-style:italic;color:#ffd54f;font-weight:600;margin:10px 0 4px;text-shadow:0 1px 8px rgba(0,0,0,.55)}
@@ -530,29 +523,15 @@ body.dark .trust-bar b{color:#e8eef4}
 </div>
 <header class="tbb-topbar" id="top">
   <div class="tb-row">
-    <button class="tb-explore" onclick="toggleExplore(event)">&#9638; Explore &#9662;</button>
     <a class="tb-brand" href="#/"><img src="assets/tbb-social-logo.jpg" alt="Tampa Bay Boating circular badge with a boat and the Sunshine Skyway Bridge"><span>Tampa Bay Boating</span></a>
     <div class="tb-socials">
     <a href="https://www.tiktok.com/@tampabayboating" target="_blank" rel="noopener" aria-label="TikTok"><svg viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/></svg></a>
     <a href="https://www.instagram.com/tampabayboating/" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24"><path d="M12 2.16c3.2 0 3.58.01 4.85.07 3.25.15 4.77 1.69 4.92 4.92.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.15 3.23-1.66 4.77-4.92 4.92-1.27.06-1.64.07-4.85.07s-3.58-.01-4.85-.07c-3.26-.15-4.77-1.7-4.92-4.92C2.17 15.58 2.16 15.2 2.16 12s.01-3.58.07-4.85C2.38 3.92 3.9 2.38 7.15 2.23 8.42 2.17 8.8 2.16 12 2.16M12 0C8.74 0 8.33.01 7.05.07 2.7.27.27 2.69.07 7.05.01 8.33 0 8.74 0 12s.01 3.67.07 4.95c.2 4.36 2.62 6.78 6.98 6.98C8.33 23.99 8.74 24 12 24s3.67-.01 4.95-.07c4.35-.2 6.78-2.62 6.98-6.98.06-1.28.07-1.69.07-4.95s-.01-3.67-.07-4.95C23.73 2.7 21.31.27 16.95.07 15.67.01 15.26 0 12 0zm0 5.84A6.16 6.16 0 1 0 18.16 12 6.16 6.16 0 0 0 12 5.84zm0 10.15A4 4 0 1 1 16 12a4 4 0 0 1-4 3.99zm7.85-10.4a1.44 1.44 0 1 1-2.88 0 1.44 1.44 0 0 1 2.88 0z"/></svg></a>
     <a href="https://www.facebook.com/tampabayboating" target="_blank" rel="noopener" aria-label="Facebook"><svg viewBox="0 0 24 24"><path d="M24 12.07C24 5.4 18.63 0 12 0S0 5.4 0 12.07C0 18.1 4.39 23.09 10.13 24v-8.44H7.08v-3.49h3.04V9.41c0-3.02 1.8-4.7 4.54-4.7 1.31 0 2.68.24 2.68.24v2.97h-1.5c-1.5 0-1.96.93-1.96 1.89v2.26h3.32l-.53 3.49h-2.79V24C19.61 23.09 24 18.1 24 12.07z"/></svg></a></div>
-    <a class="tb-advertise" href="#/advertise">Advertise</a>
-    <button class="tb-bag" onclick="openCart()">Bag (<span id="cart-count">0</span>)</button>
+    <a class="tb-wx" href="#/tides" aria-label="Tides and forecast" title="Tides &amp; forecast"><svg viewBox="0 0 24 24"><circle cx="8.5" cy="7.5" r="2.4"/><path d="M10.9 7.5h.01"/><path d="M17.5 18.5a4.5 4.5 0 0 0 .42-8.98 6 6 0 0 0-11.7 1.62A4 4 0 0 0 7 18.5h10.5z"/><path d="M4 21.5c1.5 1.2 3.5 1.2 5 0s3.5-1.2 5 0 3.5 1.2 5 0"/></svg></a>
     <button class="tb-lang" id="lang-btn" aria-label="Translate this page" title="Translate">&#127760; Language</button>
   </div>
   <div class="tb-translate" id="translate-panel"><div id="google_translate_element"></div></div>
-  <div class="tb-mega" id="tb-mega">
-    <div class="tb-mega-grid">
-      <div><h4>Plan Your Day</h4>
-        <a href="#/tides">Tides &amp; Forecast</a><a href="#/fishing">Fishing Report</a><a href="#/events">Events</a><a href="#/dining">Dock &amp; Dine</a><a href="#/map">Boater's Map</a><a href="#/paddling">Kayak &amp; SUP</a><a href="#/logbook">My Boating Log</a></div>
-      <div><h4>Find Local</h4>
-        <a href="#/charters">Charters</a><a href="#/fuel">Fuel &amp; Bait</a><a href="#/services">Boat Services</a><a href="#/ramps">Boat Ramps</a><a href="#/storage">Boat Storage</a><a href="#/parts">Marine Parts</a><a href="#/boat-clubs">Boat Clubs</a></div>
-      <div><h4>Boating Basics</h4>
-        <a href="#/safety">Safety</a><a href="#/navigation">Navigation Basics</a><a href="#/tips">Tips &amp; Tricks</a><a href="#/bridges">VHF &amp; Bridges</a><a href="#/manatee">Slow-Speed Zones</a><a href="#/hurricane">Hurricane Prep</a><a href="#/courses">Boating Courses</a><a href="#/insurance">Boaters Insurance</a><a href="#/stopped">If You're Stopped</a></div>
-      <div><h4>Shop &amp; Connect</h4>
-        <a href="#/shop">Official Merch</a><a href="#/boatsales">Boats for Sale</a><a href="#/gear">Gear Guide</a><a href="#/videos">Videos</a><a href="#/meetups">Meetups</a><a href="#/news">Boating News</a><a href="#/newsletter">Newsletter</a><a href="#/advertise">Advertise</a><a href="#/contact">Contact</a></div>
-    </div>
-  </div>
 </header>
 <aside class="cart-drawer" id="cart-drawer">
   <div class="cart-head"><h3>Your Cart</h3><button class="modal-close" style="position:static" onclick="closeCart()">&times;</button></div>
@@ -3147,21 +3126,16 @@ function route(){
   var id=h.slice(1);
   if(id&&ID2VIEW[id]){showView(ID2VIEW[id]);}
 }
-function toggleExplore(e){if(e)e.stopPropagation();document.getElementById('tb-mega').classList.toggle('open');}
-function closeExplore(){var m=document.getElementById('tb-mega');if(m)m.classList.remove('open');}
+/* explore menu removed 2026-10-09 — navigation via category cards and back links */
 document.addEventListener('click',function(e){
   var a=e.target.closest('a[href^="#"]');if(!a)return;
   var href=a.getAttribute('href');
   if(href.indexOf('#/')===0)return;
   if(href==='#'||href==='#browse')return;
   var id=href.slice(1);
-  if(id&&ID2VIEW[id]){e.preventDefault();closeExplore();location.hash='#/'+ID2VIEW[id];}
+  if(id&&ID2VIEW[id]){e.preventDefault();location.hash='#/'+ID2VIEW[id];}
 });
 window.addEventListener('hashchange',route);
-document.addEventListener('click',function(e){
-  var ex=document.getElementById('tb-mega');
-  if(ex&&ex.classList.contains('open')&&!e.target.closest('.tbb-topbar'))closeExplore();
-});
 route();
 </script>
 <script>

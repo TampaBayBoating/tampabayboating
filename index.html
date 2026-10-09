@@ -403,7 +403,7 @@ body.dark a{color:#8fd0f0}
 .view .acc-item .acc-head .acc-chev{display:none}
 .view .acc-item .acc-body{display:block;padding:0}
 footer.tbb-foot{background:#060d18;color:#8fa8bd;padding:36px 20px 24px;font-size:.88rem}
-footer.tbb-foot .foot-grid{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:28px;margin-bottom:24px}
+footer.tbb-foot .foot-grid{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr 1fr;gap:28px;margin-bottom:24px}
 footer.tbb-foot .foot-grid h4{color:#fff;font-size:.78rem;letter-spacing:2px;text-transform:uppercase;margin-bottom:12px;font-weight:800}
 footer.tbb-foot .foot-grid a{color:#8fa8bd;text-decoration:none;display:block;margin-bottom:8px}
 footer.tbb-foot .foot-grid a:hover{color:#a5dcf5}
@@ -2053,11 +2053,12 @@ body.dark .trust-bar b{color:#e8eef4}
         <a class="soc" href="https://www.facebook.com/tampabayboating" target="_blank" rel="noopener" aria-label="Facebook"><svg viewBox="0 0 24 24"><path d="M24 12.07C24 5.4 18.63 0 12 0S0 5.4 0 12.07C0 18.1 4.39 23.09 10.13 24v-8.44H7.08v-3.49h3.04V9.41c0-3.02 1.8-4.7 4.54-4.7 1.31 0 2.68.24 2.68.24v2.97h-1.5c-1.5 0-1.96.93-1.96 1.89v2.26h3.32l-.53 3.49h-2.79V24C19.61 23.09 24 18.1 24 12.07z"/></svg></a>
       </div>
     </div>
-    <div><h4>Explore</h4><a href="#/tides">Tides &amp; Forecast</a><a href="#/fishing">Fishing Report</a><a href="#/events">Events</a><a href="#/map">Boater&apos;s Map</a><a href="#/dining">Dock &amp; Dine</a></div>
-    <div><h4>Company</h4><a href="#/about">About</a><a href="#/newsletter">Newsletter</a><a href="#/advertise">Advertise</a><a href="#/contact">Contact Us</a><a href="#/shop">Shop Merch</a></div>
-    <div><h4>Legal</h4><a href="#/privacy">Privacy Policy</a><a href="#/terms">Terms of Service</a><br><button id="dark-toggle" onclick="toggleDark()" style="background:transparent;border:2px solid #8fa8bd;color:#8fa8bd;border-radius:999px;padding:8px 22px;cursor:pointer;font-size:.85rem;font-weight:700;margin-top:4px">🌙 Dark Mode</button></div>
+    <div><h4>Plan Your Day</h4><a href="#/tides">Tides &amp; Forecast</a><a href="#/fishing">Fishing Report</a><a href="#/events">Events</a><a href="#/dining">Dock &amp; Dine</a><a href="#/map">Boater&apos;s Map</a><a href="#/paddling">Kayak &amp; SUP</a><a href="#/logbook">My Boating Log</a></div>
+    <div><h4>Find Local</h4><a href="#/charters">Charters</a><a href="#/fuel">Fuel &amp; Bait</a><a href="#/services">Boat Services</a><a href="#/ramps">Boat Ramps</a><a href="#/storage">Boat Storage</a><a href="#/parts">Marine Parts</a><a href="#/boat-clubs">Boat Clubs</a></div>
+    <div><h4>Boating Basics</h4><a href="#/safety">Safety</a><a href="#/navigation">Navigation Basics</a><a href="#/tips">Tips &amp; Tricks</a><a href="#/bridges">VHF &amp; Bridges</a><a href="#/manatee">Slow-Speed Zones</a><a href="#/hurricane">Hurricane Prep</a><a href="#/courses">Boating Courses</a><a href="#/insurance">Boaters Insurance</a><a href="#/stopped">If You&apos;re Stopped</a></div>
+    <div><h4>Shop &amp; Connect</h4><a href="#/shop">Official Merch</a><a href="#/boatsales">Boats for Sale</a><a href="#/gear">Gear Guide</a><a href="#/videos">Videos</a><a href="#/meetups">Meetups</a><a href="#/news">Boating News</a><a href="#/newsletter">Newsletter</a><a href="#/advertise">Advertise</a><a href="#/contact">Contact Us</a><a href="#/about">About</a></div>
   </div>
-  <div class="foot-bottom"><span>&copy; 2020-2026 Tampa Bay Boating. All rights reserved.</span><span>Tampa Bay, Florida</span></div>
+  <div class="foot-bottom"><span>&copy; 2020-2026 Tampa Bay Boating. All rights reserved.</span><span><a href="#/privacy" style="display:inline;color:#8fa8bd">Privacy Policy</a> &middot; <a href="#/terms" style="display:inline;color:#8fa8bd">Terms of Service</a> &middot; <button id="dark-toggle" onclick="toggleDark()" style="background:transparent;border:none;color:#8fa8bd;cursor:pointer;font-size:.88rem;padding:0">🌙 Dark Mode</button></span><span>Tampa Bay, Florida</span></div>
 </footer>
 <script>function toggleAcc(btn){var item=btn.closest(".acc-item");var open=item.classList.toggle("open");btn.setAttribute("aria-expanded",open);}
 function toggleDark(){var d=document.body.classList.toggle("dark");try{localStorage.setItem("tbb-dark",d?"1":"0");}catch(e){}var b=document.getElementById("dark-toggle");if(b)b.textContent=d?"\u2600\uFE0F Light Mode":"\uD83C\uDF19 Dark Mode";}

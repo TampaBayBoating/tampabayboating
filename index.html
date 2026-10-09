@@ -485,6 +485,14 @@ footer.tbb-foot a.soc svg{width:15px!important;height:15px!important;fill:#fff!i
 #conditions{background:linear-gradient(120deg,var(--navy),var(--navy2));color:#fff;padding:44px 0}
 #conditions h2{color:#fff;text-align:center;margin-bottom:4px}
 #conditions .sub{text-align:center;color:#a9c6c5;margin-bottom:22px}
+.travel-box{background:#fff;border:2px solid #8fd0f0;border-radius:14px;padding:18px;margin:16px auto 20px;max-width:960px}
+.travel-box .travel-label{font-size:.75rem;letter-spacing:2px;text-transform:uppercase;color:#0a2540;font-weight:800;margin-bottom:10px}
+.travel-box select{width:100%;padding:13px;font-size:1rem;border:2px solid #b8d4e8;border-radius:10px;background:#fff;color:#0a2540;font-weight:600}
+.travel-box .travel-note{font-size:.8rem;color:#5b6b7c;margin-top:8px;margin-bottom:0}
+body.dark .travel-box{background:#16202e;border-color:#2a3a4f}
+body.dark .travel-box .travel-label{color:#e8eef4}
+body.dark .travel-box select{background:#0b1220;color:#e8eef4;border-color:#2a3a4f}
+body.dark .travel-box .travel-note{color:#8fa8bd}
 .cond-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;max-width:960px;margin:0 auto}
 .cond-card{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);border-radius:14px;padding:20px}
 .cond-card h3{font-size:.8rem;text-transform:uppercase;letter-spacing:2px;color:var(--sun);margin-bottom:10px}
@@ -643,8 +651,24 @@ body.dark .trust-bar b{color:#e8eef4}
 <div class="view" id="view-shopc"><div class="wrap"><a class="back-link" href="#/">&#8249; All categories</a></div><div class="hub-head"><h2>Shop & Connect</h2><p>Merch, boats, community and business opportunities.</p></div><div class="tile-grid"><a class="tile" href="#/shop"><span class="t-ico">🛍</span><b>Official Merch</b><i>Wear Tampa Bay Boating</i></a><a class="tile" href="#/boatsales"><span class="t-ico">🛥</span><b>Boats for Sale</b><i>Owners & local dealers</i></a><a class="tile" href="#/gear"><span class="t-ico">🎒</span><b>Gear Guide</b><i>Useful boating picks</i></a><a class="tile" href="#/videos"><span class="t-ico">🎥</span><b>Videos</b><i>Tampa Bay from the water</i></a><a class="tile" href="#/meetups"><span class="t-ico">🤝</span><b>Meetups</b><i>Find your local crew</i></a><a class="tile" href="#/news"><span class="t-ico">📰</span><b>Boating News</b><i>Around the bay</i></a><a class="tile" href="#/newsletter"><span class="t-ico">✉</span><b>Newsletter</b><i>This Week on the Water</i></a><a class="tile" href="#/advertise"><span class="t-ico">📣</span><b>Advertise</b><i>Monthly plans & placements</i></a><a class="tile" href="#/contact"><span class="t-ico">👋</span><b>Contact David</b><i>Questions & partnerships</i></a></div></div>
 <div class="view" id="view-tides"><div class="wrap"><a class="back-link" href="#/">&#8249; All categories</a></div><section id="conditions">
   <div class="wrap">
-    <h2>Tampa Bay Tides &amp; Marine Forecast</h2>
-    <div class="sub">Live from NOAA &amp; the National Weather Service · East Bay / Tampa Bay</div>
+    <h2 id="tides-title">Tampa Bay Tides &amp; Marine Forecast</h2>
+    <div class="sub" id="tides-sub">Live from NOAA &amp; the National Weather Service · East Bay / Tampa Bay</div>
+    <div class="travel-box">
+      <div class="travel-label">✈️ Travel Mode — check another area</div>
+      <select id="travel-select" onchange="changeTravelLocation(this.value)" aria-label="Choose a boating destination">
+        <option value="tampa">📍 Tampa Bay (home)</option>
+        <option value="keywest">🏝️ Florida Keys — Key West</option>
+        <option value="destin">🏖️ Destin / Emerald Coast</option>
+        <option value="panamacity">🐟 Panama City</option>
+        <option value="stuart">🎣 Stuart / Treasure Coast</option>
+        <option value="fortmyers">🌴 Fort Myers / Sanibel</option>
+        <option value="daytona">🚤 Daytona Beach</option>
+        <option value="crystalriver">🐬 Crystal River / Cedar Key</option>
+        <option value="naples">🦐 Naples</option>
+        <option value="jacksonville">🌊 Jacksonville / St. Augustine</option>
+      </select>
+      <p class="travel-note">Shows live tides &amp; marine forecast for your destination. Fishing reports &amp; events are Tampa Bay only.</p>
+    </div>
     <div class="cond-grid">
       <div class="cond-card">
         <h3>Today's Tides</h3>
@@ -2715,10 +2739,31 @@ function fmtTideTime(t){
   let h = +hm[0]; const ap = h>=12?"PM":"AM"; h = h%12||12;
   return h+":"+hm[1]+" "+ap;
 }
+const TRAVEL_LOCATIONS = {
+  tampa:      {name:"Tampa Bay", station:"8726674", zone:"GMZ830", label:"East Bay / Tampa Bay"},
+  keywest:    {name:"Florida Keys \u2014 Key West", station:"8724580", zone:"GMZ054", label:"Key West Harbor"},
+  destin:     {name:"Destin / Emerald Coast", station:"8729511", zone:"GMZ655", label:"Destin, East Pass"},
+  panamacity: {name:"Panama City", station:"8729210", zone:"GMZ751", label:"Panama City Beach"},
+  stuart:     {name:"Stuart / Treasure Coast", station:"8722670", zone:"AMZ650", label:"Lake Worth Pier"},
+  fortmyers:  {name:"Fort Myers / Sanibel", station:"8725520", zone:"GMZ656", label:"Fort Myers"},
+  daytona:    {name:"Daytona Beach", station:"8721120", zone:"AMZ550", label:"Daytona Beach Shores"},
+  crystalriver:{name:"Crystal River / Cedar Key", station:"8727520", zone:"GMZ850", label:"Cedar Key"},
+  naples:     {name:"Naples", station:"8725110", zone:"GMZ657", label:"Naples"},
+  jacksonville:{name:"Jacksonville / St. Augustine", station:"8720218", zone:"AMZ452", label:"Mayport"}
+};
+let currentTravelKey = "tampa";
+function changeTravelLocation(key){
+  currentTravelKey = key;
+  const loc = TRAVEL_LOCATIONS[key] || TRAVEL_LOCATIONS.tampa;
+  document.getElementById("tides-title").textContent = key==="tampa" ? "Tampa Bay Tides \u0026 Marine Forecast" : loc.name + " Tides \u0026 Marine Forecast";
+  document.getElementById("tides-sub").textContent = "Live from NOAA \u0026 the National Weather Service \u00B7 " + loc.label;
+  loadTides(); loadMarine();
+}
 async function loadTides(){
   const box = document.getElementById("tide-list");
   try{
-    const r = await fetch("https://api.tidesandcurrents.noaa.gov/api/prod/datagetter?date=today&station=8726674&product=predictions&datum=MLLW&time_zone=lst_ldt&units=english&interval=hilo&format=json");
+    const tloc = TRAVEL_LOCATIONS[currentTravelKey] || TRAVEL_LOCATIONS.tampa;
+    const r = await fetch("https://api.tidesandcurrents.noaa.gov/api/prod/datagetter?date=today&station="+tloc.station+"&product=predictions&datum=MLLW&time_zone=lst_ldt&units=english&interval=hilo&format=json");
     const d = await r.json();
     const preds = (d.predictions||[]).slice(0,4);
     if(!preds.length) throw 0;
@@ -2743,7 +2788,7 @@ async function loadTides(){
     }catch(_){}
     const station = document.createElement("div");
     station.style.cssText = "font-size:.78rem;color:#a9c6c5;margin-top:8px";
-    station.textContent = "Station: East Bay, Tampa · NOAA";
+    station.textContent = "Station: " + tloc.label + " \u00B7 NOAA";
     box.appendChild(station);
   }catch(e){
     box.innerHTML = `<p class="cond-fallback">Tide data unavailable right now — <a href="https://tampabayboating.com/conditions/" target="_blank" rel="noopener" style="color:#fff">see the full forecast</a>.</p>`;
@@ -2752,7 +2797,8 @@ async function loadTides(){
 async function loadMarine(){
   const box = document.getElementById("marine-forecast");
   try{
-    const r = await fetch("https://api.weather.gov/zones/forecast/GMZ830/forecast", {headers:{"User-Agent":"tampabayboating.com"}});
+    const mloc = TRAVEL_LOCATIONS[currentTravelKey] || TRAVEL_LOCATIONS.tampa;
+    const r = await fetch("https://api.weather.gov/zones/forecast/"+mloc.zone+"/forecast", {headers:{"User-Agent":"tampabayboating.com"}});
     const d = await r.json();
     const ps = (d.properties&&d.properties.periods||[]).slice(0,2);
     if(!ps.length) throw 0;

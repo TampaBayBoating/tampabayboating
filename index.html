@@ -193,10 +193,9 @@ section{padding:56px 0}
 .regs-table td{padding:6px 4px; border-bottom:1px solid var(--line)}
 .sponsor-banner{margin:18px auto; max-width:970px; border:2px dashed var(--line); border-radius:12px; padding:22px; text-align:center; color:var(--muted); background:#f8fafc}
 .sponsor-banner a{color:var(--teal); font-weight:700}
-.forecast-bar{display:flex; gap:8px; align-items:center; justify-content:center; background:#0a2540; color:#fff; text-decoration:none; padding:10px 12px; overflow-x:auto; border-bottom:1px solid rgba(255,255,255,.12)}
-.fb-badge{display:flex; align-items:center; gap:6px; background:rgba(255,255,255,.1); border-radius:999px; padding:7px 14px; white-space:nowrap; font-size:.85rem}
+
 .fb-badge b{font-weight:700}
-.fb-more{color:var(--sun); font-weight:700; white-space:nowrap; font-size:.8rem}
+
 .dir-logo{height:64px; display:flex; align-items:center; margin-bottom:10px}
 .dir-logo img{max-height:64px; max-width:200px; object-fit:contain}
 .dir-logo.dark{background:#1b2a4a; border-radius:8px; padding:6px 10px}
@@ -409,8 +408,7 @@ footer.tbb-foot a.soc svg{width:15px!important;height:15px!important;fill:#fff!i
 @media(max-width:700px){footer.tbb-foot .foot-grid{grid-template-columns:1fr 1fr;gap:20px}}
 .ad-group{color:#0a2540;font-size:1.3rem;margin:30px 0 4px;text-align:center}
 .ad-group-sub{text-align:center;color:#5b6b7c;margin-bottom:6px}
-#strips .forecast-bar{display:block}
-@media(max-width:860px){.today-grid,.cat-grid{grid-template-columns:1fr 1fr}.hero2 h1{font-size:2.3rem}.tb-brand span{display:none}.tb-row{gap:8px;padding:8px 12px}.tb-socials{gap:6px;margin-left:2px}.tb-socials a{width:32px;height:32px}.tb-wx{width:32px;height:32px}.tb-lang{font-size:.85rem;padding:6px 8px}#strips .forecast-bar{display:flex;overflow-x:auto;justify-content:flex-start;padding:8px 10px;gap:6px}.fb-badge{font-size:.78rem;padding:5px 10px;flex-shrink:0}.fb-more{font-size:.75rem;flex-shrink:0}.bite-hero{font-size:.9rem;padding:12px 28px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}}
+#strips @media(max-width:860px){.today-grid,.cat-grid{grid-template-columns:1fr 1fr}.hero2 h1{font-size:2.3rem}.tb-brand span{display:none}.tb-row{gap:8px;padding:8px 12px}.tb-socials{gap:6px;margin-left:2px}.tb-socials a{width:32px;height:32px}.tb-wx{width:32px;height:32px}.tb-lang{font-size:.85rem;padding:6px 8px}.bite-hero{font-size:.9rem;padding:12px 28px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}}
 @media(max-width:768px){.hero2{background-image:url('assets/hero-skyway-mobile.jpg');min-height:80vh}}
 /* NWS marine weather alert bar */
 .hero2-slogan{font-size:1.15rem;font-style:italic;color:#ffd54f;font-weight:600;margin:10px 0 4px;text-shadow:0 1px 8px rgba(0,0,0,.55)}
@@ -557,12 +555,6 @@ body.dark .trust-bar b{color:#e8eef4}
     <a class="photo-card" href="#/dining"><span class="pc-img" style="background-image:url('assets/dining/armature-works.jpg')"></span><span class="pc-body"><b>Dock &amp; Dine</b><i>Find a boat-up meal</i><u>Find a spot →</u></span></a>
   </div>
 </div>
-<div id="strips"><a class="forecast-bar" href="#/tides" aria-label="Boating forecast — tap for full details">
-  <span class="fb-badge" id="fb-tide">🌊 <b>Loading tide…</b></span>
-  <span class="fb-badge" id="fb-wx">🌡️ <b>Loading…</b></span>
-  <span class="fb-badge" id="fb-wind">💨 <b>Loading…</b></span>
-  <span class="fb-more">Full forecast →</span>
-</a></div>
 <div class="section-divider"></div>
 <div class="cat-cards">
   <div class="tabs-label">Browse boating categories</div>

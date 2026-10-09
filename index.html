@@ -186,8 +186,6 @@ section{padding:56px 0}
 .dir-card .type{font-size:.92rem; color:var(--muted); margin:6px 0}
 .dir-card .contact{font-size:.9rem}
 .dir-price{font-size:1.25rem; font-weight:800; color:var(--navy); margin:6px 0}
-.bite-strip{display:block; text-align:center; background:#e8f7f5; color:var(--navy); font-size:.85rem; padding:8px 12px; text-decoration:none; border-bottom:1px solid var(--line)}
-.bite-strip:hover{background:#d8f0ed}
 .map-filter{border:1px solid var(--line); background:#fff; border-radius:999px; padding:6px 14px; margin:3px; font-size:.85rem; cursor:pointer}
 .map-filter.active{background:var(--navy); color:#fff; border-color:var(--navy)}
 .regs-table{width:100%; border-collapse:collapse; font-size:.85rem; margin-top:6px}
@@ -321,6 +319,8 @@ body{top:0 !important}
 .hero2-cta:hover{background:#a5dcf5}
 .hero2-map{display:inline-block;background:#8fd0f0;color:#0a2540;font-weight:800;font-size:1.05rem;padding:15px 36px;border-radius:999px;text-decoration:none;margin:0 0 10px}
 .hero2-map:hover{background:#a5dcf5}
+.bite-hero{display:inline-block;background:#8fd0f0;color:#0a2540;font-weight:800;padding:15px 36px;border-radius:999px;text-decoration:none;font-size:1.05rem;margin:18px 0 10px;max-width:100%}
+.bite-hero:hover{background:#a5dcf5}
 .hero2-browse{display:inline-block;margin-top:28px;color:#fff;opacity:.9;text-decoration:none;font-size:.93rem}
 .ad-card{max-width:1180px;margin:26px auto 0;padding:0 20px}
 .ad-card-inner{background:#fff;border:1px solid #e6ded1;border-left:6px solid #8fd0f0;border-radius:14px;padding:14px 18px;display:flex;gap:14px;align-items:center;box-shadow:0 6px 18px rgba(10,37,64,.07)}
@@ -411,7 +411,7 @@ footer.tbb-foot a.soc svg{width:15px!important;height:15px!important;fill:#fff!i
 .ad-group{color:#0a2540;font-size:1.3rem;margin:30px 0 4px;text-align:center}
 .ad-group-sub{text-align:center;color:#5b6b7c;margin-bottom:6px}
 #strips .forecast-bar{display:block}
-@media(max-width:860px){.today-grid,.cat-grid{grid-template-columns:1fr 1fr}.hero2 h1{font-size:2.3rem}.tb-brand span{display:none}.tb-row{gap:8px;padding:8px 12px}.tb-socials{gap:6px;margin-left:2px}.tb-socials a{width:32px;height:32px}.tb-wx{width:32px;height:32px}.tb-lang{font-size:.85rem;padding:6px 8px}#strips .forecast-bar{display:flex;overflow-x:auto;justify-content:flex-start;padding:8px 10px;gap:6px}.fb-badge{font-size:.78rem;padding:5px 10px;flex-shrink:0}.fb-more{font-size:.75rem;flex-shrink:0}.bite-strip{font-size:.78rem;padding:6px 10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}}
+@media(max-width:860px){.today-grid,.cat-grid{grid-template-columns:1fr 1fr}.hero2 h1{font-size:2.3rem}.tb-brand span{display:none}.tb-row{gap:8px;padding:8px 12px}.tb-socials{gap:6px;margin-left:2px}.tb-socials a{width:32px;height:32px}.tb-wx{width:32px;height:32px}.tb-lang{font-size:.85rem;padding:6px 8px}#strips .forecast-bar{display:flex;overflow-x:auto;justify-content:flex-start;padding:8px 10px;gap:6px}.fb-badge{font-size:.78rem;padding:5px 10px;flex-shrink:0}.fb-more{font-size:.75rem;flex-shrink:0}.bite-hero{font-size:.9rem;padding:12px 28px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}}
 @media(max-width:768px){.hero2{background-image:url('assets/hero-skyway-mobile.jpg');min-height:80vh}}
 /* NWS marine weather alert bar */
 .hero2-slogan{font-size:1.15rem;font-style:italic;color:#ffd54f;font-weight:600;margin:10px 0 4px;text-shadow:0 1px 8px rgba(0,0,0,.55)}
@@ -539,7 +539,9 @@ body.dark .trust-bar b{color:#e8eef4}
     <p class="hero2-sub">Live tides, daily fishing reports, events, waterfront dining, and the most useful boater's map in Tampa Bay.</p>
     <a class="hero2-cta" href="#/tides">Check tides &amp; forecast</a>
     <a class="hero2-map" href="#/map">Open the boater's map</a>
-    <a class="hero2-browse" href="#browse">Browse every category &darr;</a>
+    <!-- BITE-STRIP-START (auto-updated every morning ~6am ET) -->
+<a href="#/fishing" class="bite-hero">🎣 <b>Today's bite:</b> Red October — reds schooling the flats on the incoming &middot; Snook pushing into the bay&hellip;</a>
+<!-- BITE-STRIP-END -->
   </div>
 </section>
 <div class="home-intro">
@@ -561,9 +563,7 @@ body.dark .trust-bar b{color:#e8eef4}
   <span class="fb-badge" id="fb-wx">🌡️ <b>Loading…</b></span>
   <span class="fb-badge" id="fb-wind">💨 <b>Loading…</b></span>
   <span class="fb-more">Full forecast →</span>
-</a><!-- BITE-STRIP-START (auto-updated every morning ~6am ET) -->
-<a href="#/fishing" class="bite-strip">🎣 <b>Today's bite:</b> Red October — reds schooling the flats on the incoming &middot; Snook pushing into the bay&hellip; <u>full details</u></a>
-<!-- BITE-STRIP-END --></div>
+</a></div>
 <div class="section-divider"></div>
 <div class="cat-cards">
   <div class="tabs-label">Browse boating categories</div>

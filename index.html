@@ -2764,7 +2764,7 @@ renderGrid(); renderDir(); updateCartUI(); renderCalendar(); loadTides(); loadMa
 <script>
 /* ---- SPA router: approved app-style redesign ---- */
 const ID2VIEW = {conditions:'tides',fishing:'fishing',events:'events',dining:'dining',baymap:'map',paddling:'paddling',ramps:'ramps',bridges:'bridges',logbook:'logbook',charters:'charters',fuel:'fuel',services:'services',parts:'parts',storage:'storage','boat-clubs':'boat-clubs',navigation:'navigation',tips:'tips',safety:'safety',stopped:'stopped',manatee:'manatee',courses:'courses',hurricane:'hurricane',insurance:'insurance',shop:'shop',boatsales:'boatsales',gear:'gear',videos:'videos',meetups:'meetups',news:'news',newsletter:'newsletter',advertise:'advertise',contact:'contact','nav-charts':'navigation'};
-const VIEWS = ['home','plan','local','smart','shopc','tides','fishing','events','dining','map','paddling','ramps','bridges','logbook','charters','fuel','services','parts','storage','boat-clubs','navigation','tips','safety','stopped','manatee','courses','hurricane','insurance','shop','boatsales','gear','videos','meetups','news','newsletter','advertise','contact'];
+const VIEWS = ['home','plan','local','smart','shopc','tides','fishing','events','dining','map','paddling','ramps','bridges','logbook','charters','fuel','services','parts','storage','boat-clubs','navigation','tips','safety','stopped','manatee','courses','hurricane','insurance','shop','boatsales','gear','videos','meetups','news','newsletter','advertise','contact','privacy','terms'];
 function showView(name){
   if(VIEWS.indexOf(name)<0) name='home';
   document.querySelectorAll('.view').forEach(function(v){v.classList.remove('active');});

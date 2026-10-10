@@ -588,6 +588,18 @@ body.dark body.dark </style>
   <div class="wrap">
     <h2 id="tides-title">Tampa Bay Tides &amp; Marine Forecast</h2>
     <div class="sub" id="tides-sub">Live from NOAA &amp; the National Weather Service · East Bay / Tampa Bay</div>
+    <div class="cond-grid">
+      <div class="cond-card">
+        <h3>Today's Tides</h3>
+        <div id="tide-list"><p class="cond-fallback">Loading tides…</p></div>
+      </div>
+      <div class="cond-card">
+        <h3>Marine Forecast</h3>
+        <div id="marine-forecast"><p class="cond-fallback">Loading forecast…</p></div>
+      </div>
+    </div>
+    <div class="cond-link"><a href="https://tampabayboating.com/conditions/" target="_blank" rel="noopener">Full 7-day tides, weather &amp; marine forecast →</a></div>
+    <div class="cond-link" style="margin-top:12px"><span style="color:#ffd54f;font-weight:800">⭐ Tampa Bay's top weather pick:</span> <a href="https://spaghettimodels.com/" target="_blank" rel="noopener">Mike's Weather Page</a></div>
     <div class="travel-box">
       <div class="travel-label">✈️ Travel Mode — check another area</div>
       <select id="travel-select" onchange="changeTravelLocation(this.value)" aria-label="Choose a boating destination">
@@ -604,18 +616,6 @@ body.dark body.dark </style>
       </select>
       <p class="travel-note">Shows live tides &amp; marine forecast for your destination. Fishing reports &amp; events are Tampa Bay only.</p>
     </div>
-    <div class="cond-grid">
-      <div class="cond-card">
-        <h3>Today's Tides</h3>
-        <div id="tide-list"><p class="cond-fallback">Loading tides…</p></div>
-      </div>
-      <div class="cond-card">
-        <h3>Marine Forecast</h3>
-        <div id="marine-forecast"><p class="cond-fallback">Loading forecast…</p></div>
-      </div>
-    </div>
-    <div class="cond-link"><a href="https://tampabayboating.com/conditions/" target="_blank" rel="noopener">Full 7-day tides, weather &amp; marine forecast →</a></div>
-    <div class="cond-link" style="margin-top:12px"><span style="color:#ffd54f;font-weight:800">⭐ Tampa Bay's top weather pick:</span> <a href="https://spaghettimodels.com/" target="_blank" rel="noopener">Mike's Weather Page</a></div>
   </div>
 </section></div>
 <div class="view" id="view-fishing"><div class="wrap"><a class="back-link" href="#/">&#8249; All categories</a></div><section id="fishing">

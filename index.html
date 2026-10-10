@@ -3145,12 +3145,6 @@ document.addEventListener('click',function(e){ var p=document.getElementById('tr
     if(/watch/.test(e)) return 10;
     return 11;
   }
-  /* --- TEMPORARY: Hurricane Isaias notice, merged into the single alert bar (remove after storm passes) --- */
-  const STORM_NOTICE = {
-    title: '🌀 Hurricane Isaias — Cat 3',
-    sub: 'Landfall tonight near Pensacola. Tampa Bay: gusty winds & rough seas — check your lines today.',
-    detail: '<div class="wx-d-sec"><b>🌀 Hurricane Isaias — Cat 3</b>Landfall tonight near Pensacola. Tampa Bay: gusty winds &amp; rough seas on the east side. Not a direct hit — but check your lines today.<br><br><a class="wx-d-link" href="https://www.nhc.noaa.gov/" target="_blank" rel="noopener">Track the storm →</a></div>'
-  };
   function showBar(title, sub, detailHTML){
     document.getElementById('wx-alert-title').textContent=title;
     document.getElementById('wx-alert-sub').textContent=sub;
@@ -3170,19 +3164,16 @@ document.addEventListener('click',function(e){ var p=document.getElementById('tr
       });
       const esc=s=>String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/\n/g,'<br>');
       if(!feats.length){
-        /* No NWS alerts — show storm notice alone */
-        showBar(STORM_NOTICE.title, STORM_NOTICE.sub,
-          STORM_NOTICE.detail+'<div class="wx-d-sec"><a class="wx-d-link" href="#/tides">View full forecast →</a></div>');
+        /* No NWS alerts — bar stays hidden */
         return;
       }
       feats.sort((a,b)=>rank(a.properties.event)-rank(b.properties.event));
       const top=feats[0].properties;
       let sub=(top.headline||'').replace(/\s+/g,' ').trim();
       if(sub.length>110) sub=sub.slice(0,107)+'…';
-      sub+=' · 🌀 Isaias: Cat 3, Panhandle landfall tonight';
       if(feats.length>1) sub+=' (+'+(feats.length-1)+' more)';
-      /* build expandable details: storm notice first, then NWS alerts */
-      let det=STORM_NOTICE.detail;
+      /* build expandable details: NWS alerts */
+      let det='';
       feats.slice(0,3).forEach(p=>{
         const pr=p.properties||{};
         det+='<div class="wx-d-sec"><b>'+esc(pr.event)+'</b>'+esc(pr.headline||'');
@@ -3194,9 +3185,7 @@ document.addEventListener('click',function(e){ var p=document.getElementById('tr
       showBar(top.event, sub, det);
     })
     .catch(()=>{
-      /* NWS fetch failed — still show the storm notice */
-      showBar(STORM_NOTICE.title, STORM_NOTICE.sub,
-        STORM_NOTICE.detail+'<div class="wx-d-sec"><a class="wx-d-link" href="#/tides">View full forecast →</a></div>');
+      /* NWS fetch failed — bar stays hidden */
     });
 })();
 </script>

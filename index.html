@@ -2507,9 +2507,12 @@ function addToCart(id, size, qty, color){
 function cartQty(){ return cart.reduce((a,i)=>a+i.qty,0); }
 function cartTotal(){ return cart.reduce((a,i)=>{ const p=PRODUCTS.find(x=>x.id===i.id); return a+p.price*i.qty; },0); }
 function updateCartUI(){
-  document.getElementById("cart-count").textContent = cartQty();
-  document.getElementById("cart-total").textContent = money(cartTotal());
+  const cc = document.getElementById("cart-count");
+  if(cc) cc.textContent = cartQty();
+  const ct = document.getElementById("cart-total");
+  if(ct) ct.textContent = money(cartTotal());
   const box = document.getElementById("cart-items");
+  if(!box) return;
   if(!cart.length){ box.innerHTML = '<div class="cart-empty">Your cart is empty.<br>Go rep the bay.</div>'; return; }
   box.innerHTML = cart.map((i,idx)=>{ const p=PRODUCTS.find(x=>x.id===i.id); const cimg = (p.colors && i.color) ? ((p.colors.find(c=>c.n===i.color)||{}).i || p.img) : p.img; return `
     <div class="cart-item">
@@ -3086,7 +3089,7 @@ async function loadForecastBadges(){
 }
 
 /* ---- init ---- */
-renderGrid(); renderDir(); updateCartUI(); renderCalendar(); loadTides(); loadMarine(); loadForecastBadges(); renderFuel(); renderSvc(); renderOwner(); renderDealers(); renderGear();
+["renderGrid","renderDir","updateCartUI","renderCalendar","loadTides","loadMarine","loadForecastBadges","renderFuel","renderSvc","renderOwner","renderDealers","renderGear"].forEach(fn=>{ try{ window[fn](); }catch(e){ console.warn("init "+fn+" failed:", e.message); } });
 </script>
 
 <script>

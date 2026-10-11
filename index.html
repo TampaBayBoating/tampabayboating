@@ -345,6 +345,24 @@ body{top:0 !important}
 .ad-card h3{color:#0a2540;font-size:1.05rem;margin:2px 0}
 .ad-card p{color:#5b6b7c;font-size:.85rem;margin-bottom:8px}
 .ad-card-btn{display:inline-block;background:#8fd0f0;color:#0a2540;font-weight:800;padding:10px 24px;border-radius:999px;text-decoration:none;font-size:.92rem}
+.game-banner{max-width:1180px;margin:26px auto 0;padding:0 20px}
+.game-banner-inner{background:linear-gradient(135deg,#0a2540,#134a75);border-radius:16px;padding:22px 20px;display:flex;gap:16px;align-items:center;box-shadow:0 6px 18px rgba(10,37,64,.18);text-decoration:none}
+.game-banner-ico{flex:0 0 auto;width:52px;height:52px;border-radius:50%;background:#8fd0f0;display:flex;align-items:center;justify-content:center;font-size:1.6rem}
+.game-banner-eyebrow{font-size:.68rem;letter-spacing:2px;font-weight:800;color:#8fd0f0;text-transform:uppercase}
+.game-banner h3{color:#fff;font-size:1.2rem;margin:2px 0}
+.game-banner p{color:#b9d2e8;font-size:.86rem;margin-bottom:10px}
+.game-banner-btn{display:inline-block;background:#8fd0f0;color:#0a2540;font-weight:800;padding:10px 26px;border-radius:999px;font-size:.92rem}
+.support-card{background:#dbe9f4;border-radius:16px;padding:28px;max-width:720px;margin:0 auto;box-shadow:0 6px 18px rgba(10,37,64,.07)}
+.support-card h3{color:#0a2540;font-size:1.3rem;margin:0 0 10px}
+.support-card p{color:#0a2540;font-size:.95rem;margin-bottom:18px}
+.support-btns{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:22px}
+.support-btn{display:inline-block;background:#8fd0f0;color:#0a2540;font-weight:800;padding:12px 28px;border-radius:999px;text-decoration:none;font-size:.95rem}
+.support-btn.ghost{background:#fff;border:2px solid #0a2540}
+.support-goal{font-size:.85rem;color:#0a2540;font-weight:700;margin-bottom:8px}
+.support-goal span{float:right;color:#5b6b7c;font-weight:400}
+.support-bar{background:#fff;border-radius:999px;height:22px;overflow:hidden;margin-bottom:18px}
+.support-bar i{display:block;height:100%;background:#8fd0f0;border-radius:999px}
+.support-fine{font-size:.75rem;color:#5b6b7c}
 .home-intro{text-align:center;padding:44px 20px 8px;max-width:760px;margin:0 auto}
 .home-intro .kick{color:#0e7c7b;letter-spacing:3px;font-size:.75rem;font-weight:800;text-transform:uppercase}
 .home-intro h2{font-family:Georgia,serif;color:#0a2540;font-size:2.1rem;margin:8px 0}
@@ -681,6 +699,17 @@ results.addEventListener('click',function(e){
     </div>
   </div>
 </div>
+<div class="game-banner">
+  <a class="game-banner-inner" href="game.html">
+    <div class="game-banner-ico">🎮</div>
+    <div>
+      <div class="game-banner-eyebrow">Got time to kill?</div>
+      <h3>Dock It! — the 60-second boating game</h3>
+      <p>Thread the buoys, dodge the anchored boats, and slide into the slip without kissing the dock.</p>
+      <span class="game-banner-btn">Play now &rarr;</span>
+    </div>
+  </a>
+</div>
 <div class="nl-band">
   <div class="wrap">
     <div class="nl-kick">✉️ Weekly Newsletter</div>
@@ -716,7 +745,7 @@ results.addEventListener('click',function(e){
 </div>
 <div class="wrap"><div class="nb-note"><b class="t">The 5-minute rule</b><p style="color:#5b6b7c;font-size:.88rem;margin:6px 0 0">If you only do one thing, flush the engine after every saltwater trip. It is the cheapest insurance in boating.</p></div></div>
 </div>
-<div class="view" id="view-shopc"><div class="wrap"><a class="back-link" href="#/">&#8249; All categories</a></div><div class="hub-head"><h2>Shop & Connect</h2><p>Merch, boats, community and business opportunities.</p></div><div class="tile-grid"><a class="tile" href="#/shop"><span class="t-ico">🛍</span><b>Official Merch</b><i>Wear Tampa Bay Boating</i></a><a class="tile" href="#/boatsales"><span class="t-ico">🛥</span><b>Boats for Sale</b><i>Owners & local dealers</i></a><a class="tile" href="#/gear"><span class="t-ico">🎒</span><b>Gear Guide</b><i>Useful boating picks</i></a><a class="tile" href="#/videos"><span class="t-ico">🎥</span><b>Videos</b><i>Tampa Bay from the water</i></a><a class="tile" href="#/meetups"><span class="t-ico">🤝</span><b>Meetups</b><i>Find your local crew</i></a><a class="tile" href="#/news"><span class="t-ico">📰</span><b>Boating News</b><i>Around the bay</i></a><a class="tile" href="#/newsletter"><span class="t-ico">✉</span><b>Newsletter</b><i>This Week on the Water</i></a><a class="tile" href="#/advertise"><span class="t-ico">📣</span><b>Advertise</b><i>Monthly plans & placements</i></a><a class="tile" href="#/contact"><span class="t-ico">👋</span><b>Contact David</b><i>Questions & partnerships</i></a></div></div>
+<div class="view" id="view-shopc"><div class="wrap"><a class="back-link" href="#/">&#8249; All categories</a></div><div class="hub-head"><h2>Shop & Connect</h2><p>Merch, boats, community and business opportunities.</p></div><div class="tile-grid"><a class="tile" href="#/shop"><span class="t-ico">🛍</span><b>Official Merch</b><i>Wear Tampa Bay Boating</i></a><a class="tile" href="#/boatsales"><span class="t-ico">🛥</span><b>Boats for Sale</b><i>Owners & local dealers</i></a><a class="tile" href="#/gear"><span class="t-ico">🎒</span><b>Gear Guide</b><i>Useful boating picks</i></a><a class="tile" href="#/videos"><span class="t-ico">🎥</span><b>Videos</b><i>Tampa Bay from the water</i></a><a class="tile" href="#/meetups"><span class="t-ico">🤝</span><b>Meetups</b><i>Find your local crew</i></a><a class="tile" href="#/news"><span class="t-ico">📰</span><b>Boating News</b><i>Around the bay</i></a><a class="tile" href="#/newsletter"><span class="t-ico">✉</span><b>Newsletter</b><i>This Week on the Water</i></a><a class="tile" href="#/advertise"><span class="t-ico">📣</span><b>Advertise</b><i>Monthly plans & placements</i></a><a class="tile" href="#/support"><span class="t-ico">☕</span><b>Support</b><i>Keep the site free</i></a><a class="tile" href="#/contact"><span class="t-ico">👋</span><b>Contact David</b><i>Questions & partnerships</i></a></div></div>
 <div class="view" id="view-tides"><div class="wrap"><a class="back-link" href="#/">&#8249; All categories</a></div><section id="conditions">
   <div class="wrap">
     <h2 id="tides-title">Tampa Bay Tides &amp; Marine Forecast</h2>
@@ -1228,6 +1257,25 @@ results.addEventListener('click',function(e){
 <p>Questions, story tips, partnership ideas, or just want to talk boating — send me an email.</p></div>
 <div class="ad-cta">
 <a href="mailto:david@tampabayboating.com">✉️ david@tampabayboating.com</a>
+</div>
+</div>
+</section></div>
+<div class="view" id="view-support"><div class="wrap"><a class="back-link" href="#/">&#8249; All categories</a></div><section id="support">
+<div class="wrap">
+<div class="sec-head"><span class="sec-kicker">Fuel The Mission</span>
+<h2>Support Tampa Bay Boating</h2>
+<p>Tampa Bay Boating is free forever. Tips keep the tide data flowing, the map updated, and fund new features.</p></div>
+<!-- DAVID: replace the two placeholder links below with your Ko-fi page and Venmo handle before launch -->
+<div class="support-card">
+<h3>☕ Buy David a coffee</h3>
+<p>Every tip goes straight back into the site — hosting, data, and the next feature.</p>
+<div class="support-btns">
+<a class="support-btn" href="https://ko-fi.com/YOUR-KOFI-PAGE">☕ Ko-fi</a>
+<a class="support-btn ghost" href="https://venmo.com/YOUR-VENMO-HANDLE">Venmo</a>
+</div>
+<div class="support-goal">Spring merch drop fund <span>$0 of $300</span></div>
+<div class="support-bar"><i style="width:4%"></i></div>
+<div class="support-fine">Voluntary support. Tampa Bay Boating is not a nonprofit — tips are not tax-deductible.</div>
 </div>
 </div>
 </section></div>
@@ -3353,7 +3401,7 @@ async function loadForecastBadges(){
 <script>
 /* ---- SPA router: approved app-style redesign ---- */
 const ID2VIEW = {conditions:'tides',fishing:'fishing',events:'events',dining:'dining',baymap:'map',paddling:'paddling',ramps:'ramps',bridges:'bridges',logbook:'logbook',charters:'charters',fuel:'fuel',services:'services',parts:'parts',storage:'storage','boat-clubs':'boat-clubs',navigation:'navigation',tips:'tips',safety:'safety',stopped:'stopped',manatee:'manatee',courses:'courses',hurricane:'hurricane',insurance:'insurance',shop:'shop',boatsales:'boatsales',gear:'gear',videos:'videos',meetups:'meetups',news:'news',newsletter:'newsletter',advertise:'advertise',contact:'contact','nav-charts':'navigation'};
-const VIEWS = ['home','plan','local','smart','newboater','maintenance','shopc','tides','fishing','events','dining','stay','map','paddling','ramps','bridges','logbook','charters','fuel','services','parts','storage','boat-clubs','navigation','tips','safety','stopped','manatee','courses','hurricane','insurance','shop','boatsales','gear','videos','meetups','news','newsletter','advertise','contact','about','privacy','terms'];
+const VIEWS = ['home','plan','local','smart','newboater','maintenance','shopc','tides','fishing','events','dining','stay','map','paddling','ramps','bridges','logbook','charters','fuel','services','parts','storage','boat-clubs','navigation','tips','safety','stopped','manatee','courses','hurricane','insurance','shop','boatsales','gear','videos','meetups','news','newsletter','advertise','support','contact','about','privacy','terms'];
 function showView(name){
   if(VIEWS.indexOf(name)<0) name='home';
   document.querySelectorAll('.view').forEach(function(v){v.classList.remove('active');});

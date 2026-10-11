@@ -310,7 +310,8 @@ const menuBtns = [
   { id:'m-sail',   ico:'\u26F5', t:'Sailing',  s:'Tack the course' },
   { id:'m-fillet', ico:'\uD83D\uDD2A', t:'Fillet',   s:'Trace the cut' },
   { id:'m-trailer', ico:'\uD83D\uDE9A', t:'Trailer', s:'Back it down' },
-  { id:'m-safe',   ico:'\uD83D\uDEF6', t:'Safe Boater', s:'Pass the course' }
+  { id:'m-safe',   ico:'\uD83D\uDEF6', t:'Safe Boater', s:'Pass the course' },
+  { id:'m-pirate', ico:'\u2620\uFE0F', t:'Pirate Invasion', s:'Defend the bay!' }
 ];
 function menuDraw() {
   // Tampa Bay sky scene
@@ -337,7 +338,7 @@ function menuDraw() {
   ctx.fillStyle = '#0a2540'; ctx.font = 'bold 46px sans-serif';
   ctx.fillText('BAY ARCADE', W/2, 78);
   ctx.fillStyle = '#16456f'; ctx.font = '15px sans-serif';
-  ctx.fillText('Tampa Bay Boating \u2022 nine games', W/2, 104);
+  ctx.fillText('Tampa Bay Boating \u2022 ten games', W/2, 104);
   // 2-col button grid (last button spans full width if odd count)
   menuBtns.forEach((b, i) => {
     const lastOdd = (i === menuBtns.length - 1) && (menuBtns.length % 2 === 1);
@@ -366,12 +367,14 @@ function menuDraw() {
     '  Fillet ' + (ff || '\u2014') + '  Trailer ' + (tt ? tt.toFixed(1) + 's' : '\u2014'), W/2, 662);
   const sf = store.get('tbb-best-safe', 0);
   ctx.fillText('Safe Boater best: ' + (sf || '\u2014') + ' pts', W/2, 678);
+  const pr = store.get('tbb-best-pirate', 0);
+  ctx.fillText('Pirate Invasion best: ' + (pr || '\u2014') + ' pts', W/2, 694);
   vignette();
 }
 function selectMode(id) {
   sndGo();
   const starters = { 'm-dock':dockStart, 'm-race':raceStart, 'm-fish':fishStart, 'm-shrimp':shrimpStart,
-    'm-ski':skiStart, 'm-sail':sailStart, 'm-fillet':filletStart, 'm-trailer':trailerStart, 'm-safe':safeStart };
+    'm-ski':skiStart, 'm-sail':sailStart, 'm-fillet':filletStart, 'm-trailer':trailerStart, 'm-safe':safeStart, 'm-pirate':pirateStart };
   const h = HOWTOS[id];
   howto = { title:h.t, lines:h.lines, start:starters[id] };
 }
@@ -425,7 +428,13 @@ const HOWTOS = {
     'Answer 6 boating-safety questions at the quiz buoys.',
     'Steer CLEAR of diver-down flags (\u221250 if you get close).',
     'Slow to idle speed in NO-WAKE zones.',
-    'Score 90%+ to earn Licensed Skipper!' ] }
+    'Score 90%+ to earn Licensed Skipper!' ] },
+  'm-pirate': { t:'\u2620\uFE0F GASPARILLA PIRATE INVASION', lines:[
+    'Pirate ships are invading Tampa Bay \u2014 sink them all!',
+    'Steer \u25C0 \u25B6 (or arrow keys) to line up your cannons.',
+    'FIRE (or SPACE) to blast ships before they reach you.',
+    'Boarded?! TAP fast to slash \u2014 4 sword hits wins the duel.',
+    '3 hull hits and ye be sunk. Defend the bay!' ] }
 };
 function howtoOverlay(title, lines) {
   ctx.fillStyle = 'rgba(3,10,20,.78)'; ctx.fillRect(0, 0, W, H);
@@ -1814,10 +1823,447 @@ function safeDraw() {
 }
 
 /* ---------- tap routing / main loop ---------- */
+/* ================= GASPARILLA PIRATE INVASION ================= */
+const sndCannon = () => { beep(65,.35,'square',.16); beep(48,.45,'sawtooth',.12,.06); };
+const sndBoom   = () => { beep(140,.18,'square',.12); beep(90,.3,'triangle',.1,.07); };
+const sndSword  = () => { beep(1250,.07,'square',.07); beep(830,.1,'square',.07,.05); };
+
+const pirate = { px:240, hull:3, score:0, wave:0, enemies:[], balls:[], eballs:[],
+  parts:[], spawnQ:0, spawnT:0, cool:0, invuln:0, shake:0, duel:null, swing:0,
+  banner:null, over:false, spacePrev:false, muzzle:0 };
+const PTYPES = [ { hp:1, spd:1.0, s:0.8 }, { hp:2, spd:0.78, s:1.0 }, { hp:3, spd:0.58, s:1.25 } ];
+const PHOR = 212, PPY = 548;   // horizon y, player-line y
+function pScale(z) { return 0.14 + 0.86*z; }
+function pY(z) { return PHOR + z*(PPY - PHOR); }
+function pX(x, z) { return 240 + (x - 240)*(0.25 + 0.75*z); }
+
+function pirateStart() {
+  mode = 'pirate';
+  const p = pirate;
+  p.px = 240; p.hull = 3; p.score = 0; p.wave = 0;
+  p.enemies = []; p.balls = []; p.eballs = []; p.parts = [];
+  p.spawnQ = 0; p.spawnT = 0; p.cool = 0; p.invuln = 0; p.shake = 0;
+  p.duel = null; p.swing = 0; p.banner = null; p.over = false;
+  p.spacePrev = false; p.muzzle = 0;
+  pirateNextWave();
+}
+function pirateNextWave() {
+  const p = pirate;
+  p.wave++;
+  p.spawnQ = 2 + p.wave;
+  p.spawnT = 0.6;
+  p.banner = { t:2.2, txt:'WAVE ' + p.wave };
+}
+function pirateSpawn() {
+  const p = pirate, w = p.wave, r = Math.random();
+  let ti = 0;
+  if (w >= 4 && r < 0.25) ti = 2;
+  else if (w >= 2 && r < 0.55) ti = 1;
+  const T = PTYPES[ti];
+  p.enemies.push({ x:70 + Math.random()*(W-140), z:0, hp:T.hp,
+    spd:T.spd*(0.055 + w*0.011), s:T.s,
+    shoot:w >= 3 && Math.random() < 0.5, ft:1 + Math.random()*2,
+    sink:0, ph:Math.random()*7 });
+}
+function fireCannon() {
+  const p = pirate;
+  if (p.over || p.duel || p.cool > 0) return;
+  p.cool = 0.42; p.muzzle = 0.12;
+  p.balls.push({ x:p.px, z:1 });
+  sndCannon();
+}
+function duelSlash() {
+  const p = pirate;
+  if (!p.duel || p.over) return;
+  p.swing = 0.18; p.duel.hp--;
+  sndSword();
+  pirateBurst(240, 400, 8, ['#cfe8ff','#ffffff']);
+  if (p.duel.hp <= 0) { p.score += 150; p.duel = null; sndGo(); }
+}
+function pirateTap(pt) { if (pt && pirate.duel) duelSlash(); }
+function pirateBurst(x, y, n, colors) {
+  const p = pirate;
+  for (let i = 0; i < n; i++) {
+    const a = Math.random()*TAU, v = 40 + Math.random()*130;
+    p.parts.push({ x, y, vx:Math.cos(a)*v, vy:Math.sin(a)*v - 40,
+      life:0.5 + Math.random()*0.4, t:0, c:colors[i % colors.length], r:2 + Math.random()*3 });
+  }
+}
+function pirateParts(dt) {
+  const p = pirate;
+  for (const q of p.parts) { q.t += dt; q.x += q.vx*dt; q.y += q.vy*dt; q.vy += 160*dt; }
+  p.parts = p.parts.filter(q => q.t < q.life);
+}
+function pirateHurt() {
+  const p = pirate;
+  if (p.invuln > 0 || p.over) return;
+  p.hull--; p.invuln = 1.6; p.shake = 0.4;
+  sndHit();
+  pirateBurst(p.px, 520, 14, ['#ff8a8a','#ffb347']);
+  if (p.hull <= 0) pirateGameOver();
+}
+function pirateGameOver() {
+  const p = pirate;
+  p.over = true;
+  const best = store.get('tbb-best-pirate', 0);
+  if (p.score > best) store.set('tbb-best-pirate', p.score);
+  sndOver();
+  ovl = { title:'SUNK! \u2620\uFE0F',
+    lines:['Ye defended the bay for ' + p.wave + ' wave' + (p.wave === 1 ? '' : 's'),
+      'Score: ' + p.score + ' pts', 'Best: ' + store.get('tbb-best-pirate', 0) + ' pts', '',
+      'Sunken ship +100    Sword kill +150'],
+    cta:'\u2014 tap to continue \u2014', next:() => { mode = 'menu'; } };
+}
+function pirateStep(dt) {
+  const p = pirate;
+  if (p.over) return;
+  if (p.banner) { p.banner.t -= dt; if (p.banner.t <= 0) p.banner = null; }
+  if (p.cool > 0) p.cool -= dt;
+  if (p.invuln > 0) p.invuln -= dt;
+  if (p.shake > 0) p.shake -= dt;
+  if (p.muzzle > 0) p.muzzle -= dt;
+  if (p.swing > 0) p.swing -= dt;
+  const ctl = driveInput();
+  if (!p.duel) {
+    if (ctl.left) p.px -= 300*dt;
+    if (ctl.right) p.px += 300*dt;
+    p.px = clamp(p.px, 90, W-90);
+  }
+  const sp = keyDown(' ');
+  if (sp && !p.spacePrev) { if (p.duel) duelSlash(); else fireCannon(); }
+  p.spacePrev = sp;
+  if (p.duel) {                       // invasion pauses for the sword fight
+    p.duel.t -= dt;
+    if (p.duel.t <= 0) { p.duel = null; pirateHurt(); }
+    pirateParts(dt);
+    return;
+  }
+  if (p.spawnQ > 0) {
+    p.spawnT -= dt;
+    if (p.spawnT <= 0) { pirateSpawn(); p.spawnQ--; p.spawnT = Math.max(0.7, 2.4 - p.wave*0.18); }
+  }
+  for (const e of p.enemies) {
+    if (e.sink > 0) { e.sink += dt; continue; }
+    e.z += e.spd*dt; e.ph += dt*3;
+    if (e.shoot && e.z > 0.25 && e.z < 0.85) {
+      e.ft -= dt;
+      if (e.ft <= 0) { e.ft = 2.2 + Math.random()*2; p.eballs.push({ x:e.x, z:e.z }); sndCannon(); }
+    }
+    if (e.z >= 0.98) {
+      p.enemies.splice(p.enemies.indexOf(e), 1);
+      p.duel = { hp:4, t:6 };
+      sndBuzzer();
+      break;
+    }
+  }
+  p.enemies = p.enemies.filter(e => e.sink < 1.2);
+  for (const b of p.balls) {
+    b.z -= 1.5*dt;
+    for (const e of p.enemies) {
+      if (e.sink > 0 || e.hp <= 0) continue;
+      if (Math.abs(e.z - b.z) < 0.09 && Math.abs(e.x - b.x) < 34 + 44*e.z) {
+        e.hp--; b.dead = true;
+        pirateBurst(pX(e.x,e.z), pY(e.z) - 30*pScale(e.z), 10, ['#ffb347','#ff7847','#ffffff']);
+        if (e.hp <= 0) { e.sink = 0.001; p.score += 100; sndBoom(); }
+        else sndHit();
+        break;
+      }
+    }
+  }
+  p.balls = p.balls.filter(b => !b.dead && b.z > -0.05);
+  for (const b of p.eballs) {
+    b.z += 0.85*dt;
+    if (b.z >= 0.97) {
+      b.dead = true;
+      if (Math.abs(b.x - p.px) < 58 && p.invuln <= 0) pirateHurt();
+      else pirateBurst(pX(b.x,1), pY(1), 6, ['#9fc3e0','#ffffff']);
+    }
+  }
+  p.eballs = p.eballs.filter(b => !b.dead && b.z < 1.05);
+  pirateParts(dt);
+  if (p.spawnQ === 0 && p.enemies.length === 0 && !p.duel && !p.banner) {
+    p.score += 100*p.wave;
+    p.banner = { t:2.2, txt:'WAVE ' + p.wave + ' CLEARED! +' + (100*p.wave) };
+    sndDock();
+    p.spawnQ = -1;
+  }
+  if (p.spawnQ === -1 && !p.banner) pirateNextWave();
+}
+/* ---------- pseudo-3D scenery ---------- */
+function pirateSky() {
+  const g = ctx.createLinearGradient(0, 0, 0, PHOR);
+  g.addColorStop(0, '#f7b267'); g.addColorStop(.55, '#f4845f');
+  g.addColorStop(.8, '#a86a8a'); g.addColorStop(1, '#5a4a72');
+  ctx.fillStyle = g; ctx.fillRect(0, 0, W, PHOR);
+  const sg = ctx.createRadialGradient(360, 120, 4, 360, 120, 70);
+  sg.addColorStop(0, 'rgba(255,240,200,.9)'); sg.addColorStop(1, 'rgba(255,240,200,0)');
+  ctx.fillStyle = sg; ctx.fillRect(280, 40, 160, 160);
+  ctx.fillStyle = '#ffedbe'; ctx.beginPath(); ctx.arc(360, 120, 26, 0, 7); ctx.fill();
+  // Tampa skyline silhouette
+  const bds = [[0,150,50],[52,140,36],[90,155,44],[150,130,30],[182,145,52],[236,138,34],
+               [272,150,60],[334,142,38],[374,152,48],[424,146,56]];
+  ctx.fillStyle = '#2c2340';
+  for (const bd of bds) ctx.fillRect(bd[0], bd[1], bd[2], PHOR - bd[1]);
+  ctx.fillStyle = 'rgba(255,214,106,.75)';
+  bds.forEach((bd, bi) => {
+    for (let wy = bd[1] + 8; wy < PHOR - 4; wy += 10)
+      for (let wx = bd[0] + 5; wx < bd[0] + bd[2] - 4; wx += 9)
+        if ((wx*7 + wy*13 + bi*29) % 5 < 2) ctx.fillRect(wx, wy, 3, 4);
+  });
+  // Gasparilla pennant bunting
+  ctx.strokeStyle = 'rgba(20,20,40,.55)'; ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.moveTo(0, 58);
+  ctx.quadraticCurveTo(240, 108, 480, 52); ctx.stroke();
+  const cols = ['#e63946','#ffd76a','#8fd0f0','#ffffff'];
+  for (let i = 0; i <= 16; i++) {
+    const t = i/16, bx = t*480;
+    const by = (1-t)*(1-t)*58 + 2*(1-t)*t*108 + t*t*52;
+    ctx.fillStyle = cols[i % 4];
+    ctx.beginPath(); ctx.moveTo(bx-6, by); ctx.lineTo(bx+6, by); ctx.lineTo(bx, by+11);
+    ctx.closePath(); ctx.fill();
+  }
+}
+function pirateWater() {
+  const g = ctx.createLinearGradient(0, PHOR, 0, H);
+  g.addColorStop(0, '#7a4a5a'); g.addColorStop(.25, '#2a6a9a');
+  g.addColorStop(.6, '#1c4e78'); g.addColorStop(1, '#0d2c4b');
+  ctx.fillStyle = g; ctx.fillRect(0, PHOR, W, H - PHOR);
+  ctx.strokeStyle = 'rgba(170,215,245,.3)';
+  for (let i = 0; i < 9; i++) {
+    const z = i/8, y = PHOR + z*z*(H - PHOR);
+    ctx.lineWidth = 1 + z*3;
+    const wdt = 30 + z*140, x = 240 + Math.sin(waveT*1.2 + i*1.7)*22*z;
+    ctx.beginPath(); ctx.moveTo(x - wdt/2, y); ctx.lineTo(x + wdt/2, y); ctx.stroke();
+  }
+}
+function pirateSail(x, y, w, h) {
+  const g = ctx.createLinearGradient(x - w/2, 0, x + w/2, 0);
+  g.addColorStop(0, '#c9b384'); g.addColorStop(.5, '#f4e8c8'); g.addColorStop(1, '#a8895a');
+  ctx.fillStyle = g;
+  ctx.beginPath();
+  ctx.moveTo(x - w/2, y);
+  ctx.quadraticCurveTo(x, y + 10, x + w/2, y);
+  ctx.lineTo(x + w/2 - 4, y + h);
+  ctx.quadraticCurveTo(x, y + h - 8, x - w/2 + 4, y + h);
+  ctx.closePath(); ctx.fill();
+  ctx.strokeStyle = 'rgba(90,70,40,.5)'; ctx.lineWidth = 1.5; ctx.stroke();
+}
+function drawPirateShip(e) {
+  const s = pScale(e.z)*e.s, x = pX(e.x, e.z), y = pY(e.z);
+  const bob = Math.sin(waveT*2 + e.ph)*4*s;
+  ctx.save(); ctx.translate(x, y + bob);
+  if (e.sink > 0) { ctx.rotate(e.sink*0.55); ctx.globalAlpha = Math.max(0, 1 - e.sink/1.2); ctx.translate(0, e.sink*70); }
+  ctx.fillStyle = 'rgba(4,20,36,.3)';
+  ctx.beginPath(); ctx.ellipse(0, 20*s, 70*s, 10*s, 0, 0, 7); ctx.fill();
+  const hg = ctx.createLinearGradient(0, -20*s, 0, 22*s);
+  hg.addColorStop(0, '#7a4e24'); hg.addColorStop(1, '#3a2110');
+  ctx.fillStyle = hg;
+  ctx.beginPath();
+  ctx.moveTo(-62*s, -18*s); ctx.lineTo(62*s, -18*s);
+  ctx.lineTo(44*s, 20*s); ctx.lineTo(-44*s, 20*s);
+  ctx.closePath(); ctx.fill();
+  ctx.strokeStyle = '#2c1a0c'; ctx.lineWidth = 2*s; ctx.stroke();
+  ctx.strokeStyle = '#4a2e14'; ctx.lineWidth = Math.max(1.5, 5*s);
+  ctx.beginPath(); ctx.moveTo(-18*s, -18*s); ctx.lineTo(-18*s, -78*s); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(20*s, -18*s); ctx.lineTo(20*s, -70*s); ctx.stroke();
+  pirateSail(-18*s, -74*s, 46*s, 40*s);
+  pirateSail(20*s, -66*s, 38*s, 33*s);
+  // skull flag
+  ctx.fillStyle = '#141414';
+  ctx.fillRect(6*s, -94*s, 28*s, 17*s);
+  ctx.fillStyle = '#fff';
+  ctx.beginPath(); ctx.arc(20*s, -87*s, 5.5*s, 0, 7); ctx.fill();
+  ctx.fillRect(15.5*s, -84*s, 9*s, 4*s);
+  ctx.fillStyle = '#141414';
+  ctx.beginPath(); ctx.arc(18*s, -88*s, 1.5*s, 0, 7); ctx.fill();
+  ctx.beginPath(); ctx.arc(22.5*s, -88*s, 1.5*s, 0, 7); ctx.fill();
+  // hp pips
+  for (let i = 0; i < e.hp; i++) {
+    ctx.fillStyle = '#ff5a5a';
+    ctx.beginPath(); ctx.arc((-14 + i*14)*s, 30*s, 4*s, 0, 7); ctx.fill();
+  }
+  ctx.restore();
+}
+function drawPlayerShip(p) {
+  const s = 1.12, x = p.px, y = 566, bob = Math.sin(waveT*2)*4;
+  ctx.save(); ctx.translate(x, y + bob);
+  if (p.invuln > 0 && Math.floor(waveT*10) % 2 === 0) ctx.globalAlpha = 0.45;
+  ctx.fillStyle = 'rgba(4,20,36,.35)';
+  ctx.beginPath(); ctx.ellipse(0, 46*s, 96*s, 15*s, 0, 0, 7); ctx.fill();
+  ctx.strokeStyle = 'rgba(255,255,255,.32)'; ctx.lineWidth = 3;
+  ctx.beginPath(); ctx.moveTo(-70*s, 42*s); ctx.lineTo(-160*s, -150*s); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(70*s, 42*s); ctx.lineTo(160*s, -150*s); ctx.stroke();
+  const hg = ctx.createLinearGradient(0, -28*s, 0, 46*s);
+  hg.addColorStop(0, '#8a5a2b'); hg.addColorStop(.6, '#6b421e'); hg.addColorStop(1, '#3d2410');
+  ctx.fillStyle = hg;
+  ctx.beginPath();
+  ctx.moveTo(-88*s, -26*s); ctx.lineTo(88*s, -26*s);
+  ctx.lineTo(64*s, 44*s); ctx.lineTo(-64*s, 44*s);
+  ctx.closePath(); ctx.fill();
+  ctx.strokeStyle = '#caa14e'; ctx.lineWidth = 3;
+  ctx.beginPath(); ctx.moveTo(-80*s, -20*s); ctx.lineTo(80*s, -20*s); ctx.stroke();
+  ctx.fillStyle = '#a9743c'; ctx.fillRect(-88*s, -36*s, 176*s, 12*s);
+  // cannons
+  for (const cx of [-46*s, 46*s]) {
+    ctx.fillStyle = '#222';
+    ctx.save(); ctx.translate(cx, -30*s); ctx.rotate(cx < 0 ? -0.12 : 0.12);
+    ctx.fillRect(-7*s, -34*s, 14*s, 34*s);
+    ctx.fillStyle = '#444'; ctx.fillRect(-7*s, -34*s, 14*s, 6*s);
+    if (p.muzzle > 0) {
+      ctx.fillStyle = '#ffcf5a';
+      ctx.beginPath();
+      for (let i = 0; i < 8; i++) {
+        const a = -Math.PI/2 + (i/8)*TAU;
+        const r1 = 8*s, r2 = (i % 2 ? 20 : 12)*s;
+        ctx.lineTo(Math.cos(a)*r2, -34*s + Math.sin(a)*r2);
+        ctx.lineTo(Math.cos(a + TAU/16)*r1, -34*s + Math.sin(a + TAU/16)*r1);
+      }
+      ctx.closePath(); ctx.fill();
+    }
+    ctx.restore();
+  }
+  // cabin + mast with furled sail
+  ctx.fillStyle = '#5d3a1a'; ctx.fillRect(-30*s, -58*s, 60*s, 24*s);
+  ctx.fillStyle = '#ffe9a8'; ctx.fillRect(-20*s, -52*s, 40*s, 10*s);
+  ctx.strokeStyle = '#4a2e14'; ctx.lineWidth = 6;
+  ctx.beginPath(); ctx.moveTo(0, -58*s); ctx.lineTo(0, -118*s); ctx.stroke();
+  ctx.fillStyle = '#c9b384';
+  ctx.beginPath(); ctx.ellipse(0, -108*s, 34*s, 8*s, 0, 0, 7); ctx.fill();
+  // defender pennant
+  ctx.fillStyle = '#17486f';
+  ctx.beginPath(); ctx.moveTo(0, -118*s); ctx.lineTo(30*s, -112*s); ctx.lineTo(0, -106*s);
+  ctx.closePath(); ctx.fill();
+  ctx.fillStyle = '#ffd76a'; ctx.fillRect(0, -116*s, 10*s, 3*s);
+  ctx.restore();
+}
+function pirateHUD(p) {
+  ctx.textAlign = 'left'; ctx.fillStyle = '#fff'; ctx.font = 'bold 20px sans-serif';
+  ctx.fillText(p.score + ' pts', 14, 34);
+  ctx.textAlign = 'center'; ctx.fillStyle = '#ffd76a';
+  ctx.fillText('WAVE ' + p.wave, W/2, 34);
+  ctx.textAlign = 'right'; ctx.font = '18px sans-serif';
+  let h = '';
+  for (let i = 0; i < 3; i++) h += i < p.hull ? '\u2764\uFE0F' : '\uD83D\uDDA4';
+  ctx.fillText(h, W - 14, 34);
+  ctx.textAlign = 'center';
+}
+function pirateControls() {
+  const p = pirate;
+  const defs = [
+    { id:'sl', x:66, y:660, r:40, t:'\u25C0' },
+    { id:'sr', x:158, y:660, r:40, t:'\u25B6' }
+  ];
+  for (const d of defs) {
+    uiButtons.push({ id:d.id, c:1, x:d.x, y:d.y, r:d.r });
+    const on = held(d.id);
+    ctx.fillStyle = on ? 'rgba(143,208,240,.85)' : 'rgba(10,30,52,.62)';
+    ctx.beginPath(); ctx.arc(d.x, d.y, d.r, 0, 7); ctx.fill();
+    ctx.strokeStyle = 'rgba(143,208,240,.8)'; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.arc(d.x, d.y, d.r, 0, 7); ctx.stroke();
+    ctx.fillStyle = on ? '#0a2540' : '#cfe8ff';
+    ctx.font = 'bold 24px sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillText(d.t, d.x, d.y + 1);
+    ctx.textBaseline = 'alphabetic';
+  }
+  ctx.fillStyle = 'rgba(207,232,255,.55)'; ctx.font = 'bold 12px sans-serif'; ctx.textAlign = 'center';
+  ctx.fillText('STEER', 112, 716);
+  if (p.duel) {
+    uiButtons.push({ id:'slash', c:1, x:372, y:640, r:56, tap:duelSlash });
+    const on = held('slash');
+    ctx.fillStyle = on ? '#ff8a8a' : 'rgba(120,20,20,.85)';
+    ctx.beginPath(); ctx.arc(372, 640, 56, 0, 7); ctx.fill();
+    ctx.strokeStyle = '#ffd76a'; ctx.lineWidth = 3;
+    ctx.beginPath(); ctx.arc(372, 640, 56, 0, 7); ctx.stroke();
+    ctx.font = '40px sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillText('\u2694\uFE0F', 372, 641);
+    ctx.textBaseline = 'alphabetic';
+    ctx.fillStyle = 'rgba(207,232,255,.55)'; ctx.font = 'bold 12px sans-serif';
+    ctx.fillText('SLASH', 372, 712);
+  } else {
+    uiButtons.push({ id:'fire', c:1, x:380, y:648, r:48, tap:fireCannon });
+    const on = held('fire'), ready = p.cool <= 0;
+    ctx.fillStyle = on ? '#ffcf5a' : (ready ? 'rgba(150,60,10,.85)' : 'rgba(60,40,30,.6)');
+    ctx.beginPath(); ctx.arc(380, 648, 48, 0, 7); ctx.fill();
+    ctx.strokeStyle = '#ffd76a'; ctx.lineWidth = 3;
+    ctx.beginPath(); ctx.arc(380, 648, 48, 0, 7); ctx.stroke();
+    ctx.fillStyle = ready ? '#fff' : '#8a7a6a';
+    ctx.font = 'bold 17px sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillText('FIRE', 380, 649);
+    ctx.textBaseline = 'alphabetic';
+    ctx.fillStyle = 'rgba(207,232,255,.55)'; ctx.font = 'bold 12px sans-serif';
+    ctx.fillText('CANNONS', 380, 712);
+  }
+}
+function pirateDraw() {
+  const p = pirate;
+  ctx.save();
+  if (p.shake > 0) ctx.translate((Math.random()-0.5)*12*p.shake, (Math.random()-0.5)*9*p.shake);
+  pirateSky();
+  pirateWater();
+  const es = [...p.enemies].sort((a,b) => a.z - b.z);
+  for (const e of es) drawPirateShip(e);
+  for (const b of p.balls) {
+    const s = pScale(b.z), bx = pX(b.x, b.z), by = pY(b.z) - 14*s;
+    ctx.strokeStyle = 'rgba(255,255,255,.4)'; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.moveTo(bx, by + 26*s); ctx.lineTo(bx, by + 6); ctx.stroke();
+    ctx.fillStyle = '#1c2b3a';
+    ctx.beginPath(); ctx.arc(bx, by, 5 + 7*s, 0, 7); ctx.fill();
+    ctx.fillStyle = 'rgba(255,255,255,.45)';
+    ctx.beginPath(); ctx.arc(bx - 2, by - 2, 2 + 2*s, 0, 7); ctx.fill();
+  }
+  for (const b of p.eballs) {
+    const s = pScale(b.z);
+    ctx.fillStyle = '#7a1f1f';
+    ctx.beginPath(); ctx.arc(pX(b.x,b.z), pY(b.z) - 14*s, 5 + 7*s, 0, 7); ctx.fill();
+  }
+  drawPlayerShip(p);
+  for (const q of p.parts) {
+    ctx.globalAlpha = Math.max(0, 1 - q.t/q.life);
+    ctx.fillStyle = q.c;
+    ctx.beginPath(); ctx.arc(q.x, q.y, q.r, 0, 7); ctx.fill();
+  }
+  ctx.globalAlpha = 1;
+  drawGulls();
+  pirateHUD(p);
+  if (p.banner) {
+    ctx.textAlign = 'center'; ctx.fillStyle = '#ffd76a';
+    ctx.font = 'bold 42px sans-serif';
+    ctx.strokeStyle = 'rgba(0,0,0,.5)'; ctx.lineWidth = 5;
+    ctx.strokeText(p.banner.txt, W/2, 320);
+    ctx.fillText(p.banner.txt, W/2, 320);
+  }
+  if (p.duel) {
+    ctx.fillStyle = 'rgba(12,4,4,.55)'; ctx.fillRect(0, 150, W, 430);
+    ctx.textAlign = 'center'; ctx.fillStyle = '#ffd76a';
+    ctx.font = 'bold 30px sans-serif';
+    ctx.fillText('BOARDED!', W/2, 210);
+    ctx.font = '96px sans-serif';
+    ctx.fillText('\u2620\uFE0F', W/2, 330);
+    ctx.font = '54px sans-serif';
+    ctx.fillText('\u2694\uFE0F', W/2, 408);
+    if (p.swing > 0) {
+      ctx.strokeStyle = 'rgba(255,255,255,.9)'; ctx.lineWidth = 7;
+      ctx.beginPath(); ctx.arc(W/2, 330, 90, -0.6, 1.1); ctx.stroke();
+    }
+    ctx.font = 'bold 22px sans-serif'; ctx.fillStyle = '#fff';
+    ctx.fillText('TAP TO SLASH!', W/2, 468);
+    for (let i = 0; i < 4; i++) {
+      ctx.fillStyle = i < p.duel.hp ? '#ff5a5a' : '#4a2e2e';
+      ctx.beginPath(); ctx.arc(W/2 - 42 + i*28, 500, 10, 0, 7); ctx.fill();
+    }
+    ctx.fillStyle = 'rgba(255,255,255,.25)'; ctx.fillRect(W/2 - 150, 524, 300, 10);
+    ctx.fillStyle = '#ffd76a'; ctx.fillRect(W/2 - 150, 524, 300*(p.duel.t/6), 10);
+  }
+  ctx.restore();
+  pirateControls();
+  vignette();
+}
+
 function uiTap(p) {
   if (howto) { const s = howto.start; howto = null; s(); return; }
   if (ovl) { const n = ovl.next; ovl = null; if (n) n(); return; }
   if (mode === 'fish') fishTap(p);
+  if (mode === 'pirate') pirateTap(p);
 }
 function step(dt) {
   if (mode === 'dock') dockStep(dt);
@@ -1829,6 +2275,7 @@ function step(dt) {
   else if (mode === 'fillet') filletStep(dt);
   else if (mode === 'trailer') trailerStep(dt);
   else if (mode === 'safe') safeStep(dt);
+  else if (mode === 'pirate') pirateStep(dt);
 }
 function draw() {
   uiButtons = [];
@@ -1843,6 +2290,7 @@ function draw() {
   else if (mode === 'fillet') filletDraw();
   else if (mode === 'trailer') trailerDraw();
   else if (mode === 'safe') safeDraw();
+  else if (mode === 'pirate') pirateDraw();
   ctx.restore();
   if (howto) { uiButtons = []; howtoOverlay(howto.title, howto.lines); }
   else if (ovl) { uiButtons = []; overlay(ovl.title, ovl.lines, ovl.cta); }

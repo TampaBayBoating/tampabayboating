@@ -93,6 +93,7 @@ addEventListener('keyup', e => { keys[e.key.toLowerCase()] = false; });
 const keyDown = (...ns) => ns.some(n => keys[n]);
 
 const pointers = new Map();   // pointerId -> button id
+const ptrPos = new Map();     // pointerId -> {x, y} game coords (for drag tracing)
 let uiButtons = [];           // rebuilt every frame during draw
 function toGame(e) {
   const r = canvas.getBoundingClientRect();
@@ -110,12 +111,16 @@ canvas.addEventListener('pointerdown', e => {
   e.preventDefault();
   try { canvas.setPointerCapture(e.pointerId); } catch(err) {}
   const p = toGame(e);
+  ptrPos.set(e.pointerId, p);
   const b = hitBtn(p);
   if (b) { pointers.set(e.pointerId, b.id); if (b.tap) b.tap(p); }
   else { pointers.set(e.pointerId, 'tap'); uiTap(p); }
 });
-canvas.addEventListener('pointerup', e => { pointers.delete(e.pointerId); });
-canvas.addEventListener('pointercancel', e => { pointers.delete(e.pointerId); });
+canvas.addEventListener('pointermove', e => {
+  if (ptrPos.has(e.pointerId)) ptrPos.set(e.pointerId, toGame(e));
+});
+canvas.addEventListener('pointerup', e => { pointers.delete(e.pointerId); ptrPos.delete(e.pointerId); });
+canvas.addEventListener('pointercancel', e => { pointers.delete(e.pointerId); ptrPos.delete(e.pointerId); });
 function held(id) { for (const v of pointers.values()) if (v === id) return true; return false; }
 function driveInput() {
   return {
@@ -1247,7 +1252,7 @@ function filletStep(dt) {
   if (fil.done) return;
   fil.t -= dt;
   let px = null, py = null;
-  pointers.forEach(p => { px = p.x; py = p.y; });
+  ptrPos.forEach(p => { px = p.x; py = p.y; });
   if (px !== null && fil.prog < fil.path.length - 1) {
     const ahead = Math.min(fil.prog + 3, fil.path.length - 1);
     if (Math.hypot(px - fil.path[ahead].x, py - fil.path[ahead].y) < 70) {
@@ -1344,7 +1349,7 @@ function filletDraw() {
   ctx.fillText('CUT', 240, 560);
   // knife follows finger
   let kx = null, ky = null;
-  pointers.forEach(p => { kx = p.x; ky = p.y; });
+  ptrPos.forEach(p => { kx = p.x; ky = p.y; });
   if (kx !== null) { ctx.font = '34px sans-serif'; ctx.fillText('\uD83D\uDD2A', kx, ky - 14); }
   // grade flash
   if (fil.grade && performance.now() - fil.gradeT < 1600) {

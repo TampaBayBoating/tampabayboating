@@ -309,6 +309,21 @@ body{top:0 !important}
 .tb-wx{width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.14);display:flex;align-items:center;justify-content:center;text-decoration:none;margin-left:auto}
 .tb-wx svg{width:18px;height:18px;stroke:#fff;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 .tb-wx:hover{background:rgba(255,255,255,.28)}
+.tb-search{width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.14);border:0;display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0}
+.tb-search svg{width:18px;height:18px;stroke:#fff;fill:none;stroke-width:2.2;stroke-linecap:round}
+.tb-search:hover{background:rgba(255,255,255,.28)}
+.tb-search-panel{display:none;background:#0a2540;border-top:1px solid rgba(255,255,255,.12);padding:10px 16px 14px}
+.tb-search-panel.open{display:block}
+.tb-search-box{display:flex;gap:8px;align-items:center;background:rgba(255,255,255,.1);border-radius:999px;padding:9px 16px;max-width:640px;margin:0 auto}
+.tb-search-box svg{flex:0 0 auto;width:16px;height:16px;stroke:#8fa8bd;fill:none;stroke-width:2.4;stroke-linecap:round}
+.tb-search-box input{flex:1;background:transparent;border:0;color:#fff;font-size:.95rem;outline:none;min-width:0}
+.tb-search-box input::placeholder{color:#8fa8bd}
+.tb-search-results{max-width:640px;margin:8px auto 0;display:flex;flex-direction:column;gap:6px;max-height:52vh;overflow:auto}
+.tb-sr-item{display:flex;gap:10px;align-items:center;background:rgba(255,255,255,.06);border-radius:10px;padding:10px 12px;color:#fff;text-decoration:none;text-align:left;border:0;width:100%;cursor:pointer;font-size:.9rem;font-family:inherit}
+.tb-sr-item small{color:#8fa8bd;display:block;font-size:.74rem}
+.tb-sr-item:hover{background:rgba(255,255,255,.13)}
+.tb-sr-none{color:#8fa8bd;font-size:.85rem;text-align:center;padding:12px 8px}
+.tb-sr-suggest{color:#8fd0f0;font-weight:700}
 .hero2{position:relative;min-height:54vh;display:flex;align-items:center;background:url('assets/hero-skyway.jpg') no-repeat center center/cover;color:#fff;overflow:hidden}
 .hero2::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(4,20,36,.55),rgba(4,20,36,.22) 45%,rgba(4,20,36,.68))}
 .hero2-inner{position:relative;z-index:1;max-width:1180px;margin:0 auto;padding:38px 20px;width:100%}
@@ -508,11 +523,96 @@ body.dark body.dark </style>
     <a href="https://www.tiktok.com/@tampabayboating" target="_blank" rel="noopener" aria-label="TikTok"><svg viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/></svg></a>
     <a href="https://www.instagram.com/tampabayboating/" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24"><path d="M12 2.16c3.2 0 3.58.01 4.85.07 3.25.15 4.77 1.69 4.92 4.92.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.15 3.23-1.66 4.77-4.92 4.92-1.27.06-1.64.07-4.85.07s-3.58-.01-4.85-.07c-3.26-.15-4.77-1.7-4.92-4.92C2.17 15.58 2.16 15.2 2.16 12s.01-3.58.07-4.85C2.38 3.92 3.9 2.38 7.15 2.23 8.42 2.17 8.8 2.16 12 2.16M12 0C8.74 0 8.33.01 7.05.07 2.7.27.27 2.69.07 7.05.01 8.33 0 8.74 0 12s.01 3.67.07 4.95c.2 4.36 2.62 6.78 6.98 6.98C8.33 23.99 8.74 24 12 24s3.67-.01 4.95-.07c4.35-.2 6.78-2.62 6.98-6.98.06-1.28.07-1.69.07-4.95s-.01-3.67-.07-4.95C23.73 2.7 21.31.27 16.95.07 15.67.01 15.26 0 12 0zm0 5.84A6.16 6.16 0 1 0 18.16 12 6.16 6.16 0 0 0 12 5.84zm0 10.15A4 4 0 1 1 16 12a4 4 0 0 1-4 3.99zm7.85-10.4a1.44 1.44 0 1 1-2.88 0 1.44 1.44 0 0 1 2.88 0z"/></svg></a>
     <a href="https://www.facebook.com/tampabayboating" target="_blank" rel="noopener" aria-label="Facebook"><svg viewBox="0 0 24 24"><path d="M24 12.07C24 5.4 18.63 0 12 0S0 5.4 0 12.07C0 18.1 4.39 23.09 10.13 24v-8.44H7.08v-3.49h3.04V9.41c0-3.02 1.8-4.7 4.54-4.7 1.31 0 2.68.24 2.68.24v2.97h-1.5c-1.5 0-1.96.93-1.96 1.89v2.26h3.32l-.53 3.49h-2.79V24C19.61 23.09 24 18.1 24 12.07z"/></svg></a></div>
+    <button class="tb-search" id="search-btn" aria-label="Search the site" title="Search"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg></button>
     <a class="tb-wx" href="#/tides" aria-label="Tides and forecast" title="Tides &amp; forecast"><svg viewBox="0 0 24 24"><circle cx="8.5" cy="7.5" r="2.4"/><path d="M10.9 7.5h.01"/><path d="M17.5 18.5a4.5 4.5 0 0 0 .42-8.98 6 6 0 0 0-11.7 1.62A4 4 0 0 0 7 18.5h10.5z"/><path d="M4 21.5c1.5 1.2 3.5 1.2 5 0s3.5-1.2 5 0 3.5 1.2 5 0"/></svg></a>
     <button class="tb-lang" id="lang-btn" aria-label="Translate this page" title="Translate">&#127760; Language</button>
   </div>
+  <div class="tb-search-panel" id="search-panel">
+    <div class="tb-search-box"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg><input id="site-search" type="search" placeholder="Search pages, places, ramps..." aria-label="Search the site" autocomplete="off"></div>
+    <div class="tb-search-results" id="search-results"></div>
+  </div>
   <div class="tb-translate" id="translate-panel"><div id="google_translate_element"></div></div>
 </header>
+<script>
+/* ---- Site search: pages + map pins ---- */
+(function(){
+var PAGES=[
+["tides","Tides & Forecast","tide chart marine weather forecast noaa"],
+["fishing","Fishing Report","fish bite biting what"],
+["events","Events","boat show party tournament"],
+["dining","Dock & Dine","restaurant waterfront food eat dock"],
+["map","Boater's Map","map pins locations chart places"],
+["paddling","Kayak & SUP","paddleboard kayak sup launch paddle"],
+["ramps","Boat Ramps","launch trailer ramp"],
+["bridges","VHF & Bridges","vhf radio channel bridge opening"],
+["logbook","My Boating Log","trip log hours track"],
+["charters","Charters","fishing charter guide captain"],
+["fuel","Fuel & Bait","gas fuel dock bait shop live shrimp"],
+["services","Boat Services","repair mechanic detail service"],
+["parts","Marine Parts","parts canvas fabrication store"],
+["storage","Boat Storage","dry stack wet slip storage"],
+["boat-clubs","Boat Clubs","boat club membership"],
+["navigation","Navigation Basics","marker channel red green right of way"],
+["tips","Tips & Tricks","launching docking knot anchoring"],
+["safety","Safety Essentials","safety gear coast guard required"],
+["maintenance","Boat Maintenance","maintenance upkeep engine flush service"],
+["newboater","New to Boating?","beginner start learn first new"],
+["stopped","If You're Stopped","police fwc boarding stopped"],
+["manatee","Slow-Speed Zones","manatee slow idle zone"],
+["courses","Boating Courses","boating safety course education card"],
+["hurricane","Hurricane Prep","hurricane storm prep"],
+["insurance","Boaters Insurance","insurance coverage"],
+["shop","Official Merch","merch shirt hat shop buy"],
+["boatsales","Boats for Sale","buy boat sale dealer"],
+["gear","Gear Guide","gear accessory"],
+["videos","Videos","tiktok video watch"],
+["meetups","Meetups","meetup crew group"],
+["news","Boating News","news headline"],
+["newsletter","Newsletter","newsletter email weekly signup"],
+["advertise","Advertise","advertise sponsor business"],
+["contact","Contact","contact email david"],
+["about","About","about story"]];
+var PIN_LABEL={fuel:"Fuel",bait:"Bait",dine:"Dock & Dine",play:"Destination",club:"Boat Club",storage:"Storage"};
+var panel=document.getElementById('search-panel'),input=document.getElementById('site-search'),
+    results=document.getElementById('search-results'),btn=document.getElementById('search-btn');
+function esc(t){return String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function closeSearch(){panel.classList.remove('open');input.value='';results.innerHTML='';}
+btn.addEventListener('click',function(){panel.classList.toggle('open');if(panel.classList.contains('open')){input.focus();}else{closeSearch();}});
+input.addEventListener('keydown',function(e){if(e.key==='Escape')closeSearch();});
+input.addEventListener('input',function(){
+  var raw=input.value.trim(),q=raw.toLowerCase();
+  if(q.length<2){results.innerHTML='';return;}
+  var html='';
+  PAGES.filter(function(p){return (p[1]+' '+p[2]).toLowerCase().indexOf(q)>=0;}).slice(0,5).forEach(function(p){
+    html+='<a class="tb-sr-item" href="#/'+p[0]+'" data-close="1"><span>&#128196;</span><span>'+esc(p[1])+'<small>Page</small></span></a>';});
+  var pins=(typeof MAP_PINS!=='undefined'?MAP_PINS:[]).filter(function(p){return (p[0]+' '+(p[4]||'')+' '+(p[6]||'')).toLowerCase().indexOf(q)>=0;}).slice(0,6);
+  pins.forEach(function(p){
+    var label=PIN_LABEL[p[1]]||p[1];
+    html+='<button class="tb-sr-item" data-pin="'+esc(p[0])+'"><span>&#128205;</span><span>'+esc(p[0])+'<small>'+esc(label)+(p[4]?' \u00b7 '+esc(p[4]):'')+'</small></span></button>';});
+  if(!html){
+    var mail='mailto:david@tampabayboating.com?subject='+encodeURIComponent('Site suggestion')+'&body='+encodeURIComponent('Please add this to the site: '+raw);
+    html='<div class="tb-sr-none">No matches for &ldquo;'+esc(raw)+'&rdquo;.<br><a class="tb-sr-suggest" href="'+mail+'">Suggest it &rarr;</a></div>';}
+  results.innerHTML=html;
+});
+results.addEventListener('click',function(e){
+  var a=e.target.closest('[data-close]');
+  if(a){closeSearch();return;}
+  var b=e.target.closest('[data-pin]');
+  if(!b)return;
+  var name=b.getAttribute('data-pin'),pin=null;
+  (typeof MAP_PINS!=='undefined'?MAP_PINS:[]).forEach(function(p){if(p[0]===name&&!pin)pin=p;});
+  closeSearch();
+  if(pin){location.hash='#/map';
+    setTimeout(function(){
+      if(window.tbbMap&&typeof L!=='undefined'){
+        window.tbbMap.setView([pin[2],pin[3]],13);
+        var h='<b>'+esc(pin[0])+'</b>'+(pin[4]?'<br>'+esc(pin[4]):'')+(pin[6]?'<br><i>'+esc(pin[6])+'</i>':'');
+        L.popup().setLatLng([pin[2],pin[3]]).setContent(h).openOn(window.tbbMap);
+      }},700);}
+});
+})();
+</script>
+
 <aside class="cart-drawer" id="cart-drawer">
   <div class="cart-head"><h3>Your Cart</h3><button class="modal-close" style="position:static" onclick="closeCart()">&times;</button></div>
   <div class="cart-items" id="cart-items"></div>

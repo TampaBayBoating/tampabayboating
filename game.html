@@ -309,7 +309,8 @@ const menuBtns = [
   { id:'m-ski',    ico:'\uD83C\uDF0A', t:'Jet Ski',  s:'Slalom time trial' },
   { id:'m-sail',   ico:'\u26F5', t:'Sailing',  s:'Tack the course' },
   { id:'m-fillet', ico:'\uD83D\uDD2A', t:'Fillet',   s:'Trace the cut' },
-  { id:'m-trailer', ico:'\uD83D\uDE9A', t:'Trailer', s:'Back it down' }
+  { id:'m-trailer', ico:'\uD83D\uDE9A', t:'Trailer', s:'Back it down' },
+  { id:'m-safe',   ico:'\uD83D\uDEF6', t:'Safe Boater', s:'Pass the course' }
 ];
 function menuDraw() {
   // Tampa Bay sky scene
@@ -336,44 +337,108 @@ function menuDraw() {
   ctx.fillStyle = '#0a2540'; ctx.font = 'bold 46px sans-serif';
   ctx.fillText('BAY ARCADE', W/2, 78);
   ctx.fillStyle = '#16456f'; ctx.font = '15px sans-serif';
-  ctx.fillText('Tampa Bay Boating \u2022 eight games', W/2, 104);
-  // 2-col button grid
+  ctx.fillText('Tampa Bay Boating \u2022 nine games', W/2, 104);
+  // 2-col button grid (last button spans full width if odd count)
   menuBtns.forEach((b, i) => {
+    const lastOdd = (i === menuBtns.length - 1) && (menuBtns.length % 2 === 1);
     const col = i % 2, row = Math.floor(i / 2);
-    const x = 14 + col*229, y = 284 + row*88, w = 215, h = 80;
+    const x = lastOdd ? 14 : 14 + col*229, y = 278 + row*70, w = lastOdd ? 452 : 215, h = 62;
     uiButtons.push({ id:b.id, x, y, w, h, tap:() => selectMode(b.id) });
     const bg = ctx.createLinearGradient(0, y, 0, y + h);
     bg.addColorStop(0, '#17486f'); bg.addColorStop(1, '#0d2c4b');
     ctx.fillStyle = bg; rr(x, y, w, h, 14); ctx.fill();
     ctx.strokeStyle = 'rgba(143,208,240,.5)'; ctx.lineWidth = 2; rr(x, y, w, h, 14); ctx.stroke();
-    ctx.textAlign = 'left'; ctx.font = '30px sans-serif';
-    ctx.fillText(b.ico, x + 14, y + 46);
-    ctx.fillStyle = '#fff'; ctx.font = 'bold 18px sans-serif';
-    ctx.fillText(b.t, x + 54, y + 38);
-    ctx.fillStyle = '#9fc3e0'; ctx.font = '12px sans-serif';
-    ctx.fillText(b.s, x + 54, y + 60);
+    ctx.textAlign = 'left'; ctx.font = '22px sans-serif';
+    ctx.fillText(b.ico, x + 12, y + 36);
+    ctx.fillStyle = '#fff'; ctx.font = 'bold 15px sans-serif';
+    ctx.fillText(b.t, x + 44, y + 28);
+    ctx.fillStyle = '#9fc3e0'; ctx.font = '10px sans-serif';
+    ctx.fillText(b.s, x + 44, y + 46);
   });
   ctx.textAlign = 'center'; ctx.fillStyle = '#7d99b5'; ctx.font = '11px sans-serif';
   const bd = store.get('tbb-best-dock', 0), br = store.get('tbb-best-race', 0),
         bf = store.get('tbb-best-fish', 0), bs = store.get('tbb-best-shrimp', 0);
   ctx.fillText('Bests \u2014 Dock ' + (bd || '\u2014') + '  Race ' + (br ? ord(br) : '\u2014') +
-    '  Fish ' + (bf || '\u2014') + '  Shrimp ' + (bs || '\u2014'), W/2, 652);
+    '  Fish ' + (bf || '\u2014') + '  Shrimp ' + (bs || '\u2014'), W/2, 646);
   const sk = store.get('tbb-best-ski', 0), sa = store.get('tbb-best-sail', 0),
         ff = store.get('tbb-best-fillet', 0), tt = store.get('tbb-best-trailer', 0);
   ctx.fillText('Ski ' + (sk ? sk.toFixed(1) + 's' : '\u2014') + '  Sail ' + (sa ? sa.toFixed(1) + 's' : '\u2014') +
-    '  Fillet ' + (ff || '\u2014') + '  Trailer ' + (tt ? tt.toFixed(1) + 's' : '\u2014'), W/2, 668);
+    '  Fillet ' + (ff || '\u2014') + '  Trailer ' + (tt ? tt.toFixed(1) + 's' : '\u2014'), W/2, 662);
+  const sf = store.get('tbb-best-safe', 0);
+  ctx.fillText('Safe Boater best: ' + (sf || '\u2014') + ' pts', W/2, 678);
   vignette();
 }
 function selectMode(id) {
   sndGo();
-  if (id === 'm-dock') dockStart();
-  else if (id === 'm-race') raceStart();
-  else if (id === 'm-fish') fishStart();
-  else if (id === 'm-shrimp') shrimpStart();
-  else if (id === 'm-ski') skiStart();
-  else if (id === 'm-sail') sailStart();
-  else if (id === 'm-fillet') filletStart();
-  else if (id === 'm-trailer') trailerStart();
+  const starters = { 'm-dock':dockStart, 'm-race':raceStart, 'm-fish':fishStart, 'm-shrimp':shrimpStart,
+    'm-ski':skiStart, 'm-sail':sailStart, 'm-fillet':filletStart, 'm-trailer':trailerStart, 'm-safe':safeStart };
+  const h = HOWTOS[id];
+  howto = { title:h.t, lines:h.lines, start:starters[id] };
+}
+/* ---------- HOW TO PLAY cards ---------- */
+let howto = null;
+const HOWTOS = {
+  'm-dock': { t:'\u2693 DOCKING CHALLENGE', lines:[
+    'FWD / REV throttle + \u25C0 \u25B6 steering (or arrows / WASD).',
+    'Thread the yellow buoy gates for bonus points.',
+    'Ease into the glowing slip \u2014 slow and straight scores best.',
+    'Mind the current and the no-wake zone.',
+    '3 hull hits = game over. Slips get narrower!' ] },
+  'm-race': { t:'\uD83C\uDFC1 SPEEDBOAT RACE', lines:[
+    '2 laps against 3 rival boats.',
+    'FWD / REV + steering. Follow the buoys around the course.',
+    'Rubbing is racing \u2014 but hard hits slow you down.',
+    'Watch your position (P1\u2013P4) and lap counter.' ] },
+  'm-fish': { t:'\uD83C\uDFA3 FISHING', lines:[
+    'Tap the water to cast. Wait for the bite \u2014 then TAP!',
+    'Hold REEL to bring it in, but watch the tension bar.',
+    'Too much tension = snapped line. Ease off when it surges.',
+    'Bigger fish = more points. Only in-season Tampa Bay',
+    'fish score \u2014 out-of-season catch gets released!' ] },
+  'm-shrimp': { t:'\uD83E\uDD90 SHRIMP NETTER', lines:[
+    'Steer the trawler \u25C0 \u25B6 to drag your net.',
+    'Scoop shrimp (+10) and baitfish (+3).',
+    'Avoid redfish (\u221215) and sea turtles (\u221250) \u2014 bycatch!',
+    '60 seconds on the clock. Fill the hold!' ] },
+  'm-ski': { t:'\uD83C\uDF0A JET SKI SLALOM', lines:[
+    'Full throttle controls \u2014 the ski is quick but twitchy.',
+    'Thread all 6 slalom gates, START to FINISH.',
+    'Missed gate = +3 second penalty.',
+    'Fastest total time wins. Beat your best!' ] },
+  'm-sail': { t:'\u26F5 SAILING REGATTA', lines:[
+    'Steer with \u25C0 \u25B6 \u2014 the wind does the rest.',
+    'Round all 3 marks in order, then cross the finish line.',
+    'You can\u2019t sail straight into the wind (red IN IRONS!).',
+    'Tack back and forth upwind. Fastest point: a reach.' ] },
+  'm-fillet': { t:'\uD83D\uDD2A FILLET THE CATCH', lines:[
+    'Touch the green CUT marker and drag along the dashed line.',
+    'Cut gill to tail \u2014 stay on the line for a clean fillet.',
+    'Bigger, in-season Tampa Bay fish = more points.',
+    '60 seconds. Sashimi grade awaits!' ] },
+  'm-trailer': { t:'\uD83D\uDE9A TRAILER BACKUP', lines:[
+    'FWD / REV + steering. Back the TRAILER into the green zone.',
+    'Reversing is backwards: to swing the trailer LEFT, steer RIGHT.',
+    'Come to a full stop inside the zone. Cones cost +5s.',
+    '3 levels. Don\u2019t jackknife!' ] },
+  'm-safe': { t:'\uD83D\uDEF6 SAFE BOATER', lines:[
+    'Pilot up the channel \u2014 FWD / REV + steering.',
+    'Answer 6 boating-safety questions at the quiz buoys.',
+    'Steer CLEAR of diver-down flags (\u221250 if you get close).',
+    'Slow to idle speed in NO-WAKE zones.',
+    'Score 90%+ to earn Licensed Skipper!' ] }
+};
+function howtoOverlay(title, lines) {
+  ctx.fillStyle = 'rgba(3,10,20,.78)'; ctx.fillRect(0, 0, W, H);
+  ctx.textAlign = 'center';
+  ctx.fillStyle = '#ffd76a'; ctx.font = 'bold 26px sans-serif';
+  ctx.fillText(title, W/2, 150);
+  ctx.textAlign = 'left'; ctx.fillStyle = '#dcebf7'; ctx.font = '15px sans-serif';
+  lines.forEach((L, i) => ctx.fillText('\u2022  ' + L, 46, 205 + i*32));
+  ctx.textAlign = 'center';
+  ctx.fillStyle = 'rgba(125,255,170,' + (0.6 + 0.4*Math.sin(waveT*5)) + ')';
+  ctx.font = 'bold 20px sans-serif';
+  ctx.fillText('TAP TO START', W/2, 205 + lines.length*32 + 44);
+  vignette();
 }
 
 /* ---------- DOCKING ---------- */
@@ -1524,8 +1589,233 @@ function trailerDraw() {
   vignette();
 }
 
+/* ---------- SAFE BOATER (boating safety course game) ---------- */
+const SAFE_QS = [
+  { q:'Two powerboats approach head-on.\nWhat do you do?',
+    o:['Both turn to starboard (right)', 'Both turn to port (left)', 'The faster one keeps course'], c:0,
+    why:'Head-on: both turn starboard, pass port-to-port.' },
+  { q:'A sailboat under sail and your\npowerboat are crossing. Who has\nthe right of way?',
+    o:['The powerboat', 'The sailboat', 'Whoever is faster'], c:1,
+    why:'Sailboats under sail have right of way over powerboats.' },
+  { q:'Returning from open water, red\nchannel markers go on which side?',
+    o:['Port (left)', 'Starboard (right)', 'Either side'], c:1,
+    why:'Red Right Returning \u2014 red on your right coming in.' },
+  { q:'A red flag with a white diagonal\nstripe means\u2026',
+    o:['Divers below \u2014 keep clear', 'Swim area', 'No fishing zone'], c:0,
+    why:'Diver-down flag: stay 300 ft away in open water.' },
+  { q:'Florida legal BAC limit for\noperating a vessel?',
+    o:['0.05', '0.08', '0.10'], c:1,
+    why:'0.08 \u2014 BUI penalties match DUI.' },
+  { q:'Minimum age to operate a personal\nwatercraft in Florida?',
+    o:['12', '14', '16'], c:1,
+    why:'You must be at least 14 to operate a PWC in Florida.' },
+  { q:'Which VHF channel is for distress\nand hailing?',
+    o:['Channel 9', 'Channel 16', 'Channel 22'], c:1,
+    why:'Channel 16 \u2014 monitored by the Coast Guard.' },
+  { q:'Boats 16 ft and longer must carry\u2026',
+    o:['A throwable PFD', 'A second anchor', 'Flares only'], c:0,
+    why:'One wearable PFD per person, plus a throwable device.' },
+  { q:'Before fueling your boat,\nyou should\u2026',
+    o:['Leave the engine idling', 'Engine off, hatches closed', 'Fill it to the very top'], c:1,
+    why:'Engine off, hatches closed, no smoking \u2014 ventilate after.' },
+  { q:'At night you see only a white light\nahead. That is\u2026',
+    o:['A sailboat racing', 'A boat at anchor', 'A channel marker'], c:1,
+    why:'All-round white light = vessel at anchor. Slow down.' },
+  { q:'Caught in a storm, you should\u2026',
+    o:['Head for the nearest safe shore', 'Anchor in open water', 'Speed through it'], c:0,
+    why:'Get to shelter; keep the bow into the waves.' },
+  { q:'The engine cut-off (kill switch)\nlanyard must be\u2026',
+    o:['In the glove box', 'Attached to the operator', 'Tied to the dock'], c:1,
+    why:'Wear it \u2014 it kills the engine if you fall overboard.' }
+];
+const SAFE_LEN = 3600, SAFE_NQ = 6;
+const safe = { x:240, sp:0, wake:[], dist:0, score:0, correct:0, asked:0,
+  order:[], qi:0, q:null, fbUntil:0, qFb:'', qFbT:0, hazards:[], qAt:[],
+  done:false, penT:0 };
+function safeStart() {
+  mode = 'safe';
+  const idx = SAFE_QS.map((_, i) => i);
+  for (let i = idx.length - 1; i > 0; i--) { const j = Math.floor(Math.random()*(i + 1)); [idx[i], idx[j]] = [idx[j], idx[i]]; }
+  safe.order = idx.slice(0, SAFE_NQ);
+  safe.x = 240; safe.sp = 0; safe.wake = []; safe.dist = 0;
+  safe.score = 0; safe.correct = 0; safe.asked = 0; safe.qi = 0;
+  safe.q = null; safe.fbUntil = 0; safe.qFb = ''; safe.done = false; safe.penT = 0;
+  safe.qAt = [450, 1050, 1650, 2250, 2850, 3300];
+  safe.hazards = [
+    { type:'diver', wy:700, x:250, r:70, done:false },
+    { type:'nowake', wy:1900, len:600, done:false },
+    { type:'diver', wy:2350, x:180, r:70, done:false },
+    { type:'nowake', wy:3300, len:600, done:false }
+  ];
+}
+function safeAnswer(i) {
+  const q = safe.q;
+  safe.asked++;
+  if (i === q.c) { safe.correct++; safe.score += 100; safe.qFb = '\u2713 Correct! ' + q.why; sndGate(); }
+  else { safe.score -= 25; safe.qFb = '\u2717 It\u2019s: ' + q.o[q.c] + '. ' + q.why; sndBuzzer(); }
+  safe.qFbT = performance.now();
+  safe.q = null; safe.fbUntil = performance.now() + 2100; safe.qi++;
+}
+function safeStep(dt) {
+  if (safe.done) return;
+  const now = performance.now();
+  const paused = !!safe.q || now < safe.fbUntil;
+  const ctl = driveInput();
+  if (paused) {
+    safe.sp += (0 - safe.sp)*Math.min(1, 4*dt);
+  } else {
+    // in a no-wake zone the boat settles to idle speed on its own
+    let inWake = false;
+    for (const h of safe.hazards) {
+      if (h.type !== 'nowake') continue;
+      const hz = 560 - (h.wy - safe.dist);
+      if (hz <= 560 && hz + h.len >= 560) { inWake = true; break; }
+    }
+    const cruise = inWake ? 55 : 120;
+    if (ctl.fwd) safe.sp = Math.min(200, safe.sp + 170*dt);
+    else if (ctl.rev) safe.sp = Math.max(40, safe.sp - 170*dt);
+    else safe.sp += (cruise - safe.sp)*Math.min(1, 1.6*dt);
+    if (ctl.left) safe.x -= 210*dt;
+    if (ctl.right) safe.x += 210*dt;
+    safe.x = clamp(safe.x, 50, W - 50);
+    safe.dist += safe.sp*dt;
+    safe.wake.push({ x:safe.x, y:560, t:0 });
+    if (safe.wake.length > 36) safe.wake.shift();
+    for (const w of safe.wake) w.t += dt;
+    if (safe.qi < SAFE_NQ && safe.dist >= safe.qAt[safe.qi]) {
+      safe.q = SAFE_QS[safe.order[safe.qi]];
+      safe.sp = 0; sndSplash();
+    }
+    for (const h of safe.hazards) {
+      const sy = 560 - (h.wy - safe.dist);
+      if (h.type === 'diver' && !h.done && sy > 380 && sy < 740) {
+        if (dist(safe.x, 560, h.x, sy) < h.r) {
+          h.done = true; safe.score -= 50;
+          safe.qFb = '\u26A0 Too close to divers! \u221250'; safe.qFbT = now; sndHit();
+        }
+      }
+      if (h.type === 'nowake' && sy <= 560 && sy + h.len >= 560 && safe.sp > 70) {
+        if (!h.inside) { h.inside = true; h.enterT = now; }
+        // 2000ms grace to get slowed down after crossing the boundary
+        if (now - h.enterT > 2000) {
+          safe.penT += dt;
+          if (safe.penT > 0.7) { safe.penT = 0; safe.score -= 10;
+            safe.qFb = '\u26A0 NO-WAKE ZONE \u2014 slow down! \u221210'; safe.qFbT = now; sndHit(); }
+        }
+      } else if (h.type === 'nowake') { h.inside = false; }
+    }
+    if (safe.dist >= SAFE_LEN) {
+      safe.done = true;
+      const pct = safe.asked ? Math.round(100*safe.correct/safe.asked) : 0;
+      const grade = pct >= 90 ? '\uD83C\uDFC6 LICENSED SKIPPER!' :
+        pct >= 70 ? '\u2693 DECKHAND \u2014 study up!' : '\uD83D\uDCDA BACK TO BOATING SCHOOL';
+      const best = store.get('tbb-best-safe', 0);
+      if (safe.score > best) store.set('tbb-best-safe', safe.score);
+      sndDock();
+      ovl = { title:grade, lines:['Score: ' + safe.score + ' pts',
+        'Quiz: ' + safe.correct + '/' + safe.asked + ' correct',
+        'Best: ' + store.get('tbb-best-safe', 0) + ' pts'],
+        cta:'\u2014 tap to continue \u2014', next:() => { mode = 'menu'; } };
+    }
+  }
+}
+function safeQPanel() {
+  ctx.fillStyle = 'rgba(3,10,20,.84)'; ctx.fillRect(0, 0, W, H);
+  const q = safe.q;
+  ctx.textAlign = 'center'; ctx.fillStyle = '#ffd76a'; ctx.font = 'bold 19px sans-serif';
+  ctx.fillText('SAFE BOATER  \u2022  Q' + (safe.qi + 1) + '/' + SAFE_NQ, W/2, 110);
+  ctx.fillStyle = '#fff'; ctx.font = '17px sans-serif';
+  q.q.split('\n').forEach((L, i) => ctx.fillText(L, W/2, 158 + i*25));
+  q.o.forEach((opt, i) => {
+    const y = 300 + i*88;
+    uiButtons.push({ id:'ans' + i, x:50, y, w:W - 100, h:72, tap:() => safeAnswer(i) });
+    ctx.fillStyle = '#17486f'; rr(50, y, W - 100, 72, 12); ctx.fill();
+    ctx.strokeStyle = 'rgba(143,208,240,.55)'; ctx.lineWidth = 2; rr(50, y, W - 100, 72, 12); ctx.stroke();
+    ctx.fillStyle = '#cfe8ff'; ctx.font = 'bold 15px sans-serif';
+    ctx.fillText(String.fromCharCode(65 + i) + '.  ' + opt, W/2, y + 43);
+  });
+}
+function safeDraw() {
+  drawWater();
+  distantBridge(); drawGulls();
+  const scY = wy => 560 - (wy - safe.dist);
+  // channel markers (red right returning)
+  for (let wy = 300; wy < SAFE_LEN + 300; wy += 300) {
+    const sy = scY(wy);
+    if (sy < -40 || sy > H + 40) continue;
+    drawBuoy(370, sy, '#e05555');
+    drawBuoy(110, sy, '#3fae5a');
+  }
+  // quiz buoys
+  for (let i = safe.qi; i < SAFE_NQ; i++) {
+    const sy = scY(safe.qAt[i]);
+    if (sy < -40 || sy > H + 40) continue;
+    drawBuoy(240, sy, '#e8a33d');
+    ctx.fillStyle = '#0a2540'; ctx.font = 'bold 20px sans-serif'; ctx.textAlign = 'center';
+    ctx.fillText('?', 240, sy + 7);
+    if (i === safe.qi) {
+      ctx.strokeStyle = 'rgba(232,163,61,' + (0.5 + 0.5*Math.sin(waveT*5)) + ')';
+      ctx.lineWidth = 3; ctx.beginPath(); ctx.arc(240, sy, 30, 0, 7); ctx.stroke();
+    }
+  }
+  // hazards
+  for (const h of safe.hazards) {
+    const sy = scY(h.wy);
+    if (h.type === 'diver') {
+      if (sy < -100 || sy > H + 100) continue;
+      ctx.fillStyle = 'rgba(224,85,85,.14)';
+      ctx.beginPath(); ctx.arc(h.x, sy, h.r, 0, 7); ctx.fill();
+      ctx.strokeStyle = 'rgba(224,85,85,.8)'; ctx.lineWidth = 3;
+      ctx.setLineDash([10, 8]); ctx.beginPath(); ctx.arc(h.x, sy, h.r, 0, 7); ctx.stroke(); ctx.setLineDash([]);
+      ctx.font = '30px sans-serif'; ctx.textAlign = 'center';
+      ctx.fillText('\uD83D\uDEA9', h.x, sy + 10);
+      ctx.fillStyle = '#e05555'; ctx.font = 'bold 12px sans-serif';
+      ctx.fillText('DIVERS DOWN \u2014 KEEP CLEAR', h.x, sy - h.r - 12);
+    } else {
+      const y0 = sy, y1 = sy + h.len;
+      if (y1 < -40 || y0 > H + 40) continue;
+      ctx.fillStyle = 'rgba(143,208,240,.10)';
+      ctx.fillRect(40, Math.max(0, y0), W - 80, Math.min(H, y1) - Math.max(0, y0));
+      ctx.strokeStyle = 'rgba(143,208,240,.6)'; ctx.lineWidth = 3; ctx.setLineDash([12, 8]);
+      ctx.beginPath(); ctx.moveTo(40, y0); ctx.lineTo(W - 40, y0); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(40, y1); ctx.lineTo(W - 40, y1); ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.fillStyle = '#8fd0f0'; ctx.font = 'bold 15px sans-serif'; ctx.textAlign = 'center';
+      ctx.fillText('NO-WAKE ZONE \u2014 IDLE SPEED', W/2, y0 + 28);
+    }
+  }
+  for (const w of safe.wake) {
+    ctx.fillStyle = 'rgba(220,240,255,' + (0.3*(1 - w.t/1.4)) + ')';
+    ctx.beginPath(); ctx.arc(w.x, w.y, 4 + w.t*8, 0, 7); ctx.fill();
+  }
+  drawBoat({ x:safe.x, y:560, a:-Math.PI/2, sp:0 }, '#e8a33d');
+  drawControls();
+  // HUD
+  ctx.fillStyle = 'rgba(4,14,26,.65)'; rr(10, 10, 190, 64, 10); ctx.fill();
+  ctx.fillStyle = '#ffd76a'; ctx.font = 'bold 16px sans-serif'; ctx.textAlign = 'left';
+  ctx.fillText(safe.score + ' pts', 22, 35);
+  ctx.fillStyle = '#cfe8ff'; ctx.font = '13px sans-serif';
+  ctx.fillText('Quiz ' + safe.correct + '/' + safe.asked, 22, 56);
+  ctx.fillStyle = 'rgba(4,14,26,.65)'; rr(W - 170, 18, 160, 16, 8); ctx.fill();
+  ctx.fillStyle = '#55b5e0';
+  const pw = 152*Math.min(1, safe.dist/SAFE_LEN);
+  if (pw > 4) { rr(W - 166, 21, pw, 10, 5); ctx.fill(); }
+  ctx.fillStyle = '#9fc3e0'; ctx.font = '12px sans-serif'; ctx.textAlign = 'right';
+  ctx.fillText('FINISH', W - 14, 60);
+  // feedback banner
+  if (safe.qFb && performance.now() - safe.qFbT < 2300 && !safe.q) {
+    ctx.fillStyle = 'rgba(3,10,20,.8)'; rr(30, 640, W - 60, 44, 10); ctx.fill();
+    ctx.fillStyle = safe.qFb.charAt(0) === '\u2713' ? '#7dffaa' : '#ffb36a';
+    ctx.font = 'bold 14px sans-serif'; ctx.textAlign = 'center';
+    ctx.fillText(safe.qFb, W/2, 667);
+  }
+  if (safe.q) safeQPanel();
+  vignette();
+}
+
 /* ---------- tap routing / main loop ---------- */
 function uiTap(p) {
+  if (howto) { const s = howto.start; howto = null; s(); return; }
   if (ovl) { const n = ovl.next; ovl = null; if (n) n(); return; }
   if (mode === 'fish') fishTap(p);
 }
@@ -1538,6 +1828,7 @@ function step(dt) {
   else if (mode === 'sail') sailStep(dt);
   else if (mode === 'fillet') filletStep(dt);
   else if (mode === 'trailer') trailerStep(dt);
+  else if (mode === 'safe') safeStep(dt);
 }
 function draw() {
   uiButtons = [];
@@ -1551,8 +1842,10 @@ function draw() {
   else if (mode === 'sail') sailDraw();
   else if (mode === 'fillet') filletDraw();
   else if (mode === 'trailer') trailerDraw();
+  else if (mode === 'safe') safeDraw();
   ctx.restore();
-  if (ovl) { uiButtons = []; overlay(ovl.title, ovl.lines, ovl.cta); }
+  if (howto) { uiButtons = []; howtoOverlay(howto.title, howto.lines); }
+  else if (ovl) { uiButtons = []; overlay(ovl.title, ovl.lines, ovl.cta); }
 }
 let last = performance.now();
 function loop(now) {

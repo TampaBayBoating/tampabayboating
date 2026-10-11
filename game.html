@@ -257,9 +257,10 @@ function ord(n) { return n === 1 ? '1st' : n === 2 ? '2nd' : n === 3 ? '3rd' : '
 
 /* ---------- MENU ---------- */
 const menuBtns = [
-  { id:'m-dock', y:300, ico:'\u2693', t:'Docking Challenge', s:'Thread the buoys, nail the slip' },
-  { id:'m-race', y:405, ico:'\uD83C\uDFC1', t:'Speedboat Race', s:'2 laps against 3 rivals' },
-  { id:'m-fish', y:510, ico:'\uD83C\uDFA3', t:'Fishing', s:'Cast, hook, and reel \u2019em in' }
+  { id:'m-dock', y:262, ico:'\u2693', t:'Docking Challenge', s:'Thread the buoys, nail the slip' },
+  { id:'m-race', y:357, ico:'\uD83C\uDFC1', t:'Speedboat Race', s:'2 laps against 3 rivals' },
+  { id:'m-fish', y:452, ico:'\uD83C\uDFA3', t:'Fishing', s:'Cast, hook, and reel \u2019em in' },
+  { id:'m-shrimp', y:547, ico:'\uD83E\uDD90', t:'Shrimp Netter', s:'Trawl shrimp, dodge the bycatch' }
 ];
 function menuDraw() {
   drawWater();
@@ -283,8 +284,8 @@ function menuDraw() {
     ctx.fillText(b.s, W/2-94, b.y+20);
   }
   ctx.textAlign = 'center'; ctx.fillStyle = '#7d99b5'; ctx.font = '13px sans-serif';
-  const bd = store.get('tbb-best-dock', 0), br = store.get('tbb-best-race', 0), bf = store.get('tbb-best-fish', 0);
-  ctx.fillText('Bests \u2014 Dock: ' + (bd || '\u2014') + ' pts    Race: ' + (br ? ord(br) : '\u2014') + '    Fish: ' + (bf || '\u2014') + ' pts', W/2, 624);
+  const bd = store.get('tbb-best-dock', 0), br = store.get('tbb-best-race', 0), bf = store.get('tbb-best-fish', 0), bs = store.get('tbb-best-shrimp', 0);
+  ctx.fillText('Bests \u2014 Dock: ' + (bd || '\u2014') + '  Race: ' + (br ? ord(br) : '\u2014') + '  Fish: ' + (bf || '\u2014') + '  Shrimp: ' + (bs || '\u2014'), W/2, 648);
   vignette();
 }
 function selectMode(id) {
@@ -292,6 +293,7 @@ function selectMode(id) {
   if (id === 'm-dock') dockStart();
   else if (id === 'm-race') raceStart();
   else if (id === 'm-fish') fishStart();
+  else if (id === 'm-shrimp') shrimpStart();
 }
 
 /* ---------- DOCKING ---------- */
@@ -725,6 +727,172 @@ function fishDraw() {
   vignette();
 }
 
+/* ---------- SHRIMP NETTER (commercial trawler) ---------- */
+const STYPES = [
+  { k:'shrimp',  pts:10,  w:.45, s:1.0 },
+  { k:'bait',    pts:3,   w:.25, s:.8 },
+  { k:'redfish', pts:-15, w:.20, s:1.5 },
+  { k:'turtle',  pts:-50, w:.10, s:1.8 }
+];
+const shrimp = { t:60, score:0, bx:240, creatures:[], over:false };
+function pickType() {
+  const r = Math.random(); let a = 0;
+  for (const t of STYPES) { a += t.w; if (r < a) return t; }
+  return STYPES[0];
+}
+function spawnCritter() {
+  const t = pickType(), dir = Math.random() < .5 ? 1 : -1;
+  shrimp.creatures.push({ t, x:dir > 0 ? -40 : W + 40, y:230 + Math.random()*380,
+    vx:dir * (40 + Math.random()*70) * t.s, ph:Math.random()*7, caught:false, float:null });
+}
+function shrimpStart() {
+  mode = 'shrimp';
+  shrimp.t = 60; shrimp.score = 0; shrimp.bx = 240; shrimp.over = false;
+  shrimp.creatures = [];
+  for (let i = 0; i < 10; i++) spawnCritter();
+}
+function shrimpStep(dt) {
+  if (shrimp.over) return;
+  shrimp.t -= dt;
+  const ctl = driveInput();
+  if (ctl.left) shrimp.bx -= 270*dt;
+  if (ctl.right) shrimp.bx += 270*dt;
+  shrimp.bx = clamp(shrimp.bx, 60, W-60);
+  if (shrimp.creatures.length < 12 && Math.random() < dt*3) spawnCritter();
+  const nx0 = shrimp.bx - 55, nx1 = shrimp.bx + 55, ny0 = 175, ny1 = 325;
+  for (const c of shrimp.creatures) {
+    c.x += c.vx*dt; c.ph += dt*6;
+    if (!c.caught && c.x > nx0 && c.x < nx1 && c.y > ny0 && c.y < ny1) {
+      c.caught = true;
+      shrimp.score += c.t.pts;
+      c.float = { t:0, txt:(c.t.pts > 0 ? '+' : '') + c.t.pts };
+      if (c.t.pts > 0) sndGate(); else sndHit();
+    }
+    if (c.float) c.float.t += dt;
+  }
+  shrimp.creatures = shrimp.creatures.filter(c => !c.caught && c.x > -60 && c.x < W + 60);
+  if (shrimp.t <= 0) {
+    shrimp.t = 0; shrimp.over = true;
+    const best = store.get('tbb-best-shrimp', 0);
+    if (shrimp.score > best) store.set('tbb-best-shrimp', shrimp.score);
+    sndDock();
+    ovl = { title:'DAY\u2019S HAUL! \uD83E\uDD90',
+      lines:['Score: ' + shrimp.score + ' pts', 'Best: ' + store.get('tbb-best-shrimp', 0) + ' pts', '',
+        'Shrimp +10    Baitfish +3', 'Redfish \u221215    Turtle \u221250'],
+      cta:'\u2014 tap to continue \u2014', next:() => { mode = 'menu'; } };
+  }
+}
+function drawCritter(c) {
+  const wig = Math.sin(c.ph) * .3;
+  ctx.save(); ctx.translate(c.x, c.y);
+  if (c.vx < 0) ctx.scale(-1, 1);
+  if (c.t.k === 'shrimp') {
+    ctx.strokeStyle = '#f2a0b5'; ctx.lineWidth = 3;
+    ctx.beginPath(); ctx.arc(0, 0, 8, .6, 5.6); ctx.stroke();
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.moveTo(7, -3); ctx.lineTo(16, -8 + wig*12);
+    ctx.moveTo(7, 3); ctx.lineTo(16, 8 + wig*12);
+    ctx.stroke();
+    ctx.fillStyle = '#f2a0b5';
+    ctx.beginPath(); ctx.moveTo(-7, 0); ctx.lineTo(-14, -5 + wig*8); ctx.lineTo(-14, 5 + wig*8);
+    ctx.closePath(); ctx.fill();
+  } else if (c.t.k === 'bait') {
+    ctx.fillStyle = '#cfe0ea';
+    ctx.beginPath(); ctx.ellipse(0, 0, 10, 4.5, wig*.2, 0, 7); ctx.fill();
+    ctx.beginPath(); ctx.moveTo(-9, 0); ctx.lineTo(-16, -6 + wig*14); ctx.lineTo(-16, 6 + wig*14);
+    ctx.closePath(); ctx.fill();
+    ctx.fillStyle = '#1c2b3a'; ctx.beginPath(); ctx.arc(5, -1, 1.8, 0, 7); ctx.fill();
+  } else if (c.t.k === 'redfish') {
+    ctx.fillStyle = '#b5713d';
+    ctx.beginPath(); ctx.ellipse(0, 0, 17, 7, wig*.15, 0, 7); ctx.fill();
+    ctx.fillStyle = '#8f5527';
+    ctx.beginPath(); ctx.moveTo(-15, 0); ctx.lineTo(-26, -9 + wig*16); ctx.lineTo(-26, 9 + wig*16);
+    ctx.closePath(); ctx.fill();
+    ctx.beginPath(); ctx.moveTo(-2, -6); ctx.lineTo(6, -13); ctx.lineTo(10, -5); ctx.closePath(); ctx.fill();
+    ctx.fillStyle = '#1c2b3a'; ctx.beginPath(); ctx.arc(8, -1.5, 2.2, 0, 7); ctx.fill();
+  } else {
+    ctx.fillStyle = '#4e7d4e';
+    ctx.beginPath(); ctx.ellipse(0, 0, 16, 11, 0, 0, 7); ctx.fill();
+    ctx.fillStyle = '#6a9a5a';
+    ctx.beginPath(); ctx.ellipse(-2, -2, 10, 6, 0, 0, 7); ctx.fill();
+    ctx.fillStyle = '#4e7d4e';
+    ctx.beginPath(); ctx.arc(17, 0, 5, 0, 7); ctx.fill();
+    for (const fp of [[-8,-10],[8,-10],[-8,10],[8,10]]) {
+      ctx.save(); ctx.translate(fp[0], fp[1]); ctx.rotate(wig*.5*(fp[1] > 0 ? 1 : -1));
+      ctx.beginPath(); ctx.ellipse(6, 0, 8, 3.5, .5*(fp[1] > 0 ? 1 : -1), 0, 7); ctx.fill();
+      ctx.restore();
+    }
+  }
+  ctx.restore();
+  if (c.float && c.float.t < 1) {
+    ctx.fillStyle = c.t.pts > 0 ? '#7dffaa' : '#ff8a8a';
+    ctx.font = 'bold 15px sans-serif'; ctx.textAlign = 'center';
+    ctx.fillText(c.float.txt, c.x, c.y - 20 - c.float.t*26);
+  }
+}
+function drawSteerOnly() {
+  for (const d of [{ id:'sl', x:66, y:660, r:40, t:'\u25C0' }, { id:'sr', x:158, y:660, r:40, t:'\u25B6' }]) {
+    uiButtons.push({ id:d.id, c:1, x:d.x, y:d.y, r:d.r });
+    const on = held(d.id);
+    ctx.fillStyle = on ? 'rgba(143,208,240,.85)' : 'rgba(10,30,52,.62)';
+    ctx.beginPath(); ctx.arc(d.x, d.y, d.r, 0, 7); ctx.fill();
+    ctx.strokeStyle = 'rgba(143,208,240,.8)'; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.arc(d.x, d.y, d.r, 0, 7); ctx.stroke();
+    ctx.fillStyle = on ? '#0a2540' : '#cfe8ff';
+    ctx.font = 'bold 24px sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillText(d.t, d.x, d.y + 1);
+    ctx.textBaseline = 'alphabetic';
+  }
+  ctx.fillStyle = 'rgba(207,232,255,.55)'; ctx.font = 'bold 12px sans-serif'; ctx.textAlign = 'center';
+  ctx.fillText('STEER THE TRAWLER', 112, 716);
+}
+function shrimpDraw() {
+  drawWater();
+  // trawler at top
+  const b = shrimp.bx;
+  ctx.save(); ctx.translate(b, 108 + Math.sin(waveT*2)*2);
+  ctx.fillStyle = 'rgba(0,0,0,.25)'; rr(-24, -12, 48, 30, 10); ctx.fill();
+  ctx.fillStyle = '#e8eef4'; rr(-22, -14, 44, 30, 10); ctx.fill();
+  ctx.fillStyle = '#c0572f'; ctx.fillRect(-22, -2, 44, 6);
+  ctx.fillStyle = '#274b6b'; rr(-10, -26, 20, 14, 4); ctx.fill();
+  ctx.fillStyle = '#9fd4ef'; rr(-8, -25, 16, 8, 3); ctx.fill();
+  ctx.strokeStyle = '#5a3d22'; ctx.lineWidth = 3;
+  ctx.beginPath(); ctx.moveTo(0, 16); ctx.lineTo(0, 44); ctx.stroke();
+  ctx.restore();
+  // trawl net below boat
+  const ny0 = 152, ny1 = 325;
+  ctx.fillStyle = 'rgba(200,220,235,.10)';
+  ctx.beginPath();
+  ctx.moveTo(b-18, ny0); ctx.lineTo(b-55, ny1); ctx.lineTo(b+55, ny1); ctx.lineTo(b+18, ny0);
+  ctx.closePath(); ctx.fill();
+  ctx.strokeStyle = 'rgba(220,230,240,.65)'; ctx.lineWidth = 2;
+  ctx.stroke();
+  ctx.lineWidth = 1; ctx.strokeStyle = 'rgba(220,230,240,.35)';
+  for (let i = 1; i < 5; i++) {
+    const y = ny0 + (ny1-ny0)*i/5, w = 18 + (55-18)*i/5;
+    ctx.beginPath(); ctx.moveTo(b-w, y); ctx.lineTo(b+w, y); ctx.stroke();
+  }
+  for (let i = -2; i <= 2; i++) {
+    ctx.beginPath(); ctx.moveTo(b+i*9, ny0); ctx.lineTo(b+i*22, ny1); ctx.stroke();
+  }
+  for (const c of shrimp.creatures) drawCritter(c);
+  drawSteerOnly();
+  // HUD: time + score + target
+  ctx.fillStyle = 'rgba(4,14,26,.65)'; rr(10, 10, 200, 64, 10); ctx.fill();
+  ctx.fillStyle = '#ffd76a'; ctx.font = 'bold 15px sans-serif'; ctx.textAlign = 'left';
+  ctx.fillText(shrimp.score + ' pts', 22, 33);
+  ctx.fillStyle = '#cfe8ff'; ctx.font = '13px sans-serif';
+  ctx.fillText('TARGET: \uD83E\uDD90 SHRIMP', 22, 55);
+  const tw = 150 * Math.max(0, shrimp.t)/60;
+  ctx.fillStyle = 'rgba(4,14,26,.65)'; rr(W-172, 18, 160, 16, 8); ctx.fill();
+  ctx.fillStyle = shrimp.t < 10 ? '#e05555' : '#55b5e0';
+  if (tw > 4) { rr(W-168, 21, tw-8, 10, 5); ctx.fill(); }
+  ctx.fillStyle = '#9fc3e0'; ctx.font = '12px sans-serif'; ctx.textAlign = 'right';
+  ctx.fillText(Math.ceil(shrimp.t) + 's', W-14, 60);
+  vignette();
+}
+
 /* ---------- tap routing / main loop ---------- */
 function uiTap(p) {
   if (ovl) { const n = ovl.next; ovl = null; if (n) n(); return; }
@@ -734,6 +902,7 @@ function step(dt) {
   if (mode === 'dock') dockStep(dt);
   else if (mode === 'race') raceStep(dt);
   else if (mode === 'fish') fishStep(dt);
+  else if (mode === 'shrimp') shrimpStep(dt);
 }
 function draw() {
   uiButtons = [];
@@ -742,6 +911,7 @@ function draw() {
   else if (mode === 'dock') dockDraw();
   else if (mode === 'race') raceDraw();
   else if (mode === 'fish') fishDraw();
+  else if (mode === 'shrimp') shrimpDraw();
   ctx.restore();
   if (ovl) { uiButtons = []; overlay(ovl.title, ovl.lines, ovl.cta); }
 }

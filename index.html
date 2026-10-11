@@ -180,6 +180,8 @@ section{padding:56px 0}
 .dir-search input{flex:1; padding:12px 16px; border:2px solid var(--line); border-radius:10px 0 0 10px; font-size:1rem}
 .dir-search button{background:var(--teal); color:#fff; border:none; padding:0 22px; border-radius:0 10px 10px 0; font-weight:700; cursor:pointer}
 .dir-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:16px}
+.gear-cat{grid-column:1/-1;font-size:1.05rem;font-weight:800;color:#0a2540;margin:26px 0 2px;letter-spacing:.5px}
+body.dark .gear-cat{color:#e8eef4}
 .dir-card{background:#fff; border:1px solid var(--line); border-radius:12px; padding:18px}
 .dir-card h4{color:var(--navy); margin-bottom:4px}
 .dir-card .city{font-size:.8rem; text-transform:uppercase; letter-spacing:1px; color:var(--teal); font-weight:700}
@@ -3244,35 +3246,64 @@ function renderDealers(){
 
 /* ================= GEAR GUIDE ================= */
 const GEAR = [
- ["🧊","YETI Tundra 45 Cooler","The sandbar standard — keeps ice for days.","https://www.amazon.com/s?k=yeti+tundra+45+hard+cooler"],
- ["🕶️","Costa Del Mar Sunglasses","Polarized lenses built for on-the-water glare.","https://www.amazon.com/s?k=costa+del+mar+sunglasses+polarized"],
- ["🦺","Onyx MoveVent Life Jacket","Comfortable enough you'll actually wear it.","https://www.amazon.com/s?k=onyx+movevent+life+jacket"],
- ["🔊","JBL Flip 6 Waterproof Speaker","Loud, waterproof, floats the vibe.","https://www.amazon.com/s?k=jbl+flip+6+waterproof+portable+speaker"],
- ["🥤","YETI Rambler 30 oz Tumbler","Ice-cold from the ramp to the last sandbar.","https://www.amazon.com/s?k=yeti+rambler+30+oz+tumbler"],
- ["🔪","Bubba Blade Fillet Knife","The knife every Tampa Bay angler knows.","https://www.amazon.com/s?k=bubba+blade+fillet+knife"],
- ["🎒","20L Waterproof Dry Bag","Phones, wallets and keys stay dry.","https://www.amazon.com/s?k=waterproof+dry+bag+20l+boating"],
- ["🔋","Anker Portable Power Bank","Keep phones and GoPros alive all day.","https://www.amazon.com/s?k=anker+portable+charger+power+bank"],
- ["⛱️","Beach Umbrella with Sand Anchor","Stays put when the bay breeze picks up.","https://www.amazon.com/s?k=beach+umbrella+with+sand+anchor+windproof"],
- ["🪑","Folding Beach Chair","Low-slung loungers built for sandbar naps.","https://www.amazon.com/s?k=folding+beach+chair+low+profile"],
- ["🤿","Snorkel Mask Set","For Egmont Key and the sandbar shallows.","https://www.amazon.com/s?k=snorkel+mask+set+adult+dry+top"],
- ["📱","Waterproof Phone Pouch","Take the pics without the panic.","https://www.amazon.com/s?k=waterproof+phone+pouch+lanyard+2+pack"],
- ["🧴","Reef-Safe Sunscreen","Protect the skin and the bay.","https://www.amazon.com/s?k=reef+safe+sunscreen+waterproof+spf+50"],
- ["🛒","Beach Wagon with Big Wheels","Hauls the cooler, chairs and everything else.","https://www.amazon.com/s?k=beach+wagon+cart+big+wheels+folding"],
- ["🎣","Inshore Spinning Combo","The do-everything Tampa Bay setup.","https://www.amazon.com/s?k=ugly+stik+inshore+spinning+combo"],
- ["🦐","DOA Shrimp Lures","The lure Tampa Bay was built on.","https://www.amazon.com/s?k=doa+shrimp+lure+3+pack"],
- ["🐟","Topwater Plug","Dawn-patrol explosions on the flats.","https://www.amazon.com/s?k=heddon+super+spook+topwater+plug"],
- ["🧰","Tackle Backpack","Everything organized, hands free.","https://www.amazon.com/s?k=fishing+tackle+backpack+waterproof"],
- ["🔧","Fishing Pliers","Hook removal, split rings, braid cutting.","https://www.amazon.com/s?k=fishing+pliers+saltwater+with+sheath"],
- ["🧵","Braided Fishing Line","Sensitive, strong, casts a mile.","https://www.amazon.com/s?k=powerpro+braided+fishing+line+150+yd"]
+  ["\ud83d\udcfb", "Cobra MR HH350 FLT Handheld VHF", "Floating handheld VHF \u2014 required safety gear, survives a drop overboard. (~$135)", "https://www.amazon.com/dp/B00AJVMVQQ", "Safety First"],
+  ["\ud83d\udedf", "Stearns Utility Flotation Cushion", "Coast Guard-required throwable; doubles as a seat cushion. (~$40)", "https://www.amazon.com/dp/B000NVD0JY", "Safety First"],
+  ["\ud83e\uddef", "Kidde Mariner 110 Fire Extinguisher", "USCG-approved and corrosion-resistant for marine environments. (~$22)", "https://www.amazon.com/dp/B0CBCTBQJM", "Safety First"],
+  ["\u26d1\ufe0f", "Breakwater Supply Marine First Aid Kit", "Hard waterproof case stocked for real boating injuries. (~$40)", "https://www.amazon.com/dp/B09H29FDVG", "Safety First"],
+  ["\ud83d\udef0\ufe0f", "ACR ResQLink 400 Personal Locator Beacon", "No cell signal? This summons the Coast Guard by satellite. (~$350)", "https://www.amazon.com/dp/B07V6CWS26", "Safety First"],
+  ["\ud83d\udca1", "Sirius Signal C-1003 SOS Light", "USCG-approved flare alternative that never expires. (~$110)", "https://www.amazon.com/dp/B081GHJ9XC", "Safety First"],
+  ["\ud83e\uddba", "Onyx MoveVent Life Jacket", "Comfortable enough you'll actually wear it.", "https://www.amazon.com/dp/s?k=onyx+movevent+life+jacket", "Safety First"],
+  ["\ud83e\udea2", "Amarine Made Dock Lines 4-Pack", "1/2\" \u00d7 25' double-braided nylon with stretch and UV resistance. (~$55)", "https://www.amazon.com/dp/B082VXJQMD", "Docking & Anchoring"],
+  ["\ud83c\udf88", "Taylor Made Super Gard Fender", "The pro-standard fender \u2014 lifetime warranty against splitting. (~$35)", "https://www.overtons.com/taylor-made-super-gard-boat-fender-6.5-dia.-x-22l-301202.html", "Docking & Anchoring"],
+  ["\u2693", "Fortress FX-7 Anchor", "4 lbs, digs in and holds \u2014 ideal for Tampa Bay sand and mud. (~$145)", "https://www.amazon.com/dp/B001TXQ0ME", "Docking & Anchoring"],
+  ["\ud83e\ude9d", "Better Boat Telescoping Boat Hook", "Extends to grab lines and cleats; floats if dropped. (~$30)", "https://www.amazon.com/dp/B07X3PNRKP", "Docking & Anchoring"],
+  ["\ud83d\udcdf", "Garmin Striker 4 Fish Finder", "GPS, CHIRP sonar, waypoints \u2014 the default first finder. (~$130)", "https://www.amazon.com/dp/B017NI17HQ", "Electronics & Power"],
+  ["\ud83d\udd0b", "NOCO Genius10 Battery Charger", "Maintains batteries between trips \u2014 never dead at the ramp. (~$100)", "https://www.amazon.com/dp/B07W3QT226", "Electronics & Power"],
+  ["\ud83d\udd26", "Nilight LED Nav Lights", "LED port/starboard bow lights, USCG-compliant visibility. (~$12)", "https://www.amazon.com/dp/B0C6M44BGK", "Electronics & Power"],
+  ["\u26a1", "NOCO Boost GB40 Jump Starter", "Starts a dead boat battery without a second boat. (~$90)", "https://www.amazon.com/dp/B015TKUPIC", "Electronics & Power"],
+  ["\ud83e\uddfc", "Star brite Boat Wash & Wax", "Washes and leaves a polymer shine in one step. (~$9)", "https://www.amazon.com/dp/B0000AY9VM", "Maintenance"],
+  ["\u2728", "Meguiar's Flagship Marine Wax", "UV-blocking wax that keeps gelcoat from chalking. (~$19)", "https://www.amazon.com/dp/B0007TR47G", "Maintenance"],
+  ["\ud83e\uddfd", "Star brite Non-Skid Deck Cleaner", "Lifts ground-in dirt without stripping wax. (~$12)", "https://www.amazon.com/dp/B000N9Q0PC", "Maintenance"],
+  ["\ud83d\udebf", "ISURE MARINE Engine Flusher", "Flushes salt after every trip \u2014 cheapest engine insurance. (~$20)", "https://www.amazon.com/dp/B0B48GCT9P", "Maintenance"],
+  ["\u26fd", "Star Tron Fuel Treatment", "Fixes ethanol fuel problems before they strand you. (~$12)", "https://www.amazon.com/dp/B00D3IEIH2", "Maintenance"],
+  ["\ud83e\udd45", "PLUSINNO Floating Landing Net", "Floats if dropped; rubber coating is hook-friendly. (~$35)", "https://www.amazon.com/dp/B08DCDP44D", "Fishing"],
+  ["\u2696\ufe0f", "Piscifun Fish Gripper with Scale", "Weighs and controls fish one-handed. (~$35)", "https://www.amazon.com/dp/B07F753ZYY", "Fishing"],
+  ["\ud83e\udee7", "Marine Metal Livewell Aerator", "Keeps live bait alive all day on 12V. (~$45)", "https://www.amazon.com/dp/B000EYWNVQ", "Fishing"],
+  ["\ud83d\udd78\ufe0f", "Betts Old Salt Cast Net 6 ft", "Catch your own live bait; manageable beginner size. (~$70)", "https://www.amazon.com/dp/B00144CLSA", "Fishing"],
+  ["\ud83c\udfa3", "Inshore Spinning Combo", "The go-to setup for bay snook, reds and trout.", "https://www.amazon.com/dp/s?k=inshore+spinning+rod+reel+combo", "Fishing"],
+  ["\ud83e\udd90", "DOA Shrimp Lures", "Tampa Bay's most trusted artificial shrimp.", "https://www.amazon.com/dp/s?k=doa+shrimp+lures", "Fishing"],
+  ["\ud83d\udc1f", "Topwater Plug", "Explosive sunrise strikes on calm mornings.", "https://www.amazon.com/dp/s?k=topwater+fishing+lure+saltwater", "Fishing"],
+  ["\ud83c\udf92", "Tackle Backpack", "Keeps trays, tools and leader organized on deck.", "https://www.amazon.com/dp/s?k=fishing+tackle+backpack", "Fishing"],
+  ["\ud83d\udd27", "Fishing Pliers", "Split rings, de-hooking, cutting braid \u2014 one tool.", "https://www.amazon.com/dp/s?k=saltwater+fishing+pliers", "Fishing"],
+  ["\ud83e\uddf5", "Braided Fishing Line", "No-stretch sensitivity for feeling every bite.", "https://www.amazon.com/dp/s?k=braided+fishing+line+saltwater", "Fishing"],
+  ["\ud83d\udd2a", "Bubba Blade Fillet Knife", "The flexible blade that made filleting easy.", "https://www.amazon.com/dp/s?k=bubba+blade+fillet+knife", "Fishing"],
+  ["\ud83e\uddca", "YETI Tundra 45 Cooler", "The sandbar standard \u2014 keeps ice for days.", "https://www.amazon.com/dp/s?k=yeti+tundra+45+hard+cooler", "Boat Day Essentials"],
+  ["\ud83d\udd76\ufe0f", "Costa Del Mar Sunglasses", "Polarized lenses built for on-the-water glare.", "https://www.amazon.com/dp/s?k=costa+del+mar+sunglasses+polarized", "Boat Day Essentials"],
+  ["\ud83d\udd0a", "JBL Flip 7 Waterproof Speaker", "IP68, 16-hr battery \u2014 the sandbar soundtrack.", "https://www.amazon.com/dp/B0DMV3BMGP", "Boat Day Essentials"],
+  ["\ud83e\udd64", "YETI Rambler 30 oz Tumbler", "Ice water all day in the Florida sun.", "https://www.amazon.com/dp/s?k=yeti+rambler+30+oz+tumbler", "Boat Day Essentials"],
+  ["\ud83c\udf92", "20L Waterproof Dry Bag", "Phones, wallets and keys stay bone dry.", "https://www.amazon.com/dp/s?k=20l+waterproof+dry+bag", "Boat Day Essentials"],
+  ["\ud83d\udd0c", "Anker Portable Power Bank", "Keeps phones alive for the whole trip.", "https://www.amazon.com/dp/s?k=anker+portable+power+bank", "Boat Day Essentials"],
+  ["\u26f1\ufe0f", "Beach Umbrella with Sand Anchor", "Shade that actually stays put in bay breeze.", "https://www.amazon.com/dp/s?k=beach+umbrella+sand+anchor", "Boat Day Essentials"],
+  ["\ud83e\ude91", "Folding Beach Chair", "For the sandbar hang.", "https://www.amazon.com/dp/s?k=folding+beach+chair", "Boat Day Essentials"],
+  ["\ud83e\udd3f", "Snorkel Mask Set", "Check the grass flats up close.", "https://www.amazon.com/dp/s?k=snorkel+mask+set+adult", "Boat Day Essentials"],
+  ["\ud83d\udcf1", "Waterproof Phone Pouch", "Film the day without fear.", "https://www.amazon.com/dp/s?k=waterproof+phone+pouch", "Boat Day Essentials"],
+  ["\ud83e\uddf4", "Reef-Safe Sunscreen", "Protects you and the bay.", "https://www.amazon.com/dp/s?k=reef+safe+sunscreen", "Boat Day Essentials"],
+  ["\ud83d\uded2", "Beach Wagon with Big Wheels", "One trip from truck to sandbar.", "https://www.amazon.com/dp/s?k=beach+wagon+big+wheels", "Boat Day Essentials"],
+  ["\u26f1\ufe0f", "Leader Accessories 3-Bow Bimini Top", "Affordable shade for Tampa Bay summers. (~$150)", "https://www.amazon.com/dp/B0DWWXNLZX", "Boat Day Essentials"],
+  ["\ud83d\udcba", "Wise Molded Boat Seat", "America's favorite replacement seat \u2014 cheaper than reupholstery. (~$80)", "https://www.amazon.com/dp/B004WIQRUS", "Boat Day Essentials"]
 ];
 function renderGear(){
-  document.getElementById("gear-grid").innerHTML = GEAR.map(g=>`
+  var cats={}, order=[];
+  GEAR.forEach(function(g){ if(!cats[g[4]]){cats[g[4]]=[]; order.push(g[4]);} cats[g[4]].push(g); });
+  document.getElementById("gear-grid").innerHTML = order.map(function(c){
+    return '<h3 class="gear-cat">'+c+'</h3>' + cats[c].map(g=>`
     <div class="dir-card" style="text-align:center">
       <div style="font-size:2.4rem">${g[0]}</div>
       <h4 style="margin:8px 0 4px">${g[1]}</h4>
       <div class="type">${g[2]}</div>
-      <div class="contact" style="margin-top:10px">🔗 <a href="${g[3]}" target="_blank" rel="noopener nofollow">Check price on Amazon</a></div>
+      <div class="contact" style="margin-top:10px">🔗 <a href="${g[3]}" target="_blank" rel="noopener nofollow">Check price</a></div>
     </div>`).join("");
+  }).join("");
 }
 
 /* ================= NEWSLETTER ================= */

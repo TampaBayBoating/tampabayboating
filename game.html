@@ -59,6 +59,8 @@ const sndSplash = () => beep(300,.15,'sine',.09);
 const sndCatch  = () => { beep(660,.1,'square',.07); beep(880,.16,'square',.07,.09); };
 const sndCount  = () => beep(440,.12,'square',.09);
 const sndGo     = () => beep(880,.3,'square',.1);
+const sndBuzzer = () => { beep(110,.25,'square',.12); beep(90,.3,'square',.12,.14); };
+function dist(x1, y1, x2, y2) { return Math.hypot(x2 - x1, y2 - y1); }
 
 /* ---------- storage ---------- */
 const store = {
@@ -125,14 +127,15 @@ function driveInput() {
 }
 
 /* ---------- shared physics ---------- */
-function driveBoat(b, dt, ctl, maxF, maxR) {
+function driveBoat(b, dt, ctl, maxF, maxR, turnK) {
+  turnK = turnK || 1;
   const ACC = 230, RACC = 170, DRAG = 150;
   if (ctl.fwd) b.sp = Math.min(maxF, b.sp + ACC*dt);
   else if (ctl.rev) b.sp = Math.max(-maxR, b.sp - RACC*dt);
   else if (b.sp > 0) b.sp = Math.max(0, b.sp - DRAG*dt);
   else b.sp = Math.min(0, b.sp + DRAG*dt);
   const grip = Math.min(1, Math.abs(b.sp) / 70);
-  const tr = 3.1 * grip * (b.sp < -1 ? -1 : 1);
+  const tr = 3.1 * turnK * grip * (b.sp < -1 ? -1 : 1);
   if (ctl.left) b.a -= tr*dt;
   if (ctl.right) b.a += tr*dt;
   b.x += Math.cos(b.a) * b.sp * dt;
@@ -151,10 +154,11 @@ let waveT = 0;
 const foamDots = [];
 for (let i = 0; i < 80; i++) foamDots.push({ x:Math.random()*W, y:Math.random()*H, s:1+Math.random()*2, v:5+Math.random()*9 });
 
-function drawWater() {
-  const g = ctx.createLinearGradient(0, 0, 0, H);
+function drawWater(y0) {
+  y0 = y0 || 0;
+  const g = ctx.createLinearGradient(0, y0, 0, H);
   g.addColorStop(0, '#0e2f52'); g.addColorStop(.5, '#11416e'); g.addColorStop(1, '#0b2a49');
-  ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+  ctx.fillStyle = g; ctx.fillRect(0, y0, W, H - y0);
   for (let k = 0; k < 5; k++) {
     ctx.strokeStyle = 'rgba(130,195,245,' + (.075 - k*.012).toFixed(3) + ')';
     ctx.lineWidth = 3;
@@ -214,6 +218,42 @@ function vignette() {
   g.addColorStop(0, 'rgba(0,0,0,0)'); g.addColorStop(1, 'rgba(0,0,0,.32)');
   ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
 }
+/* ---------- Tampa Bay scenery: Sunshine Skyway on the horizon ---------- */
+function drawSkyway(cx, deckY, spanW, towerH, alpha) {
+  ctx.save(); ctx.globalAlpha = alpha;
+  const col = '#41617f';
+  ctx.fillStyle = col;
+  ctx.fillRect(cx - spanW/2, deckY, spanW, Math.max(3, spanW*0.012));
+  for (const tx of [cx - spanW*0.22, cx + spanW*0.22]) {
+    ctx.fillRect(tx - 4, deckY - towerH, 8, towerH);
+    ctx.strokeStyle = col; ctx.lineWidth = Math.max(1, spanW*0.004);
+    for (let i = 0; i < 7; i++) {
+      const dy = deckY - towerH + 10 + i*((towerH - 20)/6);
+      ctx.beginPath(); ctx.moveTo(tx, dy); ctx.lineTo(tx - spanW*0.20, deckY); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(tx, dy); ctx.lineTo(tx + spanW*0.20, deckY); ctx.stroke();
+    }
+  }
+  ctx.restore();
+}
+function distantBridge() {
+  // hazy Skyway silhouette across the bay + gulls
+  drawSkyway(240, 148, 400, 64, 0.42);
+  ctx.fillStyle = 'rgba(140,180,210,.10)';
+  ctx.fillRect(0, 152, W, 26);
+}
+const gulls = [];
+for (let i = 0; i < 4; i++) gulls.push({ x0:Math.random()*W, y:36 + Math.random()*80, v:10 + Math.random()*12, ph:Math.random()*7 });
+function drawGulls() {
+  ctx.strokeStyle = 'rgba(35,55,75,.75)'; ctx.lineWidth = 2;
+  for (const g of gulls) {
+    const x = ((g.x0 + waveT*g.v) % (W + 40)) - 20;
+    const w = Math.sin(waveT*6 + g.ph) * 3;
+    ctx.beginPath();
+    ctx.moveTo(x - 8, g.y); ctx.quadraticCurveTo(x - 3, g.y - 4 - w, x, g.y);
+    ctx.quadraticCurveTo(x + 3, g.y - 4 - w, x + 8, g.y);
+    ctx.stroke();
+  }
+}
 /* drive control buttons (dock + race) */
 function drawControls() {
   const defs = [
@@ -257,35 +297,66 @@ function ord(n) { return n === 1 ? '1st' : n === 2 ? '2nd' : n === 3 ? '3rd' : '
 
 /* ---------- MENU ---------- */
 const menuBtns = [
-  { id:'m-dock', y:262, ico:'\u2693', t:'Docking Challenge', s:'Thread the buoys, nail the slip' },
-  { id:'m-race', y:357, ico:'\uD83C\uDFC1', t:'Speedboat Race', s:'2 laps against 3 rivals' },
-  { id:'m-fish', y:452, ico:'\uD83C\uDFA3', t:'Fishing', s:'Cast, hook, and reel \u2019em in' },
-  { id:'m-shrimp', y:547, ico:'\uD83E\uDD90', t:'Shrimp Netter', s:'Trawl shrimp, dodge the bycatch' }
+  { id:'m-dock',   ico:'\u2693', t:'Docking',  s:'Nail the slip' },
+  { id:'m-race',   ico:'\uD83C\uDFC1', t:'Boat Race', s:'2 laps vs rivals' },
+  { id:'m-fish',   ico:'\uD83C\uDFA3', t:'Fishing',  s:'In-season scores!' },
+  { id:'m-shrimp', ico:'\uD83E\uDD90', t:'Shrimp Net', s:'Trawl & dodge' },
+  { id:'m-ski',    ico:'\uD83C\uDF0A', t:'Jet Ski',  s:'Slalom time trial' },
+  { id:'m-sail',   ico:'\u26F5', t:'Sailing',  s:'Tack the course' },
+  { id:'m-fillet', ico:'\uD83D\uDD2A', t:'Fillet',   s:'Trace the cut' },
+  { id:'m-trailer', ico:'\uD83D\uDE9A', t:'Trailer', s:'Back it down' }
 ];
 function menuDraw() {
-  drawWater();
-  ctx.textAlign = 'center';
-  ctx.fillStyle = '#ffd76a'; ctx.font = 'bold 50px sans-serif';
-  ctx.fillText('BAY ARCADE', W/2, 148);
-  ctx.fillStyle = '#9fc3e0'; ctx.font = '16px sans-serif';
-  ctx.fillText('Tampa Bay Boating mini-games', W/2, 180);
-  for (const b of menuBtns) {
-    uiButtons.push({ id:b.id, x:W/2-160, y:b.y-36, w:320, h:78, tap:() => selectMode(b.id) });
-    const g = ctx.createLinearGradient(0, b.y-36, 0, b.y+42);
-    g.addColorStop(0, '#17486f'); g.addColorStop(1, '#0d2c4b');
-    ctx.fillStyle = g; rr(W/2-160, b.y-36, 320, 78, 14); ctx.fill();
-    ctx.strokeStyle = 'rgba(143,208,240,.5)'; ctx.lineWidth = 2;
-    rr(W/2-160, b.y-36, 320, 78, 14); ctx.stroke();
-    ctx.textAlign = 'left'; ctx.font = '32px sans-serif';
-    ctx.fillText(b.ico, W/2-142, b.y+12);
-    ctx.fillStyle = '#fff'; ctx.font = 'bold 19px sans-serif';
-    ctx.fillText(b.t, W/2-94, b.y-2);
-    ctx.fillStyle = '#9fc3e0'; ctx.font = '13px sans-serif';
-    ctx.fillText(b.s, W/2-94, b.y+20);
+  // Tampa Bay sky scene
+  const g = ctx.createLinearGradient(0, 0, 0, 215);
+  g.addColorStop(0, '#79bce6'); g.addColorStop(.65, '#cde9f5'); g.addColorStop(1, '#f6d9a8');
+  ctx.fillStyle = g; ctx.fillRect(0, 0, W, 215);
+  // sun glow
+  const sg = ctx.createRadialGradient(368, 62, 4, 368, 62, 60);
+  sg.addColorStop(0, 'rgba(255,246,214,.95)'); sg.addColorStop(1, 'rgba(255,246,214,0)');
+  ctx.fillStyle = sg; ctx.fillRect(300, 0, 140, 130);
+  ctx.fillStyle = '#fff6d6'; ctx.beginPath(); ctx.arc(368, 62, 22, 0, 7); ctx.fill();
+  // clouds
+  ctx.fillStyle = 'rgba(255,255,255,.85)';
+  for (const cl of [[90, 52, 46], [150, 96, 34], [300, 40, 38]]) {
+    ctx.beginPath();
+    ctx.ellipse(cl[0], cl[1], cl[2], cl[2]*.42, 0, 0, 7);
+    ctx.ellipse(cl[0]+26, cl[1]+4, cl[2]*.7, cl[2]*.3, 0, 0, 7);
+    ctx.fill();
   }
-  ctx.textAlign = 'center'; ctx.fillStyle = '#7d99b5'; ctx.font = '13px sans-serif';
-  const bd = store.get('tbb-best-dock', 0), br = store.get('tbb-best-race', 0), bf = store.get('tbb-best-fish', 0), bs = store.get('tbb-best-shrimp', 0);
-  ctx.fillText('Bests \u2014 Dock: ' + (bd || '\u2014') + '  Race: ' + (br ? ord(br) : '\u2014') + '  Fish: ' + (bf || '\u2014') + '  Shrimp: ' + (bs || '\u2014'), W/2, 648);
+  drawSkyway(240, 188, 470, 108, 0.92);
+  drawWater(202);
+  drawGulls();
+  ctx.textAlign = 'center';
+  ctx.fillStyle = '#0a2540'; ctx.font = 'bold 46px sans-serif';
+  ctx.fillText('BAY ARCADE', W/2, 78);
+  ctx.fillStyle = '#16456f'; ctx.font = '15px sans-serif';
+  ctx.fillText('Tampa Bay Boating \u2022 eight games', W/2, 104);
+  // 2-col button grid
+  menuBtns.forEach((b, i) => {
+    const col = i % 2, row = Math.floor(i / 2);
+    const x = 14 + col*229, y = 284 + row*88, w = 215, h = 80;
+    uiButtons.push({ id:b.id, x, y, w, h, tap:() => selectMode(b.id) });
+    const bg = ctx.createLinearGradient(0, y, 0, y + h);
+    bg.addColorStop(0, '#17486f'); bg.addColorStop(1, '#0d2c4b');
+    ctx.fillStyle = bg; rr(x, y, w, h, 14); ctx.fill();
+    ctx.strokeStyle = 'rgba(143,208,240,.5)'; ctx.lineWidth = 2; rr(x, y, w, h, 14); ctx.stroke();
+    ctx.textAlign = 'left'; ctx.font = '30px sans-serif';
+    ctx.fillText(b.ico, x + 14, y + 46);
+    ctx.fillStyle = '#fff'; ctx.font = 'bold 18px sans-serif';
+    ctx.fillText(b.t, x + 54, y + 38);
+    ctx.fillStyle = '#9fc3e0'; ctx.font = '12px sans-serif';
+    ctx.fillText(b.s, x + 54, y + 60);
+  });
+  ctx.textAlign = 'center'; ctx.fillStyle = '#7d99b5'; ctx.font = '11px sans-serif';
+  const bd = store.get('tbb-best-dock', 0), br = store.get('tbb-best-race', 0),
+        bf = store.get('tbb-best-fish', 0), bs = store.get('tbb-best-shrimp', 0);
+  ctx.fillText('Bests \u2014 Dock ' + (bd || '\u2014') + '  Race ' + (br ? ord(br) : '\u2014') +
+    '  Fish ' + (bf || '\u2014') + '  Shrimp ' + (bs || '\u2014'), W/2, 652);
+  const sk = store.get('tbb-best-ski', 0), sa = store.get('tbb-best-sail', 0),
+        ff = store.get('tbb-best-fillet', 0), tt = store.get('tbb-best-trailer', 0);
+  ctx.fillText('Ski ' + (sk ? sk.toFixed(1) + 's' : '\u2014') + '  Sail ' + (sa ? sa.toFixed(1) + 's' : '\u2014') +
+    '  Fillet ' + (ff || '\u2014') + '  Trailer ' + (tt ? tt.toFixed(1) + 's' : '\u2014'), W/2, 668);
   vignette();
 }
 function selectMode(id) {
@@ -294,6 +365,10 @@ function selectMode(id) {
   else if (id === 'm-race') raceStart();
   else if (id === 'm-fish') fishStart();
   else if (id === 'm-shrimp') shrimpStart();
+  else if (id === 'm-ski') skiStart();
+  else if (id === 'm-sail') sailStart();
+  else if (id === 'm-fillet') filletStart();
+  else if (id === 'm-trailer') trailerStart();
 }
 
 /* ---------- DOCKING ---------- */
@@ -405,6 +480,7 @@ function dockDraw() {
   ctx.save();
   if (dock.shake > 0) ctx.translate((Math.random()-.5)*10*dock.shake, (Math.random()-.5)*10*dock.shake);
   drawWater();
+  distantBridge(); drawGulls();
   // no-wake line
   ctx.save();
   ctx.strokeStyle = 'rgba(255,210,120,.55)'; ctx.lineWidth = 2; ctx.setLineDash([10, 8]);
@@ -530,6 +606,7 @@ function raceStep(dt) {
 }
 function raceDraw() {
   drawWater();
+  distantBridge(); drawGulls();
   // course buoys
   for (let i = 0; i < NG; i++) {
     const g = gatePos(i);
@@ -567,21 +644,33 @@ function raceDraw() {
 }
 
 /* ---------- FISHING ---------- */
-const FISH = [
-  { n:'Spotted Seatrout', p:10, w:.42 }, { n:'Redfish', p:25, w:.28 },
-  { n:'Snook', p:50, w:.19 }, { n:'Tarpon', p:100, w:.11 }
+/* Tampa Bay species — seasons per FWC Gulf recreational rules (whole months, simplified).
+   month = 1..12. Flounder closed Oct 15-Nov 30; snook open Mar-Apr + Sep-Nov in Tampa Bay region. */
+const ALLMO = [1,2,3,4,5,6,7,8,9,10,11,12];
+const FSPECIES = [
+  { n:'Redfish', min:16, max:32, mult:2,   season:ALLMO, w:.17 },
+  { n:'Spotted Seatrout', min:14, max:26, mult:1.5, season:ALLMO, w:.19 },
+  { n:'Snook', min:24, max:38, mult:3,   season:[3,4,9,10,11], note:'open Mar\u2013Apr, Sep\u2013Nov', w:.12 },
+  { n:'Tarpon', min:48, max:84, mult:4,   season:ALLMO, cr:true, w:.06 },
+  { n:'Sheepshead', min:12, max:22, mult:1.5, season:ALLMO, w:.13 },
+  { n:'Mangrove Snapper', min:10, max:18, mult:1.5, season:ALLMO, w:.13 },
+  { n:'Flounder', min:13, max:22, mult:2,  season:[12,1,2,3,4,5,6,7,8,9], note:'closed Oct 15\u2013Nov 30', w:.08 },
+  { n:'King Mackerel', min:24, max:48, mult:2.5, season:ALLMO, w:.07 },
+  { n:'Spanish Mackerel', min:14, max:28, mult:2, season:ALLMO, w:.05 }
 ];
+function curMonth() { return new Date().getMonth() + 1; }
+function inSeasonNow(sp) { return sp.season.indexOf(curMonth()) >= 0; }
 const fish = { st:'idle', bob:null, biteAt:0, hookBy:0, dist:0, tension:0, nextSurge:0,
-  cur:null, total:0, msg:'Tap the water to cast', snapT:0, caughtT:0 };
+  cur:null, result:null, total:0, msg:'Tap the water to cast', snapT:0, caughtT:0 };
 function fishStart() {
   mode = 'fish';
-  fish.st = 'idle'; fish.bob = null; fish.cur = null; fish.total = 0;
+  fish.st = 'idle'; fish.bob = null; fish.cur = null; fish.result = null; fish.total = 0;
   fish.msg = 'Tap the water to cast';
 }
-function pickFish() {
+function pickFishSpec() {
   const r = Math.random(); let a = 0;
-  for (const f of FISH) { a += f.w; if (r < a) return f; }
-  return FISH[0];
+  for (const f of FSPECIES) { a += f.w; if (r < a) return f; }
+  return FSPECIES[0];
 }
 function fishTap(p) {
   if (!p || fish.st !== 'idle' && fish.st !== 'bite') return;
@@ -590,7 +679,9 @@ function fishTap(p) {
     fish.bob = { x:240, y:452, tx, ty, t:0 };
     fish.st = 'cast'; sndSplash();
   } else if (fish.st === 'bite') {
-    fish.st = 'fight'; fish.cur = pickFish();
+    const sp = pickFishSpec();
+    const len = Math.round(sp.min + Math.random()*(sp.max - sp.min));
+    fish.st = 'fight'; fish.cur = { sp, len };
     fish.dist = 100; fish.tension = 25;
     fish.nextSurge = performance.now() + 1200 + Math.random()*1200;
     sndCatch();
@@ -624,10 +715,15 @@ function fishStep(dt) {
       fish.st = 'snap'; fish.snapT = now; fish.bob = null;
       fish.msg = 'Line snapped!'; sndOver();
     } else if (fish.dist <= 0) {
-      fish.st = 'caught'; fish.caughtT = now; fish.total += fish.cur.p;
+      fish.st = 'caught'; fish.caughtT = now;
+      const sp = fish.cur.sp, len = fish.cur.len;
+      const ok = inSeasonNow(sp);
+      const pts = ok ? Math.round(len * sp.mult) : 0;
+      fish.result = { sp, len, pts, ok };
+      fish.total += pts;
       const best = store.get('tbb-best-fish', 0);
       if (fish.total > best) store.set('tbb-best-fish', fish.total);
-      sndCatch();
+      if (ok) sndCatch(); else sndBuzzer();
     }
   } else if (fish.st === 'snap' && now - fish.snapT > 1400) {
     fish.st = 'idle'; fish.msg = 'Tap the water to cast';
@@ -637,6 +733,7 @@ function fishStep(dt) {
 }
 function fishDraw() {
   drawWater();
+  distantBridge(); drawGulls();
   // boat with rod
   const bb = { x:240, y:500, a:-Math.PI/2, sp:0 };
   drawBoat(bb, '#e8a33d');
@@ -683,17 +780,26 @@ function fishDraw() {
       const dw = 216 * (1 - fish.dist/100);
       if (dw > 4) { rr(W/2-107, 152, dw, 10, 5); ctx.fill(); }
       ctx.fillStyle = '#fff'; ctx.font = 'bold 12px sans-serif';
-      ctx.fillText(fish.cur.n.toUpperCase() + '  \u2014  HOLD REEL, WATCH TENSION', W/2, 178);
+      ctx.fillText(fish.cur.sp.n.toUpperCase() + '  \u2014  HOLD REEL, WATCH TENSION', W/2, 178);
     }
   }
-  if (fish.st === 'caught' && fish.cur) {
+  if (fish.st === 'caught' && fish.result) {
+    const r = fish.result;
     ctx.textAlign = 'center';
     ctx.font = '64px sans-serif';
-    ctx.fillText('\uD83D\uDC1F', W/2, 330 + Math.sin(waveT*6)*8);
+    ctx.fillText('\uD83D\uDC1F', W/2, 320 + Math.sin(waveT*6)*8);
     ctx.fillStyle = '#ffd76a'; ctx.font = 'bold 24px sans-serif';
-    ctx.fillText('Caught a ' + fish.cur.n + '!', W/2, 380);
-    ctx.fillStyle = '#7dffaa'; ctx.font = 'bold 20px sans-serif';
-    ctx.fillText('+' + fish.cur.p + ' pts', W/2, 408);
+    ctx.fillText(r.len + '" ' + r.sp.n + '!', W/2, 372);
+    if (r.ok) {
+      ctx.fillStyle = '#7dffaa'; ctx.font = 'bold 20px sans-serif';
+      ctx.fillText('+' + r.pts + ' pts' + (r.sp.cr ? ' (released)' : ''), W/2, 402);
+    } else {
+      ctx.fillStyle = '#e05555'; ctx.font = 'bold 20px sans-serif';
+      ctx.fillText('OUT OF SEASON \u2014 RELEASED', W/2, 402);
+      ctx.fillStyle = '#9fc3e0'; ctx.font = '14px sans-serif';
+      ctx.fillText(r.sp.note || 'not in season now', W/2, 424);
+      ctx.fillText('no points', W/2, 444);
+    }
   }
   // HUD
   ctx.fillStyle = 'rgba(4,14,26,.65)'; rr(10, 10, 150, 60, 10); ctx.fill();
@@ -849,6 +955,7 @@ function drawSteerOnly() {
 }
 function shrimpDraw() {
   drawWater();
+  distantBridge(); drawGulls();
   // trawler at top
   const b = shrimp.bx;
   ctx.save(); ctx.translate(b, 108 + Math.sin(waveT*2)*2);
@@ -893,6 +1000,525 @@ function shrimpDraw() {
   vignette();
 }
 
+/* ---------- JET SKI SLALOM ---------- */
+const ski = { x:240, y:130, a:Math.PI/2, sp:0, wake:[], gates:[], t:0, pen:0, fin:0 };
+function skiStart() {
+  mode = 'ski';
+  ski.x = 240; ski.y = 130; ski.a = Math.PI/2; ski.sp = 0; ski.wake = [];
+  ski.gates = []; ski.t = 0; ski.pen = 0; ski.fin = 0;
+  let gx = 240;
+  for (let i = 0; i < 6; i++) {
+    gx = clamp(gx + (Math.random() < .5 ? -1 : 1)*(90 + Math.random()*70), 95, W - 95);
+    ski.gates.push({ x:gx, y:215 + i*72, w:112, st:0 });
+  }
+}
+function skiStep(dt) {
+  if (ski.fin) return;
+  ski.t += dt;
+  driveBoat(ski, dt, driveInput(), 265, 60, 1.3);
+  ski.x = clamp(ski.x, 24, W - 24);
+  ski.y = Math.max(60, ski.y);
+  ski.wake.push({ x:ski.x, y:ski.y, t:0 });
+  if (ski.wake.length > 40) ski.wake.shift();
+  for (const w of ski.wake) w.t += dt;
+  for (const gt of ski.gates) {
+    if (gt.st !== 0) continue;
+    if (Math.abs(ski.y - gt.y) < 18) {
+      if (Math.abs(ski.x - gt.x) < gt.w/2) { gt.st = 1; sndGate(); }
+    } else if (ski.y > gt.y + 18) { gt.st = -1; ski.pen += 3; sndBuzzer(); }
+  }
+  if (ski.y >= 648) {
+    ski.fin = 1;
+    const total = ski.t + ski.pen, n = ski.gates.filter(g => g.st === 1).length;
+    const best = store.get('tbb-best-ski', 0);
+    if (n === 6 && (!best || total < best)) store.set('tbb-best-ski', total);
+    sndDock();
+    ovl = { title:'\uD83C\uDFC1 FINISH!', lines:['Time: ' + total.toFixed(1) + 's',
+      'Gates: ' + n + '/6' + (ski.pen ? '  (miss +' + ski.pen + 's)' : ''),
+      'Best: ' + (store.get('tbb-best-ski', 0) ? store.get('tbb-best-ski', 0).toFixed(1) + 's' : '\u2014')],
+      cta:'\u2014 tap to continue \u2014', next:() => { mode = 'menu'; } };
+  }
+}
+function drawJetSki(b) {
+  ctx.save(); ctx.translate(b.x, b.y + Math.sin(waveT*4)*1.5); ctx.rotate(b.a + Math.PI/2);
+  ctx.fillStyle = 'rgba(0,0,0,.28)';
+  ctx.beginPath(); ctx.ellipse(0, 2, 13, 26, 0, 0, 7); ctx.fill();
+  const g = ctx.createLinearGradient(-11, 0, 11, 0);
+  g.addColorStop(0, '#1f6f8b'); g.addColorStop(.5, '#46bcd9'); g.addColorStop(1, '#1f6f8b');
+  ctx.fillStyle = g;
+  ctx.beginPath(); ctx.moveTo(0, -25);
+  ctx.quadraticCurveTo(11, -10, 10, 14); ctx.quadraticCurveTo(9, 25, 0, 25);
+  ctx.quadraticCurveTo(-9, 25, -10, 14); ctx.quadraticCurveTo(-11, -10, 0, -25); ctx.fill();
+  ctx.strokeStyle = 'rgba(255,255,255,.5)'; ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.moveTo(0, -20); ctx.lineTo(0, 18); ctx.stroke();
+  ctx.fillStyle = '#12303f'; rr(-6, 0, 12, 16, 4); ctx.fill();
+  ctx.fillStyle = '#e8a33d'; ctx.beginPath(); ctx.arc(0, -9, 6, 0, 7); ctx.fill();
+  ctx.fillStyle = '#274b6b'; rr(-5, -5, 10, 8, 3); ctx.fill();
+  ctx.restore();
+}
+function skiDraw() {
+  drawWater();
+  distantBridge(); drawGulls();
+  // start + finish lines
+  ctx.fillStyle = 'rgba(255,255,255,.35)'; ctx.fillRect(60, 158, W - 120, 6);
+  ctx.fillStyle = '#cfe8ff'; ctx.font = 'bold 13px sans-serif'; ctx.textAlign = 'center';
+  ctx.fillText('START', W/2, 152);
+  for (let i = 0; i < 12; i++) {
+    ctx.fillStyle = i % 2 ? '#111' : '#fff';
+    ctx.fillRect(60 + i*((W-120)/12), 644, (W-120)/12, 8);
+  }
+  ctx.fillStyle = '#cfe8ff'; ctx.fillText('FINISH', W/2, 668);
+  for (const gt of ski.gates) {
+    const col = gt.st === 1 ? '#7dffaa' : gt.st === -1 ? '#e05555' : '#ffd76a';
+    for (const bx of [gt.x - gt.w/2, gt.x + gt.w/2]) drawBuoy(bx, gt.y, col);
+    ctx.strokeStyle = col; ctx.lineWidth = 3; ctx.setLineDash([8, 6]);
+    ctx.beginPath(); ctx.moveTo(gt.x - gt.w/2, gt.y); ctx.lineTo(gt.x + gt.w/2, gt.y); ctx.stroke();
+    ctx.setLineDash([]);
+  }
+  for (const w of ski.wake) {
+    ctx.fillStyle = 'rgba(220,240,255,' + (0.35*(1 - w.t/1.4)) + ')';
+    ctx.beginPath(); ctx.arc(w.x, w.y, 4 + w.t*9, 0, 7); ctx.fill();
+  }
+  drawJetSki(ski);
+  drawControls();
+  // HUD
+  const n = ski.gates.filter(g => g.st === 1).length;
+  ctx.fillStyle = 'rgba(4,14,26,.65)'; rr(10, 10, 190, 60, 10); ctx.fill();
+  ctx.fillStyle = '#ffd76a'; ctx.font = 'bold 17px sans-serif'; ctx.textAlign = 'left';
+  ctx.fillText((ski.t + ski.pen).toFixed(1) + 's', 22, 35);
+  ctx.fillStyle = '#cfe8ff'; ctx.font = '13px sans-serif';
+  ctx.fillText('Gates ' + n + '/6' + (ski.pen ? '  +' + ski.pen + 's pen' : ''), 22, 56);
+  vignette();
+}
+
+/* ---------- SAILING REGATTA ---------- */
+const sail = { x:240, y:610, a:-Math.PI/2, sp:0, wake:[], marks:[], mi:0, t:0, fin:0, windBase:-Math.PI/2, wind:0 };
+function sailStart() {
+  mode = 'sail';
+  sail.x = 240; sail.y = 610; sail.a = -Math.PI/2; sail.sp = 0; sail.wake = [];
+  sail.marks = [{ x:110, y:430 }, { x:370, y:310 }, { x:130, y:170 }];
+  sail.mi = 0; sail.t = 0; sail.fin = 0;
+  sail.windBase = -Math.PI/2 + (Math.random() - .5)*.6;
+  sail.wind = sail.windBase;
+}
+function sailPoint() { // target speed by point of sail
+  const off = Math.abs(angDiff(sail.a, sail.wind));
+  if (off < .56) return { v:0, irons:true };
+  if (off < 1.05) return { v:70, irons:false };
+  if (off < 2.10) return { v:150, irons:false };
+  return { v:112, irons:false };
+}
+function sailStep(dt) {
+  if (sail.fin) return;
+  sail.t += dt;
+  sail.wind = sail.windBase + Math.sin(waveT*.12)*.28;
+  const ctl = driveInput();
+  const turn = 2.5*dt*Math.min(1, Math.abs(sail.sp)/45 + .25);
+  if (ctl.left) sail.a -= turn;
+  if (ctl.right) sail.a += turn;
+  const pt = sailPoint();
+  sail.sp += clamp(pt.v - sail.sp, -70*dt, 60*dt);
+  sail.x += Math.cos(sail.a)*sail.sp*dt;
+  sail.y += Math.sin(sail.a)*sail.sp*dt;
+  sail.x = clamp(sail.x, 24, W - 24); sail.y = clamp(sail.y, 60, H - 60);
+  sail.wake.push({ x:sail.x, y:sail.y, t:0 });
+  if (sail.wake.length > 40) sail.wake.shift();
+  for (const w of sail.wake) w.t += dt;
+  if (sail.mi < 3) {
+    const m = sail.marks[sail.mi];
+    if (dist(sail.x, sail.y, m.x, m.y) < 44) { sail.mi++; sndGate(); }
+  } else if (sail.y > 624 && sail.x > 170 && sail.x < 310) {
+    sail.fin = 1;
+    const best = store.get('tbb-best-sail', 0);
+    if (!best || sail.t < best) store.set('tbb-best-sail', sail.t);
+    sndDock();
+    ovl = { title:'\u26F5 REGATTA DONE!', lines:['Time: ' + sail.t.toFixed(1) + 's',
+      'Best: ' + (store.get('tbb-best-sail', 0) ? store.get('tbb-best-sail', 0).toFixed(1) + 's' : '\u2014'), '',
+      'Tip: you can\u2019t sail straight into the wind \u2014 tack!'],
+      cta:'\u2014 tap to continue \u2014', next:() => { mode = 'menu'; } };
+  }
+}
+function drawSailboat(b) {
+  const heel = clamp(b.sp/150, 0, 1)*.18;
+  ctx.save(); ctx.translate(b.x, b.y + Math.sin(waveT*2)*2); ctx.rotate(b.a + Math.PI/2);
+  ctx.rotate(heel);
+  ctx.fillStyle = 'rgba(0,0,0,.25)';
+  ctx.beginPath(); ctx.ellipse(2, 2, 13, 27, 0, 0, 7); ctx.fill();
+  ctx.fillStyle = '#f2f5f8';
+  ctx.beginPath(); ctx.moveTo(0, -28);
+  ctx.quadraticCurveTo(12, -8, 10, 20); ctx.quadraticCurveTo(6, 28, 0, 28);
+  ctx.quadraticCurveTo(-6, 28, -10, 20); ctx.quadraticCurveTo(-12, -8, 0, -28); ctx.fill();
+  ctx.fillStyle = '#1f6f8b'; ctx.fillRect(-10, 6, 20, 5);
+  // mast + sails
+  ctx.strokeStyle = '#5a3d22'; ctx.lineWidth = 3;
+  ctx.beginPath(); ctx.moveTo(0, -24); ctx.lineTo(0, -58); ctx.stroke();
+  ctx.fillStyle = '#ffffff';
+  ctx.beginPath(); ctx.moveTo(0, -56); ctx.lineTo(0, -22); ctx.lineTo(24, -24); ctx.closePath(); ctx.fill();
+  ctx.fillStyle = '#8fd0f0';
+  ctx.beginPath(); ctx.moveTo(0, -50); ctx.lineTo(0, -44); ctx.lineTo(15, -44.5); ctx.closePath(); ctx.fill();
+  ctx.fillStyle = '#f4f7fa';
+  ctx.beginPath(); ctx.moveTo(0, -56); ctx.lineTo(0, -26); ctx.lineTo(-19, -28); ctx.closePath(); ctx.fill();
+  ctx.strokeStyle = 'rgba(20,40,60,.6)'; ctx.lineWidth = 1.5;
+  ctx.beginPath(); ctx.moveTo(0, -58); ctx.lineTo(24, -24); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(0, -58); ctx.lineTo(-19, -28); ctx.stroke();
+  ctx.restore();
+}
+function sailDraw() {
+  drawWater();
+  distantBridge(); drawGulls();
+  // marks
+  sail.marks.forEach((m, i) => {
+    const done = i < sail.mi, next = i === sail.mi;
+    drawBuoy(m.x, m.y, done ? '#7dffaa' : next ? '#ffd76a' : '#e07a3f');
+    if (next) {
+      ctx.strokeStyle = 'rgba(255,215,106,' + (0.5 + 0.5*Math.sin(waveT*5)) + ')';
+      ctx.lineWidth = 3;
+      ctx.beginPath(); ctx.arc(m.x, m.y, 30, 0, 7); ctx.stroke();
+    }
+    ctx.fillStyle = '#fff'; ctx.font = 'bold 14px sans-serif'; ctx.textAlign = 'center';
+    ctx.fillText(String(i + 1), m.x, m.y - 22);
+  });
+  // start/finish line
+  for (let i = 0; i < 8; i++) {
+    ctx.fillStyle = i % 2 ? '#111' : '#fff';
+    ctx.fillRect(170 + i*((140)/8), 628, 140/8, 8);
+  }
+  ctx.fillStyle = '#cfe8ff'; ctx.font = 'bold 12px sans-serif'; ctx.textAlign = 'center';
+  ctx.fillText('START / FINISH', 240, 622);
+  for (const w of sail.wake) {
+    ctx.fillStyle = 'rgba(220,240,255,' + (0.3*(1 - w.t/1.4)) + ')';
+    ctx.beginPath(); ctx.arc(w.x, w.y, 3 + w.t*7, 0, 7); ctx.fill();
+  }
+  drawSailboat(sail);
+  drawSteerOnly();
+  // wind indicator
+  ctx.fillStyle = 'rgba(4,14,26,.65)'; rr(10, 10, 150, 64, 10); ctx.fill();
+  ctx.save(); ctx.translate(38, 42); ctx.rotate(sail.wind + Math.PI);
+  ctx.fillStyle = '#8fd0f0';
+  ctx.beginPath(); ctx.moveTo(0, -12); ctx.lineTo(8, 6); ctx.lineTo(0, 2); ctx.lineTo(-8, 6); ctx.closePath(); ctx.fill();
+  ctx.restore();
+  ctx.fillStyle = '#cfe8ff'; ctx.font = 'bold 12px sans-serif'; ctx.textAlign = 'left';
+  ctx.fillText('WIND', 58, 38);
+  ctx.font = '12px sans-serif';
+  const pt = sailPoint();
+  ctx.fillStyle = pt.irons ? '#e05555' : '#7dffaa';
+  ctx.fillText(pt.irons ? 'IN IRONS! TURN!' : Math.round(sail.sp) + ' kn', 58, 56);
+  ctx.fillStyle = 'rgba(4,14,26,.65)'; rr(W-150, 10, 140, 64, 10); ctx.fill();
+  ctx.fillStyle = '#ffd76a'; ctx.font = 'bold 17px sans-serif'; ctx.textAlign = 'right';
+  ctx.fillText(sail.t.toFixed(1) + 's', W-22, 36);
+  ctx.fillStyle = '#cfe8ff'; ctx.font = '13px sans-serif';
+  ctx.fillText('Mark ' + Math.min(3, sail.mi + 1) + '/3', W-22, 57);
+  vignette();
+}
+
+/* ---------- FILLET THE CATCH ---------- */
+const FCOL = { 'Redfish':'#b5713d', 'Spotted Seatrout':'#7d8fa0', 'Snook':'#6f8261',
+  'Tarpon':'#a9b7c4', 'Sheepshead':'#5d6b76', 'Mangrove Snapper':'#7a6a5a',
+  'Flounder':'#8a7a5c', 'King Mackerel':'#5f7d8c', 'Spanish Mackerel':'#6f8d9c' };
+const fil = { t:60, score:0, fish:null, path:[], prog:0, accSum:0, accN:0,
+  done:false, trail:[], grade:'', gradeT:0 };
+function filletStart() {
+  mode = 'fillet';
+  fil.t = 60; fil.score = 0; fil.done = false; fil.grade = '';
+  newFilletFish();
+}
+function newFilletFish() {
+  const pool = FSPECIES.filter(inSeasonNow);
+  const list = pool.length ? pool : FSPECIES;
+  const sp = list[Math.floor(Math.random()*list.length)];
+  const len = Math.round(sp.min + Math.random()*(sp.max - sp.min));
+  fil.fish = { sp, len };
+  fil.path = [];
+  for (let i = 0; i <= 44; i++) {
+    const px = 150 + i*(280/44);
+    const dx = (px - 240)/150;
+    const topY = 400 - 42*Math.sqrt(Math.max(0, 1 - dx*dx));
+    fil.path.push({ x:px, y:topY + 10 });
+  }
+  fil.prog = 0; fil.accSum = 0; fil.accN = 0; fil.trail = [];
+}
+function filletGrade(a) {
+  if (a >= 88) return 'SASHIMI!';
+  if (a >= 72) return 'Clean fillet';
+  if (a >= 55) return 'A bit ragged';
+  return 'Butchered!';
+}
+function filletStep(dt) {
+  if (fil.done) return;
+  fil.t -= dt;
+  let px = null, py = null;
+  pointers.forEach(p => { px = p.x; py = p.y; });
+  if (px !== null && fil.prog < fil.path.length - 1) {
+    const ahead = Math.min(fil.prog + 3, fil.path.length - 1);
+    if (Math.hypot(px - fil.path[ahead].x, py - fil.path[ahead].y) < 70) {
+      let best = fil.prog, bd = 1e9;
+      const lim = Math.min(fil.prog + 9, fil.path.length);
+      for (let i = fil.prog; i < lim; i++) {
+        const dd = Math.hypot(px - fil.path[i].x, py - fil.path[i].y);
+        if (dd < bd) { bd = dd; best = i; }
+      }
+      if (best > fil.prog) {
+        fil.prog = best;
+        fil.accSum += Math.max(0, 100 - bd*1.7);
+        fil.accN++;
+        fil.trail.push({ x:px, y:py });
+        if (fil.trail.length > 60) fil.trail.shift();
+      }
+    }
+  }
+  if (fil.prog >= fil.path.length - 1) {
+    const acc = fil.accN ? fil.accSum/fil.accN : 0;
+    const pts = Math.round(fil.fish.len*2*(0.35 + 0.65*acc/100));
+    fil.score += pts;
+    fil.grade = filletGrade(acc) + '  +' + pts;
+    fil.gradeT = performance.now();
+    sndGate();
+    newFilletFish();
+  }
+  if (fil.t <= 0) {
+    fil.t = 0; fil.done = true;
+    const best = store.get('tbb-best-fillet', 0);
+    if (fil.score > best) store.set('tbb-best-fillet', fil.score);
+    sndDock();
+    ovl = { title:'\uD83D\uDD2A FILLET BOARD', lines:['Score: ' + fil.score + ' pts',
+      'Best: ' + store.get('tbb-best-fillet', 0) + ' pts', '',
+      'Only in-season Tampa Bay fish', 'make the board.'],
+      cta:'\u2014 tap to continue \u2014', next:() => { mode = 'menu'; } };
+  }
+}
+function drawFilletFish() {
+  const col = FCOL[fil.fish.sp.n] || '#7d8fa0';
+  // tail
+  ctx.fillStyle = col;
+  ctx.beginPath(); ctx.moveTo(386, 400); ctx.lineTo(424, 372); ctx.lineTo(424, 428); ctx.closePath(); ctx.fill();
+  // body
+  ctx.beginPath(); ctx.ellipse(240, 400, 150, 42, 0, 0, 7); ctx.fill();
+  ctx.fillStyle = 'rgba(255,255,255,.25)';
+  ctx.beginPath(); ctx.ellipse(240, 386, 130, 20, 0, Math.PI, 0); ctx.fill();
+  // dorsal fin
+  ctx.fillStyle = col;
+  ctx.beginPath(); ctx.moveTo(200, 362); ctx.lineTo(280, 362); ctx.lineTo(240, 344); ctx.closePath(); ctx.fill();
+  // gill + eye
+  ctx.strokeStyle = 'rgba(20,30,40,.6)'; ctx.lineWidth = 3;
+  ctx.beginPath(); ctx.arc(148, 400, 16, -1.1, 1.1); ctx.stroke();
+  ctx.fillStyle = '#16222e'; ctx.beginPath(); ctx.arc(118, 392, 5, 0, 7); ctx.fill();
+  ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(119.5, 390.5, 1.8, 0, 7); ctx.fill();
+  // spots for seatrout
+  if (fil.fish.sp.n === 'Spotted Seatrout') {
+    ctx.fillStyle = 'rgba(20,30,40,.5)';
+    for (const s of [[200,380],[230,392],[260,378],[290,390],[320,382],[180,392]])
+      { ctx.beginPath(); ctx.arc(s[0], s[1], 4, 0, 7); ctx.fill(); }
+  }
+}
+function filletDraw() {
+  drawWater();
+  distantBridge(); drawGulls();
+  // cutting board
+  ctx.fillStyle = '#8a5a33'; rr(36, 296, 408, 220, 12); ctx.fill();
+  ctx.strokeStyle = '#5e3c20'; ctx.lineWidth = 3; rr(36, 296, 408, 220, 12); ctx.stroke();
+  ctx.strokeStyle = 'rgba(94,60,32,.5)'; ctx.lineWidth = 1.5;
+  for (let i = 0; i < 4; i++) {
+    ctx.beginPath(); ctx.moveTo(48, 340 + i*36); ctx.lineTo(432, 332 + i*38); ctx.stroke();
+  }
+  drawFilletFish();
+  // remaining guide (dashed)
+  ctx.strokeStyle = 'rgba(255,255,255,.75)'; ctx.lineWidth = 2.5; ctx.setLineDash([7, 6]);
+  ctx.beginPath();
+  for (let i = fil.prog; i < fil.path.length; i++) {
+    const p = fil.path[i];
+    if (i === fil.prog) ctx.moveTo(p.x, p.y); else ctx.lineTo(p.x, p.y);
+  }
+  ctx.stroke(); ctx.setLineDash([]);
+  // player's cut
+  if (fil.trail.length > 1) {
+    ctx.strokeStyle = '#e05555'; ctx.lineWidth = 4; ctx.lineCap = 'round';
+    ctx.beginPath();
+    fil.trail.forEach((p, i) => { if (i) ctx.lineTo(p.x, p.y); else ctx.moveTo(p.x, p.y); });
+    ctx.stroke(); ctx.lineCap = 'butt';
+  }
+  // start marker
+  const s0 = fil.path[0];
+  ctx.fillStyle = 'rgba(125,255,170,' + (0.6 + 0.4*Math.sin(waveT*6)) + ')';
+  ctx.beginPath(); ctx.arc(s0.x, s0.y, 10, 0, 7); ctx.fill();
+  ctx.fillStyle = '#0a2540'; ctx.font = 'bold 11px sans-serif'; ctx.textAlign = 'center';
+  ctx.fillText('CUT', 240, 560);
+  // knife follows finger
+  let kx = null, ky = null;
+  pointers.forEach(p => { kx = p.x; ky = p.y; });
+  if (kx !== null) { ctx.font = '34px sans-serif'; ctx.fillText('\uD83D\uDD2A', kx, ky - 14); }
+  // grade flash
+  if (fil.grade && performance.now() - fil.gradeT < 1600) {
+    ctx.fillStyle = '#ffd76a'; ctx.font = 'bold 26px sans-serif'; ctx.textAlign = 'center';
+    ctx.fillText(fil.grade, 240, 250);
+  }
+  ctx.fillStyle = '#cfe8ff'; ctx.font = 'bold 14px sans-serif'; ctx.textAlign = 'center';
+  ctx.fillText('Drag along the dashed line \u2014 gill to tail', 240, 620);
+  // HUD
+  ctx.fillStyle = 'rgba(4,14,26,.65)'; rr(10, 10, 210, 64, 10); ctx.fill();
+  ctx.fillStyle = '#ffd76a'; ctx.font = 'bold 16px sans-serif'; ctx.textAlign = 'left';
+  ctx.fillText(fil.score + ' pts', 22, 35);
+  ctx.fillStyle = '#cfe8ff'; ctx.font = '13px sans-serif';
+  ctx.fillText(fil.fish.len + '" ' + fil.fish.sp.n, 22, 56);
+  const tw = 150*Math.max(0, fil.t)/60;
+  ctx.fillStyle = 'rgba(4,14,26,.65)'; rr(W-172, 18, 160, 16, 8); ctx.fill();
+  ctx.fillStyle = fil.t < 10 ? '#e05555' : '#55b5e0';
+  if (tw > 4) { rr(W-168, 21, tw-8, 10, 5); ctx.fill(); }
+  vignette();
+}
+
+/* ---------- TRAILER BACKUP ---------- */
+const TRL_LVLS = [
+  { name:'Straight down the ramp', sx:240, sy:560, sa:Math.PI/2,
+    zone:{ x:180, y:120, w:120, h:84 }, cones:[], water:true,
+    hint:'Reverse straight \u2014 back the boat to the water' },
+  { name:'The angled slip', sx:350, sy:570, sa:Math.PI/2,
+    zone:{ x:56, y:230, w:116, h:84 }, cones:[{x:220,y:400},{x:220,y:480}], water:false,
+    hint:'Back LEFT: steer RIGHT' },
+  { name:'Tight marina lot', sx:110, sy:580, sa:Math.PI/2,
+    zone:{ x:308, y:230, w:100, h:76 },
+    cones:[{x:200,y:330},{x:280,y:330},{x:200,y:500},{x:280,y:500}], water:false,
+    hint:'Thread the cones \u2014 +5s per hit' }
+];
+const trl = { lvl:0, x:240, y:560, a:-Math.PI/2, sp:0, ra:0, bx:0, by:0,
+  t:0, pen:0, total:0, done:false, conesHit:{} };
+function trailerStart() {
+  mode = 'trailer';
+  trl.lvl = 0; trl.total = 0; trl.done = false;
+  trailerLoadLvl();
+}
+function trailerLoadLvl() {
+  const L = TRL_LVLS[trl.lvl];
+  trl.x = L.sx; trl.y = L.sy; trl.a = L.sa; trl.sp = 0; trl.ra = 0;
+  trl.t = 0; trl.pen = 0; trl.conesHit = {};
+}
+function trailerStep(dt) {
+  if (trl.done) return;
+  trl.t += dt;
+  const ctl = driveInput();
+  driveBoat(trl, dt, ctl, 150, 110);
+  trl.x = clamp(trl.x, 40, W - 40); trl.y = clamp(trl.y, 120, H - 40);
+  const steer = (ctl.left ? -1 : 0) + (ctl.right ? 1 : 0);
+  if (trl.sp < -1) {
+    // reversing: trailer swings opposite the wheel \u2014 the hard part
+    trl.ra += -steer * Math.min(1, -trl.sp/90) * 1.9 * dt;
+  } else if (trl.sp > 1) {
+    trl.ra += (0 - trl.ra) * Math.min(1, 2.4*dt);
+  }
+  trl.ra = clamp(trl.ra, -1.2, 1.2);
+  const tA = trl.a + trl.ra, HL = 78;
+  const hx = trl.x - Math.cos(trl.a)*36, hy = trl.y - Math.sin(trl.a)*36;
+  trl.bx = hx - Math.cos(tA)*HL; trl.by = hy - Math.sin(tA)*HL;
+  const L = TRL_LVLS[trl.lvl];
+  for (let i = 0; i < L.cones.length; i++) {
+    if (trl.conesHit[i]) continue;
+    const c = L.cones[i];
+    if (dist(trl.x, trl.y, c.x, c.y) < 30 || dist(trl.bx, trl.by, c.x, c.y) < 30) {
+      trl.conesHit[i] = 1; trl.pen += 5; sndHit();
+    }
+  }
+  const z = L.zone;
+  const inZ = trl.bx > z.x && trl.bx < z.x + z.w && trl.by > z.y && trl.by < z.y + z.h;
+  if (inZ && Math.abs(trl.ra) < 0.4 && Math.abs(trl.sp) < 12) {
+    const lvlTime = trl.t + trl.pen;
+    trl.total += lvlTime;
+    sndDock();
+    if (trl.lvl < 2) {
+      ovl = { title:'\u2705 NAILED IT!', lines:[TRL_LVLS[trl.lvl].name,
+        'Time: ' + lvlTime.toFixed(1) + 's' + (trl.pen ? ' (incl +' + trl.pen + 's cones)' : '')],
+        cta:'\u2014 tap for next level \u2014',
+        next:() => { trl.lvl++; trailerLoadLvl(); } };
+    } else {
+      trl.done = true;
+      const best = store.get('tbb-best-trailer', 0);
+      if (!best || trl.total < best) store.set('tbb-best-trailer', trl.total);
+      ovl = { title:'\uD83C\uDFC1 RAMP MASTER!', lines:['Total: ' + trl.total.toFixed(1) + 's',
+        'Best: ' + (store.get('tbb-best-trailer', 0) ? store.get('tbb-best-trailer', 0).toFixed(1) + 's' : '\u2014')],
+        cta:'\u2014 tap to continue \u2014', next:() => { mode = 'menu'; } };
+    }
+  }
+}
+function drawTruckTrailer() {
+  // trailer + boat first (behind truck)
+  const tA = trl.a + trl.ra, HL = 78;
+  const hx = trl.x - Math.cos(trl.a)*36, hy = trl.y - Math.sin(trl.a)*36;
+  const bx = hx - Math.cos(tA)*HL, by = hy - Math.sin(tA)*HL;
+  ctx.save(); ctx.translate(bx, by); ctx.rotate(tA + Math.PI/2);
+  ctx.fillStyle = 'rgba(0,0,0,.25)'; rr(-13, -34, 26, 68, 8); ctx.fill();
+  ctx.fillStyle = '#3a4a5a'; rr(-11, -32, 22, 64, 6); ctx.fill();
+  ctx.fillStyle = '#222'; ctx.beginPath(); ctx.arc(-9, 18, 7, 0, 7); ctx.fill();
+  ctx.beginPath(); ctx.arc(9, 18, 7, 0, 7); ctx.fill();
+  // boat on trailer
+  ctx.fillStyle = '#e8eef4';
+  ctx.beginPath(); ctx.moveTo(0, -30); ctx.quadraticCurveTo(10, -10, 9, 16);
+  ctx.quadraticCurveTo(8, 28, 0, 28); ctx.quadraticCurveTo(-8, 28, -9, 16);
+  ctx.quadraticCurveTo(-10, -10, 0, -30); ctx.fill();
+  ctx.fillStyle = '#1f6f8b'; rr(-6, -14, 12, 20, 4); ctx.fill();
+  ctx.restore();
+  // tongue
+  ctx.strokeStyle = '#3a4a5a'; ctx.lineWidth = 5;
+  ctx.beginPath(); ctx.moveTo(hx, hy); ctx.lineTo(bx, by); ctx.stroke();
+  // truck
+  ctx.save(); ctx.translate(trl.x, trl.y); ctx.rotate(trl.a + Math.PI/2);
+  ctx.fillStyle = 'rgba(0,0,0,.28)'; rr(-17, -40, 34, 80, 10); ctx.fill();
+  ctx.fillStyle = '#c0392b'; rr(-15, -38, 30, 76, 8); ctx.fill();
+  ctx.fillStyle = '#a93226'; rr(-15, 8, 30, 30, 8); ctx.fill();
+  ctx.fillStyle = '#9fd4ef'; rr(-11, -30, 22, 14, 4); ctx.fill();
+  ctx.fillStyle = '#222';
+  ctx.beginPath(); ctx.arc(-13, -18, 7, 0, 7); ctx.fill();
+  ctx.beginPath(); ctx.arc(13, -18, 7, 0, 7); ctx.fill();
+  ctx.beginPath(); ctx.arc(-13, 22, 7, 0, 7); ctx.fill();
+  ctx.beginPath(); ctx.arc(13, 22, 7, 0, 7); ctx.fill();
+  ctx.restore();
+}
+function trailerDraw() {
+  const L = TRL_LVLS[trl.lvl];
+  // lot
+  ctx.fillStyle = '#3d4148'; ctx.fillRect(0, 0, W, H);
+  ctx.strokeStyle = 'rgba(255,255,255,.14)'; ctx.lineWidth = 2;
+  for (let y = 200; y < H; y += 90) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke(); }
+  if (L.water) {
+    const g = ctx.createLinearGradient(0, 0, 0, 96);
+    g.addColorStop(0, '#0e2f52'); g.addColorStop(1, '#11416e');
+    ctx.fillStyle = g; ctx.fillRect(0, 0, W, 96);
+    ctx.fillStyle = '#8a6a42'; ctx.fillRect(0, 92, W, 10);
+  }
+  drawGulls();
+  // target zone
+  const z = L.zone;
+  const pulse = 0.55 + 0.35*Math.sin(waveT*4);
+  ctx.strokeStyle = 'rgba(125,255,170,' + pulse + ')'; ctx.lineWidth = 4;
+  ctx.setLineDash([12, 8]);
+  rr(z.x, z.y, z.w, z.h, 8); ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.fillStyle = 'rgba(125,255,170,.12)'; rr(z.x, z.y, z.w, z.h, 8); ctx.fill();
+  ctx.fillStyle = '#7dffaa'; ctx.font = 'bold 13px sans-serif'; ctx.textAlign = 'center';
+  ctx.fillText('BACK TRAILER HERE', z.x + z.w/2, z.y - 10);
+  // cones
+  L.cones.forEach((c, i) => {
+    ctx.save(); ctx.translate(c.x, c.y);
+    if (trl.conesHit[i]) ctx.rotate(1.2);
+    ctx.fillStyle = trl.conesHit[i] ? '#7a3a20' : '#e07a2f';
+    ctx.beginPath(); ctx.moveTo(0, -14); ctx.lineTo(10, 10); ctx.lineTo(-10, 10); ctx.closePath(); ctx.fill();
+    ctx.fillStyle = '#fff'; ctx.fillRect(-7, -2, 14, 5);
+    ctx.restore();
+  });
+  drawTruckTrailer();
+  if (Math.abs(trl.ra) > 1.0) {
+    ctx.fillStyle = '#e05555'; ctx.font = 'bold 22px sans-serif'; ctx.textAlign = 'center';
+    ctx.fillText('JACKKNIFE!', W/2, 220);
+  }
+  drawControls();
+  // HUD
+  ctx.fillStyle = 'rgba(4,14,26,.65)'; rr(10, 10, 250, 64, 10); ctx.fill();
+  ctx.fillStyle = '#ffd76a'; ctx.font = 'bold 16px sans-serif'; ctx.textAlign = 'left';
+  ctx.fillText((trl.t + trl.pen).toFixed(1) + 's', 22, 35);
+  ctx.fillStyle = '#cfe8ff'; ctx.font = '12px sans-serif';
+  ctx.fillText('Level ' + (trl.lvl + 1) + '/3 \u2014 ' + L.name, 22, 56);
+  ctx.fillStyle = '#9fc3e0'; ctx.font = 'bold 13px sans-serif'; ctx.textAlign = 'center';
+  ctx.fillText(L.hint, W/2, 690);
+  vignette();
+}
+
 /* ---------- tap routing / main loop ---------- */
 function uiTap(p) {
   if (ovl) { const n = ovl.next; ovl = null; if (n) n(); return; }
@@ -903,6 +1529,10 @@ function step(dt) {
   else if (mode === 'race') raceStep(dt);
   else if (mode === 'fish') fishStep(dt);
   else if (mode === 'shrimp') shrimpStep(dt);
+  else if (mode === 'ski') skiStep(dt);
+  else if (mode === 'sail') sailStep(dt);
+  else if (mode === 'fillet') filletStep(dt);
+  else if (mode === 'trailer') trailerStep(dt);
 }
 function draw() {
   uiButtons = [];
@@ -912,6 +1542,10 @@ function draw() {
   else if (mode === 'race') raceDraw();
   else if (mode === 'fish') fishDraw();
   else if (mode === 'shrimp') shrimpDraw();
+  else if (mode === 'ski') skiDraw();
+  else if (mode === 'sail') sailDraw();
+  else if (mode === 'fillet') filletDraw();
+  else if (mode === 'trailer') trailerDraw();
   ctx.restore();
   if (ovl) { uiButtons = []; overlay(ovl.title, ovl.lines, ovl.cta); }
 }

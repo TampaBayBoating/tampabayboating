@@ -2414,12 +2414,12 @@ window.tbbMapInit=(function(){
   const el = document.getElementById('bay-leaflet-map');
   if(!el || typeof L === 'undefined') return;
   const map = window.tbbMap = L.map('bay-leaflet-map').setView([27.85, -82.55], 10);
-  const chartBase = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Ocean/World_Ocean_Base/MapServer/tile/{z}/{y}/{x}', {maxZoom: 18, attribution: 'Esri, GEBCO, NOAA, NGS, OSU'}).addTo(map);
+  const chartBase = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Ocean/World_Ocean_Base/MapServer/tile/{z}/{y}/{x}', {maxZoom: 18, attribution: 'Esri, GEBCO, NOAA, NGS, OSU'});
   const streetBase = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom: 18, attribution: '&copy; OpenStreetMap contributors'});
   const seamarks = L.tileLayer('https://tiles.openseamap.org/seamark/{z}/{x}/{y}.png', {maxZoom: 18, attribution: 'Seamarks &copy; <a href="https://www.openseamap.org">OpenSeaMap</a> contributors'});
   /* NOAA official ENC rendering (every channel marker, buoy, beacon) via Coast Survey export service */
   function noaaTileUrl(c){var n=Math.pow(2,c.z);var w=c.x/n*360-180,e=(c.x+1)/n*360-180;var t=Math.PI*(1-2*c.y/n),b=Math.PI*(1-2*(c.y+1)/n);var nn=Math.atan(Math.sinh(t))*180/Math.PI,ss=Math.atan(Math.sinh(b))*180/Math.PI;return 'https://encdirect.noaa.gov/arcgis/rest/services/encdirect/enc_harbour/MapServer/export?bbox='+w+','+ss+','+e+','+nn+'&bboxSR=4326&imageSR=3857&size=256,256&format=png32&transparent=false&f=image';}
-  const noaaChart = L.tileLayer('', {maxZoom: 18, attribution: 'NOAA Office of Coast Survey'});
+  const noaaChart = L.tileLayer('', {maxZoom: 18, attribution: 'NOAA Office of Coast Survey'}).addTo(map);
   noaaChart.getTileUrl = function(c){ return noaaTileUrl(c); };
   L.control.layers({'🗺️ Navigation chart': chartBase, '🛣️ Street map': streetBase, '⚓ NOAA chart (all markers)': noaaChart}, {}, {collapsed: true}).addTo(map);
   const layer = L.layerGroup().addTo(map);

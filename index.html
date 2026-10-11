@@ -2518,6 +2518,8 @@ function renderParts(){
 renderParts();
 </script>
 <script>
+/* Global HTML-escape helper (used by directory renderers below) */
+function esc(t){return String(t==null?"":t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 /* ================= PRODUCTS ================= */
 const PRODUCTS = [
  {id:1, name:"Vintage Bay Badge Tee", cat:"T-Shirts", price:27.99, img:"assets/tbb-mock-badge-tee.webp", desc:"The original badge — anchor, rod, and Tampa Bay pride on a soft everyday tee.", colors:[{n:"White",i:"assets/tbb-mock-badge-tee.webp",c:"#f5f5f5"},{n:"Navy",i:"assets/tbb-mock-badge-tee-navy.webp",c:"#1b2a4a"}]},

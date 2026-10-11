@@ -380,7 +380,7 @@ body.dark .photo-card .pc-body i{color:#8fa8bd}
 .cat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
 .cat-card{background:#dbe9f4;border:1px solid #b8d4e8;padding:24px 14px;text-align:center;text-decoration:none;color:#0a2540;transition:.2s;clip-path:polygon(0 0,calc(100% - 14px) 0,100% 14px,100% 100%,14px 100%,0 calc(100% - 14px))}
 .cat-card:hover{border-color:#8fd0f0;transform:translateY(-3px)}
-.cat-card .c-ico{font-size:2rem;display:block;margin-bottom:8px}
+.cat-card .c-ico{display:block;margin-bottom:8px;line-height:0}.cat-card .c-ico .tic{width:36px;height:36px;color:#0b3d62}.ad-card-ico .tic{width:28px;height:28px;color:#fff}
 .cat-card b{display:block;font-size:1rem;letter-spacing:1.5px;text-transform:uppercase;font-weight:800}
 .cat-card i{display:block;font-style:normal;font-size:.78rem;color:#4a6a8a;margin-top:4px}
 .nb-steps{display:grid;gap:12px;max-width:860px;margin:22px auto 0;padding:0 20px}
@@ -926,6 +926,19 @@ body.dark body.dark /* ---- Tampa Bay Boating Shop ---- */
 <symbol id="i-wrench" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.106-3.105c.32-.322.863-.22.983.218a6 6 0 0 1-8.259 7.057l-7.91 7.91a1 1 0 0 1-2.999-3l7.91-7.91a6 6 0 0 1 7.057-8.259c.438.12.54.662.219.984z" /></symbol>
 <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.801 10A10 10 0 1 1 17 3.335" />
   <path d="m9 11 3 3L22 4" /></symbol>
+<symbol id="i-globe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10" />
+  <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20" />
+  <path d="M2 12h20" /></symbol>
+<symbol id="i-gamepad" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" x2="10" y1="11" y2="11" />
+  <line x1="8" x2="8" y1="9" y2="13" />
+  <line x1="15" x2="15.01" y1="12" y2="12" />
+  <line x1="18" x2="18.01" y1="10" y2="10" />
+  <path d="M17.32 5H6.68a4 4 0 0 0-3.978 3.59c-.006.052-.01.101-.017.152C2.604 9.416 2 14.456 2 16a3 3 0 0 0 3 3c1 0 1.5-.5 2-1l1.414-1.414A2 2 0 0 1 9.828 16h4.344a2 2 0 0 1 1.414.586L17 18c.5.5 1 1 2 1a3 3 0 0 0 3-3c0-1.545-.604-6.584-.685-7.258-.007-.05-.011-.1-.017-.151A4 4 0 0 0 17.32 5z" /></symbol>
+<symbol id="i-doc" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z" />
+  <path d="M14 2v4a2 2 0 0 0 2 2h4" />
+  <path d="M10 9H8" />
+  <path d="M16 13H8" />
+  <path d="M16 17H8" /></symbol>
 </svg>
 <header class="tbb-topbar" id="top">
   <div class="tb-row">
@@ -937,7 +950,7 @@ body.dark body.dark /* ---- Tampa Bay Boating Shop ---- */
     
     <a class="tb-wx" href="#/tides" aria-label="Tides and forecast" title="Tides &amp; forecast"><svg viewBox="0 0 24 24"><circle cx="8.5" cy="7.5" r="2.4"/><path d="M10.9 7.5h.01"/><path d="M17.5 18.5a4.5 4.5 0 0 0 .42-8.98 6 6 0 0 0-11.7 1.62A4 4 0 0 0 7 18.5h10.5z"/><path d="M4 21.5c1.5 1.2 3.5 1.2 5 0s3.5-1.2 5 0 3.5 1.2 5 0"/></svg></a>
     <button class="tb-search" id="search-btn" aria-label="Search the site" title="Search"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg></button>
-    <button class="tb-lang" id="lang-btn" aria-label="Translate this page" title="Translate">&#127760; Language</button>
+    <button class="tb-lang" id="lang-btn" aria-label="Translate this page" title="Translate"><svg class=ic aria-hidden=true><use href=#i-globe></use></svg> Language</button>
   </div>
   <div class="tb-search-panel" id="search-panel">
     <div class="tb-search-box"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg><input id="site-search" type="search" placeholder="Search pages, places, ramps..." aria-label="Search the site" autocomplete="off"></div>
@@ -997,11 +1010,11 @@ input.addEventListener('input',function(){
   if(q.length<2){results.innerHTML='';return;}
   var html='';
   PAGES.filter(function(p){return (p[1]+' '+p[2]).toLowerCase().indexOf(q)>=0;}).slice(0,5).forEach(function(p){
-    html+='<a class="tb-sr-item" href="#/'+p[0]+'" data-close="1"><span>&#128196;</span><span>'+esc(p[1])+'<small>Page</small></span></a>';});
+    html+='<a class="tb-sr-item" href="#/'+p[0]+'" data-close="1"><span><svg class=ic aria-hidden=true><use href=#i-doc></use></svg></span><span>'+esc(p[1])+'<small>Page</small></span></a>';});
   var pins=(typeof MAP_PINS!=='undefined'?MAP_PINS:[]).filter(function(p){return (p[0]+' '+(p[4]||'')+' '+(p[6]||'')).toLowerCase().indexOf(q)>=0;}).slice(0,6);
   pins.forEach(function(p){
     var label=PIN_LABEL[p[1]]||p[1];
-    html+='<button class="tb-sr-item" data-pin="'+esc(p[0])+'"><span>&#128205;</span><span>'+esc(p[0])+'<small>'+esc(label)+(p[4]?' \u00b7 '+esc(p[4]):'')+'</small></span></button>';});
+    html+='<button class="tb-sr-item" data-pin="'+esc(p[0])+'"><span><svg class=ic aria-hidden=true><use href=#i-pin></use></svg></span><span>'+esc(p[0])+'<small>'+esc(label)+(p[4]?' \u00b7 '+esc(p[4]):'')+'</small></span></button>';});
   if(!html){
     var mail='mailto:david@tampabayboating.com?subject='+encodeURIComponent('Site suggestion')+'&body='+encodeURIComponent('Please add this to the site: '+raw);
     html='<div class="tb-sr-none">No matches for &ldquo;'+esc(raw)+'&rdquo;.<br><a class="tb-sr-suggest" href="'+mail+'">Suggest it &rarr;</a></div>';}
@@ -1072,17 +1085,17 @@ results.addEventListener('click',function(e){
 <div class="cat-cards">
   <div class="tabs-label">Browse boating categories</div>
   <div class="cat-grid">
-    <a class="cat-card" href="#/newboater"><span class="c-ico">&#129517;</span><b>New to Boating?</b><i>Start here, no experience needed</i></a>
-    <a class="cat-card" href="#/plan"><span class="c-ico">&#128203;</span><b>Plan a Day</b><i>Weather, water &amp; places to go</i></a>
-    <a class="cat-card" href="#/local"><span class="c-ico">&#128205;</span><b>Find Local</b><i>Captains, fuel, service &amp; storage</i></a>
-    <a class="cat-card" href="#/smart"><span class="c-ico">&#128735;</span><b>Boating Basics</b><i>Safety, nav &amp; local know-how</i></a>
-    <a class="cat-card" href="#/shopc"><span class="c-ico">&#128717;</span><b>Shop &amp; Connect</b><i>Merch, boats &amp; community</i></a>
-    <a class="cat-card" href="game.html"><span class="c-ico">&#127918;</span><b>Got Time to Kill?</b><i>10 Tampa Bay boating games</i></a>
+    <a class="cat-card" href="#/newboater"><span class="c-ico"><svg class=tic aria-hidden=true><use href=#i-compass></use></svg></span><b>New to Boating?</b><i>Start here, no experience needed</i></a>
+    <a class="cat-card" href="#/plan"><span class="c-ico"><svg class=tic aria-hidden=true><use href=#i-clip></use></svg></span><b>Plan a Day</b><i>Weather, water &amp; places to go</i></a>
+    <a class="cat-card" href="#/local"><span class="c-ico"><svg class=tic aria-hidden=true><use href=#i-pin></use></svg></span><b>Find Local</b><i>Captains, fuel, service &amp; storage</i></a>
+    <a class="cat-card" href="#/smart"><span class="c-ico"><svg class=tic aria-hidden=true><use href=#i-lifebuoy></use></svg></span><b>Boating Basics</b><i>Safety, nav &amp; local know-how</i></a>
+    <a class="cat-card" href="#/shopc"><span class="c-ico"><svg class=tic aria-hidden=true><use href=#i-bag></use></svg></span><b>Shop &amp; Connect</b><i>Merch, boats &amp; community</i></a>
+    <a class="cat-card" href="game.html"><span class="c-ico"><svg class=tic aria-hidden=true><use href=#i-gamepad></use></svg></span><b>Got Time to Kill?</b><i>10 Tampa Bay boating games</i></a>
   </div>
 </div>
 <div class="ad-card">
   <div class="ad-card-inner">
-    <div class="ad-card-ico">&#127978;</div>
+    <div class="ad-card-ico"><svg class=tic aria-hidden=true><use href=#i-store></use></svg></div>
     <div>
       <div class="ad-card-eyebrow">Advertising placement available</div>
       <h3>Put your company in front of Tampa Bay boaters.</h3>
@@ -1497,20 +1510,20 @@ results.addEventListener('click',function(e){
       <div class="dir-card">
         <div class="city">Oct 10, 2026 &middot; ABC Action News</div><h4>One dead, five rescued after boat capsizes near Davis Islands</h4>
         <div class="type">Six people clinging to a buoy in Hillsborough Bay were spotted by Tampa Fire Rescue Saturday afternoon; Tampa Police air patrol dropped life preservers. FWC is investigating &mdash; a survivor said rough water swamped the boat within minutes.</div>
-        <div class="contact"><a href="https://www.tampabay28.com/news/region-tampa/one-person-is-dead-after-a-boating-accident-near-davis-islands">&#128279; Read the full story</a></div>
+        <div class="contact"><a href="https://www.tampabay28.com/news/region-tampa/one-person-is-dead-after-a-boating-accident-near-davis-islands"><svg class=ic aria-hidden=true><use href=#i-link></use></svg> Read the full story</a></div>
       </div>
       <div class="dir-card">
         <div class="city">Early Oct 2026 &middot; ABC Action News</div><h4>FWC investigating boat crash near Egmont Key that sent two to the hospital</h4>
         <div class="type">A boat with three aboard struck a buoy near Egmont Key and sank; Pinellas County deputies pulled the passengers from the water and two were taken to a hospital. FWC is investigating what caused the crash.</div>
-        <div class="contact"><a href="https://www.tampabay28.com/news/region-hillsborough/fwc-investigating-boat-crash-near-egmont-key-that-hospitalized-2-people">&#128279; Read the full story</a></div>
+        <div class="contact"><a href="https://www.tampabay28.com/news/region-hillsborough/fwc-investigating-boat-crash-near-egmont-key-that-hospitalized-2-people"><svg class=ic aria-hidden=true><use href=#i-link></use></svg> Read the full story</a></div>
       </div>
       <div class="dir-card">
         <div class="city">Oct 9, 2026 &middot; Florida Sportsman</div><h4>West Central forecast: snapper and grouper chewing offshore</h4>
         <div class="type">Long-range trips out of John&apos;s Pass are limiting out on red snapper and red grouper, with mangrove and yellowtail snapper mixed in; hogfish are running deeper in 40&ndash;80 feet and gag season reopened this month.</div>
-        <div class="contact"><a href="http://www.floridasportsman.com/editorial/forecasts-west-central/402040">&#128279; Read the full story</a></div>
+        <div class="contact"><a href="http://www.floridasportsman.com/editorial/forecasts-west-central/402040"><svg class=ic aria-hidden=true><use href=#i-link></use></svg> Read the full story</a></div>
       </div>
       <div class="dir-card">
-        <div class="city">Safety reminder</div><h4>&#129482; Rough water this week: check before you go</h4>
+        <div class="city">Safety reminder</div><h4><svg class=ic aria-hidden=true><use href=#i-ice></use></svg> Rough water this week: check before you go</h4>
         <div class="type">Two separate weekend incidents on Tampa Bay &mdash; a capsized boat off Davis Islands and a buoy strike near Egmont Key &mdash; are a stark reminder of this week&apos;s choppy conditions. Check <a href="#conditions">conditions</a> before you go, wear life jackets, and if the bay looks rough from the dock, sit it out.</div>
       </div>
     </div>

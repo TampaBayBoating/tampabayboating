@@ -70,22 +70,23 @@ addEventListener('keyup', e => {
   if (e.key === 'ArrowLeft' || e.key === 'a') keys.left = false;
   if (e.key === 'ArrowRight' || e.key === 'd') keys.right = false;
 });
-let touchL = false, touchR = false;
-function touchPos(e) {
+/* drag-to-steer: the boat follows your finger (or mouse) */
+let pointer = null;
+function toGame(e) {
   const r = canvas.getBoundingClientRect();
-  const t = e.touches[0] || e.changedTouches[0];
-  return { x:(t.clientX - r.left) / r.width * W, y:(t.clientY - r.top) / r.height * H };
+  return { x:(e.clientX - r.left) / r.width * W, y:(e.clientY - r.top) / r.height * H,
+           t: performance.now() };
 }
-canvas.addEventListener('touchstart', e => { e.preventDefault(); const p = touchPos(e);
-  if (p.x < W/2) touchL = true; else touchR = true; tap(); }, {passive:false});
-canvas.addEventListener('touchend', e => { e.preventDefault(); touchL = touchR = false; }, {passive:false});
-canvas.addEventListener('touchcancel', () => { touchL = touchR = false; });
-canvas.addEventListener('mousedown', e => {
-  const r = canvas.getBoundingClientRect();
-  const x = (e.clientX - r.left) / r.width * W;
-  if (x < W/2) touchL = true; else touchR = true; tap();
+canvas.addEventListener('pointerdown', e => {
+  e.preventDefault();
+  try { canvas.setPointerCapture(e.pointerId); } catch(err) {}
+  pointer = toGame(e);
+  tap();
 });
-addEventListener('mouseup', () => { touchL = touchR = false; });
+canvas.addEventListener('pointermove', e => { if (pointer) pointer = toGame(e); });
+const endPointer = () => { pointer = null; };
+canvas.addEventListener('pointerup', endPointer);
+canvas.addEventListener('pointercancel', endPointer);
 
 /* ---------- game state ---------- */
 let state = 'title';           // title | play | docked | over
@@ -152,11 +153,21 @@ const NOWAKE_Y = 250;       // no-wake zone boundary
 
 function step(dt) {
   waveT += dt;
-  const left = keys.left || touchL, right = keys.right || touchR;
-  const turn = 2.6 * dt;
-  if (left) boat.a -= turn;
-  if (right) boat.a += turn;
-  boat.a = Math.max(-Math.PI*0.92, Math.min(-Math.PI*0.08, boat.a)); // mostly forward
+  // steering: follow the pointer, or arrow keys
+  if (pointer) {
+    let des = Math.atan2(pointer.y - boat.y, pointer.x - boat.x);
+    des = Math.max(-Math.PI*0.92, Math.min(-Math.PI*0.08, des)); // keep heading forward
+    let d = des - boat.a;
+    while (d > Math.PI) d -= 2*Math.PI;
+    while (d < -Math.PI) d += 2*Math.PI;
+    const maxTurn = 3.6 * dt;
+    boat.a += Math.max(-maxTurn, Math.min(maxTurn, d));
+  } else {
+    const turn = 3.2 * dt;
+    if (keys.left) boat.a -= turn;
+    if (keys.right) boat.a += turn;
+    boat.a = Math.max(-Math.PI*0.92, Math.min(-Math.PI*0.08, boat.a));
+  }
 
   // speed: cruise, slower in no-wake zone
   const targetSp = boat.y < NOWAKE_Y ? 55 : 120;
@@ -359,8 +370,7 @@ function drawHUD() {
     ctx.fillStyle = 'rgba(207,232,255,.5)'; ctx.font = 'bold 15px sans-serif'; ctx.textAlign = 'center';
     const showHint = (performance.now() - startT) < 6000;
     if (showHint) {
-      ctx.fillText('◀ hold left side', W*0.25, H - 24);
-      ctx.fillText('hold right side ▶', W*0.75, H - 24);
+      ctx.fillText('drag to steer', W/2, H - 24);
     }
   }
 }
@@ -383,13 +393,21 @@ function draw() {
   drawWater();
   if (state !== 'title') {
     drawMarina(); drawGates(); drawBoats(); drawPlayer(); drawHUD();
+    // touch ripple: show where the boat is steering toward
+    if (state === 'play' && pointer) {
+      const age = (performance.now() - pointer.t) / 600;
+      ctx.strokeStyle = 'rgba(143,208,240,.75)'; ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.arc(pointer.x, pointer.y, 10 + age*22, 0, 7); ctx.stroke();
+      ctx.fillStyle = 'rgba(143,208,240,.9)';
+      ctx.beginPath(); ctx.arc(pointer.x, pointer.y, 4, 0, 7); ctx.fill();
+    }
   }
   ctx.restore();
 
   if (state === 'title') {
     drawMarina();
     overlay('DOCK IT!',
-      ['Got time to kill?', '', 'Steer your boat into the glowing slip.', 'Thread the buoys for bonus points.', 'Don\'t kiss the dock — 3 hits and', 'you\'re calling Sea Tow.'],
+      ['Got time to kill?', '', 'Drag to steer — the boat follows', 'your finger. Slide it into the glowing slip.', 'Thread the buoys for bonus points.', 'Don\'t kiss the dock — 3 hits and', 'you\'re calling Sea Tow.'],
       '— tap to cast off —');
     if (best > 0) { ctx.fillStyle = '#9fc3e0'; ctx.font = '15px sans-serif'; ctx.textAlign = 'center';
       ctx.fillText('Best: ' + best + ' pts', W/2, H/2 + 150); }

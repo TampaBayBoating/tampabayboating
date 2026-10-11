@@ -558,6 +558,7 @@ var PAGES=[
 ["safety","Safety Essentials","safety gear coast guard required"],
 ["maintenance","Boat Maintenance","maintenance upkeep engine flush service"],
 ["newboater","New to Boating?","beginner start learn first new"],
+["stay","Boat-Up Stays","hotel overnight dock sleep marina resort"],
 ["stopped","If You're Stopped","police fwc boarding stopped"],
 ["manatee","Slow-Speed Zones","manatee slow idle zone"],
 ["courses","Boating Courses","boating safety course education card"],
@@ -573,7 +574,7 @@ var PAGES=[
 ["advertise","Advertise","advertise sponsor business"],
 ["contact","Contact","contact email david"],
 ["about","About","about story"]];
-var PIN_LABEL={fuel:"Fuel",bait:"Bait",dine:"Dock & Dine",play:"Destination",club:"Boat Club",storage:"Storage"};
+var PIN_LABEL={fuel:"Fuel",bait:"Bait",dine:"Dock & Dine",play:"Destination",club:"Boat Club",storage:"Storage",stay:"Boat-Up Stay"};
 var panel=document.getElementById('search-panel'),input=document.getElementById('site-search'),
     results=document.getElementById('search-results'),btn=document.getElementById('search-btn');
 function esc(t){return String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
@@ -689,7 +690,7 @@ results.addEventListener('click',function(e){
     </div>
   </div>
 </div></div>
-<div class="view" id="view-plan"><div class="wrap"><a class="back-link" href="#/">&#8249; All categories</a></div><div class="hub-head"><h2>Plan a Day</h2><p>Weather, water, launches and places to go.</p></div><div class="tile-grid"><a class="tile" href="#/tides"><span class="t-ico">🌊</span><b>Tides & Forecast</b><i>Plan around the water</i></a><a class="tile" href="#/fishing"><span class="t-ico">🎣</span><b>Fishing Report</b><i>See what's biting</i></a><a class="tile" href="#/events"><span class="t-ico">📅</span><b>Events</b><i>See what's happening</i></a><a class="tile" href="#/dining"><span class="t-ico">🍽</span><b>Dock & Dine</b><i>Find a boat-up meal</i></a><a class="tile" href="#/map"><span class="t-ico">🗺</span><b>Boater's Map</b><i>Fuel, bait, dining & more</i></a><a class="tile" href="#/paddling"><span class="t-ico">🛶</span><b>Kayak & SUP</b><i>Local paddle launches</i></a><a class="tile" href="#/ramps"><span class="t-ico">🚤</span><b>Boat Ramps</b><i>Launch around the bay</i></a><a class="tile" href="#/bridges"><span class="t-ico">📻</span><b>VHF & Bridges</b><i>Channels & openings</i></a><a class="tile" href="#/logbook"><span class="t-ico">📓</span><b>My Boating Log</b><i>Track your hours</i></a></div></div>
+<div class="view" id="view-plan"><div class="wrap"><a class="back-link" href="#/">&#8249; All categories</a></div><div class="hub-head"><h2>Plan a Day</h2><p>Weather, water, launches and places to go.</p></div><div class="tile-grid"><a class="tile" href="#/tides"><span class="t-ico">🌊</span><b>Tides & Forecast</b><i>Plan around the water</i></a><a class="tile" href="#/fishing"><span class="t-ico">🎣</span><b>Fishing Report</b><i>See what's biting</i></a><a class="tile" href="#/events"><span class="t-ico">📅</span><b>Events</b><i>See what's happening</i></a><a class="tile" href="#/dining"><span class="t-ico">🍽</span><b>Dock & Dine</b><i>Find a boat-up meal</i></a><a class="tile" href="#/stay"><span class="t-ico">🛏️</span><b>Boat-Up Stays</b><i>Dock overnight at a hotel</i></a><a class="tile" href="#/map"><span class="t-ico">🗺</span><b>Boater's Map</b><i>Fuel, bait, dining & more</i></a><a class="tile" href="#/paddling"><span class="t-ico">🛶</span><b>Kayak & SUP</b><i>Local paddle launches</i></a><a class="tile" href="#/ramps"><span class="t-ico">🚤</span><b>Boat Ramps</b><i>Launch around the bay</i></a><a class="tile" href="#/bridges"><span class="t-ico">📻</span><b>VHF & Bridges</b><i>Channels & openings</i></a><a class="tile" href="#/logbook"><span class="t-ico">📓</span><b>My Boating Log</b><i>Track your hours</i></a></div></div>
 <div class="view" id="view-local"><div class="wrap"><a class="back-link" href="#/">&#8249; All categories</a></div><div class="hub-head"><h2>Find Local</h2><p>Captains, fuel, service, parts and storage.</p></div><div class="tile-grid"><a class="tile" href="#/charters"><span class="t-ico">🚤</span><b>Charters</b><i>Fishing, cruising & tours</i></a><a class="tile" href="#/fuel"><span class="t-ico">⛽</span><b>Fuel & Bait</b><i>Stops around Tampa Bay</i></a><a class="tile" href="#/services"><span class="t-ico">🔧</span><b>Boat Services</b><i>Repair, electronics & detail</i></a><a class="tile" href="#/parts"><span class="t-ico">⚙</span><b>Marine Parts</b><i>Stores, canvas & fabrication</i></a><a class="tile" href="#/storage"><span class="t-ico">🅿</span><b>Boat Storage</b><i>Dry stack, slips & lots</i></a><a class="tile" href="#/boat-clubs"><span class="t-ico">🛥</span><b>Boat Clubs</b><i>Boat without owning</i></a></div></div>
 <div class="view" id="view-smart"><div class="wrap"><a class="back-link" href="#/">&#8249; All categories</a></div><div class="hub-head"><h2>Boating Basics</h2><p>Safety, navigation and practical local know-how.</p></div><div class="tile-grid"><a class="tile" href="#/navigation"><span class="t-ico">🧭</span><b>Navigation Basics</b><i>Markers & right of way</i></a><a class="tile" href="#/tips"><span class="t-ico">💡</span><b>Tips & Tricks</b><i>Launching, docking & knots</i></a><a class="tile" href="#/maintenance"><span class="t-ico">🔧</span><b>Boat Maintenance</b><i>Upkeep checklists</i></a><a class="tile" href="#/safety"><span class="t-ico">🛟</span><b>Safety Essentials</b><i>Equipment & smart habits</i></a><a class="tile" href="#/stopped"><span class="t-ico">🚨</span><b>If You're Stopped</b><i>What to expect</i></a><a class="tile" href="#/manatee"><span class="t-ico">🐢</span><b>Slow-Speed Zones</b><i>Manatee areas</i></a><a class="tile" href="#/courses"><span class="t-ico">🎓</span><b>Boating Courses</b><i>Learn & get certified</i></a><a class="tile" href="#/hurricane"><span class="t-ico">🌀</span><b>Hurricane Prep</b><i>Plan before the storm</i></a><a class="tile" href="#/insurance"><span class="t-ico">🛡</span><b>Boaters Insurance</b><i>Coverage basics</i></a></div></div>
 <div class="view" id="view-newboater"><div class="wrap"><a class="back-link" href="#/">&#8249; All categories</a></div><div class="hub-head"><span class="sec-kicker">Start here</span><h2>New to Boating?</h2><p>Everything you need to get on the water safely &mdash; in the right order. No experience assumed.</p></div>
@@ -924,12 +925,13 @@ results.addEventListener('click',function(e){
       <button class="map-filter" data-cat="fuel" onclick="mapFilter('fuel',this)">⛽ Fuel</button>
       <button class="map-filter" data-cat="bait" onclick="mapFilter('bait',this)">🦐 Bait</button>
       <button class="map-filter" data-cat="dine" onclick="mapFilter('dine',this)">🍽️ Dock &amp; Dine</button>
+      <button class="map-filter" data-cat="stay" onclick="mapFilter('stay',this)">🛏️ Boat-Up Stays</button>
       <button class="map-filter" data-cat="play" onclick="mapFilter('play',this)">🏝️ Destinations</button>
       <button class="map-filter" data-cat="club" onclick="mapFilter('club',this)">🛥️ Boat Clubs</button>
       <button class="map-filter" data-cat="storage" onclick="mapFilter('storage',this)">🅿️ Storage</button>
     </div>
     <div id="bay-leaflet-map" style="height:480px; border-radius:14px; border:1px solid var(--line); z-index:1"></div>
-    <p style="text-align:center; color:var(--muted); font-size:.82rem; margin-top:10px">237 pinned locations · fuel prices change — call ahead · dock &amp; dine listings are paid placements</p>
+    <p style="text-align:center; color:var(--muted); font-size:.82rem; margin-top:10px">244 pinned locations · fuel prices change — call ahead · slip policies change — call marinas ahead</p>
   </div>
 </section></div>
 <div class="view" id="view-logbook"><div class="wrap"><a class="back-link" href="#/">&#8249; All categories</a></div><section id="logbook">
@@ -1232,33 +1234,40 @@ results.addEventListener('click',function(e){
   <div class="wrap">
     <div class="sec-head">
       <span class="sec-kicker">Dock &amp; Dine</span>
-      
-      <p>Tampa Bay's top restaurants accessible by boat — pull up, tie off, and eat. Featured partners only.</p>
+      <p>Tampa Bay's waterfront restaurants — pull up, tie off, and eat. Free directory of boat-up spots; <b>featured partners</b> get the top slot.</p>
     </div>
     <div class="dine-grid" id="dine-grid">
-      <div class="dine-spot">
-        <img src="assets/dining/armature-works.jpg" alt="Armature Works on the Hillsborough River" loading="lazy">
-        <div class="dine-spot-body">
-          <b>Armature Works</b>
-          <span class="dine-water">Hillsborough River · Tampa</span>
-          <p>Historic brick streetcar depot turned riverfront food hall — Heights Public Market, lawns, and the pier.</p>
-          <span class="dine-tag">Featured spot</span>
-        </div>
-      </div>
-      <div class="dine-spot">
-        <img src="assets/dining/ricks-on-the-river.jpg" alt="Rick's on the River marina and restaurant" loading="lazy">
-        <div class="dine-spot-body">
-          <b>Rick's on the River</b>
-          <span class="dine-water">Hillsborough River · Tampa</span>
-          <p>Free docking while you dine, full marina on site — the classic boat-up bar &amp; grille, est. 1994.</p>
-          <span class="dine-tag">Featured spot</span>
-        </div>
-      </div>
-      <div class="dine-slot"><div class="plus">+</div><b>Your restaurant here</b><p>Boat-accessible waterfront dining, featured for Tampa Bay boaters.</p><a href="mailto:dine@tampabayboating.com?subject=Dock%20%26%20Dine%20Listing">Reserve this spot — $99/mo</a></div>
-      <div class="dine-slot"><div class="plus">+</div><b>Your restaurant here</b><p>Boat-accessible waterfront dining, featured for Tampa Bay boaters.</p><a href="mailto:dine@tampabayboating.com?subject=Dock%20%26%20Dine%20Listing">Reserve this spot — $99/mo</a></div>
-      <div class="dine-slot"><div class="plus">+</div><b>Your restaurant here</b><p>Boat-accessible waterfront dining, featured for Tampa Bay boaters.</p><a href="mailto:dine@tampabayboating.com?subject=Dock%20%26%20Dine%20Listing">Reserve this spot — $99/mo</a></div>
+      <div class="dine-slot dine-featured"><div class="plus">⭐</div><b>Your restaurant here</b><p>Featured partner: top of the directory, your photos, and a Video Spotlight promo to Tampa Bay boaters.</p><a href="mailto:dine@tampabayboating.com?subject=Dock%20%26%20Dine%20Featured%20Listing">Reserve this spot — $99/mo</a></div>
     </div>
-    <p style="text-align:center; color:var(--muted); margin-top:20px; font-size:.92rem">Own a waterfront restaurant boaters can reach? <a href="mailto:dine@tampabayboating.com?subject=Dock%20%26%20Dine%20Listing" style="font-weight:700">Get listed</a> — paid partners only.<br><span style="font-size:.85rem">🎥 Ask about our <b>Video Spotlight</b> — we turn your photos and videos into a promo for your business.</span></p>
+    <div class="search-row"><input id="dine-input" type="search" placeholder="Search 48 waterfront restaurants…" oninput="renderDine()"></div>
+    <div class="dir-grid" id="dine-dir"></div>
+    <p style="text-align:center; color:var(--muted); margin-top:20px; font-size:.92rem">Own a waterfront restaurant boaters can reach? <a href="mailto:dine@tampabayboating.com?subject=Dock%20%26%20Dine%20Featured%20Listing" style="font-weight:700">Get featured — $99/mo</a>.<br><span style="font-size:.85rem">🎥 Ask about our <b>Video Spotlight</b> — we turn your photos and videos into a promo for your business.</span></p>
+  </div>
+
+  </div>
+</div></div>
+<div class="view" id="view-stay"><div class="wrap"><a class="back-link" href="#/">&#8249; All categories</a></div><div class="acc-item open" id="stay">
+  <button class="acc-head" aria-expanded="false" onclick="toggleAcc(this)">
+    <span class="acc-title">Boat-Up Stays</span>
+    <span class="acc-chev" aria-hidden="true">▾</span>
+  </button>
+  <div class="acc-body">
+
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-kicker">Dock &amp; Stay</span>
+      <p>Pull up by boat, spend the night. Waterfront hotels around Tampa Bay with real dockage for guests — every one verified.</p>
+    </div>
+    <div class="dir-grid" id="stay-grid">
+      <div class="dir-card"><div class="city">St. Petersburg</div><h4>SkyBeach Resort &amp; Marina</h4><div class="type">29-slip marina; overnight slips for hotel guests bookable through the resort. Sleep in rooms, not aboard.</div><div class="contact">📍 6800 Sunshine Skyway Ln S · <a href="javascript:void(0)" data-pin-name="SkyBeach Resort &amp; Marina">Map</a></div></div>
+      <div class="dir-card"><div class="city">St. Petersburg</div><h4>The Vinoy Resort &amp; Golf Club</h4><div class="type">74-slip private marina adjacent to the resort; daily/weekly rental; vessels to ~120 ft.</div><div class="contact">📍 501 5th Ave NE · <a href="javascript:void(0)" data-pin-name="The Vinoy Resort &amp; Golf Club">Map</a></div></div>
+      <div class="dir-card"><div class="city">St Pete Beach</div><h4>The Hotel Zamora</h4><div class="type">7-slip private marina on the ICW; $20/night per boat; boats to 40 ft.</div><div class="contact">📍 3701 Gulf Blvd · <a href="javascript:void(0)" data-pin-name="The Hotel Zamora">Map</a></div></div>
+      <div class="dir-card"><div class="city">Holmes Beach</div><h4>Waterline Villas &amp; Marina</h4><div class="type">50-slip marina; overnight/weekly stays; boats to 45 ft. No sleeping aboard (city rule).</div><div class="contact">📍 5325 Marina Dr · <a href="javascript:void(0)" data-pin-name="Waterline Villas &amp; Marina">Map</a></div></div>
+      <div class="dir-card"><div class="city">Bradenton</div><h4>Compass Hotel Anna Maria Sound</h4><div class="type">Dock via adjacent Safe Harbor Pier 77; nightly guest rates; transient to 50 ft.</div><div class="contact">📍 12324 Manatee Ave W · <a href="javascript:void(0)" data-pin-name="Compass Hotel Anna Maria Sound">Map</a></div></div>
+      <div class="dir-card"><div class="city">Clearwater Beach</div><h4>Courtyard by Marriott Clearwater Beach</h4><div class="type">50-slip marina next door; transient dockage to 60 ft; boaters get hotel amenities.</div><div class="contact">📍 455 E Shore Dr · <a href="javascript:void(0)" data-pin-name="Courtyard by Marriott Clearwater Beach">Map</a></div></div>
+      <div class="dir-card"><div class="city">Clearwater Beach</div><h4>Sta 'N Pla Marina Resort</h4><div class="type">Budget motel with private docks and slips for guests on the ICW.</div><div class="contact">📍 333 S Hamden Dr · <a href="javascript:void(0)" data-pin-name="Sta 'N Pla Marina Resort">Map</a></div></div>
+    </div>
+    <p style="text-align:center; color:var(--muted); margin-top:20px; font-size:.92rem">Slip counts and dockage policies change — <b>call ahead</b> before counting on a slip, especially on weekends.<br><span style="font-size:.85rem">Know a boat-up hotel we missed? <a href="mailto:david@tampabayboating.com?subject=Boat-Up%20Hotel%20Tip" style="font-weight:700">Tip us off</a>.</span></p>
   </div>
 
   </div>
@@ -2396,11 +2405,18 @@ const MAP_PINS = [
 ["Your Boat Club — Port Richey","club",28.269532,-82.723842,"5448 Baylea Ave, Port Richey, FL 34668","(727) 400-3230","Annual memberships + daily/multi-day rentals — verify open status before visiting"],
 ["Gulf Stream Boat Club — Tampa","club",27.886162,-82.534411,"5216 W Tyson Ave, Tampa, FL 33611","(888) 702-2256","Premium club; hourly or unlimited plans, concierge service"],
 ["Gulf Stream Boat Club — St. Pete / Tierra Verde","club",27.68939,-82.72218,"240 Madonna Blvd, Tierra Verde, FL 33715","(888) 702-2256","Premium club at PORT 32 Marina Tierra Verde; sister club to Tampa location"],
-["Gulf Stream Boat Club — Bradenton","club",27.467782,-82.696781,"402 Church Ave, Bradenton Beach, FL 34217","(941) 219-0447","Newest Gulf Coast club on the Manatee River; captains available, onsite restaurant"]
+["Gulf Stream Boat Club — Bradenton","club",27.467782,-82.696781,"402 Church Ave, Bradenton Beach, FL 34217","(941) 219-0447","Newest Gulf Coast club on the Manatee River; captains available, onsite restaurant"],
+["SkyBeach Resort & Marina","stay",27.704993,-82.678159,"6800 Sunshine Skyway Ln S, St. Petersburg","","29-slip marina; overnight slips for hotel guests bookable through the resort. Sleep in rooms, not aboard."],
+["The Vinoy Resort & Golf Club","stay",27.777531,-82.628554,"501 5th Ave NE, St. Petersburg","","74-slip private marina adjacent to the resort; daily/weekly rental; vessels to ~120 ft."],
+["The Hotel Zamora","stay",27.7135,-82.73724,"3701 Gulf Blvd, St Pete Beach","","7-slip private marina on the ICW; $20/night per boat; boats to 40 ft."],
+["Waterline Villas & Marina","stay",27.5073,-82.7139,"5325 Marina Dr, Holmes Beach","","50-slip marina; overnight/weekly stays; boats to 45 ft. No sleeping aboard (city rule)."],
+["Compass Hotel Anna Maria Sound","stay",27.496826,-82.686087,"12324 Manatee Ave W, Bradenton","","Dock via adjacent Safe Harbor Pier 77; nightly guest rates; transient to 50 ft."],
+["Courtyard by Marriott Clearwater Beach","stay",27.98029,-82.82543,"455 E Shore Dr, Clearwater Beach","","50-slip marina next door; transient dockage to 60 ft; boaters get hotel amenities."],
+["Sta 'N Pla Marina Resort","stay",27.97215,-82.82726,"333 S Hamden Dr, Clearwater Beach","","Budget motel with private docks and slips for guests on the ICW."]
 ];
 /* MAP_PINS_PENDING retired 2026-10-10: 201 pins re-verified and restored. 5 rejected (stay off map): Anclote River Sandbar (play, wrong location), Marjorie Park Yacht Basin (fuel, closed), The Club at Treasure Island (fuel, no fuel dock), The Landing at Tarpon Springs Marina (fuel, dupe), Carefree Boat Club Tierra Verde (club, 2 sources only). See map-research/reverify-*.md */
 const MAP_PINS_PENDING = [];
-const MAP_COLORS = {fuel:"#e25822", bait:"#2e9e5b", dine:"#8b5cf6", play:"#0e7490", club:"#d946ef", storage:"#f59e0b"};
+const MAP_COLORS = {fuel:"#e25822", bait:"#2e9e5b", dine:"#8b5cf6", play:"#0e7490", club:"#d946ef", storage:"#f59e0b", stay:"#2563eb"};
 window.mapFilter=function(cat,btn){
   document.querySelectorAll('.map-filter').forEach(x => x.classList.remove('active'));
   if(btn) btn.classList.add('active');
@@ -2710,6 +2726,87 @@ function renderPaddle(){
     : '<div class="no-results">No matches — try clearing the search.</div>';
 }
 renderPaddle();
+
+/* ================= DOCK & DINE ================= */
+const DINE = [
+  ["Rick's on the River", "Tampa", "BBQ & bar on the Hillsborough River; free docking while dining.", "2305 N Willow Ave, Tampa"],
+  ["The Getaway", "St. Petersburg", "Keys-style tiki bar with 30+ boat slips; dock up for burgers, raw bar & live music.", "13090 Gandy Blvd N, St. Petersburg"],
+  ["The Big Catch at Salt Creek", "St. Petersburg", "Open-air dockside seafood at Harborage Marina; watch boats come in off the docks.", "1500 2nd St S, St. Petersburg"],
+  ["Tide Tables Restaurant and Marina", "Cortez", "Old Florida seafood at its own marina on the ICW; 'come by boat, Marker 48.'", "12507 Cortez Rd W, Cortez"],
+  ["Bridge Tender Inn", "Bradenton Beach", "Old Florida bar & grill on Sarasota Bay; docks available \u2014 'come by sea, Mile Marker 49.'", "135 Bridge St, Bradenton Beach"],
+  ["Armature Works", "Tampa Heights", "Food hall on the Hillsborough River", "1910 N Ola Ave, Tampa Heights"],
+  ["Jerry's Dockside", "Gibsonton", "Waterfront bar & grill on the Alafia River; tie up at the dock.", "9808 Vaughn St, Gibsonton"],
+  ["Tiki Docks Riverview", "Riverview", "Tiki bar & grill on the Alafia River with dock space.", "10704 Palmetto St, Riverview"],
+  ["River's Edge Bar & Grill", "Gibsonton", "Casual grill on the Alafia River; dock space with food served to your vessel.", "6226 Ohio Ave, Gibsonton"],
+  ["The Beer Shed", "Riverview", "River dive bar on the Alafia; pull up to the dock.", "11222 Casa Loma Dr, Riverview"],
+  ["Circles Waterfront", "Apollo Beach", "Waterfront seafood/sushi on the Apollo Beach marina; boats drive right up to the dock.", "1212 Apollo Beach Blvd, Apollo Beach"],
+  ["Finn's Dockside", "Apollo Beach", "Seafood sports bar with a dock beside the patio.", "1112 Apollo Beach Blvd, Apollo Beach"],
+  ["Whiskey Joe's", "Tampa", "Island-style bar & grill; Tampa's boat-up beach bar \u2014 drive your boat right up onto the sand.", "7720 W Courtney Campbell Cswy, Tampa"],
+  ["Jackson's Bistro", "Tampa", "Upscale bistro, sushi & steak on Harbour Island; dockside waterfront dining.", "601 S Harbour Island Blvd, Tampa"],
+  ["Hula Bay Club", "Tampa", "Hawaiian/seafood/sushi tiki club; boat docking at Port 32 Marina.", "5210 W Tyson Ave, Tampa"],
+  ["Fresco's Waterfront Bistro", "St. Petersburg", "Waterfront seafood bistro at the St. Pete Pier; 10 city-owned metered boat slips nearby.", "300 2nd Ave NE, St. Petersburg"],
+  ["Doc Ford's Rum Bar & Grille", "St. Petersburg", "Rum bar & Caribbean seafood on the St. Pete Pier; arrive by boat.", "610 2nd Ave NE, St. Petersburg"],
+  ["The Island Grille & Raw Bar", "Tierra Verde", "Island-style seafood & raw bar at Port 32 Tierra Verde Marina; dock space while you dine.", "210 Madonna Blvd, Tierra Verde"],
+  ["Tiki Docks Skyway", "St. Petersburg", "Tiki bar & grill at Maximo Marina; tie off at the sea wall with ample dock space.", "3769 50th Ave S, St. Petersburg"],
+  ["Red, White & Booze", "St. Pete Beach", "Waterfront bar & grill in Pass-a-Grille (formerly Sea Critters); newly renovated docks.", "2007 Pass a Grille Way, St. Pete Beach"],
+  ["Friendly Fisherman", "Madeira Beach", "Boardwalk seafood at John's Pass; dock at the adjacent marina.", "150 Johns Pass Boardwalk, Madeira Beach"],
+  ["Pirates Pub & Grub", "Madeira Beach", "Pirate-themed bar & grill on the John's Pass boardwalk; dock-and-dine.", "116 Johns Pass Boardwalk, Madeira Beach"],
+  ["Hooters John's Pass", "Madeira Beach", "Hooters on the John's Pass boardwalk; dock at the adjacent marina.", "192 Johns Pass Boardwalk, Madeira Beach"],
+  ["Sculley's", "Madeira Beach", "Seafood on the John's Pass boardwalk; dock at the adjacent marina.", "190 Boardwalk Pl E, Madeira Beach"],
+  ["Boardwalk Grill", "Madeira Beach", "Casual grill on the John's Pass boardwalk; dock at the adjacent marina.", "204 Johns Pass Boardwalk E, Madeira Beach"],
+  ["McDonald's Madeira Beach", "Madeira Beach", "Madeira Beach McDonald's with a boat dock; reviews confirm boat order pickup at the dock.", "650 150th Ave, Madeira Beach"],
+  ["The Bait House Tackle & Tavern", "Clearwater Beach", "Marina bar & tackle shop at Clearwater Marina; explicitly invites boaters to come by boat.", "45 Causeway Blvd, Clearwater Beach"],
+  ["Salt Cracker Fish Camp", "Clearwater Beach", "Waterfront fish camp at Clearwater Marina; dockside seating.", "25 Causeway Blvd, Clearwater Beach"],
+  ["Crabby's Dockside Clearwater", "Clearwater Beach", "3-story seafood spot by the Clearwater Beach marina; dock-and-dine.", "37 Causeway Blvd, Clearwater Beach"],
+  ["Olde Bay Cafe", "Dunedin", "Waterfront seafood cafe steps from Dunedin Marina; arrive by boat.", "51 Main St, Dunedin"],
+  ["Dimitri's on the Water", "Tarpon Springs", "Upscale Greek seafood steakhouse on the Tarpon Springs Sponge Docks; waterfront on the Anclote River.", "690 Dodecanese Blvd, Tarpon Springs"],
+  ["Rusty Bellies Waterfront Grill", "Tarpon Springs", "Waterfront tiki-deck grill on the Anclote River; arrive by boat.", "937 Dodecanese Blvd, Tarpon Springs"],
+  ["Pier 22", "Bradenton", "Historic fine dining on the Manatee River; surrounded by Twin Dolphin Marina's 225 slips.", "1200 1st Ave W, Bradenton"],
+  ["Riverhouse Waterfront Restaurant", "Palmetto", "Three-level waterfront seafood on the Manatee River; cruise up to the Reef & Grill and Snook Deck.", "995 Riverside Dr, Palmetto"],
+  ["Swordfish Grill", "Cortez", "Waterfront grill in the historic Cortez fishing village; live music.", "4628 119th St W, Cortez"],
+  ["Star Fish Company", "Cortez", "Cult-favorite dockside seafood market in Cortez; tie up nearby and eat on the dock (cash only).", "12306 46th Ave W, Cortez"],
+  ["Mar Vista Dockside Restaurant & Pub", "Longboat Key", "Old Florida waterfront dining on Sarasota Bay; private 14-slip dock for boaters.", "760 Broadway St, Longboat Key"],
+  ["Dry Dock Waterfront Grill", "Longboat Key", "Dockside seafood overlooking Sarasota Bay; arrive by boat at the Boathouse Marina.", "412 Gulf of Mexico Dr, Longboat Key"],
+  ["Marina Jack", "Sarasota", "Waterfront dining at downtown Sarasota's marina; 316 slips and fuel dock on site.", "2 Marina Plaza, Sarasota"],
+  ["The Old Salty Dog", "Sarasota", "Waterfront bar & grill on City Island overlooking New Pass; 8 dock slips.", "1601 Ken Thompson Pkwy, Sarasota"],
+  ["New Pass Grill & Bait Shop", "Sarasota", "Historic waterfront shack on New Pass; 12 slips \u2014 burger stop on the way to the Gulf.", "1505 Ken Thompson Pkwy, Sarasota"],
+  ["O'Leary's Tiki Bar & Grill", "Sarasota", "Bayfront tiki bar at Marina Jack; 5 slips for dock-and-dine.", "5 Bayfront Drive, Sarasota"],
+  ["Ophelia's on the Bay", "Sarasota", "Upscale waterfront dining on Little Sarasota Bay; arrive via water at ICW Marker 48; 2 slips.", "9105 Midnight Pass Rd, Sarasota"],
+  ["Phillippi Creek Village Restaurant & Oyster Bar", "Sarasota", "Decades-old Old Florida seafood & oyster bar; cruise up Phillippi Creek from the Gulf; 6 slips.", "5353 S Tamiami Trl, Sarasota"],
+  ["Turtle's Restaurant", "Sarasota", "Waterfront American restaurant on Little Sarasota Bay; 7 dock slips.", "8875 Midnight Pass Rd, Sarasota"],
+  ["Casey Key Fish House", "Osprey", "Buzzing tiki bar & seafood on the ICW; long dock hugging the waterway; 7 slips.", "801 Blackburn Point Rd, Osprey"],
+  ["Deep Lagoon Seafood and Oyster House", "Osprey", "Upscale seafood & oyster house on Blackburn Bay; 22 dock slips.", "482 Blackburn Point Rd, Osprey"],
+  ["The Crow's Nest Restaurant & Marina", "Venice", "Seafood & marina in Venice; catering to boaters for 40+ years with slips available.", "1968 Tarpon Center Dr, Venice"]
+];
+function renderDine(){
+  var q = document.getElementById("dine-input").value.trim().toLowerCase();
+  var list = DINE.filter(function(d){ return !q || d.join(" ").toLowerCase().indexOf(q) > -1; });
+  document.getElementById("dine-dir").innerHTML = list.length ? list.map(function(d){
+    return '<div class="dir-card"><div class="city">'+esc(d[1])+'</div><h4>'+esc(d[0])+'</h4><div class="type">'+esc(d[2])+'</div><div class="contact">📍 '+esc(d[3])+' · <a href="javascript:void(0)" data-pin-name="'+esc(d[0])+'">Map</a></div></div>';
+  }).join("") : '<div class="no-results">No matches — try clearing the search.</div>';
+}
+function openDinePin(name){
+  var pin = null;
+  (typeof MAP_PINS !== 'undefined' ? MAP_PINS : []).forEach(function(p){ if(p[0] === name && !pin) pin = p; });
+  if(!pin) return;
+  location.hash = '#/map';
+  setTimeout(function(){
+    if(window.tbbMap && typeof L !== 'undefined'){
+      window.tbbMap.setView([pin[2], pin[3]], 13);
+      var h = '<b>'+esc(pin[0])+'</b>'+(pin[4] ? '<br>'+esc(pin[4]) : '')+(pin[6] ? '<br><i>'+esc(pin[6])+'</i>' : '');
+      L.popup().setLatLng([pin[2], pin[3]]).setContent(h).openOn(window.tbbMap);
+    }
+  }, 700);
+}
+document.getElementById("dine-dir").addEventListener("click", function(e){
+  var a = e.target.closest("[data-pin-name]");
+  if(a) openDinePin(a.getAttribute("data-pin-name"));
+});
+document.getElementById("stay-grid").addEventListener("click", function(e){
+  var a = e.target.closest("[data-pin-name]");
+  if(a) openDinePin(a.getAttribute("data-pin-name"));
+});
+renderDine();
 
 /* ================= BOAT RAMPS ================= */
 const RAMPS = [
@@ -3215,7 +3312,7 @@ async function loadForecastBadges(){
 <script>
 /* ---- SPA router: approved app-style redesign ---- */
 const ID2VIEW = {conditions:'tides',fishing:'fishing',events:'events',dining:'dining',baymap:'map',paddling:'paddling',ramps:'ramps',bridges:'bridges',logbook:'logbook',charters:'charters',fuel:'fuel',services:'services',parts:'parts',storage:'storage','boat-clubs':'boat-clubs',navigation:'navigation',tips:'tips',safety:'safety',stopped:'stopped',manatee:'manatee',courses:'courses',hurricane:'hurricane',insurance:'insurance',shop:'shop',boatsales:'boatsales',gear:'gear',videos:'videos',meetups:'meetups',news:'news',newsletter:'newsletter',advertise:'advertise',contact:'contact','nav-charts':'navigation'};
-const VIEWS = ['home','plan','local','smart','newboater','maintenance','shopc','tides','fishing','events','dining','map','paddling','ramps','bridges','logbook','charters','fuel','services','parts','storage','boat-clubs','navigation','tips','safety','stopped','manatee','courses','hurricane','insurance','shop','boatsales','gear','videos','meetups','news','newsletter','advertise','contact','about','privacy','terms'];
+const VIEWS = ['home','plan','local','smart','newboater','maintenance','shopc','tides','fishing','events','dining','stay','map','paddling','ramps','bridges','logbook','charters','fuel','services','parts','storage','boat-clubs','navigation','tips','safety','stopped','manatee','courses','hurricane','insurance','shop','boatsales','gear','videos','meetups','news','newsletter','advertise','contact','about','privacy','terms'];
 function showView(name){
   if(VIEWS.indexOf(name)<0) name='home';
   document.querySelectorAll('.view').forEach(function(v){v.classList.remove('active');});

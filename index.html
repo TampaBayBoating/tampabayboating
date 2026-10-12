@@ -969,10 +969,14 @@ body.dark body.dark /* ---- Tampa Bay Boating Shop ---- */
     .then(function(d){
       var pr = d.properties || {};
       var tC = pr.temperature && pr.temperature.value;
-      var wMs = pr.windSpeed && pr.windSpeed.value;
+      var wVal = pr.windSpeed && pr.windSpeed.value;
+      var wUnit = (pr.windSpeed && pr.windSpeed.unitCode) || '';
       var wDeg = pr.windDirection && pr.windDirection.value;
       if (tC != null) set('tbAir', Math.round(tC * 9/5 + 32) + '\u00B0');
-      if (wMs != null) set('tbWind', compass(wDeg) + Math.round(wMs * 1.944));
+      if (wVal != null) {
+        var kt = wUnit.indexOf('km_h-1') !== -1 ? wVal / 1.852 : wVal * 1.944;
+        set('tbWind', compass(wDeg) + Math.round(kt));
+      }
     }).catch(function(){});
   // NOAA tide state (High / Low / Rising / Falling) from station 8726674
   (function(){

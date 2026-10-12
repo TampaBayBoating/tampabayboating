@@ -311,6 +311,12 @@ body{top:0 !important}
 .tb-wx{width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.14);display:flex;align-items:center;justify-content:center;text-decoration:none;margin-left:auto}
 .tb-wx svg{width:18px;height:18px;stroke:#fff;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 .tb-wx:hover{background:rgba(255,255,255,.28)}
+.tb-cond{display:flex;gap:5px;margin-left:10px;text-decoration:none}
+.tb-cond-card{background:#dbe9f4;border-radius:9px;padding:4px 9px;display:flex;flex-direction:column;align-items:center;line-height:1.25;min-width:48px;transition:.2s}
+.tb-cond:hover .tb-cond-card{background:#cfe3f5}
+.tb-cond-card .tic{width:14px;height:14px;color:#0b3d62}
+.tb-cond-card b{font-size:12px;color:#0b3d62;font-weight:800}
+.tb-cond-card i{font-style:normal;font-size:8px;letter-spacing:.6px;text-transform:uppercase;color:#4a6b8a}
 .tb-search{width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.14);border:0;display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0}
 .tb-search svg{width:18px;height:18px;stroke:#fff;fill:none;stroke-width:2.2;stroke-linecap:round}
 .tb-search:hover{background:rgba(255,255,255,.28)}
@@ -444,7 +450,7 @@ footer.tbb-foot a.soc svg{width:15px!important;height:15px!important;fill:#fff!i
 @media(max-width:700px){footer.tbb-foot .foot-grid{grid-template-columns:1fr 1fr;gap:20px}}
 .ad-group{color:#0a2540;font-size:1.3rem;margin:30px 0 4px;text-align:center}
 .ad-group-sub{text-align:center;color:#5b6b7c;margin-bottom:6px}
-@media(max-width:860px){.today-grid,.cat-grid{grid-template-columns:1fr 1fr}.hero2 h1{font-size:2.3rem}.tb-brand span{display:none}.tb-row{gap:8px;padding:8px 12px}.tb-socials{gap:6px;margin-left:2px}.tb-socials a{width:32px;height:32px}.tb-wx{width:32px;height:32px}.tb-lang{font-size:.85rem;padding:6px 8px}.hero2-cta,.hero2-map,.bite-hero{display:block;width:100%;max-width:420px;text-align:center;margin:0 0 12px;padding:15px 20px;box-sizing:border-box;font-size:1rem}.bite-hero{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}}
+@media(max-width:860px){.today-grid,.cat-grid{grid-template-columns:1fr 1fr}.tb-wx{display:none}.tb-cond{gap:4px;margin-left:6px}.tb-cond-card{background:transparent;border-radius:0;padding:2px 3px;min-width:0}.tb-cond-card .tic{width:13px;height:13px;color:#8fd0f0}.tb-cond-card b{font-size:11px;color:#fff}.tb-cond-card i{display:none}.tb-cond:hover .tb-cond-card{background:transparent}.hero2 h1{font-size:2.3rem}.tb-brand span{display:none}.tb-row{gap:8px;padding:8px 12px}.tb-socials{gap:6px;margin-left:2px}.tb-socials a{width:32px;height:32px}.tb-wx{width:32px;height:32px}.tb-lang{font-size:.85rem;padding:6px 8px}.hero2-cta,.hero2-map,.bite-hero{display:block;width:100%;max-width:420px;text-align:center;margin:0 0 12px;padding:15px 20px;box-sizing:border-box;font-size:1rem}.bite-hero{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}}
 @media(max-width:768px){.hero2{background-image:url('assets/hero-skyway-mobile.jpg');min-height:0}.hero2-inner{padding:26px 20px 22px}.home-intro{padding-top:26px}}
 /* NWS marine weather alert bar */
 .hero2-slogan{font-size:1.15rem;font-style:italic;color:#ffd54f;font-weight:600;margin:10px 0 4px;text-shadow:0 1px 8px rgba(0,0,0,.55)}
@@ -929,7 +935,7 @@ body.dark body.dark /* ---- Tampa Bay Boating Shop ---- */
   <path d="M10 9H8" />
   <path d="M16 13H8" />
   <path d="M16 17H8" /></symbol>
-</svg>
+<symbol id="i-thermo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4v10.54a4 4 0 1 1-4 0V4a2 2 0 0 1 4 0Z"/></symbol><symbol id="i-wind" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.8 19.6A2 2 0 1 0 14 16H2"/><path d="M17.5 8a2.5 2.5 0 1 1 2 4H2"/><path d="M9.8 4.4A2 2 0 1 1 11 8H2"/></symbol></svg>
 <header class="tbb-topbar" id="top">
   <div class="tb-row">
     <a class="tb-brand" href="#/"><img src="assets/tbb-logo.webp" alt="Tampa Bay Boating TB anchor logo"><span>Tampa Bay Boating</span></a>
@@ -937,12 +943,44 @@ body.dark body.dark /* ---- Tampa Bay Boating Shop ---- */
     <a href="https://www.tiktok.com/@tampabayboating" target="_blank" rel="noopener" aria-label="TikTok"><svg viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/></svg></a>
     <a href="https://www.instagram.com/tampabayboating/" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24"><path d="M12 2.16c3.2 0 3.58.01 4.85.07 3.25.15 4.77 1.69 4.92 4.92.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.15 3.23-1.66 4.77-4.92 4.92-1.27.06-1.64.07-4.85.07s-3.58-.01-4.85-.07c-3.26-.15-4.77-1.7-4.92-4.92C2.17 15.58 2.16 15.2 2.16 12s.01-3.58.07-4.85C2.38 3.92 3.9 2.38 7.15 2.23 8.42 2.17 8.8 2.16 12 2.16M12 0C8.74 0 8.33.01 7.05.07 2.7.27.27 2.69.07 7.05.01 8.33 0 8.74 0 12s.01 3.67.07 4.95c.2 4.36 2.62 6.78 6.98 6.98C8.33 23.99 8.74 24 12 24s3.67-.01 4.95-.07c4.35-.2 6.78-2.62 6.98-6.98.06-1.28.07-1.69.07-4.95s-.01-3.67-.07-4.95C23.73 2.7 21.31.27 16.95.07 15.67.01 15.26 0 12 0zm0 5.84A6.16 6.16 0 1 0 18.16 12 6.16 6.16 0 0 0 12 5.84zm0 10.15A4 4 0 1 1 16 12a4 4 0 0 1-4 3.99zm7.85-10.4a1.44 1.44 0 1 1-2.88 0 1.44 1.44 0 0 1 2.88 0z"/></svg></a>
     <a href="https://www.facebook.com/tampabayboating" target="_blank" rel="noopener" aria-label="Facebook"><svg viewBox="0 0 24 24"><path d="M24 12.07C24 5.4 18.63 0 12 0S0 5.4 0 12.07C0 18.1 4.39 23.09 10.13 24v-8.44H7.08v-3.49h3.04V9.41c0-3.02 1.8-4.7 4.54-4.7 1.31 0 2.68.24 2.68.24v2.97h-1.5c-1.5 0-1.96.93-1.96 1.89v2.26h3.32l-.53 3.49h-2.79V24C19.61 23.09 24 18.1 24 12.07z"/></svg></a></div>
-    
+    <a class="tb-cond" href="#/tides" aria-label="Current air temperature, water temperature and wind">
+      <span class="tb-cond-card"><svg class="tic" aria-hidden="true"><use href="#i-thermo"></use></svg><b id="tbAir">--&deg;</b><i>Air</i></span>
+      <span class="tb-cond-card"><svg class="tic" aria-hidden="true"><use href="#i-waves"></use></svg><b id="tbWater">--&deg;</b><i>Water</i></span>
+      <span class="tb-cond-card"><svg class="tic" aria-hidden="true"><use href="#i-wind"></use></svg><b id="tbWind">--</b><i>Wind</i></span>
+    </a>
     <a class="tb-wx" href="#/tides" aria-label="Tides and forecast" title="Tides &amp; forecast"><svg viewBox="0 0 24 24"><circle cx="8.5" cy="7.5" r="2.4"/><path d="M10.9 7.5h.01"/><path d="M17.5 18.5a4.5 4.5 0 0 0 .42-8.98 6 6 0 0 0-11.7 1.62A4 4 0 0 0 7 18.5h10.5z"/><path d="M4 21.5c1.5 1.2 3.5 1.2 5 0s3.5-1.2 5 0 3.5 1.2 5 0"/></svg></a>
     <button class="tb-search" id="search-btn" aria-label="Search the site" title="Search"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg></button>
     <button class="tb-lang" id="lang-btn" aria-label="Translate this page" title="Translate"><svg class=ic aria-hidden=true><use href=#i-globe></use></svg> Language</button>
   </div>
-  <div class="tb-search-panel" id="search-panel">
+  <script>
+/* Topbar live conditions: air temp + wind (NWS KTPA) + water temp (NOAA 8726674) */
+(function(){
+  function set(id, txt){ var el = document.getElementById(id); if (el) el.textContent = txt; }
+  function compass(deg){
+    if (deg == null || isNaN(deg)) return '';
+    var dirs = ['N','NNE','NE','ENE','E','ESE','SE','SSE','S','SSW','SW','WSW','W','WNW','NW','NNW'];
+    return dirs[Math.round(deg / 22.5) % 16] + ' ';
+  }
+  // NWS air temp + wind
+  fetch('https://api.weather.gov/stations/KTPA/observations/latest', {headers:{'Accept':'application/geo+json'}})
+    .then(function(r){ return r.json(); })
+    .then(function(d){
+      var pr = d.properties || {};
+      var tC = pr.temperature && pr.temperature.value;
+      var wMs = pr.windSpeed && pr.windSpeed.value;
+      var wDeg = pr.windDirection && pr.windDirection.value;
+      if (tC != null) set('tbAir', Math.round(tC * 9/5 + 32) + '\u00B0');
+      if (wMs != null) set('tbWind', compass(wDeg) + Math.round(wMs * 1.944));
+    }).catch(function(){});
+  // NOAA water temp
+  fetch('https://api.tidesandcurrents.noaa.gov/api/prod/datagetter?date=latest&station=8726674&product=water_temperature&units=english&time_zone=lst_ldt&format=json')
+    .then(function(r){ return r.json(); })
+    .then(function(d){
+      if (d.data && d.data[0] && d.data[0].v) set('tbWater', Math.round(parseFloat(d.data[0].v)) + '\u00B0');
+    }).catch(function(){});
+})();
+</script>
+<div class="tb-search-panel" id="search-panel">
     <div class="tb-search-box"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg><input id="site-search" type="search" placeholder="Search pages, places, ramps..." aria-label="Search the site" autocomplete="off"></div>
     <div class="tb-search-results" id="search-results"></div>
   </div>

@@ -360,6 +360,13 @@ body{top:0 !important}
 .ad-card h3{color:#0a2540;font-size:1.05rem;margin:2px 0}
 .ad-card p{color:#5b6b7c;font-size:.85rem;margin-bottom:8px}
 .ad-card-btn{display:inline-block;background:#8fd0f0;color:#0a2540;font-weight:800;padding:10px 24px;border-radius:999px;text-decoration:none;font-size:.92rem}.license-card{background:#e9f2f9;border-radius:16px;padding:18px 20px;display:flex;gap:14px;align-items:flex-start;margin-bottom:20px;box-shadow:0 6px 18px rgba(10,37,64,.07)}.license-card h4{margin:0 0 4px;color:#0a2540;font-size:1.02rem}.license-card p{margin:0 0 12px;color:#33536e;font-size:.93rem;line-height:1.5}.license-btns{display:flex;gap:10px;flex-wrap:wrap}.license-card .wub-btn{padding:10px 22px;font-size:.9rem}.license-ico{flex:0 0 auto;width:44px;height:44px;border-radius:12px;background:var(--teal);color:#fff;display:flex;align-items:center;justify-content:center}.license-ico svg{width:24px;height:24px}.verdict-card{border-radius:16px;padding:16px 20px;margin:14px 0 6px;display:flex;gap:16px;align-items:center;border:2px solid #b8d4e8;background:#eef5fb}.verdict-dot{flex:0 0 auto;width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff}.verdict-dot svg{width:28px;height:28px}.verdict-card h3{margin:0 0 2px;font-size:1.25rem;color:#0a2540}.verdict-card p{margin:0;color:#33536e;font-size:.93rem;line-height:1.45}.verdict-card.v-go{border-color:#1e9e6a;background:#e6f5ee}.verdict-card.v-go .verdict-dot{background:#1e9e6a}.verdict-card.v-caution{border-color:#d9a400;background:#fdf6da}.verdict-card.v-caution .verdict-dot{background:#d9a400}.verdict-card.v-stay{border-color:#c0392b;background:#fbeaea}.verdict-card.v-stay .verdict-dot{background:#c0392b}
+.verdict-main{flex:1;min-width:0}
+.verdict-dot span{font-size:.95rem;font-weight:800;letter-spacing:-.5px}
+.score-track{position:relative;height:10px;border-radius:99px;background:linear-gradient(90deg,#1e9e6a 0%,#7bc950 30%,#e3c008 55%,#e07b28 78%,#c0392b 100%);margin:9px 3px 3px}
+.score-marker{position:absolute;top:50%;left:50%;width:19px;height:19px;border-radius:50%;background:#0a2540;border:3px solid #fff;box-shadow:0 1px 6px rgba(0,0,0,.45);transform:translate(-50%,-50%);transition:left .7s ease}
+.score-ends{display:flex;justify-content:space-between;font-size:.72rem;font-weight:700;color:#5b7a94;margin:0 1px 6px;text-transform:uppercase;letter-spacing:.4px}
+.verdict-card.v-good{border-color:#57a639;background:#eef7e8}.verdict-card.v-good .verdict-dot{background:#57a639}
+.verdict-card.v-rough{border-color:#e07b28;background:#fdf0e2}.verdict-card.v-rough .verdict-dot{background:#e07b28}
 .support-card{background:#dbe9f4;border-radius:16px;padding:28px;max-width:720px;margin:0 auto;box-shadow:0 6px 18px rgba(10,37,64,.07)}
 .support-card h3{color:#0a2540;font-size:1.3rem;margin:0 0 10px}
 .support-card p{color:#0a2540;font-size:.95rem;margin-bottom:18px}
@@ -1207,7 +1214,7 @@ results.addEventListener('click',function(e){
   <div class="wrap">
     <h2 id="tides-title">Tampa Bay Tides &amp; Marine Forecast</h2>
     <div class="sub" id="tides-sub">Live from NOAA &amp; the National Weather Service · East Bay / Tampa Bay</div>
-    <div class="verdict-card" id="verdict-card"><div class="verdict-dot" id="verdict-dot"><svg class=ic aria-hidden=true><use href=#i-lifebuoy></use></svg></div><div><h3 id="verdict-title">Checking today's conditions…</h3><p id="verdict-why">Reading the National Weather Service marine forecast.</p></div></div>
+    <div class="verdict-card" id="verdict-card"><div class="verdict-dot" id="verdict-dot"><span id="verdict-score">–</span></div><div class="verdict-main"><h3 id="verdict-title">Checking today's conditions…</h3><div class="score-track"><div class="score-marker" id="score-marker" style="left:50%"></div></div><div class="score-ends"><span>Perfect day</span><span>Stay home</span></div><p id="verdict-why">Reading the National Weather Service marine forecast.</p></div></div>
 <div class="cond-link" style="margin:12px 0"><span style="color:#ffd54f;font-weight:800"><svg class=ic aria-hidden=true><use href=#i-star></use></svg> Tampa Bay's top weather pick:</span> <a href="https://spaghettimodels.com/" target="_blank" rel="noopener">Mike's Weather Page</a></div>
     <div class="cond-grid">
       <div class="cond-card">
@@ -3802,7 +3809,16 @@ function tbbVerdict(ps){
   if(storm===3) why.push("numerous thunderstorms");
   else if(storm===2) why.push("scattered thunderstorms");
   else if(storm===1) why.push("isolated thunderstorms possible");
-  return { level: level, why: why.join(" · ") };
+  let score = 100;
+  score -= Math.max(0, wind - 5) * 1.8;
+  score -= Math.max(0, gust - 18) * 1.2;
+  score -= seas * 8;
+  if(storm===1) score -= 8; else if(storm===2) score -= 18; else if(storm===3) score -= 30;
+  if(/waterspout/.test(low)) score -= 15;
+  score = Math.round(score);
+  if(tropical) score = 3;
+  score = Math.max(3, Math.min(100, score));
+  return { level: level, score: score, why: why.join(" · ") };
 }
 function renderVerdict(ps, label){
   const card = document.getElementById("verdict-card");
@@ -3810,10 +3826,20 @@ function renderVerdict(ps, label){
   const whyEl = document.getElementById("verdict-why");
   if(!card || !title || !whyEl || !ps.length) return;
   const v = tbbVerdict(ps);
-  card.classList.remove("v-go","v-caution","v-stay");
-  if(v.level===2){ card.classList.add("v-stay"); title.textContent = "Stay home today"; }
-  else if(v.level===1){ card.classList.add("v-caution"); title.textContent = "Caution — pick your window"; }
-  else { card.classList.add("v-go"); title.textContent = "Good to go"; }
+  const s = v.score;
+  card.classList.remove("v-go","v-good","v-caution","v-rough","v-stay");
+  let band, cls;
+  if(s>=85){ band = "Perfect day on the bay"; cls = "v-go"; }
+  else if(s>=70){ band = "Good day to be out"; cls = "v-good"; }
+  else if(s>=50){ band = "Choppy — pick your window"; cls = "v-caution"; }
+  else if(s>=30){ band = "Rough — experienced skippers only"; cls = "v-rough"; }
+  else { band = "Stay home today"; cls = "v-stay"; }
+  card.classList.add(cls);
+  title.textContent = band;
+  const scoreEl = document.getElementById("verdict-score");
+  if(scoreEl) scoreEl.textContent = s + "%";
+  const marker = document.getElementById("score-marker");
+  if(marker) marker.style.left = Math.max(2, Math.min(98, 100 - s)) + "%";
   whyEl.textContent = "For " + label + " waters: " + (v.why || "light winds and calm seas") + ". Summary of the NWS marine forecast — the skipper always makes the final call.";
 }
 async function loadMarine(){

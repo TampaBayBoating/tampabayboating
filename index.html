@@ -521,6 +521,10 @@ footer.tbb-foot a.soc svg{width:15px!important;height:15px!important;fill:#fff!i
 .ev-card .where{font-size:.85rem; color:var(--muted); margin-bottom:6px}
 .ev-card p{font-size:.88rem; color:var(--ink); margin:0 0 8px}
 .ev-card a{font-size:.88rem; font-weight:700}
+.ev-share{display:inline-flex;align-items:center;gap:6px;margin-left:14px;background:#eef5fb;border:1px solid #bcd8ee;color:#0a2540;font-weight:700;font-size:.85rem;border-radius:999px;padding:5px 13px;cursor:pointer;vertical-align:middle}
+.ev-share:active{background:#8fd0f0}
+.share-toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(20px);background:rgba(6,38,59,.94);color:#fff;font-size:.9rem;font-weight:600;padding:11px 18px;border-radius:999px;opacity:0;pointer-events:none;transition:all .3s ease;z-index:9999;max-width:88vw;text-align:center}
+.share-toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 .ev-pricing{display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:12px 0}
 .ev-tier{background:var(--white); border:1px solid var(--line); border-radius:10px; padding:14px; text-align:center}
 .ev-tier.hot{border:2px solid var(--gold)}
@@ -3718,12 +3722,33 @@ function renderCalendar(){
 }
 function calNav(d){ calM+=d; if(calM<0){calM=11;calY--;} if(calM>11){calM=0;calY++;} renderCalendar(); }
 function evCard(e){
+  const qt = String(e.title||"").replace(/"/g,"&quot;"), qw = String(e.when||"").replace(/"/g,"&quot;"), qp = String(e.where||"").replace(/"/g,"&quot;");
   return `<div class="ev-card${e.featured?" featured":""}">
     ${e.img?`<img class="ev-photo" src="${e.img}" alt="${e.title}" loading="lazy">`:""}
     <div class="when">${e.when}${e.featured?' · <span style="color:var(--gold)">★ Featured</span>':""}</div>
     <h4>${e.title}</h4><div class="where">${e.where}</div><p>${e.desc}</p>
-    <a href="${e.url}" target="_blank" rel="noopener">Event website →</a></div>`;
+    <a href="${e.url}" target="_blank" rel="noopener">Event website →</a><button type="button" class="ev-share" onclick="shareEvent(this)" data-t="${qt}" data-w="${qw}" data-p="${qp}"><svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor" aria-hidden="true"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11A2.99 2.99 0 1 0 15 5c0 .24.04.47.09.7L8.04 9.81a2.99 2.99 0 1 0 0 4.38l7.12 4.16c-.05.21-.08.43-.08.65a2.92 2.92 0 1 0 2.92-2.92z"/></svg>Share</button></div>`;
 }
+window.shareToast = function(msg){
+  let t = document.getElementById("share-toast");
+  if(!t){ t = document.createElement("div"); t.id = "share-toast"; t.className = "share-toast"; document.body.appendChild(t); }
+  t.textContent = msg; t.classList.add("show");
+  clearTimeout(window._shareToastTimer);
+  window._shareToastTimer = setTimeout(function(){ t.classList.remove("show"); }, 2600);
+};
+window.shareEvent = async function(btn){
+  const title = btn.getAttribute("data-t") || "Tampa Bay Boating event";
+  const when = btn.getAttribute("data-w") || "";
+  const where = btn.getAttribute("data-p") || "";
+  const url = "https://tampabayboating.com/#/events";
+  const text = title + (when ? " \u2014 " + when : "") + (where ? " \u00b7 " + where : "");
+  if(navigator.share){
+    try{ await navigator.share({title: title, text: text, url: url}); }catch(_){}
+  } else if(navigator.clipboard && navigator.clipboard.writeText){
+    try{ await navigator.clipboard.writeText(text + " " + url); shareToast("Event link copied \u2014 paste it anywhere"); }
+    catch(_){ shareToast("Copy this link: " + url); }
+  } else { shareToast("Copy this link: " + url); }
+};
 function showDay(ds){
   const evs = evOn(ds);
   document.getElementById("day-events").innerHTML =

@@ -295,6 +295,17 @@ section{padding:40px 0}
 .dir-card{box-shadow:0 1px 3px rgba(10,37,64,.07)}
 </style>
 
+<!-- Google Analytics 4 - Tampa Bay Boating (added Oct 13, 2026) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-KK9LGDH38Y"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-KK9LGDH38Y');
+  window.addEventListener('hashchange', function(){
+    try { gtag('event', 'page_view', { page_path: location.hash || '#/', page_location: location.href, page_title: document.title }); } catch(e) {}
+  });
+</script>
 </head>
 
 <style>

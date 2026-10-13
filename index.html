@@ -12,6 +12,10 @@
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <meta name="theme-color" content="#0a2540">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Tampa Bay Boating">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Tampa Bay Boating">
 <meta property="og:url" content="https://tampabayboating.com/">
@@ -435,6 +439,19 @@ body.dark .photo-card .pc-body i{color:#8fa8bd}
 .nl-band .nl-form input::placeholder{color:#9fb6c9}
 .nl-band .nl-form button{background:#8fd0f0;color:#0a2540;border:none;border-radius:10px;padding:13px 26px;font-size:1rem;font-weight:800;cursor:pointer;white-space:nowrap}
 .nl-band .nl-form button:hover{background:#a5dcf5}
+.app-band{max-width:1180px;margin:22px auto 26px;padding:0 20px;box-sizing:border-box}
+.app-inner{background:#fff;border:2px solid #dbe9f4;border-radius:16px;padding:24px;display:flex;gap:20px;align-items:flex-start}
+.app-icon{width:72px;height:72px;border-radius:18px;flex:none;box-shadow:0 2px 8px rgba(10,37,64,.25)}
+.app-txt h3{font-size:1.25rem;color:#0a2540;margin:0 0 6px}
+.app-txt p{color:#5b6b7c;margin:0 0 14px;max-width:640px}
+.app-btn{display:none;background:#8fd0f0;color:#0a2540;border:none;border-radius:999px;padding:12px 26px;font-size:1rem;font-weight:800;cursor:pointer;margin-bottom:14px}
+.app-btn:hover{background:#a5dcf5}
+.app-steps{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.app-steps .st{background:#f2f8fc;border-radius:12px;padding:14px 16px}
+.app-steps .st-title{display:block;color:#0a2540;margin-bottom:6px}
+.app-steps .st ol{margin:0;padding-left:18px;color:#33536e;font-size:.9rem;line-height:1.55}
+.app-note{font-size:.82rem;color:#5b6b7c;margin-top:12px}
+@media(max-width:700px){.app-inner{flex-direction:column}.app-steps{grid-template-columns:1fr}}
 @media(max-width:560px){.nl-band .nl-form{flex-direction:column}.nl-band h2{font-size:1.35rem}}
 body.dark .nl-band{background:linear-gradient(160deg,#060d18 0%,#0b1a2e 60%,#0a3a3a 130%)}
 
@@ -1205,6 +1222,29 @@ results.addEventListener('click',function(e){
     <div class="nl-form">
       <input id="nl-email-home" type="email" placeholder="you@email.com" aria-label="Email address">
       <button onclick="subscribeNLHome()">Sign Up</button>
+    </div>
+  </div>
+</div>
+<div class="app-band" id="app-band">
+  <div class="app-inner">
+    <img class="app-icon" src="assets/tbb-logo.webp" alt="Tampa Bay Boating app icon">
+    <div class="app-txt">
+      <h3>Put Tampa Bay Boating on your home screen</h3>
+      <p>No app store, no download \u2014 turn this site into an icon on your phone and today's tides, bite and boating score are one tap away.</p>
+      <button class="app-btn" id="pwa-btn" type="button">Install the icon</button>
+      <div class="app-steps">
+        <div class="st"><b class="st-title">iPhone \u2014 Safari</b><ol>
+          <li>Tap the <b>Share</b> button (the square with an arrow pointing up) at the bottom of Safari.</li>
+          <li>Scroll down and tap <b>Add to Home Screen</b>.</li>
+          <li>Tap <b>Add</b> \u2014 the Tampa Bay Boating logo lands on your home screen.</li>
+        </ol></div>
+        <div class="st"><b class="st-title">Android \u2014 Chrome</b><ol>
+          <li>Tap the <b>\u22ee menu</b> in the top-right corner.</li>
+          <li>Tap <b>Add to Home screen</b> (some phones say <b>Install app</b>).</li>
+          <li>Tap <b>Add</b> \u2014 done.</li>
+        </ol></div>
+      </div>
+      <div class="app-note">Samsung Internet: tap the menu (\u2630), then <b>Add page to</b> \u2192 <b>Home screen</b>.</div>
     </div>
   </div>
 </div></div>
@@ -4427,6 +4467,23 @@ document.addEventListener('click',function(e){ var p=document.getElementById('tr
     .catch(()=>{
       /* NWS fetch failed — bar stays hidden */
     });
+})();
+</script>
+<script>
+/* Add-to-home-screen: hide the card when already running as an app; reveal the install button when the browser offers one */
+(function(){
+  var band = document.getElementById('app-band');
+  if(!band) return;
+  if(window.navigator.standalone || (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches)){ band.style.display = 'none'; return; }
+  var btn = document.getElementById('pwa-btn');
+  var dp = null;
+  window.addEventListener('beforeinstallprompt', function(e){ e.preventDefault(); dp = e; btn.style.display = 'inline-block'; });
+  btn.addEventListener('click', function(){
+    if(!dp) return;
+    dp.prompt();
+    dp.userChoice.then(function(){ dp = null; btn.style.display = 'none'; });
+  });
+  window.addEventListener('appinstalled', function(){ band.style.display = 'none'; });
 })();
 </script>
 </body></html>

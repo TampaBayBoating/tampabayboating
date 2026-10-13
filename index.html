@@ -4350,11 +4350,17 @@ function renderTodayCards(){
   }catch(e){}
   try{
     const dnEl = document.getElementById("tcDine");
-    if(dnEl && typeof DINE !== "undefined" && DINE.length){
-      const start = new Date(new Date().getFullYear(), 0, 0);
-      const doy = Math.floor((Date.now() - start.getTime()) / 864e5);
-      const pick = DINE[doy % DINE.length];
-      dnEl.textContent = "Spot of the day: " + pick[0] + " \u00b7 " + pick[1];
+    const dnImg = document.getElementById("pcImgDine");
+    const DINE_PHOTOS = { "Rick's on the River": "assets/dining/ricks-on-the-river.jpg", "Armature Works": "assets/dining/armature-works.jpg" };
+    if(typeof DINE !== "undefined" && DINE.length){
+      const spots = DINE.filter(e => DINE_PHOTOS[e[0]]);
+      if(spots.length){
+        const start = new Date(new Date().getFullYear(), 0, 0);
+        const doy = Math.floor((Date.now() - start.getTime()) / 864e5);
+        const pick = spots[doy % spots.length];
+        if(dnEl) dnEl.textContent = "Spot of the day: " + pick[0] + " \u00b7 " + pick[1];
+        if(dnImg) dnImg.style.backgroundImage = "url('" + DINE_PHOTOS[pick[0]] + "')";
+      }
     }
   }catch(e){}
   try{
@@ -4363,7 +4369,6 @@ function renderTodayCards(){
     setImg("pcImgTides", ["assets/hero-skyway.jpg", "assets/hero-tbb.jpg"], 0);
     setImg("pcImgFish", ["assets/card-fishing.jpg", "assets/hero-tbb.jpg"], 1);
     setImg("pcImgEvents", ["assets/tiktok-beercanisland.jpg", "assets/events/st-pete-boat-show.jpg"], 0);
-    setImg("pcImgDine", ["assets/dining/armature-works.jpg", "assets/dining/ricks-on-the-river.jpg"], 1);
   }catch(e){}
   try{
     const fishEl = document.getElementById("tcFish");

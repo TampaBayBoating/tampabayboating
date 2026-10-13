@@ -365,9 +365,6 @@ body{top:0 !important}
 .score-track{position:relative;height:10px;border-radius:99px;background:linear-gradient(90deg,#1e9e6a 0%,#7bc950 30%,#e3c008 55%,#e07b28 78%,#c0392b 100%);margin:9px 3px 3px}
 .score-marker{position:absolute;top:50%;left:50%;width:19px;height:19px;border-radius:50%;background:#0a2540;border:3px solid #fff;box-shadow:0 1px 6px rgba(0,0,0,.45);transform:translate(-50%,-50%);transition:left .7s ease}
 .score-ends{display:flex;justify-content:space-between;font-size:.72rem;font-weight:700;color:#5b7a94;margin:0 1px 6px;text-transform:uppercase;letter-spacing:.4px}
-.score-strip{position:relative;display:block;height:17px;margin:3px 10px 5px}
-.score-line{position:absolute;left:0;right:0;top:50%;transform:translateY(-50%);height:5px;border-radius:99px;background:linear-gradient(90deg,#1e9e6a 0%,#7bc950 30%,#e3c008 55%,#e07b28 78%,#c0392b 100%);opacity:.95}
-.score-bubble{position:absolute;top:50%;left:9%;transform:translate(-50%,-50%);min-width:36px;height:24px;padding:0 7px;border-radius:999px;background:#1e9e6a;color:#fff;border:2px solid #fff;box-shadow:0 1px 6px rgba(0,0,0,.45);font-size:.78rem;font-weight:800;display:flex;align-items:center;justify-content:center;transition:left .7s ease,background .3s}
 .verdict-card.v-good{border-color:#57a639;background:#eef7e8}.verdict-card.v-good .verdict-dot{background:#57a639}
 .verdict-card.v-rough{border-color:#e07b28;background:#fdf0e2}.verdict-card.v-rough .verdict-dot{background:#e07b28}
 .wave-grid{display:flex;gap:14px;flex-wrap:wrap;margin:8px 0 10px}
@@ -982,7 +979,6 @@ body.dark body.dark /* ---- Tampa Bay Boating Shop ---- */
     <button class="tb-search" id="search-btn" aria-label="Search the site" title="Search"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg></button>
     <button class="tb-lang" id="lang-btn" aria-label="Translate this page" title="Translate"><svg class=ic aria-hidden=true><use href=#i-globe></use></svg> Language</button>
   </div>
-  <a class="score-strip" id="score-strip" href="#/tides" style="display:none" aria-label="Today's boating score — see the full forecast" title="Today's boating score"><span class="score-line"></span><span class="score-bubble" id="score-bubble">–</span></a>
   <script>
 /* Topbar live conditions: air temp + wind (NWS KTPA) + water temp (NOAA 8726674) */
 (function(){
@@ -3879,26 +3875,18 @@ function renderVerdict(ps, label){
   const v = tbbVerdict(ps);
   const s = v.score;
   card.classList.remove("v-go","v-good","v-caution","v-rough","v-stay");
-  let band, cls, bcol;
-  if(s>=85){ band = "Perfect day on the bay"; cls = "v-go"; bcol = "#1e9e6a"; }
-  else if(s>=70){ band = "Good day to be out"; cls = "v-good"; bcol = "#57a639"; }
-  else if(s>=50){ band = "Choppy — pick your window"; cls = "v-caution"; bcol = "#d9a400"; }
-  else if(s>=30){ band = "Rough — experienced skippers only"; cls = "v-rough"; bcol = "#e07b28"; }
-  else { band = "Stay home today"; cls = "v-stay"; bcol = "#c0392b"; }
+  let band, cls;
+  if(s>=85){ band = "Perfect day on the bay"; cls = "v-go"; }
+  else if(s>=70){ band = "Good day to be out"; cls = "v-good"; }
+  else if(s>=50){ band = "Choppy — pick your window"; cls = "v-caution"; }
+  else if(s>=30){ band = "Rough — experienced skippers only"; cls = "v-rough"; }
+  else { band = "Stay home today"; cls = "v-stay"; }
   card.classList.add(cls);
   title.textContent = band;
   const scoreEl = document.getElementById("verdict-score");
   if(scoreEl) scoreEl.textContent = s + "%";
   const marker = document.getElementById("score-marker");
   if(marker) marker.style.left = Math.max(2, Math.min(98, 100 - s)) + "%";
-  const strip = document.getElementById("score-strip");
-  const bubble = document.getElementById("score-bubble");
-  if(strip && bubble){
-    strip.style.display = "block";
-    bubble.textContent = s + "%";
-    bubble.style.left = Math.max(4, Math.min(96, 100 - s)) + "%";
-    bubble.style.background = bcol;
-  }
   whyEl.textContent = "For " + label + " waters: " + (v.why || "light winds and calm seas") + ". Summary of the NWS marine forecast — the skipper always makes the final call.";
 }
 async function loadMarine(){

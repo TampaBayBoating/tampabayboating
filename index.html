@@ -367,6 +367,13 @@ body{top:0 !important}
 .score-ends{display:flex;justify-content:space-between;font-size:.72rem;font-weight:700;color:#5b7a94;margin:0 1px 6px;text-transform:uppercase;letter-spacing:.4px}
 .verdict-card.v-good{border-color:#57a639;background:#eef7e8}.verdict-card.v-good .verdict-dot{background:#57a639}
 .verdict-card.v-rough{border-color:#e07b28;background:#fdf0e2}.verdict-card.v-rough .verdict-dot{background:#e07b28}
+.wave-grid{display:flex;gap:14px;flex-wrap:wrap;margin:8px 0 10px}
+.wave-stat{flex:1;min-width:150px;background:#eef5fb;border:1px solid #d7e6f2;border-radius:12px;padding:12px 14px}
+.wave-num{font-size:1.5rem;font-weight:800;color:#0a2540;line-height:1.15}
+.wave-lbl{font-size:.8rem;color:#5b7a94;font-weight:600;margin-top:2px}
+.wave-detail{font-size:.85rem;color:#33536e;font-weight:600;margin-top:4px}
+.wave-rating{font-size:1.02rem;font-weight:700;color:#0a2540;margin:2px 0 8px;line-height:1.45}
+.wave-note{font-size:.86rem;color:#33536e;line-height:1.55;margin:0 0 6px}
 .support-card{background:#dbe9f4;border-radius:16px;padding:28px;max-width:720px;margin:0 auto;box-shadow:0 6px 18px rgba(10,37,64,.07)}
 .support-card h3{color:#0a2540;font-size:1.3rem;margin:0 0 10px}
 .support-card p{color:#0a2540;font-size:.95rem;margin-bottom:18px}
@@ -1224,6 +1231,10 @@ results.addEventListener('click',function(e){
       <div class="cond-card">
         <h3>Marine Forecast</h3>
         <div id="marine-forecast"><p class="cond-fallback">Loading forecast…</p></div>
+      </div>
+      <div class="cond-card" id="wave-card">
+        <h3>Jet Ski Wave Report</h3>
+        <div id="wave-body"><p class="cond-fallback">Checking the Gulf…</p></div>
       </div>
     </div>
     <div class="cond-link"><a href="https://tampabayboating.com/conditions/" target="_blank" rel="noopener">Full 7-day tides, weather &amp; marine forecast →</a></div>
@@ -3751,7 +3762,7 @@ function changeTravelLocation(key){
   const loc = TRAVEL_LOCATIONS[key] || TRAVEL_LOCATIONS.tampa;
   document.getElementById("tides-title").textContent = key==="tampa" ? "Tampa Bay Tides \u0026 Marine Forecast" : loc.name + " Tides \u0026 Marine Forecast";
   document.getElementById("tides-sub").textContent = "Live from NOAA \u0026 the National Weather Service \u00B7 " + loc.label;
-  loadTides(); loadMarine();
+  loadTides(); loadMarine(); loadWaves();
 }
 async function loadTides(){
   const box = document.getElementById("tide-list");
@@ -3865,6 +3876,52 @@ async function loadMarine(){
   }catch(e){
     box.innerHTML = `<p class="cond-fallback">Forecast unavailable right now — <a href="https://tampabayboating.com/conditions/" target="_blank" rel="noopener" style="color:#fff">see the full forecast</a>.</p>`;
     try{ const vt=document.getElementById("verdict-title"), vw=document.getElementById("verdict-why"); if(vt) vt.textContent="Verdict unavailable right now"; if(vw) vw.textContent="Couldn\'t reach the marine forecast — check the full forecast before heading out."; }catch(_){}
+  }
+}
+
+
+async function loadWaves(){
+  const card = document.getElementById("wave-card");
+  const body = document.getElementById("wave-body");
+  if(!card || !body) return;
+  if(typeof currentTravelKey !== "undefined" && currentTravelKey !== "tampa"){ card.style.display = "none"; return; }
+  card.style.display = "";
+  try{
+    const rs = await Promise.all([
+      fetch("https://api.weather.gov/zones/forecast/GMZ853/forecast", {headers:{"User-Agent":"tampabayboating.com"}}),
+      fetch("https://api.weather.gov/zones/forecast/GMZ830/forecast", {headers:{"User-Agent":"tampabayboating.com"}})
+    ]);
+    const g = await rs[0].json(); const b = await rs[1].json();
+    const gp = (g.properties&&g.properties.periods||[])[0];
+    const bp = (b.properties&&b.properties.periods||[])[0];
+    if(!gp) throw 0;
+    const low = String(gp.detailedForecast||"").toLowerCase();
+    let seasHi = 0, seasLabel = "\u2014";
+    const sm = low.match(/seas[^0-9]{0,14}(\d+)\s*(?:to\s*(\d+))?\s*(?:feet|foot)/);
+    if(sm){ const lo2 = parseInt(sm[1],10); seasHi = parseInt(sm[2]||sm[1],10); seasLabel = sm[2] ? (lo2 + "\u2013" + seasHi + " ft") : ("\u2248 " + seasHi + " ft"); if(/or less/.test(low)) seasLabel = "\u2264 " + seasHi + " ft"; }
+    let detail = "";
+    const dm = low.match(/wave detail:\s*([a-z]+)?\s*(\d+)\s*feet at\s*(\d+)\s*seconds/);
+    if(dm){ const dir = dm[1] ? (dm[1].charAt(0).toUpperCase() + dm[1].slice(1)) : ""; detail = "Swell: " + (dir ? dir + " " : "") + dm[2] + " ft @ " + dm[3] + " sec"; }
+    let bayLabel = "\u2014";
+    if(bp){ const bl = String(bp.detailedForecast||"").toLowerCase(); const cm = bl.match(/(smooth|light chop|moderate chop|rough)/); if(cm) bayLabel = cm[1].charAt(0).toUpperCase() + cm[1].slice(1); }
+    let rating;
+    if(seasHi<=1) rating = "Flat out there \u2014 no air today. Make it a bay day.";
+    else if(seasHi===2) rating = "Small stuff \u2014 bunny hops and practice runs at the passes.";
+    else if(seasHi===3) rating = "Fun size \u2014 the sweet spot. Send it, with a buddy watching.";
+    else if(seasHi===4) rating = "Real air on offer \u2014 know your limits and ride with a buddy.";
+    else if(seasHi===5) rating = "Heavy water \u2014 experienced riders only.";
+    else rating = "Too big \u2014 even the pros sit this one out. Stay in the bay.";
+    if(dm){ const per = parseInt(dm[3],10); if(per<=4 && seasHi>=3) rating += " Short-period wind chop though \u2014 messy faces, not clean rollers."; else if(per>=6) rating += " Clean, long-period rollers \u2014 the best shape it gets here."; }
+    body.innerHTML =
+      '<div class="wave-grid">' +
+        '<div class="wave-stat"><div class="wave-num">' + seasLabel + '</div><div class="wave-lbl">Gulf seas \u00b7 outside the passes</div>' + (detail ? '<div class="wave-detail">' + detail + '</div>' : '') + '</div>' +
+        '<div class="wave-stat"><div class="wave-num">' + bayLabel + '</div><div class="wave-lbl">Inside Tampa Bay</div></div>' +
+      '</div>' +
+      '<p class="wave-rating">' + rating + '</p>' +
+      '<p class="wave-note">Where the air is: Gulf swell rolling into Bunces Pass &amp; Fort De Soto, Pass-a-Grille, the Egmont Channel mouth, John\'s Pass and Clearwater Pass.</p>' +
+      '<p class="wave-note">Florida PWC rules: never jump a wake within 100 ft of another vessel, and riding ends a half-hour after sunset. Lanyard on, always.</p>';
+  }catch(e){
+    body.innerHTML = '<p class="cond-fallback">Wave report unavailable right now \u2014 see the marine forecast above.</p>';
   }
 }
 

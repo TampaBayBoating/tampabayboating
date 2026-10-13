@@ -401,6 +401,7 @@ body{top:0 !important}
 .photo-card .pc-body{display:block;padding:16px}
 .photo-card .pc-body b{display:block;font-size:1.05rem;font-weight:800;margin-bottom:2px}
 .photo-card .pc-body i{display:block;font-style:normal;font-size:.82rem;color:#5b6b7c;margin-bottom:8px}
+.photo-card .pc-body i.pc-live{color:#0a2540;font-weight:600}
 .photo-card .pc-body u{display:block;text-decoration:none;color:#0e7c7b;font-weight:700;font-size:.82rem;letter-spacing:.3px}
 body.dark .photo-card{background:#16202e;border-color:#2a3a4f}
 body.dark .photo-card .pc-body b{color:#e8eef4}
@@ -1021,6 +1022,12 @@ body.dark body.dark /* ---- Tampa Bay Boating Shop ---- */
       else if (prev.type==='L') { label='Rising'; up=true; }
       else { label='Falling'; up=false; }
       set('tbTide', label);
+      var tcT = document.getElementById('tcTide');
+      if (tcT && next) {
+        var hh = next.t.getHours(), mm = String(next.t.getMinutes()).padStart(2,'0');
+        var ap = hh >= 12 ? 'PM' : 'AM'; hh = hh % 12 || 12;
+        tcT.textContent = ' · Next ' + (next.type === 'H' ? 'high' : 'low') + ' ' + hh + ':' + mm + ' ' + ap;
+      }
       var u = document.getElementById('tbTideUse');
       if (u) u.setAttribute('href', up ? '#i-tide-up' : '#i-tide-down');
     }).catch(function(){});
@@ -1161,10 +1168,10 @@ results.addEventListener('click',function(e){
 <div class="today-tabs" id="browse">
   <div class="tabs-label">Today on the bay</div>
   <div class="today-grid photo-cards">
-    <a class="photo-card" href="#/tides"><span class="pc-img" style="background-image:url('assets/hero-skyway.jpg')"></span><span class="pc-body"><b>Tides &amp; Forecast</b><i>Plan around the water</i><u>Check conditions →</u></span></a>
-    <a class="photo-card" href="#/fishing"><span class="pc-img" style="background-image:url('assets/card-fishing.jpg')"></span><span class="pc-body"><b>Fishing Report</b><i>See what's biting</i><u>See what's biting →</u></span></a>
-    <a class="photo-card" href="#/events"><span class="pc-img" style="background-image:url('assets/tiktok-beercanisland.jpg')"></span><span class="pc-body"><b>Events</b><i>See what's happening</i><u>Find events →</u></span></a>
-    <a class="photo-card" href="#/dining"><span class="pc-img" style="background-image:url('assets/dining/armature-works.jpg')"></span><span class="pc-body"><b>Dock &amp; Dine</b><i>Find a boat-up meal</i><u>Find a spot →</u></span></a>
+    <a class="photo-card" href="#/tides"><span class="pc-img" style="background-image:url('assets/hero-skyway.jpg')"></span><span class="pc-body"><b>Tides &amp; Forecast</b><i class="pc-live"><span id="tcScore">Plan around the water</span><span id="tcTide"></span></i><u>Check conditions →</u></span></a>
+    <a class="photo-card" href="#/fishing"><span class="pc-img" style="background-image:url('assets/card-fishing.jpg')"></span><span class="pc-body"><b>Fishing Report</b><i class="pc-live" id="tcFish">See what's biting</i><u>See what's biting →</u></span></a>
+    <a class="photo-card" href="#/events"><span class="pc-img" style="background-image:url('assets/tiktok-beercanisland.jpg')"></span><span class="pc-body"><b>Events</b><i class="pc-live" id="tcEvent">See what's happening</i><u>Find events →</u></span></a>
+    <a class="photo-card" href="#/dining"><span class="pc-img" style="background-image:url('assets/dining/armature-works.jpg')"></span><span class="pc-body"><b>Dock &amp; Dine</b><i class="pc-live" id="tcDine">Find a boat-up meal</i><u>Find a spot →</u></span></a>
   </div>
 </div>
 <div class="section-divider"></div>
@@ -3890,6 +3897,8 @@ function renderVerdict(ps, label){
   if(scoreEl) scoreEl.textContent = s + "%";
   const marker = document.getElementById("score-marker");
   if(marker) marker.style.left = Math.max(2, Math.min(98, 100 - s)) + "%";
+  const tcScore = document.getElementById("tcScore");
+  if(tcScore) tcScore.textContent = s + "% today — " + band;
   whyEl.textContent = "For " + label + " waters: " + (v.why || "light winds and calm seas") + ". Summary of the NWS marine forecast — the skipper always makes the final call.";
 }
 async function loadMarine(){
@@ -4284,7 +4293,43 @@ async function loadForecastBadges(){
 }
 
 /* ---- init ---- */
-["renderGrid","renderDir","updateCartUI","renderCalendar","loadTides","loadMarine","loadWaves","loadForecastBadges","renderFuel","renderSvc","renderOwner","renderDealers","renderGear"].forEach(fn=>{ try{ window[fn](); }catch(e){ console.warn("init "+fn+" failed:", e.message); } });
+function renderTodayCards(){
+  try{
+    const now = new Date();
+    const today = now.getFullYear() + "-" + String(now.getMonth()+1).padStart(2,"0") + "-" + String(now.getDate()).padStart(2,"0");
+    const up = EVENTS.filter(e => (e.end || e.start) >= today).sort((a,b) => a.start < b.start ? -1 : 1)[0];
+    const evEl = document.getElementById("tcEvent");
+    if(up && evEl){
+      const p = up.start.split("-");
+      const d = new Date(+p[0], +p[1]-1, +p[2]);
+      const when = d.toLocaleDateString("en-US",{weekday:"short"}) + ", " + d.toLocaleDateString("en-US",{month:"short", day:"numeric"});
+      let t = up.title || "";
+      if(t.length > 42) t = t.slice(0, 41) + "\u2026";
+      evEl.textContent = "Next: " + when + " \u00b7 " + t;
+    }
+  }catch(e){}
+  try{
+    const dnEl = document.getElementById("tcDine");
+    if(dnEl && typeof DINE !== "undefined" && DINE.length){
+      const start = new Date(new Date().getFullYear(), 0, 0);
+      const doy = Math.floor((Date.now() - start.getTime()) / 864e5);
+      const pick = DINE[doy % DINE.length];
+      dnEl.textContent = "Spot of the day: " + pick[0] + " \u00b7 " + pick[1];
+    }
+  }catch(e){}
+  try{
+    const fishEl = document.getElementById("tcFish");
+    const rep = document.querySelector(".daily-report .type");
+    if(fishEl && rep){
+      const species = [];
+      const re = /<b>\d+\.\s*([^<]+)<\/b>/g;
+      let m;
+      while((m = re.exec(rep.innerHTML)) && species.length < 3) species.push(m[1].trim());
+      if(species.length) fishEl.textContent = "Today's best bets: " + species.join(", ");
+    }
+  }catch(e){}
+}
+["renderGrid","renderDir","updateCartUI","renderCalendar","loadTides","loadMarine","loadWaves","loadForecastBadges","renderFuel","renderSvc","renderOwner","renderDealers","renderGear","renderTodayCards"].forEach(fn=>{ try{ window[fn](); }catch(e){ console.warn("init "+fn+" failed:", e.message); } });
 </script>
 
 <script>

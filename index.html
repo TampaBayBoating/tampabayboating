@@ -190,6 +190,10 @@ body.dark .gear-cat{color:#e8eef4}
 .dir-price{font-size:1.25rem; font-weight:800; color:var(--navy); margin:6px 0}
 .map-filter{border:1px solid var(--line); background:#fff; border-radius:999px; padding:6px 14px; margin:3px; font-size:.85rem; cursor:pointer}
 .map-filter.active{background:var(--navy); color:#fff; border-color:var(--navy)}
+.tbb-loc-btn{width:38px;height:38px;border:1px solid var(--line);background:#fff;border-radius:10px;box-shadow:0 1px 5px rgba(0,0,0,.35);color:var(--navy);cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0}
+.tbb-loc-btn.on{background:#8fd0f0;color:#06263b;border-color:#8fd0f0}
+.tbb-loc-msg{position:absolute;left:10px;bottom:10px;z-index:800;background:rgba(6,38,59,.92);color:#fff;font-size:.82rem;padding:8px 12px;border-radius:8px;max-width:78%;display:none}
+
 .regs-table{width:100%; border-collapse:collapse; font-size:.85rem; margin-top:6px}
 .regs-table th{text-align:left; color:var(--teal); font-size:.75rem; text-transform:uppercase; letter-spacing:1px; padding:6px 4px; border-bottom:2px solid var(--line)}
 .regs-table td{padding:6px 4px; border-bottom:1px solid var(--line)}
@@ -2950,6 +2954,46 @@ window.tbbMapInit=(function(){
   noaaChart.getTileUrl = function(c){ return noaaTileUrl(c); };
   L.control.layers({'<svg class=ic aria-hidden=true><use href=#i-map></use></svg> Navigation chart': chartBase, '<svg class=ic aria-hidden=true><use href=#i-road></use></svg> Street map': streetBase, '<svg class=ic aria-hidden=true><use href=#i-anchor></use></svg> NOAA chart (all markers)': noaaChart}, {}, {collapsed: true}).addTo(map);
   const layer = L.layerGroup().addTo(map);
+  /* Live GPS dot — the visitor's own phone location (Leaflet locate, watch mode) */
+  var locDot=null, locRing=null, locOn=false, locFollow=false, locMsgTimer=null;
+  var locMsg=document.createElement('div'); locMsg.className='tbb-loc-msg'; map.getContainer().appendChild(locMsg);
+  function showLocMsg(t){ locMsg.textContent=t; locMsg.style.display='block'; clearTimeout(locMsgTimer); locMsgTimer=setTimeout(function(){ locMsg.style.display='none'; }, 4500); }
+  var LocBtn=L.Control.extend({options:{position:'bottomright'}, onAdd:function(){
+    var b=L.DomUtil.create('button','tbb-loc-btn');
+    b.type='button'; b.title='My location'; b.setAttribute('aria-label','Show my live location on the map');
+    b.innerHTML='<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="6.5"/><circle cx="12" cy="12" r="2.4" fill="currentColor" stroke="none"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3"/></svg>';
+    L.DomEvent.disableClickPropagation(b);
+    L.DomEvent.on(b,'click',function(){
+      if(locOn){
+        map.stopLocate(); locOn=false; locFollow=false; b.classList.remove('on');
+        if(locDot){ map.removeLayer(locDot); locDot=null; }
+        if(locRing){ map.removeLayer(locRing); locRing=null; }
+      } else {
+        locOn=true; locFollow=true; b.classList.add('on');
+        showLocMsg('Finding your location\u2026');
+        map.locate({watch:true, enableHighAccuracy:true, setView:false});
+      }
+    });
+    return b;
+  }});
+  map.addControl(new LocBtn());
+  map.on('locationfound', function(e){
+    locMsg.style.display='none';
+    if(!locDot){
+      locRing=L.circle(e.latlng,{radius:e.accuracy/2, color:'#1a73e8', weight:1, fillColor:'#1a73e8', fillOpacity:0.12}).addTo(map);
+      locDot=L.circleMarker(e.latlng,{radius:8, color:'#ffffff', weight:3, fillColor:'#1a73e8', fillOpacity:1}).addTo(map);
+    } else {
+      locDot.setLatLng(e.latlng); locRing.setLatLng(e.latlng); locRing.setRadius(e.accuracy/2);
+    }
+    if(locFollow){ map.setView(e.latlng, Math.max(map.getZoom(),14), {animate:true}); }
+  });
+  map.on('locationerror', function(){
+    showLocMsg('Location unavailable \u2014 allow location access for this site in your browser settings.');
+    var btn=document.querySelector('.tbb-loc-btn'); if(btn) btn.classList.remove('on');
+    locOn=false; locFollow=false;
+  });
+  map.on('dragstart', function(){ locFollow=false; });
+
   function draw(cat){
     layer.clearLayers();
     MAP_PINS.filter(p => cat==='all' || p[1]===cat).forEach(p => {

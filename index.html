@@ -3887,9 +3887,10 @@ async function loadWaves(){
   if(typeof currentTravelKey !== "undefined" && currentTravelKey !== "tampa"){ card.style.display = "none"; return; }
   card.style.display = "";
   try{
+    const sig = (typeof AbortSignal!=="undefined" && AbortSignal.timeout) ? AbortSignal.timeout(9000) : undefined;
     const rs = await Promise.all([
-      fetch("https://api.weather.gov/zones/forecast/GMZ853/forecast", {headers:{"User-Agent":"tampabayboating.com"}}),
-      fetch("https://api.weather.gov/zones/forecast/GMZ830/forecast", {headers:{"User-Agent":"tampabayboating.com"}})
+      fetch("https://api.weather.gov/zones/forecast/GMZ853/forecast", {headers:{"User-Agent":"tampabayboating.com"}, signal:sig}),
+      fetch("https://api.weather.gov/zones/forecast/GMZ830/forecast", {headers:{"User-Agent":"tampabayboating.com"}, signal:sig})
     ]);
     const g = await rs[0].json(); const b = await rs[1].json();
     const gp = (g.properties&&g.properties.periods||[])[0];
@@ -4244,7 +4245,7 @@ async function loadForecastBadges(){
 }
 
 /* ---- init ---- */
-["renderGrid","renderDir","updateCartUI","renderCalendar","loadTides","loadMarine","loadForecastBadges","renderFuel","renderSvc","renderOwner","renderDealers","renderGear"].forEach(fn=>{ try{ window[fn](); }catch(e){ console.warn("init "+fn+" failed:", e.message); } });
+["renderGrid","renderDir","updateCartUI","renderCalendar","loadTides","loadMarine","loadWaves","loadForecastBadges","renderFuel","renderSvc","renderOwner","renderDealers","renderGear"].forEach(fn=>{ try{ window[fn](); }catch(e){ console.warn("init "+fn+" failed:", e.message); } });
 </script>
 
 <script>

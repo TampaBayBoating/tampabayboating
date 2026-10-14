@@ -581,14 +581,26 @@ footer.tbb-foot a.soc svg{width:15px!important;height:15px!important;fill:#fff!i
 body.dark .travel-box{background:#16202e;border-color:#2a3a4f}
 body.dark .travel-box .travel-label{color:#e8eef4}
 .area-chips{display:grid;grid-template-columns:repeat(auto-fill,minmax(118px,1fr));gap:8px;margin:14px 0 2px}
-.area-chips .area-label{grid-column:1/-1;font-size:.75rem;letter-spacing:2px;text-transform:uppercase;color:#0a2540;font-weight:800}
-.area-chip{border:2px solid #b8d4e8;background:#fff;color:#0a2540;font-weight:700;font-size:.92rem;padding:9px 6px;border-radius:999px;cursor:pointer;font-family:inherit;text-align:center;width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.area-chips .area-label{grid-column:1/-1;font-size:.75rem;letter-spacing:2px;text-transform:uppercase;color:#dcebf5;font-weight:800}
+.area-chip{border:2px solid #b8d4e8;background:#fff;color:#0a2540;font-weight:700;font-size:.92rem;padding:8px 6px;border-radius:999px;cursor:pointer;font-family:inherit;text-align:center;width:100%;display:flex;align-items:center;justify-content:center;min-height:50px;line-height:1.15}
 .area-chip.active{background:#8fd0f0;border-color:#8fd0f0}
 body.dark .area-chips .area-label{color:#e8eef4}
 body.dark .area-chip{background:#16202e;border-color:#2a3a4f;color:#e8eef4}
 body.dark .area-chip.active{background:#8fd0f0;color:#0a2540;border-color:#8fd0f0}
 .spot-row{display:flex;justify-content:space-between;gap:10px;padding:7px 0;border-bottom:1px solid rgba(140,170,190,.25)}
 .spot-row:last-of-type{border-bottom:none}
+.week-strip{display:flex;gap:6px;padding:2px 0 6px}
+.day-btn{flex:1 1 0;min-width:42px;border:2px solid #b8d4e8;background:#fff;color:#0a2540;border-radius:10px;padding:0 0 6px;cursor:pointer;font-family:inherit;text-align:center;overflow:hidden}
+.day-btn .db-dow{display:block;background:#dcebf5;font-weight:800;font-size:.62rem;letter-spacing:.5px;text-transform:uppercase;padding:3px 0 2px}
+.day-btn .db-num{display:block;font-weight:800;font-size:1.15rem;line-height:1.25;margin-top:2px}
+.day-btn.active{background:#8fd0f0;border-color:#8fd0f0}
+.day-btn.active .db-dow{background:rgba(10,37,64,.15)}
+body.dark .day-btn{background:#16202e;border-color:#2a3a4f;color:#e8eef4}
+body.dark .day-btn .db-dow{background:#22344c}
+body.dark .day-btn.active{background:#8fd0f0;color:#0a2540;border-color:#8fd0f0}
+#week-detail:not(:empty){background:rgba(255,255,255,.05);border:1px solid rgba(140,170,190,.3);border-radius:14px;padding:12px 14px;margin-top:10px}
+.week-part{padding:8px 0;border-bottom:1px solid rgba(140,170,190,.25)}
+.week-part:last-child{border-bottom:none}
 body.dark .travel-box select{background:#0b1220;color:#e8eef4;border-color:#2a3a4f}
 body.dark .travel-box .travel-note{color:#8fa8bd}
 .cond-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;max-width:960px;margin:0 auto}
@@ -1302,6 +1314,10 @@ results.addEventListener('click',function(e){
   <div class="wrap">
     <h2 id="tides-title">Tampa Bay Tides &amp; Marine Forecast</h2>
     <div class="sub" id="tides-sub">Live from NOAA &amp; the National Weather Service · East Bay / Tampa Bay</div>
+    <div id="week-block" style="margin:14px 0 2px">
+        <div class="week-strip" id="week-strip"><p class="cond-fallback">Loading the week&hellip;</p></div>
+        <div id="week-detail"></div>
+      </div>
     <div class="area-chips" role="group" aria-label="Choose your part of Tampa Bay">
       <span class="area-label">Your part of the bay</span>
       <button type="button" class="area-chip active" onclick="setBayArea('tampa',this)">Tampa Bay</button>
@@ -3876,7 +3892,7 @@ function changeTravelLocation(key){
   document.getElementById("tides-sub").textContent = "Live from NOAA \u0026 the National Weather Service \u00B7 " + loc.label;
   bayKey = (key==="tampa") ? "tampa" : null;
   document.querySelectorAll('.area-chip').forEach((x,i)=>x.classList.toggle('active', key==="tampa" && i===0));
-  loadTides(); loadMarine(); loadWaves(); loadSpot();
+  loadTides(); loadMarine(); loadWaves(); loadSpot(); loadWeek();
 }
 const SPOT_COORDS = { keywest:[24.5551,-81.78], destin:[30.3935,-86.4958], panamacity:[30.1766,-85.8055], stuart:[27.1975,-80.2528], fortmyers:[26.6406,-81.8723], daytona:[29.2108,-81.0228], crystalriver:[29.1386,-83.0351], naples:[26.142,-81.7948], jacksonville:[30.3929,-81.4243] };
 const BAY_AREAS = {
@@ -3912,7 +3928,14 @@ function setBayArea(key, btn){
   const b = BAY_AREAS[key];
   document.getElementById("tides-title").textContent = b.name + " Tides & Marine Forecast";
   document.getElementById("tides-sub").textContent = "Live from NOAA & the National Weather Service \u00B7 " + b.slabel;
-  loadTides(); loadMarine(); loadSpot();
+  loadTides(); loadMarine(); loadSpot(); loadWeek();
+}
+function mphToKt(s){
+  return String(s||"").replace(/(\d+)\s*(?:to\s*(\d+))?\s*mph/gi, function(m, a, b){
+    const ka = Math.round(parseInt(a,10)/1.15078);
+    if(b) return ka + " to " + Math.round(parseInt(b,10)/1.15078) + " kt";
+    return ka + " kt";
+  });
 }
 async function loadSpot(){
   const body = document.getElementById("spot-body");
@@ -3922,17 +3945,11 @@ async function loadSpot(){
   const loc = wxLoc();
   if(title) title.textContent = "At This Spot \u2014 " + loc.name;
   if(frame){
-    const src = "https://embed.windy.com/embed2.html?lat="+loc.lat+"&lon="+loc.lng+"&detailLat="+loc.lat+"&detailLon="+loc.lng+"&width=650&height=450&zoom=10&level=surface&overlay=radar&product=ecmwf&menu=&message=&marker=true&calendar=now&pressure=&type=map&location=coordinates&detail=&metricWind=mph&metricTemp=%C2%B0F&radarRange=-1";
+    const src = "https://embed.windy.com/embed2.html?lat="+loc.lat+"&lon="+loc.lng+"&detailLat="+loc.lat+"&detailLon="+loc.lng+"&width=650&height=450&zoom=10&level=surface&overlay=radar&product=ecmwf&menu=&message=&marker=true&calendar=now&pressure=&type=map&location=coordinates&detail=&metricWind=kt&metricTemp=%C2%B0F&radarRange=-1";
     if(frame.getAttribute("src") !== src) frame.setAttribute("src", src);
   }
   try{
-    const pr = await fetch("https://api.weather.gov/points/"+loc.lat+","+loc.lng, {headers:{"User-Agent":"tampabayboating.com"}});
-    const pj = await pr.json();
-    const furl = pj && pj.properties && pj.properties.forecast;
-    if(!furl) throw 0;
-    const fr = await fetch(furl, {headers:{"User-Agent":"tampabayboating.com"}});
-    const fj = await fr.json();
-    const ps = (fj.properties && fj.properties.periods || []).slice(0,4);
+    const ps = (await getPeriods(loc)).slice(0,4);
     if(!ps.length) throw 0;
     body.replaceChildren();
     ps.forEach(p=>{
@@ -3944,7 +3961,7 @@ async function loadSpot(){
       const right = document.createElement("div"); right.style.cssText = "text-align:right;white-space:nowrap";
       const tp = document.createElement("b"); tp.textContent = (p.temperature!=null ? p.temperature + "\u00B0" + (p.temperatureUnit||"F") : "");
       const wn = document.createElement("div"); wn.style.cssText = "font-size:.85rem;opacity:.85";
-      let wtxt = String(p.windSpeed||"") + (p.windDirection ? " " + p.windDirection : "");
+      let wtxt = mphToKt(p.windSpeed) + (p.windDirection ? " " + p.windDirection : "");
       const pop = p.probabilityOfPrecipitation && p.probabilityOfPrecipitation.value;
       if(pop) wtxt += " \u00B7 rain " + pop + "%";
       wn.textContent = wtxt;
@@ -3959,6 +3976,105 @@ async function loadSpot(){
   }catch(e){
     body.innerHTML = '<p class="cond-fallback">Local weather unavailable right now.</p>';
   }
+}
+let wxPeriodCache = {};
+async function getPeriods(loc){
+  const key = loc.lat + "," + loc.lng;
+  const hit = wxPeriodCache[key];
+  if(hit && (Date.now() - hit.t) < 600000) return hit.periods;
+  const pr = await fetch("https://api.weather.gov/points/"+loc.lat+","+loc.lng, {headers:{"User-Agent":"tampabayboating.com"}});
+  const pj = await pr.json();
+  const furl = pj && pj.properties && pj.properties.forecast;
+  if(!furl) throw 0;
+  const fr = await fetch(furl, {headers:{"User-Agent":"tampabayboating.com"}});
+  const fj = await fr.json();
+  const periods = (fj.properties && fj.properties.periods) || [];
+  if(!periods.length) throw 0;
+  wxPeriodCache[key] = {t: Date.now(), periods: periods};
+  return periods;
+}
+function ordDay(n){ const s=["th","st","nd","rd"]; const v=n%100; return n + (s[(v-20)%10] || s[v] || s[0]); }
+let weekDays = [];
+function groupWeek(periods){
+  const days = []; const byKey = {};
+  periods.forEach(p=>{
+    const d = new Date(p.startTime);
+    if(isNaN(d)) return;
+    const key = d.getFullYear() + "-" + (d.getMonth()+1) + "-" + d.getDate();
+    if(!byKey[key]){ byKey[key] = {date: d, day: null, night: null}; days.push(byKey[key]); }
+    if(p.isDaytime) byKey[key].day = p; else if(!byKey[key].night) byKey[key].night = p;
+  });
+  return days.slice(0,7);
+}
+async function loadWeek(){
+  const strip = document.getElementById("week-strip");
+  if(!strip) return;
+  const title = document.getElementById("week-title");
+  const loc = wxLoc();
+  if(title) title.textContent = "7-Day Extended Forecast \u2014 " + loc.name;
+  try{
+    const periods = await getPeriods(loc);
+    weekDays = groupWeek(periods);
+    if(!weekDays.length) throw 0;
+    strip.replaceChildren();
+    weekDays.forEach((wd, i)=>{
+      const btn = document.createElement("button");
+      btn.type = "button"; btn.className = "day-btn";
+      btn.setAttribute("onclick", "selectDay(" + i + ",this)");
+      const full = wd.date.toLocaleDateString("en-US", {weekday:"long"}) + ", " + wd.date.toLocaleDateString("en-US", {month:"long"}) + " " + ordDay(wd.date.getDate());
+      btn.title = full + " forecast";
+      btn.setAttribute("aria-label", full + " forecast");
+      const dow = document.createElement("span"); dow.className = "db-dow";
+      dow.textContent = wd.date.toLocaleDateString("en-US", {weekday:"short"});
+      const num = document.createElement("span"); num.className = "db-num";
+      num.textContent = wd.date.getDate();
+      btn.append(dow, num);
+      strip.appendChild(btn);
+    });
+    if(openDay >= 0 && weekDays[openDay]){
+      const btns = strip.querySelectorAll('.day-btn');
+      if(btns[openDay]) btns[openDay].classList.add('active');
+      renderDayDetail(openDay);
+    }
+  }catch(e){
+    strip.innerHTML = '<p class="cond-fallback">Extended forecast unavailable right now.</p>';
+    const det = document.getElementById("week-detail"); if(det) det.replaceChildren();
+  }
+}
+let openDay = -1;
+function selectDay(i, btn){
+  if(openDay === i){
+    openDay = -1;
+    document.querySelectorAll('.day-btn').forEach(x=>x.classList.remove('active'));
+    const det = document.getElementById("week-detail"); if(det) det.replaceChildren();
+    return;
+  }
+  openDay = i;
+  document.querySelectorAll('.day-btn').forEach(x=>x.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  renderDayDetail(i);
+}
+function renderDayDetail(i){
+  const det = document.getElementById("week-detail");
+  if(!det) return;
+  const wd = weekDays[i];
+  det.replaceChildren();
+  if(!wd) return;
+  const head = document.createElement("b");
+  head.textContent = wd.date.toLocaleDateString("en-US", {weekday:"long"}) + ", " + wd.date.toLocaleDateString("en-US", {month:"long"}) + " " + ordDay(wd.date.getDate());
+  det.appendChild(head);
+  [["Day", wd.day], ["Night", wd.night]].forEach(pair=>{
+    const p = pair[1];
+    if(!p) return;
+    const row = document.createElement("div"); row.className = "week-part";
+    const t = document.createElement("b");
+    t.textContent = pair[0] + " \u00B7 " + (p.temperature!=null ? p.temperature + "\u00B0" + (p.temperatureUnit||"F") : "") + " \u00B7 " + mphToKt(p.windSpeed) + (p.windDirection ? " " + p.windDirection : "");
+    const d = document.createElement("div");
+    d.style.cssText = "font-size:.9rem;opacity:.9;margin-top:2px";
+    d.textContent = mphToKt(p.detailedForecast || p.shortForecast || "");
+    row.append(t, d);
+    det.appendChild(row);
+  });
 }
 async function loadTides(){
   const box = document.getElementById("tide-list");
@@ -4492,7 +4608,7 @@ function renderTodayCards(){
     }
   }catch(e){}
 }
-["renderGrid","renderDir","updateCartUI","renderCalendar","loadTides","loadMarine","loadWaves","loadSpot","loadForecastBadges","renderFuel","renderSvc","renderOwner","renderDealers","renderGear","renderTodayCards"].forEach(fn=>{ try{ window[fn](); }catch(e){ console.warn("init "+fn+" failed:", e.message); } });
+["renderGrid","renderDir","updateCartUI","renderCalendar","loadTides","loadMarine","loadWaves","loadSpot","loadWeek","loadForecastBadges","renderFuel","renderSvc","renderOwner","renderDealers","renderGear","renderTodayCards"].forEach(fn=>{ try{ window[fn](); }catch(e){ console.warn("init "+fn+" failed:", e.message); } });
 </script>
 
 <script>

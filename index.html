@@ -598,6 +598,11 @@ body.dark .area-chip.active{background:#8fd0f0;color:#0a2540;border-color:#8fd0f
 body.dark .day-btn{background:#16202e;border-color:#2a3a4f;color:#e8eef4}
 body.dark .day-btn .db-dow{background:#22344c}
 body.dark .day-btn.active{background:#8fd0f0;color:#0a2540;border-color:#8fd0f0}
+.layer-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.layer-chip{border:2px solid #b8d4e8;background:#fff;color:#0a2540;font-weight:700;font-size:.8rem;padding:6px 12px;border-radius:999px;cursor:pointer;font-family:inherit}
+.layer-chip.active{background:#8fd0f0;border-color:#8fd0f0}
+body.dark .layer-chip{background:#16202e;border-color:#2a3a4f;color:#e8eef4}
+body.dark .layer-chip.active{background:#8fd0f0;color:#0a2540;border-color:#8fd0f0}
 #week-detail:not(:empty){background:rgba(255,255,255,.05);border:1px solid rgba(140,170,190,.3);border-radius:14px;padding:12px 14px;margin-top:10px}
 .week-part{padding:8px 0;border-bottom:1px solid rgba(140,170,190,.25)}
 .week-part:last-child{border-bottom:none}
@@ -1314,6 +1319,8 @@ results.addEventListener('click',function(e){
   <div class="wrap">
     <h2 id="tides-title">Tampa Bay Tides &amp; Marine Forecast</h2>
     <div class="sub" id="tides-sub">Live from NOAA &amp; the National Weather Service · East Bay / Tampa Bay</div>
+    <div class="cond-link" style="margin:12px 0"><span style="color:#ffd54f;font-weight:800"><svg class=ic aria-hidden=true><use href=#i-star></use></svg> Tampa Bay's top weather pick:</span> <a href="https://spaghettimodels.com/" target="_blank" rel="noopener">Mike's Weather Page</a></div>
+    <div class="verdict-card" id="verdict-card"><div class="verdict-dot" id="verdict-dot"><span id="verdict-score">–</span></div><div class="verdict-main"><h3 id="verdict-title">Checking today's conditions…</h3><div class="score-track"><div class="score-marker" id="score-marker" style="left:50%"></div></div><div class="score-ends"><span>Perfect day</span><span>Stay home</span></div></div></div>
     <div id="week-block" style="margin:14px 0 2px">
         <div class="week-strip" id="week-strip"><p class="cond-fallback">Loading the week&hellip;</p></div>
         <div id="week-detail"></div>
@@ -1336,9 +1343,8 @@ results.addEventListener('click',function(e){
       <button type="button" class="area-chip" onclick="setBayArea('longboat',this)">Longboat Key</button>
       <button type="button" class="area-chip" onclick="setBayArea('sarasota',this)">Sarasota</button>
     </div>
-    <div class="verdict-card" id="verdict-card"><div class="verdict-dot" id="verdict-dot"><span id="verdict-score">–</span></div><div class="verdict-main"><h3 id="verdict-title">Checking today's conditions…</h3><div class="score-track"><div class="score-marker" id="score-marker" style="left:50%"></div></div><div class="score-ends"><span>Perfect day</span><span>Stay home</span></div><p id="verdict-why">Reading the National Weather Service marine forecast.</p></div></div>
-<div class="cond-link" style="margin:12px 0"><span style="color:#ffd54f;font-weight:800"><svg class=ic aria-hidden=true><use href=#i-star></use></svg> Tampa Bay's top weather pick:</span> <a href="https://spaghettimodels.com/" target="_blank" rel="noopener">Mike's Weather Page</a></div>
-    <div class="cond-grid">
+    
+<div class="cond-grid">
       <div class="cond-card">
         <h3>Today's Tides</h3>
         <div id="tide-list"><p class="cond-fallback">Loading tides…</p></div>
@@ -1354,7 +1360,19 @@ results.addEventListener('click',function(e){
       <div class="cond-card">
         <h3>Doppler Radar</h3>
         <iframe id="bay-radar" title="Live Doppler radar" loading="lazy" style="width:100%;height:300px;border:0;border-radius:10px;display:block" referrerpolicy="no-referrer-when-downgrade"></iframe>
-        <p style="font-size:.78rem;color:#a9c6c5;margin:8px 0 0">Live radar centered on the selected area &middot; Windy (NWS data). <a href="https://radar.weather.gov/" target="_blank" rel="noopener" style="color:#fff">Open the full NWS radar &rarr;</a></p>
+        <div class="layer-row" role="group" aria-label="Map layers">
+          <button type="button" class="layer-chip active" onclick="setRadarLayer('radar',this)">Radar</button>
+          <button type="button" class="layer-chip" onclick="setRadarLayer('satellite',this)">Satellite</button>
+          <button type="button" class="layer-chip" onclick="setRadarLayer('wind',this)">Wind</button>
+          <button type="button" class="layer-chip" onclick="setRadarLayer('gust',this)">Gusts</button>
+          <button type="button" class="layer-chip" onclick="setRadarLayer('rain',this)">Rain</button>
+          <button type="button" class="layer-chip" onclick="setRadarLayer('clouds',this)">Clouds</button>
+          <button type="button" class="layer-chip" onclick="setRadarLayer('waves',this)">Waves</button>
+          <button type="button" class="layer-chip" onclick="setRadarLayer('swell1',this)">Swell</button>
+          <button type="button" class="layer-chip" onclick="setRadarLayer('currents',this)">Currents</button>
+          <button type="button" class="layer-chip" onclick="setRadarLayer('temp',this)">Temp</button>
+        </div>
+        <p style="font-size:.78rem;color:#a9c6c5;margin:8px 0 0">Tap a layer — the map switches. Centered on the selected area &middot; Windy data. <a href="https://radar.weather.gov/" target="_blank" rel="noopener" style="color:#fff">Open the full NWS radar &rarr;</a></p>
       </div>
       <div class="cond-card" id="wave-card">
         <h3>Jet Ski Wave Report</h3>
@@ -3937,6 +3955,17 @@ function mphToKt(s){
     return ka + " kt";
   });
 }
+let radarOverlay = "radar";
+function windyUrl(loc){
+  return "https://embed.windy.com/embed2.html?lat="+loc.lat+"&lon="+loc.lng+"&detailLat="+loc.lat+"&detailLon="+loc.lng+"&width=650&height=450&zoom=10&level=surface&overlay="+radarOverlay+"&product=ecmwf&menu=&message=&marker=true&calendar=now&pressure=&type=map&location=coordinates&detail=&metricWind=kt&metricTemp=%C2%B0F&metricRain=in&metricWave=ft&radarRange=-1";
+}
+function setRadarLayer(ov, btn){
+  radarOverlay = ov;
+  document.querySelectorAll('.layer-chip').forEach(x=>x.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  const frame = document.getElementById("bay-radar");
+  if(frame) frame.setAttribute("src", windyUrl(wxLoc()));
+}
 async function loadSpot(){
   const body = document.getElementById("spot-body");
   if(!body) return;
@@ -3945,7 +3974,7 @@ async function loadSpot(){
   const loc = wxLoc();
   if(title) title.textContent = "At This Spot \u2014 " + loc.name;
   if(frame){
-    const src = "https://embed.windy.com/embed2.html?lat="+loc.lat+"&lon="+loc.lng+"&detailLat="+loc.lat+"&detailLon="+loc.lng+"&width=650&height=450&zoom=10&level=surface&overlay=radar&product=ecmwf&menu=&message=&marker=true&calendar=now&pressure=&type=map&location=coordinates&detail=&metricWind=kt&metricTemp=%C2%B0F&radarRange=-1";
+    const src = windyUrl(loc);
     if(frame.getAttribute("src") !== src) frame.setAttribute("src", src);
   }
   try{
@@ -4047,12 +4076,14 @@ function selectDay(i, btn){
     openDay = -1;
     document.querySelectorAll('.day-btn').forEach(x=>x.classList.remove('active'));
     const det = document.getElementById("week-detail"); if(det) det.replaceChildren();
+    refreshMarine();
     return;
   }
   openDay = i;
   document.querySelectorAll('.day-btn').forEach(x=>x.classList.remove('active'));
   if(btn) btn.classList.add('active');
   renderDayDetail(i);
+  refreshMarine();
 }
 function renderDayDetail(i){
   const det = document.getElementById("week-detail");
@@ -4143,11 +4174,17 @@ function tbbVerdict(ps){
   score = Math.max(3, Math.min(100, score));
   return { level: level, score: score, why: why.join(" · ") };
 }
-function renderVerdict(ps, label){
+function renderVerdict(ps, label, isToday){
   const card = document.getElementById("verdict-card");
   const title = document.getElementById("verdict-title");
-  const whyEl = document.getElementById("verdict-why");
-  if(!card || !title || !whyEl || !ps.length) return;
+  if(!card || !title) return;
+  if(!ps || !ps.length){
+    card.classList.remove("v-go","v-good","v-caution","v-rough","v-stay");
+    title.textContent = "Beyond the marine forecast range";
+    const sEl0 = document.getElementById("verdict-score"); if(sEl0) sEl0.textContent = "\u2013";
+    const mk0 = document.getElementById("score-marker"); if(mk0) mk0.style.left = "50%";
+    return;
+  }
   const v = tbbVerdict(ps);
   const s = v.score;
   card.classList.remove("v-go","v-good","v-caution","v-rough","v-stay");
@@ -4164,34 +4201,70 @@ function renderVerdict(ps, label){
   const marker = document.getElementById("score-marker");
   if(marker) marker.style.left = Math.max(2, Math.min(98, 100 - s)) + "%";
   const tcScore = document.getElementById("tcScore");
-  if(tcScore) tcScore.textContent = s + "% today — " + band;
-  whyEl.textContent = "For " + label + " waters: " + (v.why || "light winds and calm seas") + ". Summary of the NWS marine forecast — the skipper always makes the final call.";
+  if(tcScore && isToday) tcScore.textContent = s + "% today — " + band;
+}
+let marineCache = {};
+let marineNow = null;
+async function getMarinePeriods(zone){
+  const hit = marineCache[zone];
+  if(hit && (Date.now() - hit.t) < 600000) return hit.periods;
+  const r = await fetch("https://api.weather.gov/zones/forecast/"+zone+"/forecast", {headers:{"User-Agent":"tampabayboating.com"}});
+  const d = await r.json();
+  const periods = (d.properties && d.properties.periods) || [];
+  if(!periods.length) throw 0;
+  marineCache[zone] = {t: Date.now(), periods: periods};
+  return periods;
+}
+function groupMarine(periods){
+  const buckets = []; let cur = null;
+  periods.forEach(p=>{
+    const isNight = /night/i.test(String(p.name||""));
+    if(!isNight){ cur = {day: p, night: null}; buckets.push(cur); }
+    else if(cur && !cur.night){ cur.night = p; }
+    else { cur = {day: null, night: p}; buckets.push(cur); }
+  });
+  return buckets;
 }
 async function loadMarine(){
   const box = document.getElementById("marine-forecast");
   try{
     const mloc = wxLoc();
-    const r = await fetch("https://api.weather.gov/zones/forecast/"+mloc.zone+"/forecast", {headers:{"User-Agent":"tampabayboating.com"}});
-    const d = await r.json();
-    const ps = (d.properties&&d.properties.periods||[]).slice(0,2);
-    if(!ps.length) throw 0;
-    box.replaceChildren();
-    renderVerdict(ps, mloc.label);
-    ps.forEach(p=>{
-      const period = document.createElement("div");
-      period.className = "marine-p";
-      const name = document.createElement("b");
-      name.textContent = String(p.name||"") + ":";
-      const forecast = document.createElement("p");
-      forecast.textContent = String(p.detailedForecast||p.shortForecast||"");
-      period.append(name, forecast);
-      box.appendChild(period);
-    });
+    const periods = await getMarinePeriods(mloc.zone);
+    marineNow = {buckets: groupMarine(periods), loc: mloc};
+    renderMarine();
   }catch(e){
-    box.innerHTML = `<p class="cond-fallback">Forecast unavailable right now — <a href="https://tampabayboating.com/conditions/" target="_blank" rel="noopener" style="color:#fff">see the full forecast</a>.</p>`;
-    try{ const vt=document.getElementById("verdict-title"), vw=document.getElementById("verdict-why"); if(vt) vt.textContent="Verdict unavailable right now"; if(vw) vw.textContent="Couldn\'t reach the marine forecast — check the full forecast before heading out."; }catch(_){}
+    box.innerHTML = `<p class="cond-fallback">Forecast unavailable right now \u2014 <a href="https://tampabayboating.com/conditions/" target="_blank" rel="noopener" style="color:#fff">see the full forecast</a>.</p>`;
+    try{ const vt=document.getElementById("verdict-title"); if(vt) vt.textContent="Verdict unavailable right now"; }catch(_){}
   }
 }
+function renderMarine(){
+  const box = document.getElementById("marine-forecast");
+  if(!box || !marineNow) return;
+  const idx = openDay < 0 ? 0 : openDay;
+  const b = marineNow.buckets[idx];
+  box.replaceChildren();
+  if(!b){
+    const p = document.createElement("p");
+    p.className = "cond-fallback";
+    p.textContent = "The marine forecast doesn't reach this day yet \u2014 it updates a few times a day, so check back.";
+    box.appendChild(p);
+    renderVerdict(null, marineNow.loc.label, false);
+    return;
+  }
+  const ps = [b.day, b.night].filter(Boolean);
+  renderVerdict(ps, marineNow.loc.label, idx === 0);
+  ps.forEach(p=>{
+    const period = document.createElement("div");
+    period.className = "marine-p";
+    const name = document.createElement("b");
+    name.textContent = String(p.name||"") + ":";
+    const forecast = document.createElement("p");
+    forecast.textContent = String(p.detailedForecast||p.shortForecast||"");
+    period.append(name, forecast);
+    box.appendChild(period);
+  });
+}
+function refreshMarine(){ if(marineNow) renderMarine(); else loadMarine(); }
 
 
 async function loadWaves(){

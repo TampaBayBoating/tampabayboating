@@ -580,6 +580,15 @@ footer.tbb-foot a.soc svg{width:15px!important;height:15px!important;fill:#fff!i
 .travel-box .travel-note{font-size:.8rem;color:#5b6b7c;margin-top:8px;margin-bottom:0}
 body.dark .travel-box{background:#16202e;border-color:#2a3a4f}
 body.dark .travel-box .travel-label{color:#e8eef4}
+.area-chips{display:grid;grid-template-columns:repeat(auto-fill,minmax(118px,1fr));gap:8px;margin:14px 0 2px}
+.area-chips .area-label{grid-column:1/-1;font-size:.75rem;letter-spacing:2px;text-transform:uppercase;color:#0a2540;font-weight:800}
+.area-chip{border:2px solid #b8d4e8;background:#fff;color:#0a2540;font-weight:700;font-size:.92rem;padding:9px 6px;border-radius:999px;cursor:pointer;font-family:inherit;text-align:center;width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.area-chip.active{background:#8fd0f0;border-color:#8fd0f0}
+body.dark .area-chips .area-label{color:#e8eef4}
+body.dark .area-chip{background:#16202e;border-color:#2a3a4f;color:#e8eef4}
+body.dark .area-chip.active{background:#8fd0f0;color:#0a2540;border-color:#8fd0f0}
+.spot-row{display:flex;justify-content:space-between;gap:10px;padding:7px 0;border-bottom:1px solid rgba(140,170,190,.25)}
+.spot-row:last-of-type{border-bottom:none}
 body.dark .travel-box select{background:#0b1220;color:#e8eef4;border-color:#2a3a4f}
 body.dark .travel-box .travel-note{color:#8fa8bd}
 .cond-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;max-width:960px;margin:0 auto}
@@ -1293,6 +1302,22 @@ results.addEventListener('click',function(e){
   <div class="wrap">
     <h2 id="tides-title">Tampa Bay Tides &amp; Marine Forecast</h2>
     <div class="sub" id="tides-sub">Live from NOAA &amp; the National Weather Service · East Bay / Tampa Bay</div>
+    <div class="area-chips" role="group" aria-label="Choose your part of Tampa Bay">
+      <span class="area-label">Your part of the bay</span>
+      <button type="button" class="area-chip active" onclick="setBayArea('tampa',this)">Tampa Bay</button>
+      <button type="button" class="area-chip" onclick="setBayArea('stpete',this)">St. Petersburg</button>
+      <button type="button" class="area-chip" onclick="setBayArea('clearwater',this)">Clearwater</button>
+      <button type="button" class="area-chip" onclick="setBayArea('ruskin',this)">Ruskin</button>
+      <button type="button" class="area-chip" onclick="setBayArea('apollo',this)">Apollo Beach</button>
+      <button type="button" class="area-chip" onclick="setBayArea('riverview',this)">Riverview</button>
+      <button type="button" class="area-chip" onclick="setBayArea('palmetto',this)">Palmetto</button>
+      <button type="button" class="area-chip" onclick="setBayArea('bradenton',this)">Bradenton</button>
+      <button type="button" class="area-chip" onclick="setBayArea('egmont',this)">Egmont Key</button>
+      <button type="button" class="area-chip" onclick="setBayArea('ami',this)">Anna Maria Island</button>
+      <button type="button" class="area-chip" onclick="setBayArea('cortez',this)">Cortez</button>
+      <button type="button" class="area-chip" onclick="setBayArea('longboat',this)">Longboat Key</button>
+      <button type="button" class="area-chip" onclick="setBayArea('sarasota',this)">Sarasota</button>
+    </div>
     <div class="verdict-card" id="verdict-card"><div class="verdict-dot" id="verdict-dot"><span id="verdict-score">–</span></div><div class="verdict-main"><h3 id="verdict-title">Checking today's conditions…</h3><div class="score-track"><div class="score-marker" id="score-marker" style="left:50%"></div></div><div class="score-ends"><span>Perfect day</span><span>Stay home</span></div><p id="verdict-why">Reading the National Weather Service marine forecast.</p></div></div>
 <div class="cond-link" style="margin:12px 0"><span style="color:#ffd54f;font-weight:800"><svg class=ic aria-hidden=true><use href=#i-star></use></svg> Tampa Bay's top weather pick:</span> <a href="https://spaghettimodels.com/" target="_blank" rel="noopener">Mike's Weather Page</a></div>
     <div class="cond-grid">
@@ -1303,6 +1328,15 @@ results.addEventListener('click',function(e){
       <div class="cond-card">
         <h3>Marine Forecast</h3>
         <div id="marine-forecast"><p class="cond-fallback">Loading forecast…</p></div>
+      </div>
+      <div class="cond-card">
+        <h3 id="spot-title">At This Spot &mdash; Tampa Bay</h3>
+        <div id="spot-body"><p class="cond-fallback">Loading local weather&hellip;</p></div>
+      </div>
+      <div class="cond-card">
+        <h3>Doppler Radar</h3>
+        <iframe id="bay-radar" title="Live Doppler radar" loading="lazy" style="width:100%;height:300px;border:0;border-radius:10px;display:block" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        <p style="font-size:.78rem;color:#a9c6c5;margin:8px 0 0">Live radar centered on the selected area &middot; Windy (NWS data). <a href="https://radar.weather.gov/" target="_blank" rel="noopener" style="color:#fff">Open the full NWS radar &rarr;</a></p>
       </div>
       <div class="cond-card" id="wave-card">
         <h3>Jet Ski Wave Report</h3>
@@ -3838,12 +3872,94 @@ function changeTravelLocation(key){
   const loc = TRAVEL_LOCATIONS[key] || TRAVEL_LOCATIONS.tampa;
   document.getElementById("tides-title").textContent = key==="tampa" ? "Tampa Bay Tides \u0026 Marine Forecast" : loc.name + " Tides \u0026 Marine Forecast";
   document.getElementById("tides-sub").textContent = "Live from NOAA \u0026 the National Weather Service \u00B7 " + loc.label;
-  loadTides(); loadMarine(); loadWaves();
+  bayKey = (key==="tampa") ? "tampa" : null;
+  document.querySelectorAll('.area-chip').forEach((x,i)=>x.classList.toggle('active', key==="tampa" && i===0));
+  loadTides(); loadMarine(); loadWaves(); loadSpot();
+}
+const SPOT_COORDS = { keywest:[24.5551,-81.78], destin:[30.3935,-86.4958], panamacity:[30.1766,-85.8055], stuart:[27.1975,-80.2528], fortmyers:[26.6406,-81.8723], daytona:[29.2108,-81.0228], crystalriver:[29.1386,-83.0351], naples:[26.142,-81.7948], jacksonville:[30.3929,-81.4243] };
+const BAY_AREAS = {
+  tampa:{name:"Tampa Bay", lat:27.9506, lng:-82.4572, station:"8726674", slabel:"East Bay / Tampa Bay", zone:"GMZ830"},
+  stpete:{name:"St. Petersburg", lat:27.7676, lng:-82.6403, station:"8726520", slabel:"St. Petersburg", zone:"GMZ853"},
+  clearwater:{name:"Clearwater", lat:27.9659, lng:-82.8001, station:"8726724", slabel:"Clearwater Beach", zone:"GMZ853"},
+  ruskin:{name:"Ruskin", lat:27.7204, lng:-82.4332, station:"8726436", slabel:"Little Manatee River \u00B7 Ruskin", zone:"GMZ830"},
+  apollo:{name:"Apollo Beach", lat:27.7701, lng:-82.412, station:"8726425", slabel:"Cockroach Bay \u00B7 Apollo Beach", zone:"GMZ830"},
+  riverview:{name:"Riverview", lat:27.8661, lng:-82.3265, station:"8726614", slabel:"Alafia River \u00B7 Riverview", zone:"GMZ830"},
+  palmetto:{name:"Palmetto", lat:27.5136, lng:-82.5773, station:"8726247", slabel:"Manatee River \u00B7 Palmetto", zone:"GMZ830"},
+  bradenton:{name:"Bradenton", lat:27.4989, lng:-82.5748, station:"8726247", slabel:"Manatee River \u00B7 Bradenton", zone:"GMZ830"},
+  egmont:{name:"Egmont Key", lat:27.6017, lng:-82.7614, station:"8726347", slabel:"Egmont Key", zone:"GMZ853"},
+  ami:{name:"Anna Maria Island", lat:27.5326, lng:-82.7207, station:"8726243", slabel:"Anna Maria Key", zone:"GMZ853"},
+  cortez:{name:"Cortez", lat:27.4679, lng:-82.6816, station:"8726217", slabel:"Cortez \u00B7 Sarasota Bay", zone:"GMZ853"},
+  longboat:{name:"Longboat Key", lat:27.4139, lng:-82.6818, station:"8726089", slabel:"Longboat Key \u00B7 Sarasota Bay", zone:"GMZ853"},
+  sarasota:{name:"Sarasota", lat:27.3364, lng:-82.5307, station:"8726083", slabel:"Sarasota Bay", zone:"GMZ853"}
+};
+let bayKey = "tampa";
+function wxLoc(){
+  if(bayKey){ const b = BAY_AREAS[bayKey]; return {name:b.name, station:b.station, zone:b.zone, label:b.slabel, lat:b.lat, lng:b.lng}; }
+  const t = TRAVEL_LOCATIONS[currentTravelKey] || TRAVEL_LOCATIONS.tampa;
+  const c = SPOT_COORDS[currentTravelKey] || [27.9506,-82.4572];
+  return {name:t.name, station:t.station, zone:t.zone, label:t.label, lat:c[0], lng:c[1]};
+}
+function setBayArea(key, btn){
+  bayKey = key;
+  currentTravelKey = "tampa";
+  const sel = document.getElementById("travel-select"); if(sel) sel.value = "tampa";
+  document.querySelectorAll('.area-chip').forEach(x=>x.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  const b = BAY_AREAS[key];
+  document.getElementById("tides-title").textContent = b.name + " Tides & Marine Forecast";
+  document.getElementById("tides-sub").textContent = "Live from NOAA & the National Weather Service \u00B7 " + b.slabel;
+  loadTides(); loadMarine(); loadSpot();
+}
+async function loadSpot(){
+  const body = document.getElementById("spot-body");
+  if(!body) return;
+  const title = document.getElementById("spot-title");
+  const frame = document.getElementById("bay-radar");
+  const loc = wxLoc();
+  if(title) title.textContent = "At This Spot \u2014 " + loc.name;
+  if(frame){
+    const src = "https://embed.windy.com/embed2.html?lat="+loc.lat+"&lon="+loc.lng+"&detailLat="+loc.lat+"&detailLon="+loc.lng+"&width=650&height=450&zoom=10&level=surface&overlay=radar&product=ecmwf&menu=&message=&marker=true&calendar=now&pressure=&type=map&location=coordinates&detail=&metricWind=mph&metricTemp=%C2%B0F&radarRange=-1";
+    if(frame.getAttribute("src") !== src) frame.setAttribute("src", src);
+  }
+  try{
+    const pr = await fetch("https://api.weather.gov/points/"+loc.lat+","+loc.lng, {headers:{"User-Agent":"tampabayboating.com"}});
+    const pj = await pr.json();
+    const furl = pj && pj.properties && pj.properties.forecast;
+    if(!furl) throw 0;
+    const fr = await fetch(furl, {headers:{"User-Agent":"tampabayboating.com"}});
+    const fj = await fr.json();
+    const ps = (fj.properties && fj.properties.periods || []).slice(0,4);
+    if(!ps.length) throw 0;
+    body.replaceChildren();
+    ps.forEach(p=>{
+      const row = document.createElement("div"); row.className = "spot-row";
+      const left = document.createElement("div");
+      const nm = document.createElement("b"); nm.textContent = String(p.name||"");
+      const sf = document.createElement("div"); sf.style.cssText = "font-size:.85rem;opacity:.85"; sf.textContent = String(p.shortForecast||"");
+      left.append(nm, sf);
+      const right = document.createElement("div"); right.style.cssText = "text-align:right;white-space:nowrap";
+      const tp = document.createElement("b"); tp.textContent = (p.temperature!=null ? p.temperature + "\u00B0" + (p.temperatureUnit||"F") : "");
+      const wn = document.createElement("div"); wn.style.cssText = "font-size:.85rem;opacity:.85";
+      let wtxt = String(p.windSpeed||"") + (p.windDirection ? " " + p.windDirection : "");
+      const pop = p.probabilityOfPrecipitation && p.probabilityOfPrecipitation.value;
+      if(pop) wtxt += " \u00B7 rain " + pop + "%";
+      wn.textContent = wtxt;
+      right.append(tp, wn);
+      row.append(left, right);
+      body.appendChild(row);
+    });
+    const note = document.createElement("div");
+    note.style.cssText = "font-size:.78rem;color:#a9c6c5;margin-top:8px";
+    note.textContent = "Land forecast for " + loc.name + " \u00B7 National Weather Service";
+    body.appendChild(note);
+  }catch(e){
+    body.innerHTML = '<p class="cond-fallback">Local weather unavailable right now.</p>';
+  }
 }
 async function loadTides(){
   const box = document.getElementById("tide-list");
   try{
-    const tloc = TRAVEL_LOCATIONS[currentTravelKey] || TRAVEL_LOCATIONS.tampa;
+    const tloc = wxLoc();
     const r = await fetch("https://api.tidesandcurrents.noaa.gov/api/prod/datagetter?date=today&station="+tloc.station+"&product=predictions&datum=MLLW&time_zone=lst_ldt&units=english&interval=hilo&format=json");
     const d = await r.json();
     const preds = (d.predictions||[]).slice(0,4);
@@ -3934,7 +4050,7 @@ function renderVerdict(ps, label){
 async function loadMarine(){
   const box = document.getElementById("marine-forecast");
   try{
-    const mloc = TRAVEL_LOCATIONS[currentTravelKey] || TRAVEL_LOCATIONS.tampa;
+    const mloc = wxLoc();
     const r = await fetch("https://api.weather.gov/zones/forecast/"+mloc.zone+"/forecast", {headers:{"User-Agent":"tampabayboating.com"}});
     const d = await r.json();
     const ps = (d.properties&&d.properties.periods||[]).slice(0,2);
@@ -4372,7 +4488,7 @@ function renderTodayCards(){
     }
   }catch(e){}
 }
-["renderGrid","renderDir","updateCartUI","renderCalendar","loadTides","loadMarine","loadWaves","loadForecastBadges","renderFuel","renderSvc","renderOwner","renderDealers","renderGear","renderTodayCards"].forEach(fn=>{ try{ window[fn](); }catch(e){ console.warn("init "+fn+" failed:", e.message); } });
+["renderGrid","renderDir","updateCartUI","renderCalendar","loadTides","loadMarine","loadWaves","loadSpot","loadForecastBadges","renderFuel","renderSvc","renderOwner","renderDealers","renderGear","renderTodayCards"].forEach(fn=>{ try{ window[fn](); }catch(e){ console.warn("init "+fn+" failed:", e.message); } });
 </script>
 
 <script>

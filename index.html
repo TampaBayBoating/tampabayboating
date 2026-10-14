@@ -1259,9 +1259,8 @@ results.addEventListener('click',function(e){
     <div class="nl-kick"><svg class=ic aria-hidden=true><use href=#i-mail></use></svg> Weekly Newsletter</div>
     <h2>Sign Up for Our Weekly Newsletter</h2>
     <p>One short email a week: the bite of the week, boating news, events, and local deals around Tampa Bay. No spam, ever.</p>
-    <div class="nl-form">
-      <input id="nl-email-home" type="email" placeholder="you@email.com" aria-label="Email address">
-      <button onclick="subscribeNLHome()">Sign Up</button>
+    <div class="nl-form" style="display:block; max-width:540px; margin:0 auto">
+      <script async src="https://subscribe-forms.beehiiv.com/v3/loader.js" data-beehiiv-form="fc80b921-2ab0-471d-ad1a-4d01d0ca594b"></script>
     </div>
   </div>
 </div>
@@ -1766,9 +1765,8 @@ results.addEventListener('click',function(e){
     <span class="sec-kicker">Stay in the loop</span>
     <h2 style="margin:8px 0">This Week on the Water</h2>
     <p style="color:var(--muted); max-width:520px; margin:0 auto 18px">One short email a week: boating events, sandbar conditions, new boat listings and local deals. No spam, ever.</p>
-    <div style="max-width:420px; margin:0 auto; display:flex; gap:8px">
-      <input id="nl-email" type="email" placeholder="you@email.com" style="flex:1; padding:12px 16px; border:2px solid var(--line); border-radius:10px; font-size:1rem">
-      <button class="pill sel" style="white-space:nowrap" onclick="subscribeNL()">Sign up</button>
+    <div style="max-width:540px; margin:0 auto">
+      <script async src="https://subscribe-forms.beehiiv.com/v3/loader.js" data-beehiiv-form="fc80b921-2ab0-471d-ad1a-4d01d0ca594b"></script>
     </div>
   </div>
 </section></div>
@@ -4601,17 +4599,6 @@ function shopFilter(){
   });
 }
 
-/* ================= NEWSLETTER ================= */
-function subscribeNL(){
-  const e = document.getElementById("nl-email").value.trim();
-  if(!e || !e.includes("@")){ alert("Enter a valid email address."); return; }
-  location.href = "mailto:david@tampabayboating.com?subject=Newsletter%20signup&body=Please%20add%20" + encodeURIComponent(e) + "%20to%20This%20Week%20on%20the%20Water.";
-}
-function subscribeNLHome(){
-  const e = document.getElementById("nl-email-home").value.trim();
-  if(!e || !e.includes("@")){ alert("Enter a valid email address."); return; }
-  location.href = "mailto:david@tampabayboating.com?subject=Newsletter%20signup&body=Please%20add%20" + encodeURIComponent(e) + "%20to%20This%20Week%20on%20the%20Water.";
-}
 
 async function loadForecastBadges(){
   try{
@@ -4798,4 +4785,5 @@ document.addEventListener('click',function(e){ var p=document.getElementById('tr
   window.addEventListener('appinstalled', function(){ band.style.display = 'none'; });
 })();
 </script>
+<script type="text/javascript" async src="https://subscribe-forms.beehiiv.com/attribution.js"></script>
 </body></html>

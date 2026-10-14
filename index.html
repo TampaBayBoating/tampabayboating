@@ -464,6 +464,11 @@ body.dark .photo-card .pc-body i{color:#8fa8bd}
 .app-steps .st-title{display:block;color:#0a2540;margin-bottom:6px}
 .app-steps .st ol{margin:0;padding-left:18px;color:#33536e;font-size:.9rem;line-height:1.55}
 .app-note{font-size:.82rem;color:#5b6b7c;margin-top:12px}
+.app-how-btn{display:inline-flex;align-items:center;gap:8px;background:#eef6fb;color:#0a2540;border:2px solid #dbe9f4;border-radius:999px;padding:10px 20px;font-size:.95rem;font-weight:700;cursor:pointer}
+.app-how-btn:hover{background:#e0f0fa}
+.app-how-btn .chev{transition:transform .2s}
+.app-how-btn.open .chev{transform:rotate(180deg)}
+#app-how{margin-top:14px}
 @media(max-width:700px){.app-inner{flex-direction:column}.app-steps{grid-template-columns:1fr}}
 @media(max-width:560px){.nl-band .nl-form{flex-direction:column}.nl-band h2{font-size:1.35rem}}
 body.dark .nl-band{background:linear-gradient(160deg,#060d18 0%,#0b1a2e 60%,#0a3a3a 130%)}
@@ -1271,6 +1276,8 @@ results.addEventListener('click',function(e){
       <h3>Put Tampa Bay Boating on your home screen</h3>
       <p>No app store, no download. Put our icon on your home screen and Tampa Bay Boating opens like an app — tides, fishing and your boating score, one tap away. Takes 10 seconds:</p>
       <button class="app-btn" id="pwa-btn" type="button">Install the icon</button>
+      <button class="app-how-btn" id="app-how-btn" type="button" aria-expanded="false" onclick="toggleAppHow()">>&#128241; How to add it <span class="chev">#128241; Add this to your home screen — here are the instructions <span class="chev">&#9662;</span></button>
+      <div id="app-how" style="display:none">
       <div class="app-note" style="margin:0 0 12px"><b>Coming from TikTok, Instagram or Facebook?</b> Open this page in Safari or Chrome first — tap the dots in that app and choose <b>Open in Safari</b> / <b>Open in Chrome</b>. Add to Home Screen doesn't exist inside those apps.</div>
       <div class="app-steps">
         <div class="st"><b class="st-title">iPhone — Safari</b><ol>
@@ -1285,6 +1292,7 @@ results.addEventListener('click',function(e){
         </ol></div>
       </div>
       <div class="app-note">Samsung Internet: tap the <b>three lines (☰)</b> at the bottom, then <b>Add page to</b>, then <b>Home screen</b>.</div>
+      </div>
     </div>
   </div>
 </div></div>
@@ -4784,6 +4792,14 @@ document.addEventListener('click',function(e){ var p=document.getElementById('tr
   });
   window.addEventListener('appinstalled', function(){ band.style.display = 'none'; });
 })();
+function toggleAppHow(){
+  var box = document.getElementById('app-how');
+  var btn = document.getElementById('app-how-btn');
+  var open = box.style.display !== 'none';
+  box.style.display = open ? 'none' : 'block';
+  btn.setAttribute('aria-expanded', open ? 'false' : 'true');
+  btn.classList.toggle('open', !open);
+}
 </script>
 <script type="text/javascript" async src="https://subscribe-forms.beehiiv.com/attribution.js"></script>
 </body></html>

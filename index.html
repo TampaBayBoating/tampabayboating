@@ -1498,11 +1498,12 @@ results.addEventListener('click',function(e){
     <div class="sec-head">
       <span class="sec-kicker">Explore</span>
       <h2>Tampa Bay Boater's Map</h2>
-      <p>Fuel docks, bait shops, dock &amp; dine spots, and the places everyone goes. Tap a pin for details.</p>
+      <p>Fuel docks, rec fuel on land, bait shops, dock &amp; dine spots, and the places everyone goes. Tap a pin for details.</p>
     </div>
     <div class="map-filters" style="text-align:center; margin-bottom:10px">
       <button class="map-filter active" data-cat="all" onclick="mapFilter('all',this)">All</button>
       <button class="map-filter" data-cat="fuel" onclick="mapFilter('fuel',this)"><svg class=ic aria-hidden=true><use href=#i-fuel></use></svg> Fuel</button>
+      <button class="map-filter" data-cat="recfuel" onclick="mapFilter('recfuel',this)"><svg class=ic aria-hidden=true><use href=#i-fuel></use></svg> Rec Fuel</button>
       <button class="map-filter" data-cat="bait" onclick="mapFilter('bait',this)"><svg class=ic aria-hidden=true><use href=#i-shrimp></use></svg> Bait</button>
       <button class="map-filter" data-cat="dine" onclick="mapFilter('dine',this)"><svg class=ic aria-hidden=true><use href=#i-dine></use></svg> Dock &amp; Dine</button>
       <button class="map-filter" data-cat="stay" onclick="mapFilter('stay',this)"><svg class=ic aria-hidden=true><use href=#i-bed></use></svg> Boat-Up Stays</button>
@@ -1511,7 +1512,7 @@ results.addEventListener('click',function(e){
       <button class="map-filter" data-cat="storage" onclick="mapFilter('storage',this)"><svg class=ic aria-hidden=true><use href=#i-park></use></svg> Storage</button>
     </div>
     <div id="bay-leaflet-map" style="height:480px; border-radius:14px; border:1px solid var(--line); z-index:1"></div>
-    <p style="text-align:center; color:var(--muted); font-size:.82rem; margin-top:10px">244 pinned locations · fuel prices change — call ahead · slip policies change — call marinas ahead</p>
+    <p style="text-align:center; color:var(--muted); font-size:.82rem; margin-top:10px">249 pinned locations · fuel prices change — call ahead · slip policies change — call marinas ahead</p>
   </div>
 </section></div>
 <div class="view" id="view-logbook"><div class="wrap"><a class="back-link" href="#/">&#8249; All categories</a></div><section id="logbook">
@@ -3010,11 +3011,16 @@ const MAP_PINS = [
 ["Waterline Villas & Marina","stay",27.5073,-82.7139,"5325 Marina Dr, Holmes Beach","","50-slip marina; overnight/weekly stays; boats to 45 ft. No sleeping aboard (city rule)."],
 ["Compass Hotel Anna Maria Sound","stay",27.496826,-82.686087,"12324 Manatee Ave W, Bradenton","","Dock via adjacent Safe Harbor Pier 77; nightly guest rates; transient to 50 ft."],
 ["Courtyard by Marriott Clearwater Beach","stay",27.98029,-82.82543,"455 E Shore Dr, Clearwater Beach","","50-slip marina next door; transient dockage to 60 ft; boaters get hotel amenities."],
-["Sta 'N Pla Marina Resort","stay",27.97215,-82.82726,"333 S Hamden Dr, Clearwater Beach","","Budget motel with private docks and slips for guests on the ICW."]
+["Sta 'N Pla Marina Resort","stay",27.97215,-82.82726,"333 S Hamden Dr, Clearwater Beach","","Budget motel with private docks and slips for guests on the ICW."],
+["Wawa \u2014 W Gandy Blvd, Tampa","recfuel",27.89312,-82.50456,"3660 W Gandy Blvd, Tampa","","Ethanol-free (E0), 89 octane \u2014 price varies, call ahead"],
+["Wawa \u2014 W Hillsborough Ave, Tampa","recfuel",27.99628,-82.56433,"7540 W Hillsborough Ave, Tampa","","Ethanol-free (E0), 89 octane \u2014 price varies, call ahead"],
+["Wawa \u2014 Bloomingdale Ave, Riverview","recfuel",27.89338,-82.33574,"10115 Bloomingdale Ave, Riverview","","Ethanol-free (E0), 89 octane \u2014 price varies, call ahead"],
+["Wawa \u2014 Gandy Blvd, Pinellas Park","recfuel",27.84562,-82.67738,"3101 Gandy Blvd, Pinellas Park","","Ethanol-free (E0), 89 octane \u2014 price varies, call ahead"],
+["Wawa \u2014 53rd Ave E, Bradenton","recfuel",27.44541,-82.5049,"4506 53rd Ave E, Bradenton","","Ethanol-free (E0), 89 octane \u2014 price varies, call ahead"]
 ];
 /* MAP_PINS_PENDING retired 2026-10-10: 201 pins re-verified and restored. 5 rejected (stay off map): Anclote River Sandbar (play, wrong location), Marjorie Park Yacht Basin (fuel, closed), The Club at Treasure Island (fuel, no fuel dock), The Landing at Tarpon Springs Marina (fuel, dupe), Carefree Boat Club Tierra Verde (club, 2 sources only). See map-research/reverify-*.md */
 const MAP_PINS_PENDING = [];
-const MAP_COLORS = {fuel:"#e25822", bait:"#2e9e5b", dine:"#8b5cf6", play:"#0e7490", club:"#d946ef", storage:"#f59e0b", stay:"#2563eb"};
+const MAP_COLORS = {fuel:"#e25822", recfuel:"#1f2937", bait:"#2e9e5b", dine:"#8b5cf6", play:"#0e7490", club:"#d946ef", storage:"#f59e0b", stay:"#2563eb"};
 window.mapFilter=function(cat,btn){
   document.querySelectorAll('.map-filter').forEach(x => x.classList.remove('active'));
   if(btn) btn.classList.add('active');

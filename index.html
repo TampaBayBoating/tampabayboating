@@ -5046,6 +5046,7 @@ document.addEventListener('click',function(e){
   if(id&&ID2VIEW[id]){e.preventDefault();location.hash='#/'+ID2VIEW[id];}
 });
 window.addEventListener('hashchange',route);
+document.addEventListener('click',function(e){var a=e.target.closest('a[href="#/"]');if(a){setTimeout(function(){window.scrollTo({top:0,behavior:'smooth'});},60);}});
 route();
 </script>
 <script>

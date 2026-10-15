@@ -1337,7 +1337,9 @@ results.addEventListener('click',function(e){
       <span class="area-label">Your part of the bay</span>
       <button type="button" class="area-chip active" onclick="setBayArea('tampa',this)">Tampa Bay</button>
       <button type="button" class="area-chip" onclick="setBayArea('oldtb',this)">Old Tampa Bay</button>
-      <button type="button" class="area-chip" onclick="setBayArea('stpete',this)">St. Petersburg</button>
+      <button type="button" class="area-chip" onclick="setBayArea('stpete',this)">Downtown St. Pete</button>
+      <button type="button" class="area-chip" onclick="setBayArea('spbeach',this)">St. Pete Beach</button>
+      <button type="button" class="area-chip" onclick="setBayArea('pinellaspt',this)">Pinellas Point</button>
       <button type="button" class="area-chip" onclick="setBayArea('bocaciega',this)">Boca Ciega Bay</button>
       <button type="button" class="area-chip" onclick="setBayArea('clearwater',this)">Clearwater</button>
       <button type="button" class="area-chip" onclick="setBayArea('ruskin',this)">Ruskin</button>
@@ -4262,7 +4264,9 @@ const SPOT_COORDS = { keywest:[24.5551,-81.78], destin:[30.3935,-86.4958], panam
 const BAY_AREAS = {
   tampa:{name:"Tampa Bay", lat:27.9506, lng:-82.4572, station:"8726674", slabel:"East Bay / Tampa Bay", zone:"GMZ830"},
   oldtb:{name:"Old Tampa Bay", lat:27.99, lng:-82.6, station:"8726738", slabel:"Safety Harbor \u00B7 Old Tampa Bay", zone:"GMZ830"},
-  stpete:{name:"St. Petersburg", lat:27.7676, lng:-82.6403, station:"8726520", slabel:"St. Petersburg", zone:"GMZ853"},
+  stpete:{name:"Downtown St. Pete", lat:27.7676, lng:-82.6403, station:"8726520", slabel:"St. Petersburg", zone:"GMZ853"},
+  spbeach:{name:"St. Pete Beach", lat:27.725, lng:-82.745, station:"8726494", slabel:"St. Pete Beach \u00B7 Long Key", zone:"GMZ853"},
+  pinellaspt:{name:"Pinellas Point", lat:27.7094, lng:-82.6818, station:"8726454", slabel:"Pinellas Point \u00B7 Maximo Park", zone:"GMZ830"},
   bocaciega:{name:"Boca Ciega Bay", lat:27.72, lng:-82.7, station:"8726486", slabel:"Gulfport \u00B7 Boca Ciega Bay", zone:"GMZ853"},
   clearwater:{name:"Clearwater", lat:27.9659, lng:-82.8001, station:"8726724", slabel:"Clearwater Beach", zone:"GMZ853"},
   ruskin:{name:"Ruskin", lat:27.7204, lng:-82.4332, station:"8726436", slabel:"Little Manatee River \u00B7 Ruskin", zone:"GMZ830"},

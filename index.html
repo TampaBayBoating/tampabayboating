@@ -1147,7 +1147,7 @@ var PAGES=[
 ["advertise","Advertise","advertise sponsor business"],
 ["contact","Contact","contact email david"],
 ["about","About","about story"]];
-var PIN_LABEL={fuel:"Fuel",bait:"Bait",dine:"Dock & Dine",play:"Destination",club:"Boat Club",storage:"Storage",stay:"Boat-Up Stay"};
+var PIN_LABEL={fuel:"Fuel",bait:"Bait",dine:"Dock & Dine",play:"Destination",club:"Boat Club",storage:"Storage",stay:"Boat-Up Stay",recfuel:"Boat Fuel",dealer:"Boat Dealers",trailer:"Trailer Services",parts:"Parts & Supply",service:"Marine Services",ramp:"Boat Ramp"};
 var panel=document.getElementById('search-panel'),input=document.getElementById('site-search'),
     results=document.getElementById('search-results'),btn=document.getElementById('search-btn');
 function esc(t){return String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
@@ -1575,21 +1575,34 @@ results.addEventListener('click',function(e){
     <div class="sec-head">
       <span class="sec-kicker">Explore</span>
       <h2>Tampa Bay Boater's Map</h2>
-      <p>Fuel docks, rec fuel on land, bait shops, dock &amp; dine spots, and the places everyone goes. Tap a pin for details.</p>
+      <p>Fuel docks, boat fuel on land, bait shops, dock &amp; dine spots, boat ramps, dealers, parts &amp; service — and the places everyone goes. Tap a pin for details.</p>
     </div>
     <div class="map-filters" style="text-align:center; margin-bottom:10px">
       <button class="map-filter active" data-cat="all" onclick="mapFilter('all',this)">All</button>
       <button class="map-filter" data-cat="fuel" onclick="mapFilter('fuel',this)"><svg class=ic aria-hidden=true><use href=#i-fuel></use></svg> Fuel</button>
-      <button class="map-filter" data-cat="recfuel" onclick="mapFilter('recfuel',this)"><svg class=ic aria-hidden=true><use href=#i-fuel></use></svg> Rec Fuel</button>
+      <button class="map-filter" data-cat="recfuel" onclick="mapFilter('recfuel',this)"><svg class=ic aria-hidden=true><use href=#i-fuel></use></svg> Boat Fuel</button>
       <button class="map-filter" data-cat="bait" onclick="mapFilter('bait',this)"><svg class=ic aria-hidden=true><use href=#i-shrimp></use></svg> Bait</button>
       <button class="map-filter" data-cat="dine" onclick="mapFilter('dine',this)"><svg class=ic aria-hidden=true><use href=#i-dine></use></svg> Dock &amp; Dine</button>
       <button class="map-filter" data-cat="stay" onclick="mapFilter('stay',this)"><svg class=ic aria-hidden=true><use href=#i-bed></use></svg> Boat-Up Stays</button>
       <button class="map-filter" data-cat="play" onclick="mapFilter('play',this)"><svg class=ic aria-hidden=true><use href=#i-palm></use></svg> Destinations</button>
       <button class="map-filter" data-cat="club" onclick="mapFilter('club',this)"><svg class=ic aria-hidden=true><use href=#i-ship></use></svg> Boat Clubs</button>
       <button class="map-filter" data-cat="storage" onclick="mapFilter('storage',this)"><svg class=ic aria-hidden=true><use href=#i-park></use></svg> Storage</button>
+      <button class="map-filter" data-cat="dealer" onclick="mapFilter('dealer',this)"><svg class=ic aria-hidden=true><use href=#i-store></use></svg> Boat Dealers</button>
+      <button class="map-filter" data-cat="trailer" onclick="mapFilter('trailer',this)"><svg class=ic aria-hidden=true><use href=#i-truck></use></svg> Trailer Services</button>
+      <button class="map-filter" data-cat="parts" onclick="mapFilter('parts',this)"><svg class=ic aria-hidden=true><use href=#i-parts></use></svg> Parts &amp; Supply</button>
+      <button class="map-filter" data-cat="service" onclick="mapFilter('service',this)"><svg class=ic aria-hidden=true><use href=#i-wrench></use></svg> Marine Services</button>
+      <button class="map-filter" data-cat="ramp" onclick="mapFilter('ramp',this)"><svg class=ic aria-hidden=true><use href=#i-anchor></use></svg> Boat Ramps</button>
     </div>
     <div id="bay-leaflet-map" style="height:480px; border-radius:14px; border:1px solid var(--line); z-index:1"></div>
-    <p style="text-align:center; color:var(--muted); font-size:.82rem; margin-top:10px">249 pinned locations · fuel prices change — call ahead · slip policies change — call marinas ahead</p>
+    <p style="text-align:center; color:var(--muted); font-size:.82rem; margin-top:10px">432 pinned locations · fuel prices change — call ahead · slip policies change — call marinas ahead</p>
+    <div class="dir-grid" style="grid-template-columns:1fr; margin-top:14px">
+      <div class="dir-card">
+        <h4>Don't see your business on the map?</h4>
+        <div class="type">The Boater's Map is free for every business that serves Tampa Bay boaters — marinas, bait shops, trailer shops, parts stores, dealerships, all of it. That's not a promotion, it's the deal: this map only works if it's complete. If you run a boating business and you're not on it, that's our miss, not yours. Tell us and we'll add you — name, address, phone, and a pin, free.</div>
+        <div class="type" style="margin-top:8px">Already listed but something's wrong — hours, phone, pin in the wrong spot? Tell us that too. This map stays right because the community keeps it right.</div>
+        <div class="contact" style="margin-top:12px"><a href="mailto:david@tampabayboating.com?subject=Add%20my%20business%20to%20the%20map" style="display:inline-block;background:var(--teal);color:#fff;font-weight:700;padding:10px 24px;border-radius:999px;text-decoration:none">Get listed — it's free</a></div>
+      </div>
+    </div>
   </div>
 </section></div>
 <div class="view" id="view-logbook"><div class="wrap"><a class="back-link" href="#/">&#8249; All categories</a></div><section id="logbook">
@@ -3103,11 +3116,194 @@ const MAP_PINS = [
 ["Wawa \u2014 W Hillsborough Ave, Tampa","recfuel",27.99628,-82.56433,"7540 W Hillsborough Ave, Tampa","","Ethanol-free (E0), 89 octane \u2014 $4.739/gal (Oct 12) \u2014 call ahead for today\u2019s price"],
 ["Wawa \u2014 Bloomingdale Ave, Riverview","recfuel",27.89338,-82.33574,"10115 Bloomingdale Ave, Riverview","","Ethanol-free (E0), 89 octane \u2014 $4.899/gal (Oct 12) \u2014 call ahead for today\u2019s price"],
 ["Wawa \u2014 Gandy Blvd, Pinellas Park","recfuel",27.84562,-82.67738,"3101 Gandy Blvd, Pinellas Park","","Ethanol-free (E0), 89 octane \u2014 price varies, call ahead"],
-["Wawa \u2014 53rd Ave E, Bradenton","recfuel",27.44541,-82.5049,"4506 53rd Ave E, Bradenton","","Ethanol-free (E0), 89 octane \u2014 price varies, call ahead"]
+["Wawa \u2014 53rd Ave E, Bradenton","recfuel",27.44541,-82.5049,"4506 53rd Ave E, Bradenton","","Ethanol-free (E0), 89 octane \u2014 price varies, call ahead"],
+["Wawa \u2014 US-301, Gibsonton","recfuel",27.85843,-82.32759,"9615 US-301 S, Riverview","","Ethanol-free (E0), 89 octane \u2014 price varies, call ahead"],
+["Wawa \u2014 Boyette Rd, Riverview","recfuel",27.85296,-82.26997,"13323 Boyette Rd, Riverview","","Ethanol-free (E0), 89 octane \u2014 $4.569/gal (Oct 15) \u2014 call ahead for today\u2019s price"],
+["Murphy USA \u2014 Gibsonton Dr, Gibsonton","recfuel",27.84911,-82.35516,"9023 Gibsonton Dr, Gibsonton","","Ethanol-free (E0) \u2014 price varies, call ahead"],
+["Wawa \u2014 1st St E, Bradenton","recfuel",27.493289,-82.562386,"701 1st St E, Bradenton","","Ethanol-free (E0), 89 octane \u2014 price varies, call ahead"],
+["Wawa \u2014 N Dale Mabry Hwy, Tampa","recfuel",28.093413,-82.503031,"15524 N Dale Mabry Hwy, Tampa","","Ethanol-free (E0), 89 octane \u2014 price varies, call ahead"],
+["Wawa \u2014 E Fletcher Ave, Tampa","recfuel",28.068681,-82.431461,"2325 E Fletcher Ave, Tampa","","Ethanol-free (E0), 89 octane \u2014 price varies, call ahead"],
+["Wawa \u2014 SR-60, Valrico","recfuel",27.93851,-82.235904,"2926 SR-60 E, Valrico","","Ethanol-free (E0), 89 octane \u2014 price varies, call ahead"],
+["Wawa \u2014 US-19, Holiday","recfuel",28.186923,-82.740788,"1929 US-19, Holiday","","Ethanol-free (E0), 89 octane \u2014 price varies, call ahead"],
+["Wawa \u2014 Gulf to Bay Blvd, Clearwater","recfuel",27.959961,-82.74743,"2177 Gulf to Bay Blvd, Clearwater","","Ethanol-free (E0), 89 octane \u2014 price varies, call ahead"],
+["Wawa \u2014 S Tamiami Trail, Nokomis","recfuel",27.1243,-82.454153,"100 S Tamiami Trail, Nokomis","","Ethanol-free (E0), 89 octane \u2014 price varies, call ahead"],
+["Murphy USA \u2014 10th St E, Palmetto","recfuel",27.52183,-82.559956,"512 10th St E, Palmetto","","Ethanol-free (E0), 93 octane \u2014 price varies, call ahead"],
+["Family Boating Centers","dealer",28.019014,-82.534585,"7806 Anderson Rd, Tampa","(813) 884-1395","New & used boats — Pathfinder, Hewes, Maverick, Tidewater"],
+["West Coast Marine","dealer",27.886678,-82.535097,"5240 W Tyson Ave, Tampa","(813) 373-6137","Boat dealer + marine supply & service — Sea Pro, Blazer Bay, Shallow Sport, SCB"],
+["Bass Pro Shops Boating Center","dealer",27.934761,-82.334070,"10501 Palm River Rd, Tampa","(813) 655-2080","New boats — Tracker, Nitro, Mako, Sun Tracker, Regency & more"],
+["Antonietti Marine — Riverview","dealer",27.885441,-82.329723,"6601 US-301, Riverview","(727) 862-0776","New & used boats — Bayliner, NauticStar, Trophy, Stingray & pontoons"],
+["Outcast Watersports","dealer",27.998646,-82.321433,"10808 E Hillsborough Ave, Tampa","(813) 630-5695","Boat sales, service & parts"],
+["Ultimate Marine Tampa","dealer",28.016682,-82.504319,"7501 N Dale Mabry Hwy, Tampa","(813) 638-0570","New boats — Sea Hunt, Wellcraft"],
+["Sheaffer Marine","dealer",27.991158,-82.508200,"3916 W South Ave, Tampa","(813) 872-7311","Sheaffer bay boats — built & sold on site, new custom + pre-owned"],
+["Quality Boats","dealer",27.930823,-82.729738,"17389 US-19 N, Clearwater","(727) 530-1815","New & used boats — Grady-White, Regal, Pursuit, Crevalle, Tiara"],
+["MarineMax Clearwater","dealer",27.935981,-82.729452,"18025 US Highway 19 N, Clearwater","(727) 536-2628","New & used boats — Boston Whaler, Sea Ray, Cruisers Yachts & more"],
+["MarineMax St. Petersburg","dealer",27.756101,-82.734342,"6810 Gulfport Blvd S, St. Petersburg","(727) 343-6520","New & used boats, brokerage & service — Sea Ray, Boston Whaler & more"],
+["Galati Yacht Sales — St. Petersburg","dealer",27.870198,-82.613601,"12030 Gandy Blvd N, St. Petersburg","(727) 334-0151","Yacht sales & brokerage — new & pre-owned yachts"],
+["Boat and Motor Superstores","dealer",28.107092,-82.739192,"36851 US-19 N, Palm Harbor","(727) 942-7767","New & used boat sales superstore"],
+["Central Marine","dealer",27.804189,-82.745190,"3535 Tyrone Blvd N, St. Petersburg","(727) 228-0486","New & used boats — Cobia, World Cat, Parker, Barletta"],
+["Thunder Marine","dealer",27.812863,-82.759675,"8701 Bay Pines Blvd, St. Petersburg","(727) 381-4444","New boats — Regulator, Sportsman, Monterey, Jeanneau"],
+["Black Label Marine Group","dealer",27.838676,-82.739064,"7290 Park Blvd, Pinellas Park","(727) 241-4100","New boats — Sea Fox, Caymas, Crownline, Finseeker"],
+["Boateka of Greater Tampa","dealer",27.959965,-82.765815,"1721 Gulf To Bay Blvd, Clearwater","(727) 617-8963","Certified pre-owned boats — 22,000 sq ft showroom"],
+["Tom George Yacht Group","dealer",27.928048,-82.731345,"17116 US-19 N, Clearwater","(727) 734-8707","New boats & yachts — Everglades, Invincible, Cobalt, Axopar"],
+["USA Coastal Marine","dealer",27.824395,-82.786788,"5715 Seminole Blvd, Seminole","(727) 282-7221","Used boats & brokerage — road-front sales lot"],
+["Pro Marine — Palmetto","dealer",27.558935,-82.556841,"5005 US Highway 41 N, Palmetto","(941) 867-9940","New boats — Sea Hunt, Twin Vee, BlackJack, Frontier, Front Runner"],
+["Galati Yacht Sales — Anna Maria","dealer",27.527438,-82.721529,"900 S Bay Blvd, Anna Maria","(941) 778-0755","Yacht sales & brokerage — Galati headquarters"],
+["Old Salt Marine","dealer",27.514207,-82.573494,"405 8th Ave W, Palmetto","(941) 981-5626","New & used boats — Carolina Skiff, Salty Boats, Excel"],
+["Massey Yacht Sales & Service","dealer",27.511973,-82.575710,"1015 Riverside Dr, Palmetto","(941) 723-1610","Jeanneau dealer at Regatta Pointe Marina — new sail & power"],
+["Manatee Marine Unlimited","dealer",27.547916,-82.563250,"3806 US-41 N, Palmetto","(941) 722-1980","New boats — NauticStar, Carolina Skiff & more"],
+["Marlow Marine Sales","dealer",27.526427,-82.609927,"4204 13th St Ct W, Palmetto","(941) 729-3370","Marlow yachts — sales & brokerage"],
+["Beavertail Skiffs","dealer",27.457912,-82.545030,"4601 15th St E, Bradenton","(941) 705-2090","Factory-direct flats skiffs — built & sold on site"],
+["Boater's World","dealer",27.493058,-82.493728,"5412 E SR-64, Bradenton","(941) 867-2555","New boats — Jupiter, Blackfin, Xpress"],
+["Denison Yachting","dealer",27.499248,-82.571991,"1000 1st Ave W, Bradenton","(941) 248-3530","Yacht brokerage office at Twin Dolphin Marina"],
+["S&J Yachts","dealer",27.512937,-82.575742,"323 10th Ave W, Palmetto","(941) 212-6121","New yachts — Bavaria, Makai Catamarans"],
+["Compass Consignments and Yacht Sales","dealer",27.512896,-82.572664,"314 8th Ave W, Palmetto","(941) 981-3810","Pre-owned boat consignment sales"],
+["Ingman Marine","dealer",27.392606,-82.560720,"8311 N Tamiami Trl, Sarasota","(941) 360-0088","New boats — Grady-White, Cobia, Sea Hunt, Pathfinder & more"],
+["Ingman Marine at Cannons Marina","dealer",27.421990,-82.667836,"6040 Gulf of Mexico Dr, Longboat Key","(941) 383-1311","New & pre-owned boats — Grady-White, at Cannons Marina"],
+["Erickson Marine","dealer",27.400685,-82.564572,"7891 N Tamiami Trl, Sarasota","(941) 365-4444","New boats — Contender, Sportsman, Robalo, Chaparral"],
+["MarineMax Sarasota","dealer",27.333701,-82.578496,"1601 Ken Thompson Pkwy, Sarasota","(941) 388-4411","New & used boats — Sea Ray, Boston Whaler, Harris & more"],
+["MarineMax Venice","dealer",27.080495,-82.432250,"1485 S Tamiami Trl, Venice","(941) 485-3388","New & used boats — Boston Whaler, Sea Ray, Cruisers & more"],
+["Viage Group","dealer",27.397921,-82.563406,"7981 N Tamiami Trl, Sarasota","(941) 444-5375","New boats — Beneteau, Chris-Craft, Scout"],
+["Nautical Ventures — Sarasota","dealer",27.397503,-82.563871,"8050 N Tamiami Trl, Sarasota","(941) 355-5500","New boats — Axopar, Wellcraft, EdgeWater & more"],
+["Suncoast Marine Group","dealer",27.301252,-82.513937,"3621 S Tuttle Ave, Sarasota","(941) 330-1601","New boats — Avalon pontoons, Tidewater"],
+["Quality Boats of Sarasota","dealer",27.240911,-82.507172,"7700 S Tamiami Trl, Sarasota","(941) 702-5132","New boats — Pursuit, Regal, Everglades, Tiara, Barletta"],
+["Marine Outlet Center","dealer",27.185765,-82.484713,"707 S Tamiami Trl, Osprey","(941) 921-7070","New boats — Carolina Skiff, Bentley Pontoons"],
+["Coastal Marine Center","dealer",27.121638,-82.445689,"350 Buena Vista Dr, Nokomis","(941) 485-9500","Pre-owned boat sales & brokerage"],
+["Royal Palm Boat Sales","dealer",26.975130,-82.355627,"700 N Indiana Ave, Englewood","(941) 681-2136","New boats — Parker, Berkshire pontoons, Pair Customs, Gheenoe"],
+["Nautical Ventures — Holiday","dealer",28.186213,-82.740740,"1925 US-19, Holiday","(727) 939-8900","New boats — Axopar, Wellcraft, StarCraft & more"],
+["Advance Marine Sales & Service","dealer",28.199123,-82.723038,"2734 Grand Blvd, Holiday","(727) 938-7692","New boats — Alweld, Fiesta Pontoons; sales & service"],
+["Marauder Marine Boatworks","dealer",28.212649,-82.724884,"3650 Drew Ln, New Port Richey","(727) 848-5319","Avenger bay boats — built & sold direct"],
+["Weld-Rite Hitch Company","trailer",27.995876,-82.495845,"3218 W Hillsborough Ave, Tampa","(813) 877-4750","Trailer sales, service & repair · hitches & parts"],
+["T.A. Mahoney Co.","parts",27.952790,-82.402170,"4990 E Adamo Dr, Tampa","(813) 241-6500","Marine parts & supply · rigging, trailer parts & service"],
+["West Marine (Tampa)","parts",27.952511,-82.508048,"3905 W Cypress St, Tampa","(813) 348-0521","Marine parts & supply store"],
+["West Marine (Apollo Beach)","parts",27.772023,-82.391732,"6492 N US Highway 41, Apollo Beach","(813) 645-6144","Marine parts & supply store"],
+["Repair Boat Services","service",27.983967,-82.518973,"4410 W Alva St, Tampa","(813) 836-5637","Boat & jet ski repair · engines, electrical, fiberglass"],
+["Seamore's Canvas Shop","service",27.987459,-82.512189,"4712 N Clark Ave, Tampa","(813) 237-2660","Canvas & upholstery · bimini tops, covers, enclosures"],
+["T-Top Welding LLC","service",28.033550,-82.443965,"1418 E Busch Blvd, Tampa","(813) 498-9391","Marine fabrication · custom T-tops, towers, welding"],
+["Piper's Marine Inc","service",27.996875,-82.586316,"8888 W Hillsborough Ave, Tampa","(813) 886-0967","Mercury outboard & MerCruiser service · parts counter"],
+["Franzen Marine","service",27.861552,-82.532480,"7206 S Obrien St, Tampa","(813) 835-9655","Used outboard sales & service · lower units, powerheads"],
+["Alafia Marine","service",27.847559,-82.383306,"6128 Lewis Ave, Gibsonton","(813) 671-2628","Outboard repair & parts · Mercury dealer"],
+["Admiral Propeller","service",27.878196,-82.518796,"6233 S Manhattan Ave, Tampa","(813) 837-9476","Propeller repair & sales · shafts, struts, machine shop"],
+["Holland Fiberglass & Restoration","service",28.037935,-82.523461,"9524 N Trask St, Tampa","(813) 426-5961","Fiberglass & gelcoat repair · boat restoration"],
+["Jean Street Shipyard","service",28.004102,-82.467885,"337 W Jean St, Tampa","(813) 239-2526","Boatyard & repair · haulout, wood/metal shops, ship's store"],
+["Riverside Marine","service",28.021550,-82.459839,"8100 N Florida Ave, Tampa","(813) 254-7630","Boat service & repair · repower, prop repair, detailing"],
+["Nautical Marine","service",28.015305,-82.413774,"7211 N 41st St, Tampa","(813) 886-2084","Suzuki repower center · outboard service, fiberglass, trailer repair"],
+["Shark Coast Marine Suzuki Repower","service",27.989766,-82.507788,"4812 N Cortez Ave, Tampa","(813) 351-0621","Suzuki repower & service · outboard repair & parts"],
+["Poseidon Marine","service",27.705272,-82.399878,"2601 14th Ave SE, Ruskin","(813) 743-7748","Marine mechanic · engine service & repair, mobile + shop"],
+["Sundial Limited","service",28.031007,-82.451052,"8901 N Nebraska Ave, Tampa","(813) 960-4336","Boat detailing & gelcoat restoration · detailing supply showroom"],
+["Canvas John","service",27.817450,-82.772140,"4800 95th St N, St. Petersburg","(727) 439-6699","Marine canvas & upholstery"],
+["Thunder Marine Parts and Service","service",27.815737,-82.770666,"4701 95th St N, St. Petersburg","(727) 381-3333","Service & parts department — outboard service, parts counter"],
+["Central Marine — Parts & Services","service",27.794855,-82.739118,"2501 72nd St N, St. Petersburg","(727) 347-9799","Parts & service department — outboard sales/service, parts"],
+["Artful Canvas Design Inc","service",27.815185,-82.672157,"2877 47th Ave N, St. Petersburg","(727) 521-0212","Marine canvas & metal fabrication"],
+["Quality T-Top & Boats Accessories","service",28.157416,-82.760650,"1087 Island Ave, Tarpon Springs","(727) 942-4397","T-top & boat accessory fabrication"],
+["Tampa Bay Marine Center","service",27.849491,-82.787287,"8478 Seminole Blvd, Seminole","(727) 313-1577","Custom rigging, dash refits, electronics, upholstery & motor service"],
+["Suncoast Marine Center","service",27.891870,-82.746525,"13100 S Belcher Rd, Largo","(727) 535-4500","Outboard sales, service & parts"],
+["Gulf Marine of Clearwater","service",27.975758,-82.752826,"2030 Palmetto St, Clearwater","(727) 442-5175","Outboard repair; parts dept.; Continental/Magic Tilt trailer sales & repair"],
+["The Canvas Yard Inc","service",28.041619,-82.765294,"2100 Mangrum Dr, Dunedin","(727) 462-8021","Marine canvas & upholstery"],
+["Mayday Marine Services","service",27.821209,-82.786670,"5385 Seminole Blvd, St. Petersburg","(727) 422-9557","Boat & outboard repair; boat trailer repair"],
+["West Marine (St. Petersburg)","parts",27.788066,-82.725550,"2010 Tyrone Blvd N, St. Petersburg","(727) 342-8001","Marine parts & supply store"],
+["West Marine (Clearwater)","parts",27.961762,-82.749206,"2128 Gulf to Bay Blvd, Clearwater","(727) 298-0030","Marine parts & supply store"],
+["Don's Marine Surplus & Salvage","parts",27.887241,-82.708702,"5601 126th Ave N, Clearwater","(727) 576-8577","New & used marine parts — 17-acre surplus & salvage yard"],
+["Sigma Marine Supplies","parts",28.160572,-82.756362,"1244 N Pinellas Ave, Tarpon Springs","(727) 934-0794","Marine parts & supply store"],
+["American Discount Marine","parts",27.826698,-82.728781,"6000 66th St N, St. Petersburg","(727) 546-8484","Marine supplies store; boat trailer parts & repair"],
+["FISH (Fisherman's Ideal Supply House)","parts",27.812191,-82.789707,"750 Welch Causeway, Madeira Beach","(727) 391-7380","Marine supply & fishing tackle store"],
+["Owens & Sons Aluminum Slide-On Trailers","trailer",27.762370,-82.682260,"3601 8th Ave S, St. Petersburg","(727) 323-1088","Custom aluminum boat trailers — sales & repair"],
+["West Marine (Bradenton)","parts",27.467703,-82.564011,"3622 1st St, Bradenton","(941) 357-1657","Marine parts & supply store"],
+["General Propeller Company","service",27.491841,-82.547847,"1415 9th Ave E, Bradenton","(941) 748-1527","Propeller repair & reconditioning, shafting, underwater hardware"],
+["MYCO Trailers","trailer",27.473679,-82.529498,"2703 29th Ave E, Bradenton","(941) 748-2397","Custom welded aluminum & steel boat trailers — built on site"],
+["Sturdy Built Trailer Parts","trailer",27.532559,-82.510591,"2020 51st Ave E #100, Palmetto","(941) 933-1234","Boat trailer parts — axles, hubs, brakes, tires, springs; walk-in store"],
+["Jaytron","parts",27.496395,-82.530862,"2635 Manatee Ave E, Bradenton","(941) 746-6385","Marine electronics sales & repair — radar, VHF, GPS, autopilots"],
+["Quality Marine Upholstery","service",27.429685,-82.526773,"6223 29th St E, Bradenton","(941) 321-9231","Marine upholstery — replacement boat interiors, by appointment"],
+["Seahorse Canvas & Upholstery","service",27.459926,-82.591113,"4523 30th St W, Bradenton","(941) 536-5883","Marine canvas & upholstery — covers, biminis, enclosures"],
+["Barry's Trailers","trailer",27.353321,-82.531048,"1801 N Washington Blvd, Sarasota","(941) 953-3468","Boat trailer sales, service, repair & parts; 100+ trailers in stock"],
+["West Marine (Sarasota)","parts",27.285724,-82.531792,"4708 S Tamiami Trl, Sarasota","(941) 360-6000","Marine parts & supply store"],
+["Boat Owners Warehouse","parts",27.244550,-82.511040,"7522 S Tamiami Trl, Sarasota","(941) 233-7777","Marine parts & supply warehouse store"],
+["Marine Surplus","parts",27.415080,-82.547090,"7070 15th St E, Sarasota","(941) 758-3552","Surplus & OEM boat parts store, since 1983"],
+["Boat Parts and More","parts",27.183947,-82.484697,"830 S Tamiami Trl, Osprey","(941) 966-4320","Boat parts store; outboard service & trolling motor install"],
+["Innovation Marine Inc","service",27.396832,-82.544027,"8011 15th St E, Sarasota","(941) 355-7852","High-performance engine building & machine shop; Mercury authorized service"],
+["Davis Bros. Marine Services","service",27.369895,-82.551069,"4023 Royal Palm Ave, Sarasota","(941) 800-5151","Outboard mechanics, maintenance, re-wiring & detailing"],
+["Aqua-Shade","service",27.353892,-82.532399,"1848 Gillespie Ave, Sarasota","(941) 266-0903","T-top & tower fabrication, custom canvas & upholstery, fiberglass repair"],
+["Tim Smith Marine LLC","service",27.340948,-82.525149,"550 Mango Ave, Sarasota","(941) 726-0712","Yacht refit & repair, fiberglass, diesel service"],
+["Walt's Marine Service","service",27.355359,-82.528862,"2073 20th St, Sarasota","(941) 955-6785","Certified marine technician; engine & transmission service and repair"],
+["Ruben's Fiberglass & Gelcoat Repair","service",27.426072,-82.539340,"6451 19th St E, Sarasota","(941) 592-5314","Fiberglass & gelcoat repair, bottom paint, restorations"],
+["Thunder Marine Parts and Service","service",27.419926,-82.539711,"1960 Whitfield Park Ave, Sarasota","(941) 337-3344","Boat service & parts center"],
+["Admiralty Marine","service",27.094168,-82.433296,"609 US Hwy 41 Bypass S, Venice","(941) 480-0723","Honda & Suzuki outboard sales, service & repair"],
+["Satellite Marine Sales & Services","service",27.081828,-82.428947,"330 Center Ct, Venice","(941) 493-1849","Boat & motor repair; rigging; pre-purchase inspections"],
+["Gulf Harbor Marina Service","service",27.123826,-82.467766,"100 Circuit Rd, Nokomis","(941) 488-7734","Marina service yard: engine repair, prop repair, bottom paint, canvas repair"],
+["George Luna Boat Repair","service",28.194130,-82.723842,"2419 Grand Blvd, Holiday","(727) 389-0154","Fiberglass, gelcoat & collision repair, bottom paint, detailing, mechanical repairs"],
+["Gandy Boat Ramp","ramp",27.892485,-82.533037,"5108 W Gandy Blvd, Tampa","(813) 987-6240","Public ramp · 6 lanes · $5 launch · sunrise–sunset · saltwater — Tampa Bay"],
+["Causeway Boat Ramp","ramp",27.971986,-82.610164,"W Courtney Campbell Cswy, Tampa","(813) 987-6240","Public ramp · 4 lanes · $5 launch · 4 AM–11 PM · saltwater — Old Tampa Bay"],
+["Davis Island Boat Ramp","ramp",27.910724,-82.446049,"801-1399 Severn Ave, Tampa","(813) 274-8615","Public ramp · 2 lanes · open 24/7 · saltwater — Seaplane Basin, Davis Islands"],
+["Ballast Point Park","ramp",27.888982,-82.48123,"5300 Interbay Blvd, Tampa","(813) 274-8615","Public ramp · 1 lane · ramp open 24 hours · only 4 trailer spots · saltwater — Hillsborough Bay"],
+["Picnic Island Boat Ramp","ramp",27.85781,-82.551535,"7409 Picnic Island Blvd, Tampa","(813) 274-8615","Public ramp · 1 double lane · ramp open 24 hours · saltwater — Tampa Bay"],
+["Lowry Park Boat Ramp","ramp",28.012589,-82.465216,"1204 W Flora St, Tampa","(813) 274-8211","Public ramp · 2 lanes · freshwater — Hillsborough River"],
+["E.G. Simmons Conservation Park","ramp",27.739063,-82.466147,"2401 19th Ave NW, Ruskin","(813) 675-3385","Public ramp · $2 per vehicle + $5 boat launch · saltwater — Tampa Bay"],
+["Cockroach Bay Boat Ramp","ramp",27.687083,-82.520395,"5299 Cockroach Bay Rd, Ruskin","(813) 987-6240","Public ramp · 1 lane · $5 launch · sunrise–sunset · saltwater — Cockroach Bay / Tampa Bay"],
+["Williams Park Boat Ramp","ramp",27.861237,-82.384727,"9425 US Hwy 41 S, Riverview","","Public ramp · 4 lanes · $5 launch · saltwater — Alafia River / Tampa Bay"],
+["Riverview Civic Center and Boat Ramp","ramp",27.866277,-82.318862,"11020 Park Dr, Riverview","(813) 672-1120","Public ramp · 1 lane · $5 launch · brackish — Alafia River"],
+["Commongood Boat Ramp","ramp",27.719523,-82.435812,"109 1st Ave NW, Ruskin","(813) 987-6240","Public ramp · 1 lane · free launch · saltwater — Ruskin Inlet / Little Manatee River"],
+["Domino Park Boat Ramp","ramp",27.693894,-82.445156,"2201 8th St SW, Ruskin","(813) 987-6240","Public ramp · 1 lane · $5 launch · sunrise–sunset · saltwater — Mill Bayou / Little Manatee River"],
+["Wildcat Park Boat Ramp","ramp",27.676032,-82.436641,"110 Stephens Rd, Ruskin","(813) 987-6240","Public ramp · 1 lane · $5 launch · brackish — Wildcat Creek / Little Manatee River"],
+["Baker Creek Boat Ramp","ramp",28.048407,-82.268959,"12095 Thonotosassa Rd, Thonotosassa","(813) 987-6240","Public ramp · 1 lane · $5 launch · sunrise–sunset · freshwater — Lake Thonotosassa"],
+["Harney Park Boat Ramp","ramp",28.017378,-82.371205,"7115 N US Highway 301, Tampa","(813) 987-6208","Public ramp · 1 lane · $5 launch · freshwater — Tampa Bypass Canal"],
+["John B. Sargeant Sr. Park","ramp",28.079923,-82.285522,"12702 US-301, Thonotosassa","(813) 987-6208","Public ramp · small boats · freshwater — Hillsborough River"],
+["Morris Bridge Park","ramp",28.097155,-82.313212,"13630 Morris Bridge Rd, Thonotosassa","(813) 987-6209","Public ramp · small boats · $2 per vehicle · freshwater — Hillsborough River"],
+["Riverhills Boat Ramp","ramp",28.021325,-82.38778,"329 S Riverhills Dr, Temple Terrace","(813) 987-6240","Public ramp · freshwater — Hillsborough River"],
+["Rotary Riverfront Park","ramp",28.05492,-82.363676,"8000 E Fowler Ave, Temple Terrace","(813) 987-6840","Public ramp · freshwater — Hillsborough River"],
+["Brandon Boat Ramp","ramp",27.88067,-82.299749,"836 Center Ave, Brandon","","Public ramp · 1 lane · $5 launch · freshwater — Alafia River"],
+["Lake Weeks Boat Ramp","ramp",27.988437,-82.272055,"Lakeside Dr, Seffner","","Public ramp · freshwater — Lake Weeks"],
+["Fort De Soto Boat Ramp","ramp",27.645532,-82.71726,"3500 Pinellas Bayway S, St. Petersburg","(727) 582-2267","Public ramp · 24 lanes · parking fee · open 24 hours · saltwater — Tampa Bay entrance"],
+["Bay Pines Boat Ramp","ramp",27.812093,-82.76816,"9600 Bay Pines Blvd, Seminole","(727) 549-6165","Public ramp · 6 lanes · parking fee · saltwater — Boca Ciega Bay · CLOSED for repairs through November 2026"],
+["Belleair Causeway Boat Ramp","ramp",27.917349,-82.826728,"3900 W Bay Dr, Belleair Bluffs","(727) 687-7151","Public ramp · 10 lanes · parking fee · open 24 hours · saltwater — Intracoastal Waterway"],
+["Park Boulevard Boat Ramp","ramp",27.841944,-82.839084,"18651 Gulf Blvd, Indian Shores","(727) 582-2100","Public ramp · 6 lanes · parking fee · open 24 hours · saltwater — Intracoastal Waterway"],
+["Sutherland Bayou Boat Ramp","ramp",28.086541,-82.770515,"2119 US-19 ALT, Palm Harbor","(727) 582-2100","Public ramp · 1 lane · $6 daily parking · open 24 hours · saltwater — St. Joseph Sound"],
+["Philippe Park Boat Ramp","ramp",28.013937,-82.682631,"2525 Philippe Pkwy, Safety Harbor","(727) 669-1947","Public ramp · 1 lane · parking fee · 7 a.m.–dusk · saltwater — Old Tampa Bay"],
+["A.L. Anderson Park","ramp",28.132884,-82.738943,"39699 US-19 N, Tarpon Springs","(727) 582-2100","Public ramp · parking fee · ramp hours 5 a.m.–10 p.m. · freshwater — Lake Tarpon"],
+["John Chesnut Sr. Park","ramp",28.088579,-82.701474,"2200 East Lake Rd, Palm Harbor","(727) 582-2100","Public ramp · parking fee · 7 a.m.–dusk · freshwater — Lake Tarpon"],
+["Lake Seminole Boat Ramp","ramp",27.844646,-82.77768,"10015 Park Blvd, Seminole","(727) 549-6156","Public ramp · 7 a.m.–dusk · freshwater — Lake Seminole"],
+["Seminole Boat Ramp","ramp",27.974292,-82.80234,"198 Seminole St, Clearwater","(727) 562-4955","Public ramp · 8 launches · paid parking · open 24 hours · saltwater — Clearwater Harbor"],
+["Clearwater Beach Public Boat Ramp","ramp",27.984756,-82.823863,"69 Bay Esplanade, Clearwater","(727) 562-4955","Public ramp · saltwater — Clearwater Harbor"],
+["Dunedin Marina","ramp",28.012416,-82.792308,"51 Main St, Dunedin","(727) 298-3030","Public ramp · city marina · saltwater — St. Joseph Sound"],
+["Egan Park Boat Ramp","ramp",27.753835,-82.757252,"9101 Blind Pass Rd, St Pete Beach","(727) 363-9245","Public ramp · 2 lanes · saltwater — Intracoastal Waterway"],
+["Treasure Island Boat Ramp","ramp",27.778821,-82.778644,"123rd Ave & Lagoon Ln, Treasure Island","(727) 547-4575","Public ramp · 1 lane · no launch fee · 6 a.m.–11 p.m. · saltwater — Boca Ciega Bay"],
+["Maximo Park","ramp",27.709369,-82.681766,"Pinellas Point Dr S & Sunshine Skyway Ln S, St. Petersburg","(727) 893-7441","Public ramp · 7 lanes · open 24 hours · saltwater — Tampa Bay"],
+["Bay Vista Park","ramp",27.70453,-82.641214,"7000 4th St S, St. Petersburg","(727) 893-7441","Public ramp · 2 lanes · open 24 hours · saltwater — Tampa Bay"],
+["Demens Landing Boat Ramp","ramp",27.771673,-82.627918,"500 1st Ave SE, St. Petersburg","(727) 893-7335","Public ramp · 2 lanes · open 24 hours · saltwater — Tampa Bay"],
+["Jungle Prada Boat Ramp","ramp",27.788308,-82.754315,"8398 Elbow Ln N, St. Petersburg","(727) 893-7335","Public ramp · open 24 hours · saltwater — Boca Ciega Bay"],
+["Crisp Park","ramp",27.804092,-82.62715,"620 37th Ave NE, St. Petersburg","(727) 893-7441","Public ramp · 2 lanes · open 24 hours · saltwater — Coffee Pot Bayou"],
+["Coffee Pot Park","ramp",27.799816,-82.633978,"1st St NE & 31st Ave NE, St. Petersburg","(727) 893-7441","Public ramp · 1 lane · open 24 hours · saltwater — Coffee Pot Bayou"],
+["Grandview Park","ramp",27.735005,-82.640661,"3734 6th St S, St. Petersburg","(727) 893-7441","Public ramp · 3 lanes · open 24 hours · saltwater — Tampa Bay"],
+["Lake Maggiore Park","ramp",27.732521,-82.647166,"3601 Dr. Martin Luther King Jr. St. S., St. Petersburg","(727) 893-7441","Public ramp · 3 lanes · open 24 hours · freshwater — Lake Maggiore"],
+["Sunlit Cove Boat Ramp","ramp",27.851997,-82.633533,"3706 Sunlit Cove Dr NE, St. Petersburg","(727) 893-7441","Public ramp · 1 lane · saltwater — Riviera Bay"],
+["Kingfish Boat Ramp","ramp",27.497596,-82.702522,"752 Manatee Ave, Holmes Beach","(941) 742-5923","Public ramp · 3 lanes · no fee · saltwater — Anna Maria Sound · open 24 hours"],
+["Captain Scott Moore Boat Ramp","ramp",27.455438,-82.693543,"1507 Gulf Dr S, Bradenton Beach","(941) 742-5923","Public ramp · 2 lanes · saltwater — Sarasota Bay · formerly Coquina North Boat Ramp"],
+["Coquina South Boat Ramp","ramp",27.447852,-82.688821,"1465 Gulf Dr S, Bradenton Beach","","Public ramp · 2 lanes · saltwater — Sarasota Bay"],
+["Warner's Bayou Boat Ramp","ramp",27.509639,-82.618237,"5800 Riverview Blvd, Bradenton","(941) 742-5923","Public ramp · 3 lanes · no fee · saltwater — Manatee River via Warner's Bayou · daylight hours"],
+["State Road 64 Boat Ramp","ramp",27.495798,-82.526532,"3020 Manatee Ave E, Bradenton","(941) 748-4501","Public ramp · 2 lanes · freshwater — Braden River · no overnight parking"],
+["Riverside Park Boat Ramp","ramp",27.512064,-82.573949,"801 Riverside Dr, Palmetto","(941) 723-4580","Public ramp · 2 lanes · no fee · saltwater — Manatee River · 7 AM–11 PM"],
+["Fort Hamer Park Boat Ramp","ramp",27.525265,-82.430184,"1605 Fort Hamer Rd, Parrish","(941) 742-5923","Public ramp · 2 lanes · brackish — Manatee River · sunrise to sunset"],
+["63rd Street Boat Ramp","ramp",27.513316,-82.714065,"6398 Marina Way, Holmes Beach","(941) 708-5768","Public ramp · 1 lane · no fee · saltwater — Bimini Bay · 6 AM–10 PM"],
+["Jiggs Landing Boat Ramp","ramp",27.432217,-82.480896,"6106 63rd St E, Bradenton","(941) 727-4181","Public ramp · freshwater — Braden River / Evers Reservoir · $30 one-time gate card for after-hours ramp access"],
+["Bishop Harbor Boat Ramp","ramp",27.601326,-82.551911,"8701 Bishop Harbor Rd, Palmetto","(941) 721-2068","Public ramp · 1 lane · unpaved · no fee · saltwater — Terra Ceia Bay · shallow-draft only, best at mid to high tide"],
+["Centennial Park","ramp",27.34718,-82.54844,"1059 N Tamiami Trl, Sarasota","(941) 263-6386","Public ramp · three double-lane ramps · saltwater — Sarasota Bay"],
+["Ken Thompson Boat Ramp","ramp",27.33373,-82.57460,"1708 Ken Thompson Pkwy, Sarasota","(941) 263-6386","Public ramp · saltwater — Sarasota Bay, City Island"],
+["Turtle Beach Public Boat Ramp","ramp",27.21801,-82.51622,"8701 Blind Pass Rd, Sarasota","(941) 861-5000","Public ramp · saltwater — Little Sarasota Bay, Siesta Key"],
+["Blackburn Point Park Boat Ramp","ramp",27.17960,-82.49212,"421 Blackburn Point Rd, Osprey","(941) 861-5000","Public ramp · saltwater — Little Sarasota Bay, Osprey"],
+["Higel Marine Park","ramp",27.10800,-82.46185,"1250 Tarpon Center Dr, Venice","(941) 486-2626","Public ramp · saltwater — ICW / Roberts Bay, Venice"],
+["Nokomis Beach","ramp",27.12370,-82.47039,"167 S Casey Key Rd, Nokomis","(941) 861-5000","Public ramp · ramp open 24/7 · saltwater — Lyons Bay / Dona Bay, Casey Key"],
+["Indian Mound Park","ramp",26.95680,-82.36340,"210 Winson Ave, Englewood","(941) 861-5000","Public ramp · 4 lanes · no launch fee · saltwater — Lemon Bay, Englewood"],
+["Manasota Key Beach","ramp",27.01061,-82.41225,"8570 Manasota Key Rd, Englewood","","Public ramp · saltwater — Lemon Bay, Englewood"],
+["Marina Park and Boat Ramp","ramp",27.10216,-82.44126,"301 E Venice Ave, Venice","","Public ramp · saltwater — ICW, Venice"],
+["Loreto Court Bay Access","ramp",27.12641,-82.44153,"800 Loreto Ct, Nokomis","","Public ramp · saltwater — Dona Bay, Nokomis"],
+["Marina Park","ramp",27.03360,-82.24972,"7030 Chancellor Blvd, North Port","(941) 429-7275","Public ramp · freshwater — Myakkahatchee Creek to the Myakka River, North Port"],
+["Anclote River Park Boat Ramp","ramp",28.176225,-82.788635,"1119 Baillies Bluff Road, Holiday","(727) 938-2598","Public ramp · saltwater — Anclote River / Gulf · ramps open 24/7 for active launching & retrieval only"],
+["Nick's Park Boat Ramp","ramp",28.272454,-82.726022,"7917 Bayview St, Port Richey","","Public ramp · saltwater — Pithlachascotee (Cotee) River / Miller's Bayou · single lane · City of Port Richey"],
+["Sims Park Boat Ramp","ramp",28.250576,-82.723242,"6346 River Rd, New Port Richey","(727) 841-4560","Public ramp · saltwater — Cotee River · free to use · boats 25–30 ft at high tide"],
+["Robert J. Strickland Memorial Park","ramp",28.362749,-82.709985,"6345 Clark St, Hudson","(727) 861-3010","Public ramp · saltwater — Gulf of Mexico / Hudson Beach · single lane · 35 trailer spaces"],
+["Moon Lake Park","ramp",28.287255,-82.60726,"8985 Lake Dr, New Port Richey","(727) 856-1793","Public ramp · freshwater — Moon Lake · small powered boats only · 10 paved trailer spaces"]
 ];
 /* MAP_PINS_PENDING retired 2026-10-10: 201 pins re-verified and restored. 5 rejected (stay off map): Anclote River Sandbar (play, wrong location), Marjorie Park Yacht Basin (fuel, closed), The Club at Treasure Island (fuel, no fuel dock), The Landing at Tarpon Springs Marina (fuel, dupe), Carefree Boat Club Tierra Verde (club, 2 sources only). See map-research/reverify-*.md */
 const MAP_PINS_PENDING = [];
-const MAP_COLORS = {fuel:"#e25822", recfuel:"#1f2937", bait:"#2e9e5b", dine:"#8b5cf6", play:"#0e7490", club:"#d946ef", storage:"#f59e0b", stay:"#2563eb"};
+const MAP_COLORS = {fuel:"#e25822", recfuel:"#1f2937", bait:"#2e9e5b", dine:"#8b5cf6", play:"#0e7490", club:"#d946ef", storage:"#f59e0b", stay:"#2563eb", dealer:"#e11d48", trailer:"#92400e", parts:"#65a30d", service:"#64748b", ramp:"#4f46e5"};
 window.mapFilter=function(cat,btn){
   document.querySelectorAll('.map-filter').forEach(x => x.classList.remove('active'));
   if(btn) btn.classList.add('active');
@@ -3591,6 +3787,7 @@ function renderFuel(){
 const SERVICES = [
  ["Poseidon Mobile Marine Mechanic","Ruskin – serves all Tampa Bay","Mechanics","Mobile outboard/inboard repair, 24/7 emergency","(813) 743-7748","https://poseidonmarine.com/"],
  ["Repair Boat Services","Tampa","Mechanics","Service & repair shop","(813) 836-5637","https://boatservices.us/"],
+ ["T.A. Mahoney Co.","Tampa – E Adamo Dr","Mechanics","Parts, rigging & service — trailer parts & repair specialist, family-run since 1946","(813) 241-6500","http://tamahoney.com/"],
  ["Pass-A-Grille Marina Service Dept","St. Pete Beach","Mechanics","Yamaha warranty center, repower",null,null],
  ["Captain Levi's Fiberglass Repair","Largo","Mechanics","Mobile fiberglass & gelcoat repair",null,null],
  ["Keys Mobile Marine","Pinellas","Mechanics","Factory-trained, all major brands, mobile",null,null],

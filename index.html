@@ -1147,7 +1147,7 @@ var PAGES=[
 ["advertise","Advertise","advertise sponsor business"],
 ["contact","Contact","contact email david"],
 ["about","About","about story"]];
-var PIN_LABEL={fuel:"Fuel",bait:"Bait",dine:"Dock & Dine",play:"Destination",club:"Boat Club",storage:"Storage",stay:"Boat-Up Stay",recfuel:"Boat Fuel",dealer:"Boat Dealers",trailer:"Trailer Services",parts:"Parts & Supply",service:"Marine Services",ramp:"Boat Ramp"};
+var PIN_LABEL={fuel:"Fuel",bait:"Bait",dine:"Dock & Dine",play:"Destination",club:"Boat Club",storage:"Storage",stay:"Boat-Up Stay",dealer:"Boat Dealers",trailer:"Trailer Services",parts:"Parts & Supply",service:"Marine Services",ramp:"Boat Ramp"};
 var panel=document.getElementById('search-panel'),input=document.getElementById('site-search'),
     results=document.getElementById('search-results'),btn=document.getElementById('search-btn');
 function esc(t){return String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
@@ -1575,12 +1575,11 @@ results.addEventListener('click',function(e){
     <div class="sec-head">
       <span class="sec-kicker">Explore</span>
       <h2>Tampa Bay Boater's Map</h2>
-      <p>Fuel docks, boat fuel on land, bait shops, dock &amp; dine spots, boat ramps, dealers, parts &amp; service — and the places everyone goes. Tap a pin for details.</p>
+      <p>Fuel docks, rec fuel & ethanol-free stations, bait shops, dock &amp; dine spots, boat ramps, dealers, parts &amp; service — and the places everyone goes. Tap a pin for details.</p>
     </div>
     <div class="map-filters" style="text-align:center; margin-bottom:10px">
       <button class="map-filter active" data-cat="all" onclick="mapFilter('all',this)">All</button>
       <button class="map-filter" data-cat="fuel" onclick="mapFilter('fuel',this)"><svg class=ic aria-hidden=true><use href=#i-fuel></use></svg> Fuel</button>
-      <button class="map-filter" data-cat="recfuel" onclick="mapFilter('recfuel',this)"><svg class=ic aria-hidden=true><use href=#i-fuel></use></svg> Boat Fuel</button>
       <button class="map-filter" data-cat="bait" onclick="mapFilter('bait',this)"><svg class=ic aria-hidden=true><use href=#i-shrimp></use></svg> Bait</button>
       <button class="map-filter" data-cat="dine" onclick="mapFilter('dine',this)"><svg class=ic aria-hidden=true><use href=#i-dine></use></svg> Dock &amp; Dine</button>
       <button class="map-filter" data-cat="stay" onclick="mapFilter('stay',this)"><svg class=ic aria-hidden=true><use href=#i-bed></use></svg> Boat-Up Stays</button>
@@ -3112,22 +3111,22 @@ const MAP_PINS = [
 ["Compass Hotel Anna Maria Sound","stay",27.496826,-82.686087,"12324 Manatee Ave W, Bradenton","","Dock via adjacent Safe Harbor Pier 77; nightly guest rates; transient to 50 ft."],
 ["Courtyard by Marriott Clearwater Beach","stay",27.98029,-82.82543,"455 E Shore Dr, Clearwater Beach","","50-slip marina next door; transient dockage to 60 ft; boaters get hotel amenities."],
 ["Sta 'N Pla Marina Resort","stay",27.97215,-82.82726,"333 S Hamden Dr, Clearwater Beach","","Budget motel with private docks and slips for guests on the ICW."],
-["Wawa \u2014 W Gandy Blvd, Tampa","recfuel",27.89312,-82.50456,"3660 W Gandy Blvd, Tampa","","Ethanol-free (E0), 89 octane \u2014 $4.589/gal (Oct 12) \u2014 call ahead for today\u2019s price"],
-["Wawa \u2014 W Hillsborough Ave, Tampa","recfuel",27.99628,-82.56433,"7540 W Hillsborough Ave, Tampa","","Ethanol-free (E0), 89 octane \u2014 $4.739/gal (Oct 12) \u2014 call ahead for today\u2019s price"],
-["Wawa \u2014 Bloomingdale Ave, Riverview","recfuel",27.89338,-82.33574,"10115 Bloomingdale Ave, Riverview","","Ethanol-free (E0), 89 octane \u2014 $4.899/gal (Oct 12) \u2014 call ahead for today\u2019s price"],
-["Wawa \u2014 Gandy Blvd, Pinellas Park","recfuel",27.84562,-82.67738,"3101 Gandy Blvd, Pinellas Park","","Ethanol-free (E0), 89 octane \u2014 price varies, call ahead"],
-["Wawa \u2014 53rd Ave E, Bradenton","recfuel",27.44541,-82.5049,"4506 53rd Ave E, Bradenton","","Ethanol-free (E0), 89 octane \u2014 price varies, call ahead"],
-["Wawa \u2014 US-301, Gibsonton","recfuel",27.85843,-82.32759,"9615 US-301 S, Riverview","","Ethanol-free (E0), 89 octane \u2014 price varies, call ahead"],
-["Wawa \u2014 Boyette Rd, Riverview","recfuel",27.85296,-82.26997,"13323 Boyette Rd, Riverview","","Ethanol-free (E0), 89 octane \u2014 $4.569/gal (Oct 15) \u2014 call ahead for today\u2019s price"],
-["Murphy USA \u2014 Gibsonton Dr, Gibsonton","recfuel",27.84911,-82.35516,"9023 Gibsonton Dr, Gibsonton","","Ethanol-free (E0) \u2014 price varies, call ahead"],
-["Wawa \u2014 1st St E, Bradenton","recfuel",27.493289,-82.562386,"701 1st St E, Bradenton","","Ethanol-free (E0), 89 octane \u2014 price varies, call ahead"],
-["Wawa \u2014 N Dale Mabry Hwy, Tampa","recfuel",28.093413,-82.503031,"15524 N Dale Mabry Hwy, Tampa","","Ethanol-free (E0), 89 octane \u2014 price varies, call ahead"],
-["Wawa \u2014 E Fletcher Ave, Tampa","recfuel",28.068681,-82.431461,"2325 E Fletcher Ave, Tampa","","Ethanol-free (E0), 89 octane \u2014 price varies, call ahead"],
-["Wawa \u2014 SR-60, Valrico","recfuel",27.93851,-82.235904,"2926 SR-60 E, Valrico","","Ethanol-free (E0), 89 octane \u2014 price varies, call ahead"],
-["Wawa \u2014 US-19, Holiday","recfuel",28.186923,-82.740788,"1929 US-19, Holiday","","Ethanol-free (E0), 89 octane \u2014 price varies, call ahead"],
-["Wawa \u2014 Gulf to Bay Blvd, Clearwater","recfuel",27.959961,-82.74743,"2177 Gulf to Bay Blvd, Clearwater","","Ethanol-free (E0), 89 octane \u2014 price varies, call ahead"],
-["Wawa \u2014 S Tamiami Trail, Nokomis","recfuel",27.1243,-82.454153,"100 S Tamiami Trail, Nokomis","","Ethanol-free (E0), 89 octane \u2014 price varies, call ahead"],
-["Murphy USA \u2014 10th St E, Palmetto","recfuel",27.52183,-82.559956,"512 10th St E, Palmetto","","Ethanol-free (E0), 93 octane \u2014 price varies, call ahead"],
+["Wawa \u2014 W Gandy Blvd, Tampa","fuel",27.89312,-82.50456,"3660 W Gandy Blvd, Tampa","","Ethanol-free (E0), 89 octane \u2014 $4.589/gal (Oct 12) \u2014 call ahead for today\u2019s price"],
+["Wawa \u2014 W Hillsborough Ave, Tampa","fuel",27.99628,-82.56433,"7540 W Hillsborough Ave, Tampa","","Ethanol-free (E0), 89 octane \u2014 $4.739/gal (Oct 12) \u2014 call ahead for today\u2019s price"],
+["Wawa \u2014 Bloomingdale Ave, Riverview","fuel",27.89338,-82.33574,"10115 Bloomingdale Ave, Riverview","","Ethanol-free (E0), 89 octane \u2014 $4.899/gal (Oct 12) \u2014 call ahead for today\u2019s price"],
+["Wawa \u2014 Gandy Blvd, Pinellas Park","fuel",27.84562,-82.67738,"3101 Gandy Blvd, Pinellas Park","","Ethanol-free (E0), 89 octane \u2014 price varies, call ahead"],
+["Wawa \u2014 53rd Ave E, Bradenton","fuel",27.44541,-82.5049,"4506 53rd Ave E, Bradenton","","Ethanol-free (E0), 89 octane \u2014 price varies, call ahead"],
+["Wawa \u2014 US-301, Gibsonton","fuel",27.85843,-82.32759,"9615 US-301 S, Riverview","","Ethanol-free (E0), 89 octane \u2014 price varies, call ahead"],
+["Wawa \u2014 Boyette Rd, Riverview","fuel",27.85296,-82.26997,"13323 Boyette Rd, Riverview","","Ethanol-free (E0), 89 octane \u2014 $4.569/gal (Oct 15) \u2014 call ahead for today\u2019s price"],
+["Murphy USA \u2014 Gibsonton Dr, Gibsonton","fuel",27.84911,-82.35516,"9023 Gibsonton Dr, Gibsonton","","Ethanol-free (E0) \u2014 price varies, call ahead"],
+["Wawa \u2014 1st St E, Bradenton","fuel",27.493289,-82.562386,"701 1st St E, Bradenton","","Ethanol-free (E0), 89 octane \u2014 price varies, call ahead"],
+["Wawa \u2014 N Dale Mabry Hwy, Tampa","fuel",28.093413,-82.503031,"15524 N Dale Mabry Hwy, Tampa","","Ethanol-free (E0), 89 octane \u2014 price varies, call ahead"],
+["Wawa \u2014 E Fletcher Ave, Tampa","fuel",28.068681,-82.431461,"2325 E Fletcher Ave, Tampa","","Ethanol-free (E0), 89 octane \u2014 price varies, call ahead"],
+["Wawa \u2014 SR-60, Valrico","fuel",27.93851,-82.235904,"2926 SR-60 E, Valrico","","Ethanol-free (E0), 89 octane \u2014 price varies, call ahead"],
+["Wawa \u2014 US-19, Holiday","fuel",28.186923,-82.740788,"1929 US-19, Holiday","","Ethanol-free (E0), 89 octane \u2014 price varies, call ahead"],
+["Wawa \u2014 Gulf to Bay Blvd, Clearwater","fuel",27.959961,-82.74743,"2177 Gulf to Bay Blvd, Clearwater","","Ethanol-free (E0), 89 octane \u2014 price varies, call ahead"],
+["Wawa \u2014 S Tamiami Trail, Nokomis","fuel",27.1243,-82.454153,"100 S Tamiami Trail, Nokomis","","Ethanol-free (E0), 89 octane \u2014 price varies, call ahead"],
+["Murphy USA \u2014 10th St E, Palmetto","fuel",27.52183,-82.559956,"512 10th St E, Palmetto","","Ethanol-free (E0), 93 octane \u2014 price varies, call ahead"],
 ["Family Boating Centers","dealer",28.019014,-82.534585,"7806 Anderson Rd, Tampa","(813) 884-1395","New & used boats — Pathfinder, Hewes, Maverick, Tidewater"],
 ["West Coast Marine","dealer",27.886678,-82.535097,"5240 W Tyson Ave, Tampa","(813) 373-6137","Boat dealer + marine supply & service — Sea Pro, Blazer Bay, Shallow Sport, SCB"],
 ["Bass Pro Shops Boating Center","dealer",27.934761,-82.334070,"10501 Palm River Rd, Tampa","(813) 655-2080","New boats — Tracker, Nitro, Mako, Sun Tracker, Regency & more"],
@@ -3303,7 +3302,7 @@ const MAP_PINS = [
 ];
 /* MAP_PINS_PENDING retired 2026-10-10: 201 pins re-verified and restored. 5 rejected (stay off map): Anclote River Sandbar (play, wrong location), Marjorie Park Yacht Basin (fuel, closed), The Club at Treasure Island (fuel, no fuel dock), The Landing at Tarpon Springs Marina (fuel, dupe), Carefree Boat Club Tierra Verde (club, 2 sources only). See map-research/reverify-*.md */
 const MAP_PINS_PENDING = [];
-const MAP_COLORS = {fuel:"#e25822", recfuel:"#1f2937", bait:"#2e9e5b", dine:"#8b5cf6", play:"#0e7490", club:"#d946ef", storage:"#f59e0b", stay:"#2563eb", dealer:"#e11d48", trailer:"#92400e", parts:"#65a30d", service:"#64748b", ramp:"#4f46e5"};
+const MAP_COLORS = {fuel:"#e25822",  bait:"#2e9e5b", dine:"#8b5cf6", play:"#0e7490", club:"#d946ef", storage:"#f59e0b", stay:"#2563eb", dealer:"#e11d48", trailer:"#92400e", parts:"#65a30d", service:"#64748b", ramp:"#4f46e5"};
 window.mapFilter=function(cat,btn){
   document.querySelectorAll('.map-filter').forEach(x => x.classList.remove('active'));
   if(btn) btn.classList.add('active');

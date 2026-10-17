@@ -4693,29 +4693,48 @@ async function loadWaves(){
     const sig = (typeof AbortSignal!=="undefined" && AbortSignal.timeout) ? AbortSignal.timeout(9000) : undefined;
     const rs = await Promise.all([
       fetch("https://api.weather.gov/zones/forecast/GMZ853/forecast", {headers:{"User-Agent":"tampabayboating.com"}, signal:sig}),
-      fetch("https://api.weather.gov/zones/forecast/GMZ830/forecast", {headers:{"User-Agent":"tampabayboating.com"}, signal:sig})
+      fetch("https://api.weather.gov/zones/forecast/GMZ830/forecast", {headers:{"User-Agent":"tampabayboating.com"}, signal:sig}),
+      fetch("https://api.weather.gov/alerts/active?zone=GMZ830,GMZ853", {headers:{"User-Agent":"tampabayboating.com"}, signal:sig}).catch(function(){ return null; })
     ]);
     const g = await rs[0].json(); const b = await rs[1].json();
     const gp = (g.properties&&g.properties.periods||[])[0];
+    const gpN = (g.properties&&g.properties.periods||[])[1];
     const bp = (b.properties&&b.properties.periods||[])[0];
     if(!gp) throw 0;
+    let sca = false;
+    try{
+      if(rs[2]){ const aj = await rs[2].json(); (aj.features||[]).forEach(function(f){ const ev = String((f.properties&&f.properties.event)||""); if(/small craft advisory|gale warning|storm warning/.test(ev.toLowerCase())) sca = true; }); }
+    }catch(e){}
     const low = String(gp.detailedForecast||"").toLowerCase();
+    function seasMax(t){
+      const head = String(t||"").split("wave detail")[0].replace(/occasionally[^.]*/g, "");
+      let mx = 0; const re = /(\d+)\s*(?:to\s*(\d+))?\s*(?:feet|foot)/g; let m;
+      while((m = re.exec(head))){ const hi = parseInt(m[2]||m[1],10); if(hi>mx) mx = hi; }
+      return mx;
+    }
     let seasHi = 0, seasLabel = "\u2014";
     const sm = low.match(/seas[^0-9]{0,14}(\d+)\s*(?:to\s*(\d+))?\s*(?:feet|foot)/);
     if(sm){ const lo2 = parseInt(sm[1],10); seasHi = parseInt(sm[2]||sm[1],10); seasLabel = sm[2] ? (lo2 + "\u2013" + seasHi + " ft") : ("\u2248 " + seasHi + " ft"); if(/or less/.test(low)) seasLabel = "\u2264 " + seasHi + " ft"; }
+    const dayMax = Math.max(seasMax(low), gpN ? seasMax(String(gpN.detailedForecast||"").toLowerCase()) : 0);
+    const bm = low.match(/building to\s*(\d+)\s*(?:to\s*(\d+))?\s*feet/);
+    if(bm){ const bHi = parseInt(bm[2]||bm[1],10); seasLabel = "\u2248 " + seasHi + " ft, building to " + (bm[2] ? (bm[1] + "\u2013" + bHi) : bHi) + " ft"; }
     let detail = "";
     const dm = low.match(/wave detail:\s*([a-z]+)?\s*(\d+)\s*feet at\s*(\d+)\s*seconds/);
     if(dm){ const dir = dm[1] ? (dm[1].charAt(0).toUpperCase() + dm[1].slice(1)) : ""; detail = "Swell: " + (dir ? dir + " " : "") + dm[2] + " ft @ " + dm[3] + " sec"; }
     let bayLabel = "\u2014";
-    if(bp){ const bl = String(bp.detailedForecast||"").toLowerCase(); const cm = bl.match(/(smooth|light chop|moderate chop|rough)/); if(cm) bayLabel = cm[1].charAt(0).toUpperCase() + cm[1].slice(1); }
+    if(bp){ const bl = String(bp.detailedForecast||"").toLowerCase(); const cm = bl.match(/(smooth|light chop|moderate chop|choppy|very rough|rough)/); if(cm) bayLabel = cm[1].charAt(0).toUpperCase() + cm[1].slice(1); }
     let rating;
-    if(seasHi<=1) rating = "Flat out there \u2014 no air today. Make it a bay day.";
-    else if(seasHi===2) rating = "Small stuff \u2014 bunny hops and practice runs at the passes.";
-    else if(seasHi===3) rating = "Fun size \u2014 the sweet spot. Send it, with a buddy watching.";
-    else if(seasHi===4) rating = "Real air on offer \u2014 know your limits and ride with a buddy.";
-    else if(seasHi===5) rating = "Heavy water \u2014 experienced riders only.";
+    if(sca){
+      rating = "\u26a0\ufe0f Small Craft Advisory in effect for the Gulf and the bay \u2014 not a practice day. Skip the passes; if you ride at all, protected water only, and be back before the wind fills in this afternoon.";
+    } else if(dayMax >= 4 && seasHi <= 2){
+      rating = "Small this morning, building to " + dayMax + " ft later \u2014 morning window only. Be off the Gulf before it fills in.";
+    } else if(dayMax<=1) rating = "Flat out there \u2014 no air today. Make it a bay day.";
+    else if(dayMax===2) rating = "Small stuff \u2014 bunny hops and practice runs at the passes.";
+    else if(dayMax===3) rating = "Fun size \u2014 the sweet spot. Send it, with a buddy watching.";
+    else if(dayMax===4) rating = "Real air on offer \u2014 know your limits and ride with a buddy.";
+    else if(dayMax===5) rating = "Heavy water \u2014 experienced riders only.";
     else rating = "Too big \u2014 even the pros sit this one out. Stay in the bay.";
-    if(dm){ const per = parseInt(dm[3],10); if(per<=4 && seasHi>=3) rating += " Short-period wind chop though \u2014 messy faces, not clean rollers."; else if(per>=6) rating += " Clean, long-period rollers \u2014 the best shape it gets here."; }
+    if(!sca && dm){ const per = parseInt(dm[3],10); if(per<=4 && dayMax>=3) rating += " Short-period wind chop though \u2014 messy faces, not clean rollers."; else if(per>=6 && dayMax>=2 && dayMax<=4) rating += " Clean, long-period rollers \u2014 the best shape it gets here."; }
     body.innerHTML =
       '<div class="wave-grid">' +
         '<div class="wave-stat"><div class="wave-num">' + seasLabel + '</div><div class="wave-lbl">Gulf seas \u00b7 outside the passes</div>' + (detail ? '<div class="wave-detail">' + detail + '</div>' : '') + '</div>' +

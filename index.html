@@ -4723,16 +4723,21 @@ async function loadWaves(){
     if(dm){ const dir = dm[1] ? (dm[1].charAt(0).toUpperCase() + dm[1].slice(1)) : ""; detail = "Swell: " + (dir ? dir + " " : "") + dm[2] + " ft @ " + dm[3] + " sec"; }
     let bayLabel = "\u2014";
     if(bp){ const bl = String(bp.detailedForecast||"").toLowerCase(); const cm = bl.match(/(smooth|light chop|moderate chop|choppy|very rough|rough)/); if(cm) bayLabel = cm[1].charAt(0).toUpperCase() + cm[1].slice(1); }
+    const todayMax = seasMax(low);
     let rating;
-    if(sca){
+    if(sca && todayMax >= 6){
+      rating = "\u26a0\ufe0f Small Craft Advisory in effect \u2014 and the Gulf is running " + todayMax + " ft. Too big even for the air-chasers. Sit this one out.";
+    } else if(sca && todayMax >= 3){
+      rating = "\u26a0\ufe0f Small Craft Advisory in effect. Experienced riders: this is your air day at the passes \u2014 " + seasLabel + ". But the advisory is not decoration: conditions are officially hazardous for small craft. Buddy up, lanyard on, float plan filed \u2014 and be back before it peaks.";
+    } else if(sca){
       rating = "\u26a0\ufe0f Small Craft Advisory in effect for the Gulf and the bay \u2014 not a practice day. Skip the passes; if you ride at all, protected water only, and be back before the wind fills in this afternoon.";
-    } else if(dayMax >= 4 && seasHi <= 2){
-      rating = "Small this morning, building to " + dayMax + " ft later \u2014 morning window only. Be off the Gulf before it fills in.";
-    } else if(dayMax<=1) rating = "Flat out there \u2014 no air today. Make it a bay day.";
-    else if(dayMax===2) rating = "Small stuff \u2014 bunny hops and practice runs at the passes.";
-    else if(dayMax===3) rating = "Fun size \u2014 the sweet spot. Send it, with a buddy watching.";
-    else if(dayMax===4) rating = "Real air on offer \u2014 know your limits and ride with a buddy.";
-    else if(dayMax===5) rating = "Heavy water \u2014 experienced riders only.";
+    } else if(todayMax >= 4 && seasHi <= 2){
+      rating = "Small this morning, building to " + todayMax + " ft later \u2014 morning window only. Be off the Gulf before it fills in.";
+    } else if(todayMax<=1) rating = "Flat out there \u2014 no air today. Make it a bay day.";
+    else if(todayMax===2) rating = "Small stuff \u2014 bunny hops and practice runs at the passes.";
+    else if(todayMax===3) rating = "Fun size \u2014 the sweet spot. Send it, with a buddy watching.";
+    else if(todayMax===4) rating = "Real air \u2014 this is your day if you're chasing it. The passes are firing; buddy up and keep the lanyard on.";
+    else if(todayMax===5) rating = "Heavy water \u2014 your day if you're experienced. Top end, though: ride with a buddy watching, or don't ride.";
     else rating = "Too big \u2014 even the pros sit this one out. Stay in the bay.";
     if(!sca && dm){ const per = parseInt(dm[3],10); if(per<=4 && dayMax>=3) rating += " Short-period wind chop though \u2014 messy faces, not clean rollers."; else if(per>=6 && dayMax>=2 && dayMax<=4) rating += " Clean, long-period rollers \u2014 the best shape it gets here."; }
     body.innerHTML =

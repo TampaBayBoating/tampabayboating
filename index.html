@@ -394,6 +394,7 @@ body{top:0 !important}
 .wave-lbl{font-size:.8rem;color:#5b7a94;font-weight:600;margin-top:2px}
 .wave-detail{font-size:.85rem;color:#33536e;font-weight:600;margin-top:4px}
 .wave-rating{font-size:1.02rem;font-weight:700;color:#ffffff;margin:2px 0 8px;line-height:1.45}
+.cond-stamp{font-size:.74rem;opacity:.72;margin-top:10px;letter-spacing:.2px}
 .wave-note{font-size:.86rem;color:#b9d2e4;line-height:1.55;margin:0 0 6px}
 .support-card{background:#dbe9f4;border-radius:16px;padding:28px;max-width:720px;margin:0 auto;box-shadow:0 6px 18px rgba(10,37,64,.07)}
 .support-card h3{color:#0a2540;font-size:1.3rem;margin:0 0 10px}
@@ -1358,7 +1359,7 @@ results.addEventListener('click',function(e){
     <h2 id="tides-title">Tampa Bay Tides &amp; Marine Forecast</h2>
     <div class="sub" id="tides-sub">Live from NOAA &amp; the National Weather Service · East Bay / Tampa Bay</div>
     <div class="cond-link" style="margin:12px 0"><span style="color:#ffd54f;font-weight:800"><svg class=ic aria-hidden=true><use href=#i-star></use></svg> Tampa Bay's top weather pick:</span> <a href="https://spaghettimodels.com/" target="_blank" rel="noopener">Mike's Weather Page</a></div>
-    <div class="verdict-card" id="verdict-card"><div class="verdict-dot" id="verdict-dot"><span id="verdict-score">–</span></div><div class="verdict-main"><h3 id="verdict-title">Checking today's conditions…</h3><div class="score-track"><div class="score-marker" id="score-marker" style="left:50%"></div></div><div class="score-ends"><span>Perfect day</span><span>Stay home</span></div></div></div>
+    <div class="verdict-card" id="verdict-card"><div class="verdict-dot" id="verdict-dot"><span id="verdict-score">–</span></div><div class="verdict-main"><h3 id="verdict-title">Checking today's conditions…</h3><div class="score-track"><div class="score-marker" id="score-marker" style="left:50%"></div></div><div class="score-ends"><span>Perfect day</span><span>Stay home</span></div><div class="cond-stamp" id="verdict-stamp"></div></div></div>
     <div id="week-block" style="margin:14px 0 2px">
         <div class="week-strip" id="week-strip"><p class="cond-fallback">Loading the week&hellip;</p></div>
         <div id="week-detail"></div>
@@ -4418,6 +4419,7 @@ async function loadSpot(){
     note.style.cssText = "font-size:.78rem;color:#a9c6c5;margin-top:8px";
     note.textContent = "Land forecast for " + loc.name + " \u00B7 National Weather Service";
     body.appendChild(note);
+    body.appendChild(stampEl(periodsIssued(loc)));
   }catch(e){
     body.innerHTML = '<p class="cond-fallback">Local weather unavailable right now.</p>';
   }
@@ -4426,7 +4428,7 @@ let wxPeriodCache = {};
 async function getPeriods(loc){
   const key = loc.lat + "," + loc.lng;
   const hit = wxPeriodCache[key];
-  if(hit && (Date.now() - hit.t) < 600000) return hit.periods;
+  if(hit && (Date.now() - hit.t) < 180000) return hit.periods;
   const pr = await fetch("https://api.weather.gov/points/"+loc.lat+","+loc.lng, {headers:{"User-Agent":"tampabayboating.com"}});
   const pj = await pr.json();
   const furl = pj && pj.properties && pj.properties.forecast;
@@ -4435,9 +4437,10 @@ async function getPeriods(loc){
   const fj = await fr.json();
   const periods = (fj.properties && fj.properties.periods) || [];
   if(!periods.length) throw 0;
-  wxPeriodCache[key] = {t: Date.now(), periods: periods};
+  wxPeriodCache[key] = {t: Date.now(), periods: periods, issued: (fj.properties && fj.properties.updated) || null};
   return periods;
 }
+function periodsIssued(loc){ const h = wxPeriodCache[loc.lat + "," + loc.lng]; return h ? h.issued : null; }
 function ordDay(n){ const s=["th","st","nd","rd"]; const v=n%100; return n + (s[(v-20)%10] || s[v] || s[0]); }
 let weekDays = [];
 function groupWeek(periods){
@@ -4476,6 +4479,9 @@ async function loadWeek(){
       btn.append(dow, num);
       strip.appendChild(btn);
     });
+    let wstamp = document.getElementById("week-stamp");
+    if(!wstamp){ wstamp = document.createElement("p"); wstamp.className = "cond-stamp"; wstamp.id = "week-stamp"; if(strip.parentNode) strip.parentNode.appendChild(wstamp); }
+    wstamp.textContent = tbbStamp(periodsIssued(loc));
     if(openDay >= 0 && weekDays[openDay]){
       const btns = strip.querySelectorAll('.day-btn');
       if(btns[openDay]) btns[openDay].classList.add('active');
@@ -4523,6 +4529,13 @@ function renderDayDetail(i){
     det.appendChild(row);
   });
 }
+function tbbStamp(issuedISO){
+  function f(d){ return d.toLocaleDateString("en-US",{weekday:"short", month:"short", day:"numeric"}) + " \u00b7 " + d.toLocaleTimeString("en-US",{hour:"numeric", minute:"2-digit"}); }
+  let s = "Last checked " + f(new Date());
+  if(issuedISO){ const d = new Date(issuedISO); if(!isNaN(d)) s += " \u00b7 NWS forecast issued " + f(d); }
+  return s;
+}
+function stampEl(issuedISO){ const el = document.createElement("div"); el.className = "cond-stamp"; el.textContent = tbbStamp(issuedISO); return el; }
 async function loadTides(){
   const box = document.getElementById("tide-list");
   try{
@@ -4554,6 +4567,7 @@ async function loadTides(){
     station.style.cssText = "font-size:.78rem;color:#a9c6c5;margin-top:8px";
     station.textContent = "Station: " + tloc.label + " \u00B7 NOAA";
     box.appendChild(station);
+    box.appendChild(stampEl(null));
   }catch(e){
     box.innerHTML = `<p class="cond-fallback">Tide data unavailable right now — <a href="https://tampabayboating.com/conditions/" target="_blank" rel="noopener" style="color:#fff">see the full forecast</a>.</p>`;
   }
@@ -4616,19 +4630,22 @@ function renderVerdict(ps, label, isToday){
   if(scoreEl) scoreEl.textContent = s + "%";
   const marker = document.getElementById("score-marker");
   if(marker) marker.style.left = Math.max(2, Math.min(98, 100 - s)) + "%";
+  const vstamp = document.getElementById("verdict-stamp"); if(vstamp) vstamp.textContent = tbbStamp(marineIssuedISO);
   const tcScore = document.getElementById("tcScore");
   if(tcScore && isToday) tcScore.textContent = s + "% today — " + band;
 }
 let marineCache = {};
+let marineIssuedISO = null;
 let marineNow = null;
 async function getMarinePeriods(zone){
   const hit = marineCache[zone];
-  if(hit && (Date.now() - hit.t) < 600000) return hit.periods;
+  if(hit && (Date.now() - hit.t) < 180000) return hit.periods;
   const r = await fetch("https://api.weather.gov/zones/forecast/"+zone+"/forecast", {headers:{"User-Agent":"tampabayboating.com"}});
   const d = await r.json();
   const periods = (d.properties && d.properties.periods) || [];
   if(!periods.length) throw 0;
   marineCache[zone] = {t: Date.now(), periods: periods};
+  if(d.properties && d.properties.updated) marineIssuedISO = d.properties.updated;
   return periods;
 }
 function groupMarine(periods){
@@ -4679,6 +4696,7 @@ function renderMarine(){
     period.append(name, forecast);
     box.appendChild(period);
   });
+  box.appendChild(stampEl(marineIssuedISO));
 }
 function refreshMarine(){ if(marineNow) renderMarine(); else loadMarine(); }
 
@@ -4701,10 +4719,21 @@ async function loadWaves(){
     const gpN = (g.properties&&g.properties.periods||[])[1];
     const bp = (b.properties&&b.properties.periods||[])[0];
     if(!gp) throw 0;
-    let sca = false;
+    let scaNow = false, scaSoon = false, scaWhen = "", scopeTxt = "for the Gulf and the bay";
     try{
-      if(rs[2]){ const aj = await rs[2].json(); (aj.features||[]).forEach(function(f){ const ev = String((f.properties&&f.properties.event)||""); if(/small craft advisory|gale warning|storm warning/.test(ev.toLowerCase())) sca = true; }); }
+      if(rs[2]){ const aj = await rs[2].json(); const now = Date.now();
+        (aj.features||[]).forEach(function(f){ const p = f.properties||{}; const ev = String(p.event||"").toLowerCase();
+          if(!/small craft advisory|gale warning|storm warning/.test(ev)) return;
+          const zones = (p.affectedZones||[]).join(" ");
+          const hasBay = zones.indexOf("GMZ830") >= 0, hasGulf = zones.indexOf("GMZ853") >= 0;
+          scopeTxt = (hasBay && hasGulf) ? "for the Gulf and the bay" : hasGulf ? "for the coastal Gulf waters" : hasBay ? "for Tampa Bay waters" : scopeTxt;
+          const onset = p.onset ? Date.parse(p.onset) : 0;
+          if(onset && onset > now){ scaSoon = true; const d = new Date(onset); let h = d.getHours(); const ap = h >= 12 ? "PM" : "AM"; h = h % 12; if(h === 0) h = 12; scaWhen = h + " " + ap; }
+          else scaNow = true;
+        });
+      }
     }catch(e){}
+    const sca = scaNow || scaSoon;
     const low = String(gp.detailedForecast||"").toLowerCase();
     function seasMax(t){
       const head = String(t||"").split("wave detail")[0].replace(/occasionally[^.]*/g, "");
@@ -4715,7 +4744,6 @@ async function loadWaves(){
     let seasHi = 0, seasLabel = "\u2014";
     const sm = low.match(/seas[^0-9]{0,14}(\d+)\s*(?:to\s*(\d+))?\s*(?:feet|foot)/);
     if(sm){ const lo2 = parseInt(sm[1],10); seasHi = parseInt(sm[2]||sm[1],10); seasLabel = sm[2] ? (lo2 + "\u2013" + seasHi + " ft") : ("\u2248 " + seasHi + " ft"); if(/or less/.test(low)) seasLabel = "\u2264 " + seasHi + " ft"; }
-    const dayMax = Math.max(seasMax(low), gpN ? seasMax(String(gpN.detailedForecast||"").toLowerCase()) : 0);
     const bm = low.match(/building to\s*(\d+)\s*(?:to\s*(\d+))?\s*feet/);
     if(bm){ const bHi = parseInt(bm[2]||bm[1],10); seasLabel = "\u2248 " + seasHi + " ft, building to " + (bm[2] ? (bm[1] + "\u2013" + bHi) : bHi) + " ft"; }
     let detail = "";
@@ -4726,11 +4754,13 @@ async function loadWaves(){
     const todayMax = seasMax(low);
     let rating;
     if(sca && todayMax >= 6){
-      rating = "\u26a0\ufe0f Small Craft Advisory in effect \u2014 and the Gulf is running " + todayMax + " ft. Too big even for the air-chasers. Sit this one out.";
-    } else if(sca && todayMax >= 3){
+      rating = "\u26a0\ufe0f Small Craft Advisory " + (scaNow ? "in effect" : "takes effect at " + scaWhen + " today") + " \u2014 and the Gulf is running " + todayMax + " ft. Too big even for the air-chasers. Sit this one out.";
+    } else if(scaSoon && todayMax >= 3){
+      rating = "\u26a0\ufe0f Small Craft Advisory takes effect at " + scaWhen + " today. Experienced riders: this morning is your air window at the passes \u2014 " + seasLabel + ". But by this evening conditions turn officially hazardous for small craft. Buddy up, lanyard on, float plan filed \u2014 and be back well before " + scaWhen + ".";
+    } else if(scaNow && todayMax >= 3){
       rating = "\u26a0\ufe0f Small Craft Advisory in effect. Experienced riders: this is your air day at the passes \u2014 " + seasLabel + ". But the advisory is not decoration: conditions are officially hazardous for small craft. Buddy up, lanyard on, float plan filed \u2014 and be back before it peaks.";
     } else if(sca){
-      rating = "\u26a0\ufe0f Small Craft Advisory in effect for the Gulf and the bay \u2014 not a practice day. Skip the passes; if you ride at all, protected water only, and be back before the wind fills in this afternoon.";
+      rating = "\u26a0\ufe0f Small Craft Advisory " + (scaNow ? "in effect " + scopeTxt : "takes effect at " + scaWhen + " today " + scopeTxt) + " \u2014 not a practice day. Skip the passes; if you ride at all, protected water only, and be back before the wind fills in.";
     } else if(todayMax >= 4 && seasHi <= 2){
       rating = "Small this morning, building to " + todayMax + " ft later \u2014 morning window only. Be off the Gulf before it fills in.";
     } else if(todayMax<=1) rating = "Flat out there \u2014 no air today. Make it a bay day.";
@@ -4739,7 +4769,7 @@ async function loadWaves(){
     else if(todayMax===4) rating = "Real air \u2014 this is your day if you're chasing it. The passes are firing; buddy up and keep the lanyard on.";
     else if(todayMax===5) rating = "Heavy water \u2014 your day if you're experienced. Top end, though: ride with a buddy watching, or don't ride.";
     else rating = "Too big \u2014 even the pros sit this one out. Stay in the bay.";
-    if(!sca && dm){ const per = parseInt(dm[3],10); if(per<=4 && dayMax>=3) rating += " Short-period wind chop though \u2014 messy faces, not clean rollers."; else if(per>=6 && dayMax>=2 && dayMax<=4) rating += " Clean, long-period rollers \u2014 the best shape it gets here."; }
+    if(!sca && dm){ const per = parseInt(dm[3],10); if(per<=4 && todayMax>=3) rating += " Short-period wind chop though \u2014 messy faces, not clean rollers."; else if(per>=6 && todayMax>=2 && todayMax<=4) rating += " Clean, long-period rollers \u2014 the best shape it gets here."; }
     body.innerHTML =
       '<div class="wave-grid">' +
         '<div class="wave-stat"><div class="wave-num">' + seasLabel + '</div><div class="wave-lbl">Gulf seas \u00b7 outside the passes</div>' + (detail ? '<div class="wave-detail">' + detail + '</div>' : '') + '</div>' +
@@ -4747,7 +4777,8 @@ async function loadWaves(){
       '</div>' +
       '<p class="wave-rating">' + rating + '</p>' +
       '<p class="wave-note">Where the air is: Gulf swell rolling into Bunces Pass &amp; Fort De Soto, Pass-a-Grille, the Egmont Channel mouth, John\'s Pass and Clearwater Pass.</p>' +
-      '<p class="wave-note">Florida PWC rules: never jump a wake within 100 ft of another vessel, and riding ends a half-hour after sunset. Lanyard on, always.</p>';
+      '<p class="wave-note">Florida PWC rules: never jump a wake within 100 ft of another vessel, and riding ends a half-hour after sunset. Lanyard on, always.</p>' +
+      '<p class="cond-stamp">' + tbbStamp(g.properties && g.properties.updated) + '</p>';
   }catch(e){
     body.innerHTML = '<p class="cond-fallback">Wave report unavailable right now \u2014 see the marine forecast above.</p>';
   }
@@ -5111,6 +5142,16 @@ function renderTodayCards(){
   }catch(e){}
 }
 ["renderGrid","renderDir","updateCartUI","renderCalendar","loadTides","loadMarine","loadWaves","loadSpot","loadWeek","loadForecastBadges","renderFuel","renderSvc","renderOwner","renderDealers","renderGear","renderTodayCards"].forEach(fn=>{ try{ window[fn](); }catch(e){ console.warn("init "+fn+" failed:", e.message); } });
+/* Weather auto-refresh: re-pull every 5 minutes while the page is open (and on return to the tab if stale), so the "Last checked" stamps and the data behind them stay current. */
+let __wxLastRefresh = Date.now();
+function refreshWeather(){
+  try{
+    marineCache = {}; wxPeriodCache = {}; __wxLastRefresh = Date.now();
+    ["loadTides","loadMarine","loadWaves","loadSpot","loadWeek","loadForecastBadges"].forEach(function(fn){ try{ window[fn](); }catch(e){} });
+  }catch(e){}
+}
+setInterval(function(){ if(!document.hidden) refreshWeather(); }, 300000);
+document.addEventListener("visibilitychange", function(){ if(!document.hidden && (Date.now() - __wxLastRefresh) > 180000) refreshWeather(); });
 </script>
 
 <script>

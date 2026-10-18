@@ -1198,7 +1198,7 @@ var PAGES=[
 ["advertise","Advertise","advertise sponsor business"],
 ["contact","Contact","contact email david"],
 ["about","About","about story"]];
-var PIN_LABEL={fuel:"Fuel",bait:"Bait",dine:"Dock & Dine",play:"Destination",club:"Boat Club",storage:"Storage",stay:"Boat-Up Stay",dealer:"Boat Dealers",trailer:"Trailer Services",parts:"Parts & Supply",service:"Marine Services",ramp:"Boat Ramp"};
+var PIN_LABEL={fuel:"Fuel",bait:"Bait",tackle:"Fishing Tackle",dine:"Dock & Dine",play:"Destination",club:"Boat Club",storage:"Storage",stay:"Boat-Up Stay",dealer:"Boat Dealers",trailer:"Trailer Services",parts:"Parts & Supply",service:"Marine Services",ramp:"Boat Ramp"};
 var panel=document.getElementById('search-panel'),input=document.getElementById('site-search'),
     results=document.getElementById('search-results'),btn=document.getElementById('search-btn');
 function esc(t){return String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
@@ -1677,6 +1677,7 @@ results.addEventListener('click',function(e){
         <div class="map-group-label">On the Water</div>
         <button class="map-filter" data-cat="fuel" style="--c:#e25822" onclick="mapFilter('fuel',this)"><span class="dot"></span><svg class=ic aria-hidden=true><use href=#i-fuel></use></svg> Fuel</button>
         <button class="map-filter" data-cat="bait" style="--c:#2e9e5b" onclick="mapFilter('bait',this)"><span class="dot"></span><svg class=ic aria-hidden=true><use href=#i-shrimp></use></svg> Bait</button>
+        <button class="map-filter" data-cat="tackle" style="--c:#0d9488" onclick="mapFilter('tackle',this)"><span class="dot"></span><svg class=ic aria-hidden=true><use href=#i-hook></use></svg> Fishing Tackle</button>
         <button class="map-filter" data-cat="dine" style="--c:#8b5cf6" onclick="mapFilter('dine',this)"><span class="dot"></span><svg class=ic aria-hidden=true><use href=#i-dine></use></svg> Dock &amp; Dine</button>
         <button class="map-filter" data-cat="ramp" style="--c:#4f46e5" onclick="mapFilter('ramp',this)"><span class="dot"></span><svg class=ic aria-hidden=true><use href=#i-anchor></use></svg> Boat Ramps</button>
         <button class="map-filter" data-cat="cam" style="--c:#e02424" onclick="mapFilter('cam',this)"><span class="dot"></span><svg class=ic aria-hidden=true><use href=#i-video></use></svg> Live Cams</button>
@@ -3083,8 +3084,8 @@ const MAP_PINS = [
 ["Bay Pines Marina","fuel",27.817182,-82.7676,"5000 92nd St N, St. Petersburg","(727) 392-4922","Non-ethanol fueling station; bait, ice, wet slips, dry storage"],
 ["American Marina","fuel",28.27116,-82.73537,"New Port Richey, FL","","Listed as fuel dock on FL Marine Guide — call ahead"],
 ["Shell Point Marina","fuel",27.7183,-82.48,"3340 W Shell Point Rd, Ruskin","(813) 645-1313","Fuel dock open 24/7 on Tampa Bay; VHF Ch 9"],
-["Tampa Fishing Outfitters","bait",27.988655,-82.508293,"3916 W Osborne Ave, Tampa","(813) 870-1234","5,400 sq ft tackle shop; inshore, offshore, fly & freshwater"],
-["Ruskin Bait and Tackle","bait",27.70571,-82.437,"1519 S US Hwy 41, Ruskin","","Bait & tackle"],
+["Tampa Fishing Outfitters","tackle",27.988655,-82.508293,"3916 W Osborne Ave, Tampa","(813) 870-1234","5,400 sq ft tackle shop; inshore, offshore, fly & freshwater"],
+["Ruskin Bait and Tackle","bait",27.70571,-82.437,"1519 S US Hwy 41, Ruskin","(813) 641-2325","Bait & tackle"],
 ["Gulf Coast Bait and Tackle","bait",27.770619,-82.728252,"6576 Central Ave, St Petersburg","(727) 343-4181","Live shrimp, frozen bait, line spooling; formerly Captain K's"],
 ["Rick's Rods & Components","bait",27.800848,-82.800216,"14995 Gulf Blvd Unit C, Madeira Beach","(727) 399-9963","Live & frozen bait, custom rod building"],
 ["Palmetto Bait & Tackle","bait",27.517776,-82.573254,"709 8th Ave W, Palmetto","(941) 479-7361","Live shrimp (small to jumbo), frozen bait, rods & reels"],
@@ -3264,8 +3265,8 @@ const MAP_PINS = [
 ["The Bait Depot","bait",28.272283,-82.725058,"7920 Bayview St, Port Richey","(727) 494-1580","Live shrimp & tackle across from Nick's Park boat ramp"],
 ["Skyway Bait and Tackle","bait",27.557505,-82.564236,"4808 US Highway 19, Palmetto","(941) 357-1122","Family-owned; live & frozen bait near the Skyway"],
 ["Economy Tackle","bait",27.266187,-82.528353,"6018 S Tamiami Trl, Sarasota","(941) 922-9671","Live shrimp, inshore & offshore tackle; serving area since 1948"],
-["Discount Tackle Outlet","bait",27.472102,-82.562695,"3113 1st St, Bradenton","(941) 746-6020","Bay, offshore & freshwater tackle; rod & reel repair"],
-["Premier Tackle","bait",27.474827,-82.433294,"2539 Lakewood Ranch Blvd, Bradenton","(941) 567-4030","Premium tackle, Shimano/Daiwa, captain-staffed"],
+["Discount Tackle Outlet","tackle",27.472102,-82.562695,"3113 1st St, Bradenton","(941) 746-6020","Bay, offshore & freshwater tackle; rod & reel repair"],
+["Premier Tackle","tackle",27.474827,-82.433294,"2539 Lakewood Ranch Blvd, Bradenton","(941) 567-4030","Premium tackle, Shimano/Daiwa, captain-staffed"],
 ["Freedom Boat Club — Downtown Tampa Harbour Island","club",27.938472,-82.454739,"601 S Harbour Island Blvd, Tampa, FL 33602","(813) 892-6343","Nation's largest boat club; reserve center consoles, pontoons, bowriders; unlimited captain training"],
 ["Freedom Boat Club — Rick's on the River","club",27.96348,-82.47418,"2305 N Willow Ave, Tampa, FL 33607","","Boat club dock at the classic Hillsborough River boat-up restaurant"],
 ["Freedom Boat Club — Tampa (W Tyson)","club",27.88621,-82.5338,"5200 W Tyson Ave, Tampa, FL 33611","(813) 394-2851","Full-service club location on Tampa Bay"],
@@ -3545,7 +3546,7 @@ const MAP_PINS = [
 ["Bridge Street Bait Shop","bait",27.465804,-82.695738,"200 Bridge St, Bradenton Beach","(941) 465-8624","Frozen bait, tackle & rod rentals by the pier"],
 ["Fish Tales Bait and Tackle","bait",27.115607,-82.449484,"900 S Tamiami Trail, Venice","(941) 615-7485","Live shrimp, tarpon crabs & frozen bait; rods & reels"],
 ["Nokomis Beach Bait & Tackle","bait",27.125297,-82.465491,"820 Albee Rd W, Nokomis","(941) 882-4387","Live & frozen bait and tackle"],
-["Tarpon Fishing Outfitters","bait",28.180773,-82.739877,"1500 Hwy 19, Holiday","(727) 935-7258","Live shrimp & full tackle shop"],
+["Tarpon Fishing Outfitters","tackle",28.180773,-82.739877,"1500 Hwy 19, Holiday","(727) 935-7258","Huge selection of rods, reels, lures & terminal tackle; certified reel repair — since 2012"],
 ["Angler 360","bait",28.051342,-82.787854,"290 Causeway Blvd, Dunedin","(727) 276-1311","Live shrimp, frozen bait, rod repair & custom builds"],
 ["J & J Bait and Tackle Outfitters","bait",28.177321,-82.784785,"1234 Baillies Bluff Rd, Holiday","(727) 940-7928","Frozen bait & tackle outfitters"],
 ["Indian Rocks Tackle","bait",27.895942,-82.848622,"1301 Gulf Blvd, Indian Rocks Beach","(727) 595-3196","Saltwater tackle, custom rods & reel service"],
@@ -3640,13 +3641,56 @@ const MAP_PINS = [
 ["Rick's on the River","ramp",27.962888,-82.47375,"2305 N Willow Ave, Tampa","(813) 251-0369","PAID — launch fee (private; confirm price on site) · Restaurant/marina ramp open to the public · launch fee · freshwater — Hillsborough River"],
 ["Gulfport Municipal Marina","ramp",27.740622,-82.696136,"4630 29th Ave S, Gulfport","(727) 893-1071","MIXED — city ramp · 💡 The lot next door is a county lot — a Pinellas Annual Boat Pass ($140/yr, explore.pinellas.gov) covers parking there · Public ramp · 2 lanes · launch fee · saltwater — Boca Ciega Bay"],
 ["Madeira Beach Marina","ramp",27.804082,-82.796026,"503 150th Ave, Madeira Beach","(727) 399-2631","PAID — launch $5 · launch + parking $20 · residents $2 launch / $10 launch+park · holidays $25 · Public ramp · 2 lanes · launch fee · 7 a.m.–sunset · saltwater — Intracoastal Waterway"],
-["O'Neill's Marina","ramp",27.707498,-82.679841,"6701 Sunshine Skyway Ln S, St. Petersburg","(727) 867-2585","PAID — launch fee (private; confirm price on site) · Marina ramp open to the public for a fee · 2 lanes · saltwater — Tampa Bay"]
+["O'Neill's Marina","ramp",27.707498,-82.679841,"6701 Sunshine Skyway Ln S, St. Petersburg","(727) 867-2585","PAID — launch fee (private; confirm price on site) · Marina ramp open to the public for a fee · 2 lanes · saltwater — Tampa Bay"],
+["Gandy Bait & Tackle", "tackle", 27.89377, -82.52935, "4923 W Gandy Blvd, Tampa", "(813) 839-5551", "Full tackle — rods & reels (Shimano, Penn, Daiwa, G. Loomis, St. Croix), line spooling, rod repair; live bait too"],
+["Tight Lines Bait Bus", "tackle", 27.952246, -82.490673, "2919 W Cypress St, Tampa", "(813) 392-1686", "Terminal tackle, custom rod building, rod & reel repair — live bait too"],
+["One Stop Bait Shop", "tackle", 27.96348, -82.47418, "2305 N Willow Ave, Tampa", "(813) 867-8613", "Fishing tackle & gear alongside live & frozen bait"],
+["Reel Them In Bait and Tackle", "tackle", 27.85377, -82.38332, "9851 US-41 S, Gibsonton", "(813) 513-3823", "Rods, reels & lures alongside live & frozen bait"],
+["Ruskin Bait and Tackle", "tackle", 27.70571, -82.437, "1519 S US Hwy 41, Ruskin", "(813) 641-2325", "Fishing tackle alongside live bait"],
+["5 Boys Bait & Tackle", "tackle", 27.72278, -82.43337, "467 N US-41, Ruskin", "(813) 486-4121", "Rod & reel combos (Daiwa, Penn, Shimano, Quantum, Fenwick), lures, rigs, cast nets — full live bait too"],
+["Bait and Tackle of Apollo Beach", "tackle", 27.76464, -82.3957, "6040 N US-41, Apollo Beach", "(813) 296-7735", "Fishing gear & custom rods alongside live & frozen bait"],
+["Island Discount Tackle", "tackle", 27.50799, -82.71397, "5503 Marina Dr, Holmes Beach", "(941) 779-2838", "Rods & reels dealer (Shimano, Penn, St. Croix, G. Loomis) + full terminal tackle — live & frozen bait too"],
+["Palmetto Bait & Tackle", "tackle", 27.517776, -82.573254, "709 8th Ave W, Palmetto", "(941) 479-7361", "Full rod & reel lineup (Penn, Daiwa, Shimano, custom rods) — live bait too"],
+["Skyway Bait and Tackle", "tackle", 27.557505, -82.564236, "4808 US Highway 19, Palmetto", "(941) 357-1122", "Hooks, rigs & tackle for Skyway fishing — flagship live-bait shop too"],
+["Bridge Street Bait Shop", "tackle", 27.465804, -82.695738, "200 Bridge St, Bradenton Beach", "(941) 465-8624", "Pier tackle & gear for sale, rod rentals — live & frozen bait too"],
+["Tropic Isles Bait and Fuel", "tackle", 27.52483, -82.5991, "509 Marina Dr, Palmetto", "(941) 729-8128", "Fishing tackle at the marina store — live bait & fuel too"],
+["Economy Tackle", "tackle", 27.266187, -82.528353, "6018 S Tamiami Trl, Sarasota", "(941) 922-9671", "Full tackle department, inshore & offshore — live shrimp too; serving the area since 1948"],
+["Dogfish Tackle & Marine", "tackle", 27.838978, -82.760481, "8750 Park Blvd N, Seminole", "(727) 393-2102", "3,000+ rods & 300+ reels on display (Shimano, Daiwa, Penn, Van Staal), rod/reel repair & spooling"],
+["Gator Jim's Tackle", "tackle", 27.709347, -82.678047, "3301 Pinellas Point Dr S, St Petersburg", "(727) 363-0900", "Rods, reels & terminal tackle (Penn, Shimano, Daiwa, Van Staal) — near Maximo boat ramp; bait too"],
+["Riviera Bait & Tackle", "tackle", 27.85742, -82.64879, "1106 94th Ave N, St. Pete", "(727) 954-6365", "Rods & reels, custom rods, reel repair — live shrimp too"],
+["Angler 360", "tackle", 28.051342, -82.787854, "290 Causeway Blvd, Dunedin", "(727) 276-1311", "Rods, reels, combos & full tackle; repair & custom builds — live bait too"],
+["Tarpon Trading Company", "tackle", 28.15988, -82.75705, "1197 N Pinellas Ave, Tarpon Springs", "(727) 937-1488", "Rods & reels (Shimano, Penn) + a 30-ft tackle wall — big live-bait selection too"],
+["Betts Fishing Center", "tackle", 27.886879, -82.762746, "8926 126th Ave N, Largo", "(727) 518-7637", "Rods, reels & lures (Shimano, Daiwa, Penn); custom rod building, rod & reel repair, Penn & Minn Kota warranty center"],
+["Bill Jackson's Shop for Adventure", "tackle", 27.85849, -82.69623, "9501 US Hwy 19 N, Pinellas Park", "(727) 576-4169", "Full fishing department — saltwater, freshwater & fly (Orvis, Tibor); family-owned outdoor superstore since 1946"],
+["Gulf To Bay Bait & Tackle Shop", "tackle", 27.738577, -82.749365, "6920 Gulf Blvd, St. Pete Beach", "(727) 367-4756", "Full-service tackle — rod rentals & repairs, custom rods; live shrimp, pinfish & fiddlers too"],
+["Gulf To Bay Bait & Tackle Shop", "bait", 27.738577, -82.749365, "6920 Gulf Blvd, St. Pete Beach", "(727) 367-4756", "Live shrimp, pinfish, fiddler crabs, frozen bait & chum — full tackle shop too"],
+["FISHSTALKERZ Bait & Tackle", "tackle", 28.046067, -82.781854, "2436 Bayshore Blvd, Dunedin", "(727) 637-9971", "Rods, reels & tackle — live & frozen bait too"],
+["FISHSTALKERZ Bait & Tackle", "bait", 28.046067, -82.781854, "2436 Bayshore Blvd, Dunedin", "(727) 637-9971", "Live shrimp, pinfish, grunts & fiddlers, frozen bait — rods & reels too"],
+["Belleair Bait & Tackle", "tackle", 27.917384, -82.827739, "3900 W Bay Dr, Belleair Bluffs", "(727) 687-7151", "Full line of rods, reels, terminal tackle & lures by the Belleair Causeway ramp — daily live shrimp & pinfish too"],
+["Belleair Bait & Tackle", "bait", 27.917384, -82.827739, "3900 W Bay Dr, Belleair Bluffs", "(727) 687-7151", "Daily live shrimp & pinfish, seasonal crabs, frozen bait — full tackle line too"],
+["Armed Anglers", "tackle", 28.184943, -82.740613, "1801 US Highway 19, Holiday", "(727) 945-1808", "Rods, reels & tackle, line winding, pole repair — live shrimp & threadfins too"],
+["Armed Anglers", "bait", 28.184943, -82.740613, "1801 US Highway 19, Holiday", "(727) 945-1808", "Hand-picked live shrimp & threadfin herring — rods, reels & tackle too"],
+["Dick's Sporting Goods — Tyrone Square", "tackle", 27.792528, -82.73099, "6775 22nd Ave N, St. Petersburg", "(727) 290-4476", "Fishing department — rods, reels, combos & tackle; line winding"],
+["Dick's Sporting Goods — Countryside", "tackle", 28.013762, -82.734472, "26583 US Hwy 19 N, Clearwater", "(727) 791-8580", "Fishing department — rods, reels, combos & tackle; line winding"],
+["Dick's Sporting Goods — Wesley Chapel", "tackle", 28.243408, -82.353062, "5925 Wesley Grove Blvd, Wesley Chapel", "(813) 991-1618", "Fishing department — rods, reels, combos & tackle; line winding"],
+["Dick's Sporting Goods — Citrus Park", "tackle", 28.069361, -82.578385, "8100 Citrus Park Town Center, Tampa", "(813) 920-5700", "Fishing department — rods, reels, combos & tackle; line winding"],
+["Dick's Sporting Goods — House of Sport", "tackle", 27.963507, -82.520723, "2223 N Westshore Blvd, Tampa", "(813) 202-8618", "Fishing department — rods, reels, combos & tackle; line winding"],
+["Dick's Sporting Goods — Bradenton", "tackle", 27.464146, -82.577884, "4108 14th St W, Bradenton", "(941) 751-6900", "Fishing department — rods, reels, combos & tackle; line winding"],
+["Academy Sports + Outdoors — Pinellas Park", "tackle", 27.836381, -82.686843, "7230 US Hwy 19 N, Pinellas Park", "(727) 610-3300", "Full fishing department — rods, reels & tackle (Penn, Shimano); line spooling"],
+["Academy Sports + Outdoors — Lutz", "tackle", 28.194359, -82.396582, "25415 Sierra Center Blvd, Lutz", "(813) 953-4410", "Full fishing department — rods, reels & tackle; line spooling"],
+["Sportsman's Warehouse — Tampa", "tackle", 28.131741, -82.367088, "18071 Highwoods Preserve Pkwy, Tampa", "(813) 702-7900", "Full fishing department — rods, reels & all your tackle"],
+["Sportsman's Warehouse — Seminole", "tackle", 27.844697, -82.793827, "7967 113th St N, Seminole", "(727) 203-7600", "Full fishing department — rods, reels & all your tackle"],
+["Bass Pro Shops Boating Center", "tackle", 27.934761, -82.33407, "10501 Palm River Rd, Tampa", "(813) 655-2080", "Full fishing department — rods, reels & tackle inside the Outdoor World store"],
+["TBFC Bait and Tackle", "tackle", 27.711454, -82.453282, "1510 River Dr SW, Ste A, Ruskin", "", "Tackle shop — TBFC jig heads, line & leader (they make the jigs)"],
+["Parrish Bait & Tackle", "tackle", 27.573017, -82.424117, "12155 US-301, Parrish", "(941) 776-1290", "Large selection of rods & reels, lures & hooks — live worms & frozen bait too"],
+["Parrish Bait & Tackle", "bait", 27.573017, -82.424117, "12155 US-301, Parrish", "(941) 776-1290", "Live worms, frozen & artificial bait — rods & reels too"],
+["Fishermen's Headquarters", "tackle", 27.495078, -82.554078, "924 Manatee Ave E, Bradenton", "(941) 587-7758", "Marine supply store with fishing rods, reels & tackle"]
 ];
 const RAMP_CLASS = {"Gandy Boat Ramp": "PAID", "Causeway Boat Ramp": "PAID", "Picnic Island Boat Ramp": "FREE", "Egan Park Boat Ramp": "MIXED", "Treasure Island Boat Ramp": "FREE", "Maximo Park": "FREE", "Bay Vista Park": "FREE", "Demens Landing Boat Ramp": "FREE", "Jungle Prada Boat Ramp": "FREE", "Crisp Park": "FREE", "Coffee Pot Park": "FREE", "Grandview Park": "FREE", "Lake Maggiore Park": "FREE", "Sunlit Cove Boat Ramp": "FREE", "Kingfish Boat Ramp": "FREE", "Captain Scott Moore Boat Ramp": "FREE", "Coquina South Boat Ramp": "FREE", "Warner's Bayou Boat Ramp": "FREE", "State Road 64 Boat Ramp": "FREE", "Riverside Park Boat Ramp": "FREE", "Fort Hamer Park Boat Ramp": "FREE", "63rd Street Boat Ramp": "FREE", "Bishop Harbor Boat Ramp": "FREE", "Turtle Beach Public Boat Ramp": "FREE", "Blackburn Point Park Boat Ramp": "FREE", "Higel Marine Park": "FREE", "Nokomis Beach": "FREE", "Indian Mound Park": "FREE", "Manasota Key Beach": "FREE", "Marina Park and Boat Ramp": "FREE", "Marina Park": "FREE", "Nick's Park Boat Ramp": "FREE", "Sims Park Boat Ramp": "FREE", "Snook Haven Park Boat Ramp": "FREE", "Safety Harbor Marina Boat Launch": "FREE", "Davis Island Boat Ramp": "FREE", "Ballast Point Park": "FREE", "Lowry Park Boat Ramp": "FREE", "Cockroach Bay Boat Ramp": "PAID", "Williams Park Boat Ramp": "PAID", "Domino Park Boat Ramp": "PAID", "Wildcat Park Boat Ramp": "PAID", "Baker Creek Boat Ramp": "PAID", "Harney Park Boat Ramp": "PAID", "Brandon Boat Ramp": "PAID", "Seminole Boat Ramp": "PAID", "Ken Thompson Boat Ramp": "FREE", "Apollo Beach Marina": "PAID", "Rick's on the River": "PAID", "Madeira Beach Marina": "PAID", "O'Neill's Marina": "PAID", "Clearwater Beach Public Boat Ramp": "MIXED", "Dunedin Marina": "PAID", "Jiggs Landing Boat Ramp": "MIXED", "Gulfport Municipal Marina": "MIXED", "E.G. Simmons Conservation Park": "PAID", "Fort De Soto Boat Ramp": "PAID", "Bay Pines Boat Ramp": "PAID", "Belleair Causeway Boat Ramp": "PAID", "Park Boulevard Boat Ramp": "PAID", "Sutherland Bayou Boat Ramp": "PAID", "Anclote River Park Boat Ramp": "PAID", "Robert J. Strickland Memorial Park": "PAID", "Lake Myakka Boat Ramp": "PAID", "Lake Manatee State Park Boat Ramp": "PAID", "Commongood Boat Ramp": "PAID", "John B. Sargeant Sr. Park": "PAID", "Centennial Park": "PAID", "Morris Bridge Park": "PAID"};
 window.tbbFeeMode=null;
 /* MAP_PINS_PENDING retired 2026-10-10: 201 pins re-verified and restored. 5 rejected (stay off map): Anclote River Sandbar (play, wrong location), Marjorie Park Yacht Basin (fuel, closed), The Club at Treasure Island (fuel, no fuel dock), The Landing at Tarpon Springs Marina (fuel, dupe), Carefree Boat Club Tierra Verde (club, 2 sources only). See map-research/reverify-*.md */
 const MAP_PINS_PENDING = [];
-const MAP_COLORS = {fuel:"#e25822",  bait:"#2e9e5b", dine:"#8b5cf6", play:"#0e7490", club:"#d946ef", storage:"#f59e0b", stay:"#2563eb", dealer:"#e11d48", trailer:"#92400e", parts:"#65a30d", service:"#64748b", ramp:"#4f46e5", cam:"#e02424"};
+const MAP_COLORS = {fuel:"#e25822",  bait:"#2e9e5b", tackle:"#0d9488", dine:"#8b5cf6", play:"#0e7490", club:"#d946ef", storage:"#f59e0b", stay:"#2563eb", dealer:"#e11d48", trailer:"#92400e", parts:"#65a30d", service:"#64748b", ramp:"#4f46e5", cam:"#e02424"};
 window.mapFilter=function(cat,btn){
   document.querySelectorAll('.map-filter').forEach(x => x.classList.remove('active'));
   if(btn) btn.classList.add('active');

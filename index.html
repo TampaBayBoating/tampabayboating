@@ -324,6 +324,8 @@ footer .soc svg{width:20px; height:20px}
 <style>
 /* ---- streamline: chapters + accordions ---- */
 section{padding:40px 0}
+#baymap{padding:6px 0 12px}
+#view-map .back-link{margin-top:10px}
 .chapter{padding:36px 0}
 .chapter > h2{text-align:center}
 .chapter-sub{text-align:center;color:var(--muted);margin:6px auto 20px;max-width:640px}
@@ -1690,7 +1692,7 @@ results.addEventListener('click',function(e){
     </div>
     <div class="map-groups">
       <div class="map-group">
-        <button class="map-filter" data-cat="all" onclick="mapFilter('all',this)">All</button>
+        <button class="map-filter active" data-cat="all" onclick="mapFilter('all',this)">All</button>
       </div>
       <div class="map-group">
         <div class="map-group-label">On the Water</div>
@@ -3865,6 +3867,7 @@ window.tbbMapInit=(function(){
       }
     }catch(e){}
   }
+  draw('all');
   window.tbbDraw = draw;
   setTimeout(function(){ map.invalidateSize(); }, 120);
   };

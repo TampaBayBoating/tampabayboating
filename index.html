@@ -1681,11 +1681,11 @@ results.addEventListener('click',function(e){
   <div class="wrap">
     <div class="sec-head" style="margin-bottom:8px">
       <h2 style="font-size:1.45rem;margin:0 0 3px">Tampa Bay Boater's Map</h2>
-      <p style="margin:0">Fuel, bait, dock &amp; dine, ramps, dealers, services — plus live cams. Tap a pin for details.</p>
+      <p style="margin:0">Pick a category below and its pins drop onto the map — fuel, bait, ramps, dock &amp; dine, ice, live cams and more. Tap any pin for details.</p>
     </div>
     <div class="map-groups">
       <div class="map-group">
-        <button class="map-filter active" data-cat="all" onclick="mapFilter('all',this)">All</button>
+        <button class="map-filter" data-cat="all" onclick="mapFilter('all',this)">All</button>
       </div>
       <div class="map-group">
         <div class="map-group-label">On the Water</div>
@@ -3865,7 +3865,6 @@ window.tbbMapInit=(function(){
       }
     }catch(e){}
   }
-  draw('all');
   window.tbbDraw = draw;
   setTimeout(function(){ map.invalidateSize(); }, 120);
   };

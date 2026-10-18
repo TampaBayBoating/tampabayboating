@@ -1350,24 +1350,25 @@ results.addEventListener('click',function(e){
     <a href="#/" aria-label="Tampa Bay Boating — back to home"><img class="app-icon" src="assets/tbb-logo.webp" alt="Tampa Bay Boating app icon"></a>
     <div class="app-txt">
       <h3>Put Tampa Bay Boating on your home screen</h3>
-      <p>No app store, no download. Put our icon on your home screen and Tampa Bay Boating opens like an app — tides, fishing and your boating score, one tap away. Takes 10 seconds:</p>
-      <button class="app-btn" id="pwa-btn" type="button">Install the icon</button>
-      <button class="app-how-btn" id="app-how-btn" type="button" aria-expanded="false" onclick="toggleAppHow()">&#128241; Add this to your home screen — here are the instructions <span class="chev">&#9662;</span></button>
+      <p>No app store, no download — one tap puts Tampa Bay Boating on your home screen, opening like an app.</p>
+      <button class="app-btn" id="pwa-btn" type="button">Put TBB on my home screen</button>
+      <div id="pwa-hint" style="font-size:.8rem;opacity:.8;margin:2px 0 8px"></div>
+      
       <div id="app-how" style="display:none">
       <div class="app-note" style="margin:0 0 12px"><b>Coming from TikTok, Instagram or Facebook?</b> Open this page in Safari or Chrome first — tap the dots in that app and choose <b>Open in Safari</b> / <b>Open in Chrome</b>. Add to Home Screen doesn't exist inside those apps.</div>
       <div class="app-steps">
-        <div class="st"><b class="st-title">iPhone — Safari</b><ol>
+        <div class="st" id="st-ios"><b class="st-title">iPhone — Safari</b><ol>
           <li>Tap the <b>three dots (⋯)</b> next to the address bar, then tap <b>Share</b>. (Older iPhone? Tap <b>Share</b> — the square with the arrow pointing up — at the bottom.)</li>
           <li>Scroll down and tap <b>Add to Home Screen</b>.</li>
           <li>Tap <b>Add</b>. Done!</li>
         </ol></div>
-        <div class="st"><b class="st-title">Android — Chrome</b><ol>
+        <div class="st" id="st-android"><b class="st-title">Android — Chrome</b><ol>
           <li>Tap the <b>three dots (⋮)</b> in the top-right corner.</li>
           <li>Tap <b>Install and create shortcut</b>.</li>
           <li>Tap <b>Install</b>. Done!</li>
         </ol></div>
       </div>
-      <div class="app-note">Samsung Internet: tap the <b>three lines (☰)</b> at the bottom, then <b>Add page to</b>, then <b>Home screen</b>.</div>
+      <div class="app-note" id="st-samsung">Samsung Internet: tap the <b>three lines (☰)</b> at the bottom, then <b>Add page to</b>, then <b>Home screen</b>.</div>
       </div>
     </div>
   </div>
@@ -5656,22 +5657,45 @@ document.addEventListener('click',function(e){ var p=document.getElementById('tr
   if(!band) return;
   if(window.navigator.standalone || (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches)){ band.style.display = 'none'; return; }
   var btn = document.getElementById('pwa-btn');
+  var hint = document.getElementById('pwa-hint');
   var dp = null;
-  window.addEventListener('beforeinstallprompt', function(e){ e.preventDefault(); dp = e; btn.style.display = 'inline-block'; });
+  window.addEventListener('beforeinstallprompt', function(e){ e.preventDefault(); dp = e; if(hint) hint.textContent = 'One tap — your phone will ask, tap Install and you are done.'; });
+  function showSteps(which){
+    var box = document.getElementById('app-how');
+    if(box.style.display === 'none'){ toggleAppHow(); }
+    ['st-ios','st-android','st-samsung'].forEach(function(id){
+      var el = document.getElementById(id);
+      if(el) el.style.display = (!which || which === id) ? '' : 'none';
+    });
+    var t = document.getElementById(which || 'app-how');
+    if(t && t.scrollIntoView) t.scrollIntoView({behavior:'smooth', block:'center'});
+  }
   btn.addEventListener('click', function(){
-    if(!dp) return;
-    dp.prompt();
-    dp.userChoice.then(function(){ dp = null; btn.style.display = 'none'; });
+    if(dp){ dp.prompt(); dp.userChoice.then(function(){ dp = null; }); return; }
+    var ua = navigator.userAgent || '';
+    var inApp = /FBAN|FBAV|Instagram|TikTok|musical_ly|Snapchat/i.test(ua);
+    var ios = /iPhone|iPad|iPod/i.test(ua);
+    var samsung = /SamsungBrowser/i.test(ua);
+    if(inApp){
+      if(hint) hint.textContent = ios ? 'You are inside another app — open this page in Safari first (tap the dots, then Open in Safari), then tap this button again.' : 'You are inside another app — open this page in Chrome first (tap the dots, then Open in Chrome), then tap this button again.';
+      showSteps(ios ? 'st-ios' : (samsung ? 'st-samsung' : 'st-android'));
+    } else if(ios){
+      if(hint) hint.textContent = 'Apple makes you tap Share yourself — here are your exact steps:';
+      showSteps('st-ios');
+    } else if(samsung){
+      showSteps('st-samsung');
+    } else {
+      showSteps('st-android');
+    }
   });
   window.addEventListener('appinstalled', function(){ band.style.display = 'none'; });
 })();
 function toggleAppHow(){
   var box = document.getElementById('app-how');
-  var btn = document.getElementById('app-how-btn');
+  var hb = document.getElementById('app-how-btn');
   var open = box.style.display !== 'none';
   box.style.display = open ? 'none' : 'block';
-  btn.setAttribute('aria-expanded', open ? 'false' : 'true');
-  btn.classList.toggle('open', !open);
+  if(hb){ hb.setAttribute('aria-expanded', open ? 'false' : 'true'); hb.classList.toggle('open', !open); }
 }
 </script>
 <script type="text/javascript" async src="https://subscribe-forms.beehiiv.com/attribution.js"></script>

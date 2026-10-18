@@ -197,7 +197,10 @@ body.dark .gear-cat{color:#e8eef4}
 .map-filter.active{background:var(--c,var(--navy)); color:#fff; border-color:var(--c,var(--navy))}
 .map-filter.active .dot{background:#fff; box-shadow:none}
 .map-groups{background:#fff; border:1px solid var(--line); border-radius:14px; padding:8px 10px 0; margin:10px auto; max-width:880px; text-align:left}
-.map-group{margin:0 0 5px}
+.map-group{display:grid; grid-template-columns:1fr 1fr; gap:6px; margin:0 0 8px}
+.map-groups .map-filter{width:100%; margin:0; justify-content:flex-start}
+.map-group-label{grid-column:1/-1}
+@media (min-width:720px){.map-group{grid-template-columns:repeat(3,1fr)}}
 .map-group-label{font-size:.68rem; font-weight:700; letter-spacing:1.4px; text-transform:uppercase; color:#7a8794; margin:2px 0 3px}
 .tbb-cam-pin{width:26px; height:26px; border-radius:50%; background:#e02424; border:2px solid #fff; box-shadow:0 1px 6px rgba(0,0,0,.5); display:flex; align-items:center; justify-content:center}
 .emg-home{padding:16px 0 2px}

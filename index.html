@@ -3807,6 +3807,14 @@ window.tbbMapInit=(function(){
   noaaChart.getTileUrl = function(c){ return noaaTileUrl(c); };
   L.control.layers({'<svg class=ic aria-hidden=true><use href=#i-map></use></svg> Navigation chart': chartBase, '<svg class=ic aria-hidden=true><use href=#i-road></use></svg> Street map': streetBase, '<svg class=ic aria-hidden=true><use href=#i-anchor></use></svg> NOAA chart (all markers)': noaaChart}, {}, {collapsed: true}).addTo(map);
   const layer = L.layerGroup().addTo(map);
+  /* Cooperative touch: one finger scrolls the page, two fingers move the map (touch devices only; mouse drag untouched) */
+  if(('ontouchstart' in window) || navigator.maxTouchPoints > 0){
+    map.dragging.disable();
+    var mc = map.getContainer();
+    mc.addEventListener('touchstart', function(e){ if(e.touches.length >= 2) map.dragging.enable(); }, {passive:true});
+    mc.addEventListener('touchend', function(e){ if(e.touches.length < 2) map.dragging.disable(); }, {passive:true});
+    mc.addEventListener('pointerdown', function(e){ if(e.pointerType === 'mouse') map.dragging.enable(); }, true);
+  }
   /* Live GPS dot — the visitor's own phone location (Leaflet locate, watch mode) */
   var locDot=null, locRing=null, locOn=false, locFollow=false, locMsgTimer=null;
   var locMsg=document.createElement('div'); locMsg.className='tbb-loc-msg'; map.getContainer().appendChild(locMsg);

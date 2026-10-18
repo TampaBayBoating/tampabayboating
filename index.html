@@ -1347,12 +1347,12 @@ results.addEventListener('click',function(e){
 </div>
 <div class="app-band" id="app-band">
   <div class="app-inner">
-    <a href="#/" aria-label="Tampa Bay Boating — back to home"><img class="app-icon" src="assets/tbb-logo.webp" alt="Tampa Bay Boating app icon"></a>
+    <span id="pwa-icon" role="button" tabindex="0" aria-label="Put Tampa Bay Boating on your home screen" style="cursor:pointer"><img class="app-icon" src="assets/tbb-logo.webp" alt="Tampa Bay Boating app icon"></span>
     <div class="app-txt">
       <h3>Put Tampa Bay Boating on your home screen</h3>
       <p>No app store, no download — one tap puts Tampa Bay Boating on your home screen, opening like an app.</p>
       <button class="app-btn" id="pwa-btn" type="button">Put TBB on my home screen</button>
-      <div id="pwa-hint" style="font-size:.8rem;opacity:.8;margin:2px 0 8px"></div>
+      <div id="pwa-hint" style="font-size:.8rem;opacity:.8;margin:2px 0 8px">Tap the logo or the button — your phone does the rest.</div>
       
       <div id="app-how" style="display:none">
       <div class="app-note" style="margin:0 0 12px"><b>Coming from TikTok, Instagram or Facebook?</b> Open this page in Safari or Chrome first — tap the dots in that app and choose <b>Open in Safari</b> / <b>Open in Chrome</b>. Add to Home Screen doesn't exist inside those apps.</div>
@@ -5670,7 +5670,7 @@ document.addEventListener('click',function(e){ var p=document.getElementById('tr
     var t = document.getElementById(which || 'app-how');
     if(t && t.scrollIntoView) t.scrollIntoView({behavior:'smooth', block:'center'});
   }
-  btn.addEventListener('click', function(){
+  function tbbInstall(){
     if(dp){ dp.prompt(); dp.userChoice.then(function(){ dp = null; }); return; }
     var ua = navigator.userAgent || '';
     var inApp = /FBAN|FBAV|Instagram|TikTok|musical_ly|Snapchat/i.test(ua);
@@ -5687,7 +5687,10 @@ document.addEventListener('click',function(e){ var p=document.getElementById('tr
     } else {
       showSteps('st-android');
     }
-  });
+  }
+  btn.addEventListener('click', tbbInstall);
+  var icon = document.getElementById('pwa-icon');
+  if(icon){ icon.addEventListener('click', tbbInstall); icon.addEventListener('keydown', function(e){ if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); tbbInstall(); } }); }
   window.addEventListener('appinstalled', function(){ band.style.display = 'none'; });
 })();
 function toggleAppHow(){

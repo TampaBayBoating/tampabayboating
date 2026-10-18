@@ -3764,6 +3764,9 @@ window.tbbLoadCamPopup=function(i,btn){
     stage.innerHTML='<iframe src="'+tbbCamEsc(c.src)+'" style="position:absolute;left:0;top:0;width:100%;height:100%;border:0" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen title="'+tbbCamEsc(c.name)+' live camera"></iframe>';
   }
 };
+window.tbbCloseCamPopup=function(){
+  if(window.tbbMap) window.tbbMap.closePopup();
+};
 window.tbbOpenCamPin=function(i){
   var c=TBB_CAMS[i]; if(!c||typeof c.lat!=='number'||typeof c.lng!=='number')return;
   if(!window.tbbMap||typeof L==='undefined')return;
@@ -3781,7 +3784,8 @@ window.tbbOpenCamPin=function(i){
       +'<div class="tbb-cam-stage" style="position:relative;aspect-ratio:16/9;background:#0a2e3f;border-radius:8px;overflow:hidden;display:flex;align-items:center;justify-content:center;margin:8px 0">'+stageHtml()+'</div>'
       +'<div style="font-size:12.5px">'+tbbCamEsc(c.view)+'</div>'
       +'<div style="font-size:11px;color:#666;margin-top:4px">'+tbbCamEsc(c.loc)+' \u00B7 '+tbbCamEsc(c.credit||'')+'</div>'
-      +'<div style="margin-top:7px;font-size:12.5px"><a href="#/cams">See all live cams \u203a</a></div>';
+      +'<div style="margin-top:7px;font-size:12.5px"><a href="#/cams">See all live cams \u203a</a></div>'
+      +'<button type="button" onclick="tbbCloseCamPopup()" style="display:block;width:100%;margin-top:10px;padding:11px;border:0;border-radius:999px;background:#0a2e3f;color:#fff;font-weight:700;font-size:13px;cursor:pointer">\u2715 Close camera</button>';
     L.popup({maxWidth:300}).setLatLng(target).setContent(h).openOn(map);
     var st=document.querySelector('.leaflet-popup-content .tbb-cam-stage');
     if(st) window.tbbStageCam(i,st);

@@ -203,6 +203,16 @@ body.dark .gear-cat{color:#e8eef4}
 .pl-btns{display:flex; gap:8px; flex-wrap:wrap; margin-top:10px}
 .pl-btn{display:inline-flex; align-items:center; gap:7px; padding:9px 14px; border-radius:999px; color:#fff; font-weight:700; font-size:.85rem; text-decoration:none}
 .pl-sp{background:#1DB954}
+.emg-home{padding:16px 0 2px}
+.emg-card{background:#fff; border:2px solid #c0272d; border-radius:14px; padding:14px 16px}
+.emg-head{display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:10px}
+.emg-badge{display:inline-flex; align-items:center; gap:7px; background:#c0272d; color:#fff; font-weight:800; letter-spacing:1.5px; font-size:.78rem; padding:6px 12px; border-radius:999px; text-transform:uppercase}
+.emg-sub{font-weight:600; color:#5b6b78; font-size:.92rem}
+.emg-row{display:flex; gap:10px; flex-wrap:wrap; align-items:stretch}
+.emg-btn{display:inline-flex; align-items:center; justify-content:center; padding:12px 20px; border-radius:999px; background:#0a2540; color:#fff; font-weight:800; text-decoration:none; font-size:.98rem}
+.emg-btn.emg-red{background:#c0272d; font-size:1.12rem; padding:12px 28px}
+.emg-vhf{flex:1 1 230px; background:#fdf0f0; border:1px solid #f0caca; border-radius:10px; padding:10px 12px; font-size:.9rem; color:#333}
+.emg-more{display:inline-block; margin-top:10px; font-weight:700; font-size:.9rem}
 .hero-music{display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-top:4px}
 .hm-label{color:#7fd1c0; letter-spacing:2px; font-size:.72rem; font-weight:800; text-transform:uppercase; width:100%}
 .hm-btn{display:inline-flex; align-items:center; gap:8px; padding:11px 22px; border-radius:999px; color:#fff; font-weight:800; font-size:.95rem; text-decoration:none}
@@ -1243,6 +1253,17 @@ results.addEventListener('click',function(e){
     <div class="hero-music"><span class="hm-label">Music for the boat</span><a class="hm-btn hm-sp" href="https://open.spotify.com/playlist/37i9dQZF1DXb3m918yXHxA" target="_blank" rel="noopener" aria-label="Open boat music in Spotify"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>Spotify</a><a class="hm-btn hm-am" href="https://music.apple.com/us/playlist/pl.1870421bdeb74580831f17505e5d32d9" target="_blank" rel="noopener" aria-label="Open boat music in Apple Music"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>Apple Music</a></div>
   </div>
 </section>
+<div class="emg-home"><div class="wrap">
+  <div class="emg-card">
+    <div class="emg-head"><span class="emg-badge"><svg class=ic aria-hidden=true><use href=#i-siren></use></svg> Emergency</span><span class="emg-sub">Trouble on the water? Start here.</span></div>
+    <div class="emg-row">
+      <a class="emg-btn emg-red" href="tel:911">Call 911</a>
+      <a class="emg-btn" href="tel:8668811392">Coast Guard &middot; 866-881-1392</a>
+      <div class="emg-vhf"><b>VHF Channel 16</b> &mdash; the MAYDAY distress channel. The Coast Guard monitors it around the clock.</div>
+    </div>
+    <a class="emg-more" href="#/safety">All emergency numbers &mdash; FWC, towing, poison control &rsaquo;</a>
+  </div>
+</div></div>
 <div class="home-intro">
   <div class="kick">Tampa Bay, Organized</div>
   <h2>Tap in. Find it fast.</h2>
@@ -2521,6 +2542,20 @@ results.addEventListener('click',function(e){
       <p>What the U.S. Coast Guard requires on your boat — plus Florida rules and smart habits for Tampa Bay waters.</p>
     </div>
     <div class="dir-grid">
+      <div class="dir-card" style="border:2px solid #c0272d">
+        <div class="city" style="color:#c0272d">First call</div><h4><svg class=ic aria-hidden=true><use href=#i-siren></use></svg> Emergency Contacts</h4>
+        <div class="type">
+          <b>Life-threatening emergency:</b> <a href="tel:911"><b>911</b></a><br>
+          <b>Distress on the water:</b> VHF <b>Channel 16</b> &mdash; say &ldquo;Mayday&rdquo; three times, then your boat name, your position, what&rsquo;s wrong, and how many people are aboard. The Coast Guard monitors Channel 16 around the clock.<br>
+          <b>U.S. Coast Guard &mdash; Sector St. Petersburg, 24-hour command center:</b> <a href="tel:8668811392">866-881-1392</a><br>
+          <b>FWC &mdash; boating accidents, dangerous boating, injured wildlife:</b> <a href="tel:8884043922">888-404-3922</a> (or *FWC on a cell phone)<br>
+          <b>Poison Control:</b> <a href="tel:8002221222">800-222-1222</a><br>
+          <b>Fuel or oil spill:</b> National Response Center <a href="tel:8004248802">800-424-8802</a><br>
+          <b>Towing (not an emergency):</b> Sea Tow Tampa Bay <a href="tel:7275471868">(727) 547-1868</a> &middot; TowBoatUS <a href="tel:8003914869">(800) 391-4869</a>
+        </div>
+        <div class="contact">VHF quick list &mdash; <b>16</b> distress &amp; hailing &middot; <b>9</b> hailing &amp; bridge tenders &middot; <b>22A</b> Coast Guard working channel &middot; <b>13</b> bridge-to-bridge &middot; <a href="#/bridges">Full VHF &amp; bridge guide</a></div>
+      </div>
+      
       <div class="dir-card">
         <div class="city">Federal law</div><h4><svg class=ic aria-hidden=true><use href=#i-check></use></svg> Required by the U.S. Coast Guard</h4>
         <div class="type">

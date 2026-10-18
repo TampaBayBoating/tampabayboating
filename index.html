@@ -966,7 +966,7 @@ body.dark body.dark /* ---- Tampa Bay Boating Shop ---- */
   <path d="m14.83 14.83 4.24 4.24" />
   <path d="m9.17 14.83-4.24 4.24" />
   <circle cx="12" cy="12" r="4" /></symbol>
-<symbol id="i-hook" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.5V13"/><path d="M12 13c0 4.2-2.2 7.5-5.2 7.5-2.6 0-4.3-2.1-4.3-4.6"/><path d="M2.5 15.9 4.3 14.4"/></symbol>
+<symbol id="i-ice" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.7l7.5 4.3v9.9L12 21.3l-7.5-4.4V7L12 2.7z"/><path d="M4.6 7L12 11.2L19.4 7M12 11.2v9.9"/></symbol><symbol id="i-hook" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.5V13"/><path d="M12 13c0 4.2-2.2 7.5-5.2 7.5-2.6 0-4.3-2.1-4.3-4.6"/><path d="M2.5 15.9 4.3 14.4"/></symbol>
 <symbol id="i-cell" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="20" x="5" y="2" rx="2" ry="2" />
   <path d="M12 18h.01" /></symbol>
 <symbol id="i-batt" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m11 7-3 5h4l-3 5" />
@@ -1209,7 +1209,7 @@ var PAGES=[
 ["advertise","Advertise","advertise sponsor business"],
 ["contact","Contact","contact email david"],
 ["about","About","about story"]];
-var PIN_LABEL={fuel:"Fuel",bait:"Bait",tackle:"Fishing Tackle",dine:"Dock & Dine",play:"Destination",club:"Boat Club",storage:"Storage",stay:"Boat-Up Stay",dealer:"Boat Dealers",trailer:"Trailer Services",parts:"Parts & Supply",service:"Marine Services",ramp:"Boat Ramp", rent:"Boat Rental"};
+var PIN_LABEL={fuel:"Fuel",bait:"Bait",tackle:"Fishing Tackle",dine:"Dock & Dine",play:"Destination",club:"Boat Club",storage:"Storage",stay:"Boat-Up Stay",dealer:"Boat Dealers",trailer:"Trailer Services",parts:"Parts & Supply",service:"Marine Services",ramp:"Boat Ramp", rent:"Boat Rental", ice:"Ice"};
 var panel=document.getElementById('search-panel'),input=document.getElementById('site-search'),
     results=document.getElementById('search-results'),btn=document.getElementById('search-btn');
 function esc(t){return String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
@@ -1692,6 +1692,7 @@ results.addEventListener('click',function(e){
         <button class="map-filter" data-cat="fuel" style="--c:#e25822" onclick="mapFilter('fuel',this)"><span class="dot"></span><svg class=ic aria-hidden=true><use href=#i-fuel></use></svg> Fuel</button>
         <button class="map-filter" data-cat="bait" style="--c:#2e9e5b" onclick="mapFilter('bait',this)"><span class="dot"></span><svg class=ic aria-hidden=true><use href=#i-shrimp></use></svg> Bait</button>
         <button class="map-filter" data-cat="tackle" style="--c:#0d9488" onclick="mapFilter('tackle',this)"><span class="dot"></span><svg class=ic aria-hidden=true><use href=#i-hook></use></svg> Fishing Tackle</button>
+        <button class="map-filter" data-cat="ice" style="--c:#22d3ee" onclick="mapFilter('ice',this)"><span class="dot"></span><svg class=ic aria-hidden=true><use href=#i-ice></use></svg> Ice</button>
         <button class="map-filter" data-cat="dine" style="--c:#8b5cf6" onclick="mapFilter('dine',this)"><span class="dot"></span><svg class=ic aria-hidden=true><use href=#i-dine></use></svg> Dock &amp; Dine</button>
         <button class="map-filter" data-cat="ramp" style="--c:#4f46e5" onclick="mapFilter('ramp',this)"><span class="dot"></span><svg class=ic aria-hidden=true><use href=#i-anchor></use></svg> Boat Ramps</button>
         <button class="map-filter" data-cat="cam" style="--c:#e02424" onclick="mapFilter('cam',this)"><span class="dot"></span><svg class=ic aria-hidden=true><use href=#i-video></use></svg> Live Cams</button>
@@ -3299,7 +3300,7 @@ const MAP_PINS = [
 ["O'Neill's Marina Bait Shop","bait",27.70736,-82.68045,"6701 Sunshine Skyway Ln S, St. Pete","(727) 867-2585","Live & frozen bait + tackle at the fuel dock"],
 ["Get Bent Live Bait","bait",28.177028,-82.788913,"1119 Baillies Bluff Rd, Holiday","(727) 597-9073","Pull-up-by-boat live bait; text-ahead pre-order"],
 ["Bait and Tackle of Apollo Beach","bait",27.76464,-82.3957,"6040 N US-41, Apollo Beach","(813) 296-7735","Live & frozen bait, tackle, custom rods"],
-["Hart's Landing","bait",27.334044,-82.553628,"920 John Ringling Cswy, Sarasota","(941) 330-0650","Historic waterfront bait shop + bar"],
+
 ["Gandy Bait & Tackle","bait",27.89377,-82.52935,"4923 W Gandy Blvd, Tampa","(813) 839-5551","South Tampa institution since 1989; live shrimp, pinfish, crabs, frozen bait, full tackle"],
 ["Sailor Mike's Bait & Tackle","bait",27.893634,-82.52964,"4925 W Gandy Blvd, Tampa","(813) 902-9360","Live squid, cigar minnows, greenbacks, pinfish; 26 years in business"],
 ["Tight Lines Bait Bus","bait",27.952246,-82.490673,"2919 W Cypress St, Tampa","(813) 392-1686","Live bait, custom rods, rod & reel repair"],
@@ -3733,12 +3734,46 @@ const MAP_PINS = [
 ["Parrish Bait & Tackle", "tackle", 27.573017, -82.424117, "12155 US-301, Parrish", "(941) 776-1290", "Large selection of rods & reels, lures & hooks — live worms & frozen bait too"],
 ["Parrish Bait & Tackle", "bait", 27.573017, -82.424117, "12155 US-301, Parrish", "(941) 776-1290", "Live worms, frozen & artificial bait — rods & reels too"],
 ["Fishermen's Headquarters", "tackle", 27.495078, -82.554078, "924 Manatee Ave E, Bradenton", "(941) 587-7758", "Marine supply store with fishing rods, reels & tackle"]
-];
+,
+["St. Petersburg Municipal Marina", "ice", 27.76938, -82.6297, "500 1st Ave SE, St. Petersburg", "(727) 893-7329", "Bagged ice at the marina."],
+["Gulfport Municipal Marina", "ice", 27.740622, -82.696136, "4630 29th Ave S, Gulfport", "(727) 893-1071", "Ice at the ship's store — snacks & drinks too."],
+["Harborage Marina", "ice", 27.75905, -82.63661, "1110 3rd St S, St. Petersburg", "", "Ice at the marina — vending machine on site."],
+["Madeira Beach Municipal Marina", "ice", 27.80425, -82.79613, "503 150th Ave, Madeira Beach", "", "Ice at the marina — fuel, bait & tackle too."],
+["Twin Dolphin Marina", "ice", 27.50012, -82.57308, "1000 1st Ave W, Bradenton", "(941) 747-8300", "Ice machines on site at the marina."],
+["Tierra Verde Marina", "ice", 27.69215, -82.72033, "100 Pinellas Bayway S, St. Petersburg", "", "Ice at the marina shop — fuel & drinks too."],
+["Port 32 Tierra Verde", "ice", 27.69, -82.72261, "200 Madonna Blvd, Tierra Verde", "", "Ice for purchase at the marina — dry stack & wet slips."],
+["Pass-A-Grille Marina", "ice", 27.69589, -82.73574, "1901 Pass-A-Grille Way, St. Pete Beach", "(727) 360-0100", "Ice at the ship's store — live & frozen bait too."],
+["Safe Harbor Regatta Pointe", "ice", 27.511915, -82.57564, "1005 Riverside Dr, Palmetto", "(941) 729-6021", "Ice at the on-site ship's store."],
+["Little Harbor Marinas", "ice", 27.725755, -82.471243, "606 Seagrape Dr, Ruskin", "(813) 645-2288", "Ice at the ship's store — bait & tackle shop on site."],
+["Cortez Cove Marina", "ice", 27.466432, -82.682644, "4522 121st St W, Cortez", "(941) 761-4554", "Ice at the marina — fuel dock & slips."],
+["One Stop Bait Shop", "ice", 27.96348, -82.47418, "2305 N Willow Ave, Tampa", "(813) 867-8613", "Ice & cold drinks — live & frozen bait too."],
+["Tatum's Bait Tackle and Grocery", "ice", 27.745621, -82.679567, "2445 34th St S, St. Petersburg", "(727) 321-9353", "Ice & groceries — live & frozen bait too."],
+["Skyway Bait and Tackle", "ice", 27.557505, -82.564236, "4808 US Highway 19, Palmetto", "(941) 357-1122", "Ice, gear & local knowledge by the Skyway."],
+["Ruskin Bait and Tackle", "ice", 27.70571, -82.437, "1519 S US Hwy 41, Ruskin", "(813) 641-2325", "Ice & sodas — live bait & tackle."],
+["Bay Pines Marina", "ice", 27.817182, -82.7676, "5000 92nd St N, St. Petersburg", "(727) 392-4922", "Ice at the marina — bait, fuel & slips too."],
+["Keyes Marina", "ice", 27.50794, -82.71399, "5501 Marina Dr, Holmes Beach", "(941) 779-2838", "Ice at the marina — fuel, live bait & tackle."],
+["Belle Harbour Marina", "ice", 28.159855, -82.762511, "307 Anclote Rd, Tarpon Springs", "(727) 943-8489", "Bait & ice at the marina."],
+["Fisherman's Wharf Marina", "ice", 27.10515, -82.445081, "465 N Tamiami Trail, Venice", "(941) 486-0500", "Ice & refreshments at the fuel dock."],
+["Florida Blizzard", "ice", 27.8706, -82.327025, "8203 US Route 301, Riverview", "", "Self-serve bulk ice & filtered water, open 24/7 — dispenses 10 lb straight into your cooler or a bag. Veteran-owned."],
+["Don's Dock (Hubbard's Marina)", "ice", 27.784605, -82.782349, "215 Boardwalk Pl E, Madeira Beach", "", "Ice at the dock store at John's Pass — beer, water & snacks too."],
+["Tampa Bay Bait & Tackle", "ice", 28.002181, -82.594351, "9735 W Hillsborough Ave, Tampa", "", "Bulk ice at the bait shop."],
+["Twice the Ice — Orient Rd", "ice", 27.983132, -82.373364, "4022 Orient Rd, Tampa", "", "24/7 self-serve ice & water vending — filtered ice made on site."],
+["Twice the Ice — Dale Mabry", "ice", 27.882127, -82.506739, "5845 S Dale Mabry Hwy, Tampa", "", "24/7 self-serve ice & water vending — filtered ice made on site."],
+["Twice the Ice — Hillsborough Ave", "ice", 27.995447, -82.483981, "2356 W Hillsborough Ave, Tampa", "", "24/7 self-serve ice & water vending — filtered ice made on site."],
+["Twice the Ice — 62nd Ave S", "ice", 27.711405, -82.663108, "2200 62nd Ave S, St. Petersburg", "", "24/7 self-serve ice & water vending — filtered ice made on site."],
+["Twice the Ice — 49th St N", "ice", 27.83678, -82.699166, "7101 49th St N, Pinellas Park", "", "24/7 self-serve ice & water vending — filtered ice made on site."],
+["Twice the Ice — Gibsonton", "ice", 27.853738, -82.382803, "9847 US Hwy 41 S, Gibsonton", "", "24/7 self-serve ice & water vending — filtered ice made on site."],
+["Twice the Ice — Ruskin", "ice", 27.713618, -82.399958, "2602 E College Ave, Ruskin", "", "24/7 self-serve ice & water vending — filtered ice made on site."],
+["Twice the Ice — Bradenton", "ice", 27.472897, -82.546486, "1512 30th Ave E, Bradenton", "", "24/7 self-serve ice & water vending — filtered ice made on site."],
+["Twice the Ice — Sarasota", "ice", 27.326407, -82.456334, "5670 Palmer Blvd, Sarasota", "", "24/7 self-serve ice & water vending — filtered ice made on site."],
+["Kooler Ice — Gibsonton", "ice", 27.840406, -82.382185, "11125 US Hwy 41 S, Gibsonton", "", "Self-serve ice vending — bagged & bulk ice."],
+["Kooler Ice — South Tampa", "ice", 27.917418, -82.402324, "S 34th Ave, Tampa", "", "Self-serve ice vending — bagged & bulk ice."],
+["Watermill Express — Largo", "ice", 27.88071, -82.786833, "11851 Seminole Blvd, Largo", "", "Drive-up water & ice station — bagged and bulk ice."]];
 const RAMP_CLASS = {"Gandy Boat Ramp": "PAID", "Causeway Boat Ramp": "PAID", "Picnic Island Boat Ramp": "FREE", "Egan Park Boat Ramp": "MIXED", "Treasure Island Boat Ramp": "FREE", "Maximo Park": "FREE", "Bay Vista Park": "FREE", "Demens Landing Boat Ramp": "FREE", "Jungle Prada Boat Ramp": "FREE", "Crisp Park": "FREE", "Coffee Pot Park": "FREE", "Grandview Park": "FREE", "Lake Maggiore Park": "FREE", "Sunlit Cove Boat Ramp": "FREE", "Kingfish Boat Ramp": "FREE", "Captain Scott Moore Boat Ramp": "FREE", "Coquina South Boat Ramp": "FREE", "Warner's Bayou Boat Ramp": "FREE", "State Road 64 Boat Ramp": "FREE", "Riverside Park Boat Ramp": "FREE", "Fort Hamer Park Boat Ramp": "FREE", "63rd Street Boat Ramp": "FREE", "Bishop Harbor Boat Ramp": "FREE", "Turtle Beach Public Boat Ramp": "FREE", "Blackburn Point Park Boat Ramp": "FREE", "Higel Marine Park": "FREE", "Nokomis Beach": "FREE", "Indian Mound Park": "FREE", "Manasota Key Beach": "FREE", "Marina Park and Boat Ramp": "FREE", "Marina Park": "FREE", "Nick's Park Boat Ramp": "FREE", "Sims Park Boat Ramp": "FREE", "Snook Haven Park Boat Ramp": "FREE", "Safety Harbor Marina Boat Launch": "FREE", "Davis Island Boat Ramp": "FREE", "Ballast Point Park": "FREE", "Lowry Park Boat Ramp": "FREE", "Cockroach Bay Boat Ramp": "PAID", "Williams Park Boat Ramp": "PAID", "Domino Park Boat Ramp": "PAID", "Wildcat Park Boat Ramp": "PAID", "Baker Creek Boat Ramp": "PAID", "Harney Park Boat Ramp": "PAID", "Brandon Boat Ramp": "PAID", "Seminole Boat Ramp": "PAID", "Ken Thompson Boat Ramp": "FREE", "Apollo Beach Marina": "PAID", "Rick's on the River": "PAID", "Madeira Beach Marina": "PAID", "O'Neill's Marina": "PAID", "Clearwater Beach Public Boat Ramp": "MIXED", "Dunedin Marina": "PAID", "Jiggs Landing Boat Ramp": "MIXED", "Gulfport Municipal Marina": "MIXED", "E.G. Simmons Conservation Park": "PAID", "Fort De Soto Boat Ramp": "PAID", "Bay Pines Boat Ramp": "PAID", "Belleair Causeway Boat Ramp": "PAID", "Park Boulevard Boat Ramp": "PAID", "Sutherland Bayou Boat Ramp": "PAID", "Anclote River Park Boat Ramp": "PAID", "Robert J. Strickland Memorial Park": "PAID", "Lake Myakka Boat Ramp": "PAID", "Lake Manatee State Park Boat Ramp": "PAID", "Commongood Boat Ramp": "PAID", "John B. Sargeant Sr. Park": "PAID", "Centennial Park": "PAID", "Morris Bridge Park": "PAID"};
 window.tbbFeeMode=null;
 /* MAP_PINS_PENDING retired 2026-10-10: 201 pins re-verified and restored. 5 rejected (stay off map): Anclote River Sandbar (play, wrong location), Marjorie Park Yacht Basin (fuel, closed), The Club at Treasure Island (fuel, no fuel dock), The Landing at Tarpon Springs Marina (fuel, dupe), Carefree Boat Club Tierra Verde (club, 2 sources only). See map-research/reverify-*.md */
 const MAP_PINS_PENDING = [];
-const MAP_COLORS = {fuel:"#e25822",  bait:"#2e9e5b", tackle:"#0d9488", dine:"#8b5cf6", play:"#0e7490", club:"#d946ef", storage:"#f59e0b", stay:"#2563eb", dealer:"#e11d48", trailer:"#92400e", parts:"#65a30d", service:"#64748b", ramp:"#4f46e5", cam:"#e02424", rent:"#0284c7"};
+const MAP_COLORS = {fuel:"#e25822",  bait:"#2e9e5b", tackle:"#0d9488", dine:"#8b5cf6", play:"#0e7490", club:"#d946ef", storage:"#f59e0b", stay:"#2563eb", dealer:"#e11d48", trailer:"#92400e", parts:"#65a30d", service:"#64748b", ramp:"#4f46e5", cam:"#e02424", rent:"#0284c7", ice:"#22d3ee"};
 window.mapFilter=function(cat,btn){
   document.querySelectorAll('.map-filter').forEach(x => x.classList.remove('active'));
   if(btn) btn.classList.add('active');

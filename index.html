@@ -192,8 +192,14 @@ body.dark .gear-cat{color:#e8eef4}
 .dir-card .type{font-size:.92rem; color:var(--muted); margin:6px 0}
 .dir-card .contact{font-size:.9rem}
 .dir-price{font-size:1.25rem; font-weight:800; color:var(--navy); margin:6px 0}
-.map-filter{border:1px solid var(--line); background:#fff; border-radius:999px; padding:6px 14px; margin:3px; font-size:.85rem; cursor:pointer}
-.map-filter.active{background:var(--navy); color:#fff; border-color:var(--navy)}
+.map-filter{border:1px solid var(--line); background:#fff; border-radius:999px; padding:6px 14px; margin:3px; font-size:.85rem; cursor:pointer; display:inline-flex; align-items:center; gap:7px}
+.map-filter .dot{width:10px; height:10px; border-radius:50%; background:var(--c,#999); flex:none; box-shadow:inset 0 0 0 1px rgba(0,0,0,.18)}
+.map-filter.active{background:var(--c,var(--navy)); color:#fff; border-color:var(--c,var(--navy))}
+.map-filter.active .dot{background:#fff; box-shadow:none}
+.map-groups{background:#fff; border:1px solid var(--line); border-radius:14px; padding:12px 14px 4px; margin:0 auto 12px; max-width:880px; text-align:left}
+.map-group{margin:0 0 8px}
+.map-group-label{font-size:.68rem; font-weight:700; letter-spacing:1.4px; text-transform:uppercase; color:#7a8794; margin:2px 0 3px}
+.tbb-cam-pin{width:26px; height:26px; border-radius:50%; background:#e02424; border:2px solid #fff; box-shadow:0 1px 6px rgba(0,0,0,.5); display:flex; align-items:center; justify-content:center}
 .tbb-loc-btn{width:38px;height:38px;border:1px solid var(--line);background:#fff;border-radius:10px;box-shadow:0 1px 5px rgba(0,0,0,.35);color:var(--navy);cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0}
 .tbb-loc-btn.on{background:#8fd0f0;color:#06263b;border-color:#8fd0f0}
 .tbb-loc-msg{position:absolute;left:10px;bottom:10px;z-index:800;background:rgba(6,38,59,.92);color:#fff;font-size:.82rem;padding:8px 12px;border-radius:8px;max-width:78%;display:none}
@@ -1606,22 +1612,34 @@ results.addEventListener('click',function(e){
     <div class="sec-head">
       <span class="sec-kicker">Explore</span>
       <h2>Tampa Bay Boater's Map</h2>
-      <p>Fuel docks, rec fuel & ethanol-free stations, bait shops, dock &amp; dine spots, boat ramps, dealers, parts &amp; service — and the places everyone goes. Tap a pin for details.</p>
+      <p>Fuel docks, rec fuel & ethanol-free stations, bait shops, dock &amp; dine spots, boat ramps, dealers, parts &amp; service — plus live cameras on the water. Tap a pin for details.</p>
     </div>
-    <div class="map-filters" style="text-align:center; margin-bottom:10px">
-      <button class="map-filter active" data-cat="all" onclick="mapFilter('all',this)">All</button>
-      <button class="map-filter" data-cat="fuel" onclick="mapFilter('fuel',this)"><svg class=ic aria-hidden=true><use href=#i-fuel></use></svg> Fuel</button>
-      <button class="map-filter" data-cat="bait" onclick="mapFilter('bait',this)"><svg class=ic aria-hidden=true><use href=#i-shrimp></use></svg> Bait</button>
-      <button class="map-filter" data-cat="dine" onclick="mapFilter('dine',this)"><svg class=ic aria-hidden=true><use href=#i-dine></use></svg> Dock &amp; Dine</button>
-      <button class="map-filter" data-cat="stay" onclick="mapFilter('stay',this)"><svg class=ic aria-hidden=true><use href=#i-bed></use></svg> Boat-Up Stays</button>
-      <button class="map-filter" data-cat="play" onclick="mapFilter('play',this)"><svg class=ic aria-hidden=true><use href=#i-palm></use></svg> Destinations</button>
-      <button class="map-filter" data-cat="club" onclick="mapFilter('club',this)"><svg class=ic aria-hidden=true><use href=#i-ship></use></svg> Boat Clubs</button>
-      <button class="map-filter" data-cat="storage" onclick="mapFilter('storage',this)"><svg class=ic aria-hidden=true><use href=#i-park></use></svg> Storage</button>
-      <button class="map-filter" data-cat="dealer" onclick="mapFilter('dealer',this)"><svg class=ic aria-hidden=true><use href=#i-store></use></svg> Boat Dealers</button>
-      <button class="map-filter" data-cat="trailer" onclick="mapFilter('trailer',this)"><svg class=ic aria-hidden=true><use href=#i-truck></use></svg> Trailer Services</button>
-      <button class="map-filter" data-cat="parts" onclick="mapFilter('parts',this)"><svg class=ic aria-hidden=true><use href=#i-parts></use></svg> Parts &amp; Supply</button>
-      <button class="map-filter" data-cat="service" onclick="mapFilter('service',this)"><svg class=ic aria-hidden=true><use href=#i-wrench></use></svg> Marine Services</button>
-      <button class="map-filter" data-cat="ramp" onclick="mapFilter('ramp',this)"><svg class=ic aria-hidden=true><use href=#i-anchor></use></svg> Boat Ramps</button>
+    <div class="map-groups">
+      <div class="map-group">
+        <button class="map-filter active" data-cat="all" onclick="mapFilter('all',this)">All</button>
+      </div>
+      <div class="map-group">
+        <div class="map-group-label">On the Water</div>
+        <button class="map-filter" data-cat="fuel" style="--c:#e25822" onclick="mapFilter('fuel',this)"><span class="dot"></span><svg class=ic aria-hidden=true><use href=#i-fuel></use></svg> Fuel</button>
+        <button class="map-filter" data-cat="bait" style="--c:#2e9e5b" onclick="mapFilter('bait',this)"><span class="dot"></span><svg class=ic aria-hidden=true><use href=#i-shrimp></use></svg> Bait</button>
+        <button class="map-filter" data-cat="dine" style="--c:#8b5cf6" onclick="mapFilter('dine',this)"><span class="dot"></span><svg class=ic aria-hidden=true><use href=#i-dine></use></svg> Dock &amp; Dine</button>
+        <button class="map-filter" data-cat="ramp" style="--c:#4f46e5" onclick="mapFilter('ramp',this)"><span class="dot"></span><svg class=ic aria-hidden=true><use href=#i-anchor></use></svg> Boat Ramps</button>
+        <button class="map-filter" data-cat="cam" style="--c:#e02424" onclick="mapFilter('cam',this)"><span class="dot"></span><svg class=ic aria-hidden=true><use href=#i-video></use></svg> Live Cams</button>
+      </div>
+      <div class="map-group">
+        <div class="map-group-label">Places to Go</div>
+        <button class="map-filter" data-cat="play" style="--c:#0e7490" onclick="mapFilter('play',this)"><span class="dot"></span><svg class=ic aria-hidden=true><use href=#i-palm></use></svg> Destinations</button>
+        <button class="map-filter" data-cat="stay" style="--c:#2563eb" onclick="mapFilter('stay',this)"><span class="dot"></span><svg class=ic aria-hidden=true><use href=#i-bed></use></svg> Boat-Up Stays</button>
+        <button class="map-filter" data-cat="club" style="--c:#d946ef" onclick="mapFilter('club',this)"><span class="dot"></span><svg class=ic aria-hidden=true><use href=#i-ship></use></svg> Boat Clubs</button>
+      </div>
+      <div class="map-group">
+        <div class="map-group-label">Boat Services</div>
+        <button class="map-filter" data-cat="dealer" style="--c:#e11d48" onclick="mapFilter('dealer',this)"><span class="dot"></span><svg class=ic aria-hidden=true><use href=#i-store></use></svg> Boat Dealers</button>
+        <button class="map-filter" data-cat="storage" style="--c:#f59e0b" onclick="mapFilter('storage',this)"><span class="dot"></span><svg class=ic aria-hidden=true><use href=#i-park></use></svg> Storage</button>
+        <button class="map-filter" data-cat="parts" style="--c:#65a30d" onclick="mapFilter('parts',this)"><span class="dot"></span><svg class=ic aria-hidden=true><use href=#i-parts></use></svg> Parts &amp; Supply</button>
+        <button class="map-filter" data-cat="trailer" style="--c:#92400e" onclick="mapFilter('trailer',this)"><span class="dot"></span><svg class=ic aria-hidden=true><use href=#i-truck></use></svg> Trailer Services</button>
+        <button class="map-filter" data-cat="service" style="--c:#64748b" onclick="mapFilter('service',this)"><span class="dot"></span><svg class=ic aria-hidden=true><use href=#i-wrench></use></svg> Marine Services</button>
+      </div>
     </div>
     <div class="map-filters" id="ramp-fee-filters" style="text-align:center; margin-bottom:10px; display:none">
       <button class="map-filter" id="fee-btn-free" onclick="rampFeeFilter('free')">Free Launches</button>
@@ -1752,7 +1770,7 @@ results.addEventListener('click',function(e){
     </div>
   </div>
 </section></div>
-<div class="view" id="view-cams"><div class="wrap"><a class="back-link" href="#/plan">&#8249; Plan a Day</a></div><div class="hub-head"><h2>Live Cams</h2><p>Live cameras on Tampa Bay's water &mdash; passes, bridges, beaches and marinas. Nothing loads until you tap a camera, to keep this page fast on your phone.</p></div><div class="wrap"><div class="dir-grid" id="cam-grid"></div><p style="font-size:12px;color:#888;margin-top:10px">Cameras are run by their operators and shown via the operator's own embed or public feed. If a feed is down, each card links to the operator's own page.</p></div></div>
+<div class="view" id="view-cams"><div class="wrap"><a class="back-link" href="#/plan">&#8249; Plan a Day</a></div><div class="hub-head"><h2>Live Cams</h2><p>Live cameras on Tampa Bay's water &mdash; passes, bridges, beaches and marinas. Each camera starts playing as you scroll to it, and stops when you scroll past &mdash; so your phone never loads them all at once.</p></div><div class="wrap"><div class="dir-grid" id="cam-grid"></div><p style="font-size:12px;color:#888;margin-top:10px">Cameras are run by their operators and shown via the operator's own embed or public feed. If a feed is down, each card links to the operator's own page.</p></div></div>
 <div class="view" id="view-meetups"><div class="wrap"><a class="back-link" href="#/">&#8249; All categories</a></div><section id="meetups" style="background:#fff; border-top:1px solid var(--line); border-bottom:1px solid var(--line)">
   <div class="wrap">
     <div class="sec-head">
@@ -3557,7 +3575,7 @@ const RAMP_CLASS = {"Gandy Boat Ramp": "PAID", "Causeway Boat Ramp": "PAID", "Pi
 window.tbbFeeMode=null;
 /* MAP_PINS_PENDING retired 2026-10-10: 201 pins re-verified and restored. 5 rejected (stay off map): Anclote River Sandbar (play, wrong location), Marjorie Park Yacht Basin (fuel, closed), The Club at Treasure Island (fuel, no fuel dock), The Landing at Tarpon Springs Marina (fuel, dupe), Carefree Boat Club Tierra Verde (club, 2 sources only). See map-research/reverify-*.md */
 const MAP_PINS_PENDING = [];
-const MAP_COLORS = {fuel:"#e25822",  bait:"#2e9e5b", dine:"#8b5cf6", play:"#0e7490", club:"#d946ef", storage:"#f59e0b", stay:"#2563eb", dealer:"#e11d48", trailer:"#92400e", parts:"#65a30d", service:"#64748b", ramp:"#4f46e5"};
+const MAP_COLORS = {fuel:"#e25822",  bait:"#2e9e5b", dine:"#8b5cf6", play:"#0e7490", club:"#d946ef", storage:"#f59e0b", stay:"#2563eb", dealer:"#e11d48", trailer:"#92400e", parts:"#65a30d", service:"#64748b", ramp:"#4f46e5", cam:"#e02424"};
 window.mapFilter=function(cat,btn){
   document.querySelectorAll('.map-filter').forEach(x => x.classList.remove('active'));
   if(btn) btn.classList.add('active');
@@ -3637,6 +3655,17 @@ window.tbbMapInit=(function(){
       m.on('click', function(){ if(window.tbbOpenPin) window.tbbOpenPin(p); });
       layer.addLayer(m);
     });
+    try{
+      if((cat==='all' || cat==='cam') && typeof TBB_CAMS!=='undefined'){
+        TBB_CAMS.forEach(function(c,ci){
+          if(typeof c.lat!=='number' || typeof c.lng!=='number') return;
+          const cicon = L.divIcon({className:'tbb-pin', html:'<div class="tbb-cam-pin"><svg viewBox="0 0 24 24" width="13" height="13" aria-hidden="true"><path d="M8 5v14l11-7z" fill="#fff"/></svg></div>', iconSize:[26,26], iconAnchor:[13,13]});
+          const cm = L.marker([c.lat, c.lng], {icon:cicon, title:c.name+' - live cam'});
+          cm.on('click', function(){ if(window.tbbOpenCamPin) window.tbbOpenCamPin(ci); });
+          layer.addLayer(cm);
+        });
+      }
+    }catch(e){}
   }
   draw('all');
   window.tbbDraw = draw;
@@ -3669,7 +3698,7 @@ renderStor();
 </script>
 <script>
 /* ===== PREVIEW BUILD: Live Cams (NOT on the live site) ===== */
-const TBB_CAMS = /*__CAMS__*/[{"credit":"Live via YouTube","href":"https://www.cruisingearth.com/port-webcams/united-states/st-petersburg-florida4/","loc":"Downtown St. Petersburg waterfront","name":"St. Petersburg Municipal Marina","src":"https://www.youtube.com/embed/live_stream?channel=UCnnu1q0j7HFzROrdHVyl2fA&autoplay=1&mute=1&playsinline=1","type":"youtube","view":"Looking east over the municipal marina and downtown waterfront into Tampa Bay - boats, slips and open bay."},{"credit":"Live via YouTube · Clearwater Beach Live Cams","href":"https://www.webcamflorida.com/en-US/webcam/crows-nest-sunset-view","loc":"Rooftop, Pier House 60, Clearwater Beach","name":"Jimmy's Crow's Nest","src":"https://www.youtube.com/embed/-73LpcdSuSw?autoplay=1&mute=1&playsinline=1","type":"youtube","view":"The marina side: Clearwater Marina channel, boats by the causeway, and the sunset over the Intracoastal."},{"credit":"Live via YouTube · Clearwater Beach Live Cams","href":"https://www.webcamflorida.com/en-US/webcam/clearwater-jimmys-fish-house-deck","loc":"South Clearwater Beach, near Clearwater Pass","name":"Jimmy's Fish House Deck","src":"https://www.youtube.com/embed/9c1oLjB3wIs?autoplay=1&mute=1&playsinline=1","type":"youtube","view":"Deck camera across marina water - boats and docks at the south end of Clearwater Beach near the pass."},{"credit":"Live via YouTube · Clearwater Beach Live Cams","href":"https://www.webcamflorida.com/en-US/webcam/clearwater-pier-60","loc":"Rooftop, 505 South Gulfview Blvd, Clearwater Beach","name":"Edge Hotel - Clearwater Pass","src":"https://www.youtube.com/embed/V7sUbjD_e3I?autoplay=1&mute=1&playsinline=1","type":"youtube","view":"Clearwater Pass, the Sand Key bridge and the Gulf horizon - watch boats run the pass."},{"credit":"Live via YouTube · Bon Appetit Dunedin","href":"https://www.youtube.com/watch?v=cMczfpgHo1E","loc":"Bon Appetit Restaurant & Marina, Dunedin","name":"Bon Appetit - Dunedin Sunset Cam","src":"https://www.youtube.com/embed/cMczfpgHo1E?autoplay=1&mute=1&playsinline=1","type":"youtube","view":"St. Joseph Sound at sunset - boats crossing the sound off the Dunedin waterfront, live 24/7."},{"credit":"Live via YouTube · UTampa","href":"https://www.webcamflorida.com/en-US/webcam/university-tampa-riverfront","loc":"University of Tampa, downtown Tampa","name":"University of Tampa Riverfront","src":"https://www.youtube.com/embed/QvNWCIOaB4Y?autoplay=1&mute=1&playsinline=1","type":"youtube","view":"The Hillsborough River and downtown Tampa skyline across the water, Plant Hall minarets included."},{"credit":"Live via YouTube","href":"https://cruisingearth.com/port-webcams/united-states/tampa-florida10/","loc":"About 500 ft over downtown Tampa","name":"Downtown Tampa Rotating Cam","src":"https://www.youtube.com/embed/w8vSrzI3cjo?autoplay=1&mute=1&playsinline=1","type":"youtube","view":"Rotating view: Hillsborough Bay, South Tampa, downtown and Bayshore Boulevard."},{"credit":"Live via YouTube · Clearwater Beach Live","href":"https://www.webcamflorida.com/en-US/webcam/clearwater-beach-oceanfront","loc":"Clearwater Beach, south of Pier 60","name":"Clearwater Beach - South Gulfview","src":"https://www.youtube.com/embed/2jgXAQTOAlw?autoplay=1&mute=1&playsinline=1","type":"youtube","view":"Pan-tilt view of Pier 60, the Gulf and Beach Walk - the main public beach and the water beyond."},{"credit":"Live via YouTube · Frenchy's","href":"https://www.webcamflorida.com/en-US/webcam/clearwater-beach-shore","loc":"Frenchy's Rockaway Grill, North Beach, Clearwater Beach","name":"Frenchy's Clearwater Beach","src":"https://www.youtube.com/embed/rxBBRLWF0mM?autoplay=1&mute=1&playsinline=1","type":"youtube","view":"Beachfront patio, sand and Gulf shoreline north of Pier 60."},{"credit":"Live via YouTube · Shephard's Beach Resort","href":"https://www.shephards.com/live-webcam","loc":"Shephard's Beach Resort, Clearwater Beach","name":"Shephard's Beach Resort","src":"https://www.youtube.com/embed/OpuCITeGEus?autoplay=1&mute=1&playsinline=1","type":"youtube","view":"The beach and the Gulf from the resort, on Clearwater Beach's south end."},{"credit":"Live via YouTube · Clearwater Beach Live Cams","href":"https://www.webcamflorida.com/en-US/webcam/jimmys-on-the-edge","loc":"Edge Hotel, Clearwater Beach","name":"Jimmy's on the Edge - Sunrise","src":"https://www.youtube.com/embed/EZrWkx8PBrE?autoplay=1&mute=1&playsinline=1","type":"youtube","view":"The sunrise angle: morning sky and beach on Clearwater Beach."},{"credit":"Live via YouTube · Clearwater Beach Live Cams","href":"https://www.webcamflorida.com/en-US/webcam/clearwater-jimmys-edge","loc":"Edge Hotel, Clearwater Beach","name":"Jimmy's on the Edge - Sunset","src":"https://www.youtube.com/embed/8pvXU1aEQZ0?autoplay=1&mute=1&playsinline=1","type":"youtube","view":"The sunset camera: evening Gulf sky south of Pier 60."},{"credit":"Live via YouTube · Tarpon Springs Downtown Camera","href":"https://www.webcamflorida.com/en-US/webcam/downtown-tarpon-springs","loc":"Historic sponge docks district, Tarpon Springs","name":"Downtown Tarpon Springs","src":"https://www.youtube.com/embed/5hJAeI3dDTw?autoplay=1&mute=1&playsinline=1","type":"youtube","view":"Downtown Tarpon Springs and the Anclote River waterfront neighborhood - the sponge docks town."},{"credit":"Live via YouTube · SeeCam","href":"https://www.webcamflorida.com/en-US/webcam/bimini-bay-view","loc":"Bimini Bay, Anna Maria Island","name":"Bimini Bay","src":"https://www.youtube.com/embed/a5T6Igp7TvI?autoplay=1&mute=1&playsinline=1","type":"youtube","view":"Bayfront docks and basin on the Intracoastal side of Anna Maria Island."},{"credit":"Live via YouTube · Siesta Beach Live","href":"https://www.webcamflorida.com/en-US/webcam/longboat-shoreline","loc":"Siesta Key public beach, Sarasota","name":"Siesta Key Beach","src":"https://www.youtube.com/embed/NLhxcyzXQxM?autoplay=1&mute=1&playsinline=1","type":"youtube","view":"Quartz sand and the Gulf at Siesta Key's public beach."},{"credit":"Live via YouTube · FOX 13 Tampa Bay","href":"https://www.youtube.com/watch?v=62eggjfa0UQ","loc":"Pier 60 area, Clearwater Beach","name":"FOX 13 Clearwater Beach","src":"https://www.youtube.com/embed/62eggjfa0UQ?autoplay=1&mute=1&playsinline=1","type":"youtube","view":"FOX 13's webcam: typically west to the Gulf or south along Clearwater Beach and the Pier 60 area."},{"credit":"Live via YouTube · Spring Bayou Manatee Camera","href":"https://www.webcamflorida.com/en-US/webcam/spring-bayou-tarpon","loc":"Spring Bayou, Tarpon Springs","name":"Spring Bayou Manatees","src":"https://www.youtube.com/embed/EzvYNUwFuVQ?autoplay=1&mute=1&playsinline=1","type":"youtube","view":"The bayou surface and spring run - manatees gather here in the cooler months, roughly Dec-Mar."},{"credit":"Hubbard's Marina","href":"https://www.hubbardsmarina.com/webcams/","loc":"Hubbard's Marina, John's Pass, Madeira Beach","name":"John's Pass Cams - Hubbard's Marina","type":"link","view":"Four marina cams: the pass from sandbar to Gulf, the marina entrance, the fishing docks and the weigh-in. Opens on Hubbard's own site - they don't offer an embed."},{"credit":"PTZtv · Port Tampa Webcam","href":"https://porttampawebcam.com","loc":"Tampa Marriott Water Street rooftop, Port Tampa Bay","name":"Port Tampa Webcam","type":"link","view":"Nearly 270 degrees over the port - cruise ships and port traffic coming and going. Opens on the operator's site."},{"credit":"FDOT · FL511","href":"https://fl511.com/cctv","loc":"I-275 over Tampa Bay","name":"Skyway Bridge Cams - FL511","type":"link","view":"FDOT traffic cameras on the Sunshine Skyway and its approaches - the bay beside the roadway. Opens on FL511."},{"credit":"Via CruisingEarth listing","href":"https://www.cruisingearth.com/port-webcams/united-states/st-petersburg-florida10/","loc":"Anna Maria City Pier, Anna Maria Island","name":"Anna Maria City Pier","type":"link","view":"Looking east from the pier back toward land - pier, bay water and shoreline."},{"credit":"Via CruisingEarth listing","href":"https://www.cruisingearth.com/port-webcams/united-states/st-petersburg-florida2/","loc":"Riverhouse Waterfront Restaurant, Palmetto","name":"Regatta Pointe Marina","type":"link","view":"Looking west over Regatta Pointe Marina and the Manatee River - marina basins and river traffic."},{"credit":"SkylineWebcams","href":"https://www.skylinewebcams.com/en/webcam/united-states/florida/madeira-beach/madeira-beach.html","loc":"Hubbard's Marina, Madeira Beach","name":"Madeira Beach - Hubbard's Marina Dock (Skyline)","type":"link","view":"SkylineWebcams' dock view at Hubbard's Marina, John's Pass area. Live video is host-only, so this opens on SkylineWebcams."},{"credit":"Visit St. Pete/Clearwater","href":"https://www.visitstpeteclearwater.com/things-to-do/beaches/webcams","loc":"Visit St. Pete/Clearwater","name":"Pinellas Beach Cams Hub","type":"link","view":"The visitor bureau's live beach webcam hub - Clearwater Beach, St. Pete Beach, Indian Rocks Beach and Dunedin."}];
+const TBB_CAMS = /*__CAMS__*/[{"credit":"Live via YouTube","href":"https://www.cruisingearth.com/port-webcams/united-states/st-petersburg-florida4/","loc":"Downtown St. Petersburg waterfront","name":"St. Petersburg Municipal Marina","lat":27.76938,"lng":-82.6297,"src":"https://www.youtube.com/embed/live_stream?channel=UCnnu1q0j7HFzROrdHVyl2fA&autoplay=1&mute=1&playsinline=1","type":"youtube","view":"Looking east over the municipal marina and downtown waterfront into Tampa Bay - boats, slips and open bay."},{"credit":"Live via YouTube · Clearwater Beach Live Cams","href":"https://www.webcamflorida.com/en-US/webcam/crows-nest-sunset-view","loc":"Rooftop, Pier House 60, Clearwater Beach","name":"Jimmy's Crow's Nest","lat":27.9783,"lng":-82.8298,"src":"https://www.youtube.com/embed/-73LpcdSuSw?autoplay=1&mute=1&playsinline=1","type":"youtube","view":"The marina side: Clearwater Marina channel, boats by the causeway, and the sunset over the Intracoastal."},{"credit":"Live via YouTube · Clearwater Beach Live Cams","href":"https://www.webcamflorida.com/en-US/webcam/clearwater-jimmys-fish-house-deck","loc":"South Clearwater Beach, near Clearwater Pass","name":"Jimmy's Fish House Deck","lat":27.9708,"lng":-82.8279,"src":"https://www.youtube.com/embed/9c1oLjB3wIs?autoplay=1&mute=1&playsinline=1","type":"youtube","view":"Deck camera across marina water - boats and docks at the south end of Clearwater Beach near the pass."},{"credit":"Live via YouTube · Clearwater Beach Live Cams","href":"https://www.webcamflorida.com/en-US/webcam/clearwater-pier-60","loc":"Rooftop, 505 South Gulfview Blvd, Clearwater Beach","name":"Edge Hotel - Clearwater Pass","lat":27.9722,"lng":-82.8286,"src":"https://www.youtube.com/embed/V7sUbjD_e3I?autoplay=1&mute=1&playsinline=1","type":"youtube","view":"Clearwater Pass, the Sand Key bridge and the Gulf horizon - watch boats run the pass."},{"credit":"Live via YouTube · Bon Appetit Dunedin","href":"https://www.youtube.com/watch?v=cMczfpgHo1E","loc":"Bon Appetit Restaurant & Marina, Dunedin","name":"Bon Appetit - Dunedin Sunset Cam","lat":28.013196,"lng":-82.793252,"src":"https://www.youtube.com/embed/cMczfpgHo1E?autoplay=1&mute=1&playsinline=1","type":"youtube","view":"St. Joseph Sound at sunset - boats crossing the sound off the Dunedin waterfront, live 24/7."},{"credit":"Live via YouTube · UTampa","href":"https://www.webcamflorida.com/en-US/webcam/university-tampa-riverfront","loc":"University of Tampa, downtown Tampa","name":"University of Tampa Riverfront","lat":27.9477,"lng":-82.4647,"src":"https://www.youtube.com/embed/QvNWCIOaB4Y?autoplay=1&mute=1&playsinline=1","type":"youtube","view":"The Hillsborough River and downtown Tampa skyline across the water, Plant Hall minarets included."},{"credit":"Live via YouTube","href":"https://cruisingearth.com/port-webcams/united-states/tampa-florida10/","loc":"About 500 ft over downtown Tampa","name":"Downtown Tampa Rotating Cam","lat":27.9506,"lng":-82.4572,"src":"https://www.youtube.com/embed/w8vSrzI3cjo?autoplay=1&mute=1&playsinline=1","type":"youtube","view":"Rotating view: Hillsborough Bay, South Tampa, downtown and Bayshore Boulevard."},{"credit":"Live via YouTube · Clearwater Beach Live","href":"https://www.webcamflorida.com/en-US/webcam/clearwater-beach-oceanfront","loc":"Clearwater Beach, south of Pier 60","name":"Clearwater Beach - South Gulfview","lat":27.9765,"lng":-82.8305,"src":"https://www.youtube.com/embed/2jgXAQTOAlw?autoplay=1&mute=1&playsinline=1","type":"youtube","view":"Pan-tilt view of Pier 60, the Gulf and Beach Walk - the main public beach and the water beyond."},{"credit":"Live via YouTube · Frenchy's","href":"https://www.webcamflorida.com/en-US/webcam/clearwater-beach-shore","loc":"Frenchy's Rockaway Grill, North Beach, Clearwater Beach","name":"Frenchy's Clearwater Beach","lat":27.9817,"lng":-82.8315,"src":"https://www.youtube.com/embed/rxBBRLWF0mM?autoplay=1&mute=1&playsinline=1","type":"youtube","view":"Beachfront patio, sand and Gulf shoreline north of Pier 60."},{"credit":"Live via YouTube · Shephard's Beach Resort","href":"https://www.shephards.com/live-webcam","loc":"Shephard's Beach Resort, Clearwater Beach","name":"Shephard's Beach Resort","lat":27.9687,"lng":-82.8269,"src":"https://www.youtube.com/embed/OpuCITeGEus?autoplay=1&mute=1&playsinline=1","type":"youtube","view":"The beach and the Gulf from the resort, on Clearwater Beach's south end."},{"credit":"Live via YouTube · Clearwater Beach Live Cams","href":"https://www.webcamflorida.com/en-US/webcam/jimmys-on-the-edge","loc":"Edge Hotel, Clearwater Beach","name":"Jimmy's on the Edge - Sunrise","lat":27.9718,"lng":-82.8282,"src":"https://www.youtube.com/embed/EZrWkx8PBrE?autoplay=1&mute=1&playsinline=1","type":"youtube","view":"The sunrise angle: morning sky and beach on Clearwater Beach."},{"credit":"Live via YouTube · Clearwater Beach Live Cams","href":"https://www.webcamflorida.com/en-US/webcam/clearwater-jimmys-edge","loc":"Edge Hotel, Clearwater Beach","name":"Jimmy's on the Edge - Sunset","lat":27.9715,"lng":-82.8288,"src":"https://www.youtube.com/embed/8pvXU1aEQZ0?autoplay=1&mute=1&playsinline=1","type":"youtube","view":"The sunset camera: evening Gulf sky south of Pier 60."},{"credit":"Live via YouTube · Tarpon Springs Downtown Camera","href":"https://www.webcamflorida.com/en-US/webcam/downtown-tarpon-springs","loc":"Historic sponge docks district, Tarpon Springs","name":"Downtown Tarpon Springs","lat":28.1559,"lng":-82.7582,"src":"https://www.youtube.com/embed/5hJAeI3dDTw?autoplay=1&mute=1&playsinline=1","type":"youtube","view":"Downtown Tarpon Springs and the Anclote River waterfront neighborhood - the sponge docks town."},{"credit":"Live via YouTube · SeeCam","href":"https://www.webcamflorida.com/en-US/webcam/bimini-bay-view","loc":"Bimini Bay, Anna Maria Island","name":"Bimini Bay","lat":27.5274,"lng":-82.7215,"src":"https://www.youtube.com/embed/a5T6Igp7TvI?autoplay=1&mute=1&playsinline=1","type":"youtube","view":"Bayfront docks and basin on the Intracoastal side of Anna Maria Island."},{"credit":"Live via YouTube · Siesta Beach Live","href":"https://www.webcamflorida.com/en-US/webcam/longboat-shoreline","loc":"Siesta Key public beach, Sarasota","name":"Siesta Key Beach","lat":27.2669,"lng":-82.5558,"src":"https://www.youtube.com/embed/NLhxcyzXQxM?autoplay=1&mute=1&playsinline=1","type":"youtube","view":"Quartz sand and the Gulf at Siesta Key's public beach."},{"credit":"Live via YouTube · FOX 13 Tampa Bay","href":"https://www.youtube.com/watch?v=62eggjfa0UQ","loc":"Pier 60 area, Clearwater Beach","name":"FOX 13 Clearwater Beach","lat":27.9782,"lng":-82.8322,"src":"https://www.youtube.com/embed/62eggjfa0UQ?autoplay=1&mute=1&playsinline=1","type":"youtube","view":"FOX 13's webcam: typically west to the Gulf or south along Clearwater Beach and the Pier 60 area."},{"credit":"Live via YouTube · Spring Bayou Manatee Camera","href":"https://www.webcamflorida.com/en-US/webcam/spring-bayou-tarpon","loc":"Spring Bayou, Tarpon Springs","name":"Spring Bayou Manatees","lat":28.1542,"lng":-82.7618,"src":"https://www.youtube.com/embed/EzvYNUwFuVQ?autoplay=1&mute=1&playsinline=1","type":"youtube","view":"The bayou surface and spring run - manatees gather here in the cooler months, roughly Dec-Mar."},{"credit":"Hubbard's Marina","href":"https://www.hubbardsmarina.com/webcams/","loc":"Hubbard's Marina, John's Pass, Madeira Beach","name":"John's Pass Cams - Hubbard's Marina","lat":27.784605,"lng":-82.782349,"type":"link","view":"Four marina cams: the pass from sandbar to Gulf, the marina entrance, the fishing docks and the weigh-in. Opens on Hubbard's own site - they don't offer an embed."},{"credit":"PTZtv · Port Tampa Webcam","href":"https://porttampawebcam.com","loc":"Tampa Marriott Water Street rooftop, Port Tampa Bay","name":"Port Tampa Webcam","lat":27.94055,"lng":-82.45382,"type":"link","view":"Nearly 270 degrees over the port - cruise ships and port traffic coming and going. Opens on the operator's site."},{"credit":"FDOT · FL511","href":"https://fl511.com/cctv","loc":"I-275 over Tampa Bay","name":"Skyway Bridge Cams - FL511","lat":27.62,"lng":-82.65,"type":"link","view":"FDOT traffic cameras on the Sunshine Skyway and its approaches - the bay beside the roadway. Opens on FL511."},{"credit":"Via CruisingEarth listing","href":"https://www.cruisingearth.com/port-webcams/united-states/st-petersburg-florida10/","loc":"Anna Maria City Pier, Anna Maria Island","name":"Anna Maria City Pier","lat":27.53,"lng":-82.714,"type":"link","view":"Looking east from the pier back toward land - pier, bay water and shoreline."},{"credit":"Via CruisingEarth listing","href":"https://www.cruisingearth.com/port-webcams/united-states/st-petersburg-florida2/","loc":"Riverhouse Waterfront Restaurant, Palmetto","name":"Regatta Pointe Marina","lat":27.51186,"lng":-82.57562,"type":"link","view":"Looking west over Regatta Pointe Marina and the Manatee River - marina basins and river traffic."},{"credit":"SkylineWebcams","href":"https://www.skylinewebcams.com/en/webcam/united-states/florida/madeira-beach/madeira-beach.html","loc":"Hubbard's Marina, Madeira Beach","name":"Madeira Beach - Hubbard's Marina Dock (Skyline)","lat":27.7849,"lng":-82.782,"type":"link","view":"SkylineWebcams' dock view at Hubbard's Marina, John's Pass area. Live video is host-only, so this opens on SkylineWebcams."},{"credit":"Visit St. Pete/Clearwater","href":"https://www.visitstpeteclearwater.com/things-to-do/beaches/webcams","loc":"Visit St. Pete/Clearwater","name":"Pinellas Beach Cams Hub","type":"link","view":"The visitor bureau's live beach webcam hub - Clearwater Beach, St. Pete Beach, Indian Rocks Beach and Dunedin."}];
 function tbbCamEsc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 window.tbbLoadCam=function(i,btn){
   var c=TBB_CAMS[i]; if(!c)return;
@@ -3679,6 +3708,79 @@ window.tbbLoadCam=function(i,btn){
   if(c.type==='youtube'||c.type==='iframe'){ inner='<iframe src="'+tbbCamEsc(c.src)+'" style="position:absolute;left:0;top:0;width:100%;height:100%;border:0" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen title="'+tbbCamEsc(c.name)+' live camera"></iframe>'; }
   else if(c.type==='image'){ inner='<img src="'+tbbCamEsc(c.src)+'" alt="'+tbbCamEsc(c.name)+' live camera image" style="position:absolute;left:0;top:0;width:100%;height:100%;object-fit:cover">'; }
   if(inner) stage.innerHTML=inner;
+};
+window.tbbStageCam=function(i,stage){
+  var c=TBB_CAMS[i]; if(!c||!stage)return;
+  var inner='';
+  if(c.type==='youtube'||c.type==='iframe'){ inner='<iframe src="'+tbbCamEsc(c.src)+'" style="position:absolute;left:0;top:0;width:100%;height:100%;border:0" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen title="'+tbbCamEsc(c.name)+' live camera"></iframe>'; }
+  else if(c.type==='image'){ inner='<img src="'+tbbCamEsc(c.src)+'" alt="'+tbbCamEsc(c.name)+' live camera image" style="position:absolute;left:0;top:0;width:100%;height:100%;object-fit:cover">'; }
+  if(inner) stage.innerHTML=inner;
+};
+function tbbCamIdleHtml(c,i){
+  if(c.type==='link'){
+    return '<a href="'+tbbCamEsc(c.href)+'" target="_blank" rel="noopener" style="display:inline-block;padding:10px 16px;border-radius:999px;background:#fff;color:#0a2e3f;font-weight:600;text-decoration:none">Watch on the operator\u2019s site \u203a</a>';
+  }
+  return '<button type="button" onclick="tbbLoadCam('+i+',this)" style="padding:10px 18px;border:0;border-radius:999px;background:#fff;color:#0a2e3f;font-weight:600;cursor:pointer">\u25B6 Watch live</button>';
+}
+function tbbArmCamAutoplay(){
+  var grid=document.getElementById('cam-grid'); if(!grid)return;
+  if(typeof IntersectionObserver==='undefined')return;
+  var io=new IntersectionObserver(function(entries){
+    entries.forEach(function(en){
+      var stage=en.target; var i=parseInt(stage.getAttribute('data-cami'),10); if(isNaN(i))return;
+      if(en.isIntersecting){
+        if(!stage.getAttribute('data-live')){ window.tbbStageCam(i,stage); stage.setAttribute('data-live','1'); }
+      } else if(stage.getAttribute('data-live')){
+        stage.removeAttribute('data-live');
+        stage.innerHTML=tbbCamIdleHtml(TBB_CAMS[i],i);
+      }
+    });
+  },{rootMargin:'160px 0px',threshold:0.05});
+  var cards=grid.querySelectorAll('.dir-card');
+  for(var idx=0; idx<cards.length; idx++){
+    var c=TBB_CAMS[idx]; if(!c||c.type==='link')continue;
+    var stage=cards[idx].querySelector('.tbb-cam-stage'); if(!stage)continue;
+    stage.setAttribute('data-cami',idx);
+    io.observe(stage);
+  }
+}
+window.tbbLoadCamPopup=function(i,btn){
+  var c=TBB_CAMS[i]; if(!c)return;
+  var wrap=btn.closest('.leaflet-popup-content'); if(!wrap)return;
+  var stage=wrap.querySelector('.tbb-cam-stage'); if(!stage)return;
+  if(c.type==='youtube'||c.type==='iframe'){
+    stage.innerHTML='<iframe src="'+tbbCamEsc(c.src)+'" style="position:absolute;left:0;top:0;width:100%;height:100%;border:0" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen title="'+tbbCamEsc(c.name)+' live camera"></iframe>';
+  }
+};
+window.tbbOpenCamPin=function(i){
+  var c=TBB_CAMS[i]; if(!c||typeof c.lat!=='number'||typeof c.lng!=='number')return;
+  if(!window.tbbMap||typeof L==='undefined')return;
+  var map=window.tbbMap;
+  var target=[c.lat,c.lng];
+  var z=Math.max(map.getZoom(),16);
+  function stageHtml(){
+    if(c.type==='link'){
+      return '<a href="'+tbbCamEsc(c.href)+'" target="_blank" rel="noopener" style="display:inline-block;padding:10px 16px;border-radius:999px;background:#fff;color:#0a2e3f;font-weight:600;text-decoration:none">Watch on the operator\u2019s site \u203a</a>';
+    }
+    return '<button type="button" onclick="tbbLoadCamPopup('+i+',this)" style="padding:10px 18px;border:0;border-radius:999px;background:#fff;color:#0a2e3f;font-weight:600;cursor:pointer">\u25B6 Watch live</button>';
+  }
+  function openNow(){
+    var h='<b>'+tbbCamEsc(c.name)+'</b><br><span style="color:#e02424;font-weight:700;font-size:11px;letter-spacing:1.2px">\u25CF LIVE CAM</span>'
+      +'<div class="tbb-cam-stage" style="position:relative;aspect-ratio:16/9;background:#0a2e3f;border-radius:8px;overflow:hidden;display:flex;align-items:center;justify-content:center;margin:8px 0">'+stageHtml()+'</div>'
+      +'<div style="font-size:12.5px">'+tbbCamEsc(c.view)+'</div>'
+      +'<div style="font-size:11px;color:#666;margin-top:4px">'+tbbCamEsc(c.loc)+' \u00B7 '+tbbCamEsc(c.credit||'')+'</div>'
+      +'<div style="margin-top:7px;font-size:12.5px"><a href="#/cams">See all live cams \u203a</a></div>';
+    L.popup({maxWidth:300}).setLatLng(target).setContent(h).openOn(map);
+    var st=document.querySelector('.leaflet-popup-content .tbb-cam-stage');
+    if(st) window.tbbStageCam(i,st);
+  }
+  var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(reduce){ map.setView(target,z); openNow(); return; }
+  var opened=false;
+  function once(){ if(opened)return; opened=true; openNow(); }
+  map.once('moveend',function(){ setTimeout(once,80); });
+  map.flyTo(target,z,{duration:1.2});
+  setTimeout(once,2400);
 };
 function renderCams(){
   var grid=document.getElementById('cam-grid');
@@ -3696,6 +3798,7 @@ function renderCams(){
   }).join('');
 }
 renderCams();
+tbbArmCamAutoplay();
 </script>
 <script>
 const PARTS = [

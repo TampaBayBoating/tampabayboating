@@ -4823,16 +4823,16 @@ function setBayArea(key, btn){
   document.getElementById("tides-sub").textContent = "Live from NOAA & the National Weather Service \u00B7 " + b.slabel;
   loadTides(); loadMarine(); loadSpot(); loadWeek();
 }
-function mphToKt(s){
-  return String(s||"").replace(/(\d+)\s*(?:to\s*(\d+))?\s*mph/gi, function(m, a, b){
-    const ka = Math.round(parseInt(a,10)/1.15078);
-    if(b) return ka + " to " + Math.round(parseInt(b,10)/1.15078) + " kt";
-    return ka + " kt";
+function windToMph(s){
+  return String(s||"").replace(/(\d+)\s*(?:to\s*(\d+))?\s*(?:knots|kt)\b/gi, function(m, a, b){
+    const ma = Math.round(parseInt(a,10)*1.15078);
+    if(b) return ma + " to " + Math.round(parseInt(b,10)*1.15078) + " mph";
+    return ma + " mph";
   });
 }
 let radarOverlay = "radar";
 function windyUrl(loc){
-  return "https://embed.windy.com/embed2.html?lat="+loc.lat+"&lon="+loc.lng+"&detailLat="+loc.lat+"&detailLon="+loc.lng+"&width=650&height=450&zoom=10&level=surface&overlay="+radarOverlay+"&product=ecmwf&menu=&message=&marker=true&calendar=now&pressure=&type=map&location=coordinates&detail=&metricWind=kt&metricTemp=%C2%B0F&metricRain=in&metricWave=ft&radarRange=-1";
+  return "https://embed.windy.com/embed2.html?lat="+loc.lat+"&lon="+loc.lng+"&detailLat="+loc.lat+"&detailLon="+loc.lng+"&width=650&height=450&zoom=10&level=surface&overlay="+radarOverlay+"&product=ecmwf&menu=&message=&marker=true&calendar=now&pressure=&type=map&location=coordinates&detail=&metricWind=mph&metricTemp=%C2%B0F&metricRain=in&metricWave=ft&radarRange=-1";
 }
 function setRadarLayer(ov, btn){
   radarOverlay = ov;
@@ -4865,7 +4865,7 @@ async function loadSpot(){
       const right = document.createElement("div"); right.style.cssText = "text-align:right;white-space:nowrap";
       const tp = document.createElement("b"); tp.textContent = (p.temperature!=null ? p.temperature + "\u00B0" + (p.temperatureUnit||"F") : "");
       const wn = document.createElement("div"); wn.style.cssText = "font-size:.85rem;opacity:.85";
-      let wtxt = mphToKt(p.windSpeed) + (p.windDirection ? " " + p.windDirection : "");
+      let wtxt = windToMph(p.windSpeed) + (p.windDirection ? " " + p.windDirection : "");
       const pop = p.probabilityOfPrecipitation && p.probabilityOfPrecipitation.value;
       if(pop) wtxt += " \u00B7 rain " + pop + "%";
       wn.textContent = wtxt;
@@ -4979,10 +4979,10 @@ function renderDayDetail(i){
     if(!p) return;
     const row = document.createElement("div"); row.className = "week-part";
     const t = document.createElement("b");
-    t.textContent = pair[0] + " \u00B7 " + (p.temperature!=null ? p.temperature + "\u00B0" + (p.temperatureUnit||"F") : "") + " \u00B7 " + mphToKt(p.windSpeed) + (p.windDirection ? " " + p.windDirection : "");
+    t.textContent = pair[0] + " \u00B7 " + (p.temperature!=null ? p.temperature + "\u00B0" + (p.temperatureUnit||"F") : "") + " \u00B7 " + windToMph(p.windSpeed) + (p.windDirection ? " " + p.windDirection : "");
     const d = document.createElement("div");
     d.style.cssText = "font-size:.9rem;opacity:.9;margin-top:2px";
-    d.textContent = mphToKt(p.detailedForecast || p.shortForecast || "");
+    d.textContent = windToMph(p.detailedForecast || p.shortForecast || "");
     row.append(t, d);
     det.appendChild(row);
   });

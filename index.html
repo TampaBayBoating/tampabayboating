@@ -1719,6 +1719,40 @@ results.addEventListener('click',function(e){
       </button>
     </div>
     <p class="fd-note"><span class="fd-when"></span> &middot; Lowest found among the stations we check &middot; Tap a side to see its pin</p>
+    <!-- FUEL-FINDER-START -->
+    <style>
+      #fuel-finder{background:#ffffff;border:1px solid #d9e4ea;border-radius:14px;padding:12px;margin:10px 0 2px}
+      #fuel-finder .ff-title{color:#0a2e3f;font-weight:800;font-size:16px;margin:0 0 8px}
+      #fuel-finder .ff-row{display:flex;gap:8px;flex-wrap:wrap}
+      #fuel-finder input{flex:1 1 110px;min-width:0;border:1px solid #b8ccd8;border-radius:10px;padding:10px 12px;font-size:15px;color:#0a2e3f}
+      #fuel-finder .ff-btn{flex:0 0 auto;background:#0e7c86;color:#fff;border:0;border-radius:10px;padding:10px 14px;font-weight:700;font-size:14.5px;cursor:pointer}
+      #fuel-finder .ff-btn.alt{background:#e9f2f6;color:#0a2e3f;border:1px solid #b8ccd8}
+      #fuel-finder .ff-toggle{display:flex;gap:8px;margin-top:10px}
+      #fuel-finder .ff-fuel{flex:1;border:1px solid #b8ccd8;background:#fff;color:#0a2e3f;border-radius:999px;padding:7px 0;font-weight:700;font-size:13.5px;cursor:pointer}
+      #fuel-finder .ff-fuel.ff-on{background:#0a2e3f;color:#fff;border-color:#0a2e3f}
+      #fuel-finder .ff-res{margin-top:10px;display:flex;flex-direction:column;gap:6px}
+      #fuel-finder .ff-hit{display:flex;align-items:center;gap:10px;width:100%;text-align:left;background:#f4f9fb;border:1px solid #d9e4ea;border-radius:10px;padding:9px 12px;cursor:pointer;font:inherit}
+      #fuel-finder .ff-price{flex:0 0 auto;color:#0a2e3f;font-weight:800;font-size:17px}
+      #fuel-finder .ff-name{flex:1 1 auto;min-width:0;color:#33566b;font-size:13.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+      #fuel-finder .ff-dist{flex:0 0 auto;color:#0e7c86;font-weight:700;font-size:13px}
+      #fuel-finder .ff-msg{color:#5b7183;font-size:13.5px;margin:4px 0 0}
+      #fuel-finder .ff-note{color:#5b7183;font-size:11px;margin:10px 0 0;line-height:1.45}
+    </style>
+    <div id="fuel-finder">
+      <p class="ff-title">Find the cheapest fuel near you</p>
+      <div class="ff-row">
+        <input id="ff-zip" type="text" inputmode="numeric" autocomplete="postal-code" maxlength="5" placeholder="ZIP code" aria-label="ZIP code">
+        <button type="button" class="ff-btn" id="ff-go">Find</button>
+        <button type="button" class="ff-btn alt" id="ff-gps">Use my location</button>
+      </div>
+      <div class="ff-toggle" role="group" aria-label="Fuel type">
+        <button type="button" class="ff-fuel ff-on" data-fuel="e0">Non-ethanol</button>
+        <button type="button" class="ff-fuel" data-fuel="diesel">Diesel</button>
+      </div>
+      <div class="ff-res" id="ff-results"></div>
+      <p class="ff-note">Cheapest first, nearest stations within about 40 miles. Prices from the Wawa stations we check every morning &middot; <span id="ff-date">checked Oct 21</span> on wawa.com &middot; Tap a station to see it on the map.</p>
+    </div>
+    <!-- FUEL-FINDER-END -->
     <!-- FUEL-DEAL-STRIP-END -->
     <div class="sec-head" style="margin-bottom:8px">
       <h2 style="font-size:1.45rem;margin:0 0 3px">Tampa Bay Boater's Map</h2>
@@ -5919,6 +5953,13 @@ window.TBB_FUEL_DEAL = {
 };
 </script>
 <!-- FUEL-DEAL-DATA-END -->
+<!-- FUEL-PRICES-DATA-START -->
+<script>
+window.TBB_FUEL_PRICES = [{"pin": "Wawa \\u2014 Gandy Blvd, Pinellas Park", "store": 5110, "lat": 27.84562, "lng": -82.67738, "e0": 4.579, "diesel": null}, {"pin": "Wawa \\u2014 Bloomingdale Ave, Riverview", "store": 5133, "lat": 27.89338, "lng": -82.33574, "e0": 4.459, "diesel": 5.959}, {"pin": "Wawa — Ulmerton Rd, Largo", "store": 5141, "lat": 27.893795, "lng": -82.763085, "e0": 4.579, "diesel": 5.939}, {"pin": "Wawa — Walsingham Rd, Largo", "store": 5147, "lat": 27.879893, "lng": -82.815446, "e0": 4.639, "diesel": 5.859}, {"pin": "Wawa \\u2014 SR-60, Valrico", "store": 5152, "lat": 27.93851, "lng": -82.235904, "e0": 4.539, "diesel": 5.859}, {"pin": "Wawa — Thonotosassa Rd, Plant City", "store": 5162, "lat": 28.025897, "lng": -82.151831, "e0": 4.649, "diesel": 6.159}, {"pin": "Wawa \\u2014 Gulf to Bay Blvd, Clearwater", "store": 5163, "lat": 27.959961, "lng": -82.74743, "e0": 4.539, "diesel": null}, {"pin": "Wawa \\u2014 1st St E, Bradenton", "store": 5165, "lat": 27.493289, "lng": -82.562386, "e0": 4.429, "diesel": 5.879}, {"pin": "Wawa \\u2014 US-301, Gibsonton", "store": 5167, "lat": 27.85843, "lng": -82.32759, "e0": 4.459, "diesel": 5.879}, {"pin": "Wawa — Missouri Ave N, Largo", "store": 5176, "lat": 27.928822, "lng": -82.788522, "e0": 4.579, "diesel": 5.969}, {"pin": "Wawa — SR 64 E, Bradenton", "store": 5178, "lat": 27.499006, "lng": -82.508297, "e0": 4.449, "diesel": null}, {"pin": "Wawa \\u2014 US-19, Holiday", "store": 5181, "lat": 28.186923, "lng": -82.740788, "e0": 4.599, "diesel": 5.939}, {"pin": "Wawa — 1760 W Hillsborough Ave, Tampa", "store": 5183, "lat": 27.995491, "lng": -82.477993, "e0": 4.429, "diesel": 5.619}, {"pin": "Wawa \\u2014 N Dale Mabry Hwy, Tampa", "store": 5191, "lat": 28.093413, "lng": -82.503031, "e0": 4.419, "diesel": null}, {"pin": "Wawa \\u2014 E Fletcher Ave, Tampa", "store": 5199, "lat": 28.068681, "lng": -82.431461, "e0": 4.419, "diesel": 5.899}, {"pin": "Wawa \\u2014 53rd Ave E, Bradenton", "store": 5203, "lat": 27.44541, "lng": -82.5049, "e0": 4.459, "diesel": null}, {"pin": "Wawa — S Tamiami Trl, Venice", "store": 5216, "lat": 27.049448, "lng": -82.405574, "e0": 4.439, "diesel": 5.899}, {"pin": "Wawa — Times Cir, Venice", "store": 5225, "lat": 27.105602, "lng": -82.383505, "e0": 4.399, "diesel": 5.739}, {"pin": "Wawa — 4th St N, St. Petersburg", "store": 5252, "lat": 27.851146, "lng": -82.638475, "e0": 4.549, "diesel": 6.169}, {"pin": "Wawa — Maren Way, Land O' Lakes", "store": 5267, "lat": 28.189659, "lng": -82.400359, "e0": 4.399, "diesel": 5.939}, {"pin": "Wawa \\u2014 S Tamiami Trail, Nokomis", "store": 5281, "lat": 27.1243, "lng": -82.454153, "e0": 4.569, "diesel": 5.979}, {"pin": "Wawa \\u2014 Boyette Rd, Riverview", "store": 5286, "lat": 27.85296, "lng": -82.26997, "e0": 4.469, "diesel": 5.879}, {"pin": "Wawa \\u2014 W Gandy Blvd, Tampa", "store": 5301, "lat": 27.89312, "lng": -82.50456, "e0": 4.509, "diesel": null}, {"pin": "Wawa — 34th St S, St. Petersburg", "store": 5306, "lat": 27.734887, "lng": -82.680034, "e0": 4.579, "diesel": 5.919}, {"pin": "Wawa \\u2014 W Hillsborough Ave, Tampa", "store": 5311, "lat": 27.99628, "lng": -82.56433, "e0": 4.459, "diesel": 5.939}];
+window.TBB_FUEL_PRICES_DATE = "Oct 21";
+</script>
+<!-- FUEL-PRICES-DATA-END -->
+
 <script>
 (function(){
   var D = window.TBB_FUEL_DEAL; if(!D) return;
@@ -5953,6 +5994,77 @@ window.TBB_FUEL_DEAL = {
     }
     if(tries > 40) clearInterval(iv);
   }, 500);
+})();
+</script>
+<script>
+(function(){
+  var P = window.TBB_FUEL_PRICES || [];
+  var fuel = 'e0';
+  var origin = null;
+  var res = document.getElementById('ff-results');
+  var dateEl = document.getElementById('ff-date');
+  if(dateEl && window.TBB_FUEL_PRICES_DATE) dateEl.textContent = 'checked ' + window.TBB_FUEL_PRICES_DATE;
+  function distMi(la1, lo1, la2, lo2){
+    var t = Math.PI / 180, dLa = (la2 - la1) * t, dLo = (lo2 - lo1) * t;
+    var h = Math.sin(dLa / 2) * Math.sin(dLa / 2) + Math.cos(la1 * t) * Math.cos(la2 * t) * Math.sin(dLo / 2) * Math.sin(dLo / 2);
+    return 2 * 3958.8 * Math.asin(Math.sqrt(h));
+  }
+  function findPin(name){ var pin = null; if(typeof MAP_PINS !== 'undefined') MAP_PINS.forEach(function(p){ if(p[0] === name && !pin) pin = p; }); return pin; }
+  function openPin(name){
+    var pin = findPin(name); if(!pin) return;
+    function go(){ if(window.tbbOpenPin) window.tbbOpenPin(pin); }
+    if(location.hash === '#/map'){ go(); } else { location.hash = '#/map'; setTimeout(go, 700); }
+  }
+  function msg(text){
+    res.innerHTML = '';
+    var p = document.createElement('p'); p.className = 'ff-msg'; p.textContent = text;
+    res.appendChild(p);
+  }
+  function render(){
+    if(!origin) return;
+    var rows = [];
+    P.forEach(function(s){ if(s[fuel] != null) rows.push({ s: s, d: distMi(origin.lat, origin.lng, s.lat, s.lng) }); });
+    var near = rows.filter(function(r){ return r.d <= 40; });
+    if(near.length >= 3) rows = near;
+    rows.sort(function(a, b){ return (a.s[fuel] - b.s[fuel]) || (a.d - b.d); });
+    rows = rows.slice(0, 5);
+    res.innerHTML = '';
+    if(!rows.length){ msg('No stations with a ' + (fuel === 'e0' ? 'non-ethanol' : 'diesel') + ' price today — check back tomorrow morning.'); return; }
+    rows.forEach(function(r){
+      var b = document.createElement('button'); b.type = 'button'; b.className = 'ff-hit';
+      var pr = document.createElement('span'); pr.className = 'ff-price'; pr.textContent = '$' + r.s[fuel].toFixed(3);
+      var nm = document.createElement('span'); nm.className = 'ff-name'; nm.textContent = r.s.pin;
+      var ds = document.createElement('span'); ds.className = 'ff-dist'; ds.textContent = r.d.toFixed(1) + ' mi';
+      b.appendChild(pr); b.appendChild(nm); b.appendChild(ds);
+      b.addEventListener('click', function(){ openPin(r.s.pin); });
+      res.appendChild(b);
+    });
+  }
+  function setOrigin(lat, lng){ origin = { lat: lat, lng: lng }; render(); }
+  document.querySelectorAll('#fuel-finder .ff-fuel').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      fuel = btn.getAttribute('data-fuel');
+      document.querySelectorAll('#fuel-finder .ff-fuel').forEach(function(x){ x.classList.toggle('ff-on', x === btn); });
+      render();
+    });
+  });
+  function doZip(){
+    var zip = (document.getElementById('ff-zip').value || '').replace(/\D/g, '');
+    if(zip.length !== 5){ msg('Type a 5-digit ZIP code, or tap "Use my location."'); return; }
+    msg('Looking up ' + zip + '…');
+    fetch('https://api.zippopotam.us/us/' + zip).then(function(r){ if(!r.ok) throw new Error('zip'); return r.json(); }).then(function(d){
+      var pl = d.places && d.places[0]; if(!pl) throw new Error('zip');
+      setOrigin(parseFloat(pl.latitude), parseFloat(pl.longitude));
+    }).catch(function(){ msg('Could not find that ZIP — check it, or tap "Use my location."'); });
+  }
+  document.getElementById('ff-go').addEventListener('click', doZip);
+  document.getElementById('ff-zip').addEventListener('keydown', function(e){ if(e.key === 'Enter') doZip(); });
+  document.getElementById('ff-gps').addEventListener('click', function(){
+    if(!navigator.geolocation){ msg('This device does not share its location — type your ZIP instead.'); return; }
+    msg('Finding you…');
+    navigator.geolocation.getCurrentPosition(function(pos){ setOrigin(pos.coords.latitude, pos.coords.longitude); },
+      function(){ msg('Location did not come through — type your ZIP instead.'); }, { timeout: 10000 });
+  });
 })();
 </script>
 </body></html>

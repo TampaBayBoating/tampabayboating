@@ -1687,26 +1687,38 @@ results.addEventListener('click',function(e){
   <div class="wrap">
     <!-- FUEL-DEAL-STRIP-START -->
     <style>
-      #fuel-deal-strip{display:flex;align-items:center;gap:10px;width:100%;text-align:left;
-        background:#ffffff;border:1px solid #d9e4ea;border-radius:14px;padding:9px 12px;
-        margin:10px 0 2px;cursor:pointer;-webkit-tap-highlight-color:transparent}
-      #fuel-deal-strip .fd-ico{flex:0 0 auto;width:34px;height:34px;border-radius:50%;
-        background:#e9f2f6;display:flex;align-items:center;justify-content:center}
+      #fuel-deal-strip{display:flex;align-items:stretch;width:100%;background:#ffffff;border:1px solid #d9e4ea;border-radius:14px;margin:10px 0 2px;overflow:hidden}
+      #fuel-deal-strip .fd-half{flex:1 1 0;min-width:0;display:flex;align-items:center;gap:9px;text-align:left;background:none;border:0;padding:9px 12px;cursor:pointer;-webkit-tap-highlight-color:transparent;font:inherit}
+      #fuel-deal-strip .fd-div{flex:0 0 1px;background:#d9e4ea}
+      #fuel-deal-strip .fd-ico{flex:0 0 auto;width:34px;height:34px;border-radius:50%;background:#e9f2f6;display:flex;align-items:center;justify-content:center}
       #fuel-deal-strip .fd-ico svg{width:18px;height:18px;fill:#0a2e3f}
-      #fuel-deal-strip .fd-main{flex:1 1 auto;min-width:0}
-      #fuel-deal-strip .fd-l1{color:#0a2e3f;font-weight:700;font-size:15.5px;line-height:1.15}
-      #fuel-deal-strip .fd-l2{color:#5b7183;font-size:12px;line-height:1.25;margin-top:2px;
-        white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-      #fuel-deal-strip .fd-go{flex:0 0 auto;color:#0e7c86;font-size:19px;font-weight:700}
+      #fuel-deal-strip .fd-main{flex:1 1 auto;min-width:0;display:block}
+      #fuel-deal-strip .fd-l1{display:block;color:#0a2e3f;font-weight:700;font-size:15px;line-height:1.15;white-space:nowrap}
+      #fuel-deal-strip .fd-l2{display:block;color:#5b7183;font-size:11.5px;line-height:1.25;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+      #fuel-deal-strip .fd-go{flex:0 0 auto;color:#0e7c86;font-size:18px;font-weight:700}
+      .fd-note{color:#5b7183;font-size:11px;text-align:center;margin:4px 0 0}
+      @media (max-width:560px){#fuel-deal-strip .fd-l1{font-size:12.5px}#fuel-deal-strip .fd-half{padding:8px 9px;gap:7px}#fuel-deal-strip .fd-ico{width:28px;height:28px}#fuel-deal-strip .fd-ico svg{width:15px;height:15px}}
     </style>
-    <button type="button" id="fuel-deal-strip" aria-label="Lowest fuel price found - jump to the station pin">
-      <span class="fd-ico"><svg aria-hidden="true"><use href="#i-fuel"></use></svg></span>
-      <span class="fd-main">
-        <span class="fd-l1">Lowest <span class="fd-grade">non-ethanol</span>: <span class="fd-price">$--</span></span>
-        <span class="fd-l2" style="display:block"><span class="fd-where">Checking stations</span> &middot; <span class="fd-when"></span> &middot; Tap to see the pin &rsaquo;</span>
-      </span>
-      <span class="fd-go">&rsaquo;</span>
-    </button>
+    <div id="fuel-deal-strip" role="group" aria-label="Today's lowest fuel prices">
+      <button type="button" class="fd-half" id="fd-e0" aria-label="Lowest non-ethanol price - jump to the station pin">
+        <span class="fd-ico"><svg aria-hidden="true"><use href="#i-fuel"></use></svg></span>
+        <span class="fd-main">
+          <span class="fd-l1">Non-ethanol <span class="fd-price">$--</span></span>
+          <span class="fd-l2"><span class="fd-where">Checking stations</span></span>
+        </span>
+        <span class="fd-go">&rsaquo;</span>
+      </button>
+      <span class="fd-div" aria-hidden="true"></span>
+      <button type="button" class="fd-half" id="fd-diesel" aria-label="Lowest diesel price - jump to the station pin">
+        <span class="fd-ico"><svg aria-hidden="true"><use href="#i-fuel"></use></svg></span>
+        <span class="fd-main">
+          <span class="fd-l1">Diesel <span class="fd-price-d">$--</span></span>
+          <span class="fd-l2"><span class="fd-where-d">Checking stations</span></span>
+        </span>
+        <span class="fd-go">&rsaquo;</span>
+      </button>
+    </div>
+    <p class="fd-note"><span class="fd-when"></span> &middot; Lowest found among the stations we check &middot; Tap a side to see its pin</p>
     <!-- FUEL-DEAL-STRIP-END -->
     <div class="sec-head" style="margin-bottom:8px">
       <h2 style="font-size:1.45rem;margin:0 0 3px">Tampa Bay Boater's Map</h2>
@@ -3589,7 +3601,7 @@ const MAP_PINS = [
 ["Robert J. Strickland Memorial Park","ramp",28.362749,-82.709985,"6345 Clark St, Hudson","(727) 861-3010","Public ramp · saltwater — Gulf of Mexico / Hudson Beach · single lane · 💡 Boat/trailer parking is $10/day here — Pasco's Annual Boat Ramp Pass is $75/yr for residents ($100 non-resident), covers both Pasco county ramps, and pays for itself in 8 days. Details at pascocountyfl.gov"],
 ["Moon Lake Park","ramp",28.287255,-82.60726,"8985 Lake Dr, New Port Richey","(727) 856-1793","Public ramp · freshwater — Moon Lake"],
 ["Wawa — Thonotosassa Rd, Plant City","fuel",28.025897,-82.151831,"2705 Thonotosassa Rd, Plant City","","Ethanol-free (E0), 89 octane — price varies, call ahead"],
-["Wawa — 1760 W Hillsborough Ave, Tampa","fuel",27.995491,-82.477993,"1760 W Hillsborough Ave, Tampa","","Ethanol-free (E0), 89 octane — price varies, call ahead"],
+["Wawa — 1760 W Hillsborough Ave, Tampa","fuel",27.995491,-82.477993,"1760 W Hillsborough Ave, Tampa","","Ethanol-free (E0), 89 octane · Diesel $5.619/gal, checked Oct 21 on wawa.com — prices change, call ahead"],
 ["Wawa — 34th St S, St. Petersburg","fuel",27.734887,-82.680034,"3637 34th St S, St. Petersburg","","Ethanol-free (E0), 89 octane — price varies, call ahead"],
 ["Wawa — 4th St N, St. Petersburg","fuel",27.851146,-82.638475,"8601 4th St N, St. Petersburg","","Ethanol-free (E0), 89 octane — price varies, call ahead"],
 ["Wawa — Walsingham Rd, Largo","fuel",27.879893,-82.815446,"12750 Walsingham Rd, Largo","","Ethanol-free (E0) — price varies, call ahead"],
@@ -5897,40 +5909,47 @@ window.TBB_FUEL_DEAL = {
   gradeShort: "non-ethanol",
   where: "Wawa · Maren Way, Land O' Lakes",
   reported: "checked Oct 21 · wawa.com",
-  threshold: 4.60
+  threshold: 4.60,
+  diesel: {
+    pin: "Wawa — 1760 W Hillsborough Ave, Tampa",
+    price: 5.619,
+    where: "Wawa · 1760 W Hillsborough Ave, Tampa",
+    reported: "checked Oct 21 · wawa.com"
+  }
 };
 </script>
 <!-- FUEL-DEAL-DATA-END -->
 <script>
 (function(){
   var D = window.TBB_FUEL_DEAL; if(!D) return;
-  var strip = document.getElementById('fuel-deal-strip'); if(!strip) return;
-  var isDeal = typeof D.threshold === 'number' && D.price <= D.threshold;
-  strip.querySelector('.fd-price').textContent = '$' + D.price.toFixed(3) + '/gal';
-  strip.querySelector('.fd-grade').textContent = D.gradeShort;
-  strip.querySelector('.fd-where').textContent = D.where;
-  strip.querySelector('.fd-when').textContent = D.reported;
-  function findPin(){
-    var pin = null;
-    if (typeof MAP_PINS !== 'undefined') MAP_PINS.forEach(function(p){ if(p[0] === D.pin && !pin) pin = p; });
-    return pin;
-  }
-  function openDeal(){
-    var pin = findPin(); if(!pin) return;
+  var DD = D.diesel || null;
+  function q(s, r){ return r.querySelector(s); }
+  var e0 = document.getElementById('fd-e0');
+  var dz = document.getElementById('fd-diesel');
+  if(e0){ q('.fd-price', e0).textContent = '$' + D.price.toFixed(3) + '/gal'; q('.fd-where', e0).textContent = D.where; }
+  if(dz && DD){ q('.fd-price-d', dz).textContent = '$' + DD.price.toFixed(3) + '/gal'; q('.fd-where-d', dz).textContent = DD.where; }
+  var when = document.querySelector('.fd-when'); if(when) when.textContent = D.reported;
+  function findPin(name){ var pin = null; if(typeof MAP_PINS !== 'undefined') MAP_PINS.forEach(function(p){ if(p[0] === name && !pin) pin = p; }); return pin; }
+  function openPin(name){
+    var pin = findPin(name); if(!pin) return;
     function go(){ if(window.tbbOpenPin) window.tbbOpenPin(pin); }
-    if(location.hash === '#/map'){ go(); }
-    else { location.hash = '#/map'; setTimeout(go, 700); }
+    if(location.hash === '#/map'){ go(); } else { location.hash = '#/map'; setTimeout(go, 700); }
   }
-  strip.addEventListener('click', openDeal);
+  if(e0) e0.addEventListener('click', function(){ openPin(D.pin); });
+  if(dz && DD) dz.addEventListener('click', function(){ openPin(DD.pin); });
   var tries = 0;
   var iv = setInterval(function(){
     tries++;
     if(window.tbbMap && typeof L !== 'undefined'){
       clearInterval(iv);
-      var pin = findPin(); if(!pin) return;
-      var ll = [pin[2], pin[3]];
-      var ring = L.circleMarker(ll, {radius: 17, color: isDeal ? '#1d9e57' : '#f5b301', weight: 3, fill: false}).addTo(window.tbbMap);
-      ring.on('click', openDeal);
+      var isDeal = typeof D.threshold === 'number' && D.price <= D.threshold;
+      var jobs = [[D.pin, isDeal ? '#1d9e57' : '#f5b301']];
+      if(DD) jobs.push([DD.pin, '#f5b301']);
+      jobs.forEach(function(job){
+        var pin = findPin(job[0]); if(!pin) return;
+        var ring = L.circleMarker([pin[2], pin[3]], {radius: 17, color: job[1], weight: 3, fill: false}).addTo(window.tbbMap);
+        ring.on('click', function(){ openPin(job[0]); });
+      });
     }
     if(tries > 40) clearInterval(iv);
   }, 500);

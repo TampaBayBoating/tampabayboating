@@ -1682,6 +1682,29 @@ results.addEventListener('click',function(e){
 </section></div>
 <div class="view" id="view-map"><div class="wrap"><a class="back-link" href="#/">&#8249; All categories</a></div><section id="baymap">
   <div class="wrap">
+    <!-- FUEL-DEAL-STRIP-START -->
+    <style>
+      #fuel-deal-strip{display:flex;align-items:center;gap:10px;width:100%;text-align:left;
+        background:#ffffff;border:1px solid #d9e4ea;border-radius:14px;padding:9px 12px;
+        margin:10px 0 2px;cursor:pointer;-webkit-tap-highlight-color:transparent}
+      #fuel-deal-strip .fd-ico{flex:0 0 auto;width:34px;height:34px;border-radius:50%;
+        background:#e9f2f6;display:flex;align-items:center;justify-content:center}
+      #fuel-deal-strip .fd-ico svg{width:18px;height:18px;fill:#0a2e3f}
+      #fuel-deal-strip .fd-main{flex:1 1 auto;min-width:0}
+      #fuel-deal-strip .fd-l1{color:#0a2e3f;font-weight:700;font-size:15.5px;line-height:1.15}
+      #fuel-deal-strip .fd-l2{color:#5b7183;font-size:12px;line-height:1.25;margin-top:2px;
+        white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+      #fuel-deal-strip .fd-go{flex:0 0 auto;color:#0e7c86;font-size:19px;font-weight:700}
+    </style>
+    <button type="button" id="fuel-deal-strip" aria-label="Lowest fuel price found - jump to the station pin">
+      <span class="fd-ico"><svg aria-hidden="true"><use href="#i-fuel"></use></svg></span>
+      <span class="fd-main">
+        <span class="fd-l1">Lowest <span class="fd-grade">non-ethanol</span>: <span class="fd-price">$--</span></span>
+        <span class="fd-l2" style="display:block"><span class="fd-where">Checking stations</span> &middot; <span class="fd-when"></span> &middot; Tap to see the pin &rsaquo;</span>
+      </span>
+      <span class="fd-go">&rsaquo;</span>
+    </button>
+    <!-- FUEL-DEAL-STRIP-END -->
     <div class="sec-head" style="margin-bottom:8px">
       <h2 style="font-size:1.45rem;margin:0 0 3px">Tampa Bay Boater's Map</h2>
       
@@ -3573,7 +3596,7 @@ const MAP_PINS = [
 ["Bass Pro Shops Boating Center","parts",27.934761,-82.334070,"10501 Palm River Rd, Tampa","(813) 655-2080","Marine parts & supplies — Tracker boating center inside the full Outdoor World store"],
 ["Bass Pro Shops Boating Center","service",27.934761,-82.334070,"10501 Palm River Rd, Tampa","(813) 655-2080","Boat service & repair, repowers — service dept Mon–Sat 8 AM–5 PM"],
 ["Sara Bay Marina","dealer",27.415205,-82.574884,"7040 N Tamiami Trl, Sarasota","(941) 359-0390","New & used boat sales — World Cat, Cobalt, Key West; also marina & storage"],
-["Wawa — Maren Way, Land O' Lakes","fuel",28.189659,-82.400359,"25155 Maren Way, Land O' Lakes","","Ethanol-free (E0), 89 octane — price varies, call ahead"],
+["Wawa — Maren Way, Land O' Lakes","fuel",28.189659,-82.400359,"25155 Maren Way, Land O' Lakes","","Ethanol-free (E0), 89 octane — $4.399/gal, checked Oct 21 on wawa.com — prices change, call ahead"],
 ["Shell — US Hwy 41, Gibsonton","fuel",27.844956,-82.381368,"10820 US Hwy 41, Gibsonton","","Ethanol-free (E0) — price varies, call ahead"],
 ["Shell — Hwy 60, Plant City","fuel",27.937171,-82.1219,"101 FL Hwy 60, Plant City","","Ethanol-free (E0), 90 octane — price varies, call ahead"],
 ["Chevron — W Waters Ave, Tampa","fuel",28.02592,-82.57132,"8145 W Waters Ave, Tampa","","Ethanol-free (E0), 90 octane — price varies, call ahead"],
@@ -5859,4 +5882,52 @@ function toggleAppHow(){
 }
 </script>
 <script type="text/javascript" async src="https://subscribe-forms.beehiiv.com/attribution.js"></script>
+<!-- FUEL-DEAL-DATA-START -->
+<script>
+window.TBB_FUEL_DEAL = {
+  pin: "Wawa — Maren Way, Land O' Lakes",
+  price: 4.399,
+  grade: "Non-ethanol (E0)",
+  gradeShort: "non-ethanol",
+  where: "Wawa · Maren Way, Land O' Lakes",
+  reported: "checked Oct 21 · wawa.com",
+  threshold: 4.60
+};
+</script>
+<!-- FUEL-DEAL-DATA-END -->
+<script>
+(function(){
+  var D = window.TBB_FUEL_DEAL; if(!D) return;
+  var strip = document.getElementById('fuel-deal-strip'); if(!strip) return;
+  var isDeal = typeof D.threshold === 'number' && D.price <= D.threshold;
+  strip.querySelector('.fd-price').textContent = '$' + D.price.toFixed(3) + '/gal';
+  strip.querySelector('.fd-grade').textContent = D.gradeShort;
+  strip.querySelector('.fd-where').textContent = D.where;
+  strip.querySelector('.fd-when').textContent = D.reported;
+  function findPin(){
+    var pin = null;
+    if (typeof MAP_PINS !== 'undefined') MAP_PINS.forEach(function(p){ if(p[0] === D.pin && !pin) pin = p; });
+    return pin;
+  }
+  function openDeal(){
+    var pin = findPin(); if(!pin) return;
+    function go(){ if(window.tbbOpenPin) window.tbbOpenPin(pin); }
+    if(location.hash === '#/map'){ go(); }
+    else { location.hash = '#/map'; setTimeout(go, 700); }
+  }
+  strip.addEventListener('click', openDeal);
+  var tries = 0;
+  var iv = setInterval(function(){
+    tries++;
+    if(window.tbbMap && typeof L !== 'undefined'){
+      clearInterval(iv);
+      var pin = findPin(); if(!pin) return;
+      var ll = [pin[2], pin[3]];
+      var ring = L.circleMarker(ll, {radius: 17, color: isDeal ? '#1d9e57' : '#f5b301', weight: 3, fill: false}).addTo(window.tbbMap);
+      ring.on('click', openDeal);
+    }
+    if(tries > 40) clearInterval(iv);
+  }, 500);
+})();
+</script>
 </body></html>

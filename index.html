@@ -3459,7 +3459,7 @@ const MAP_PINS = [
 ["Murphy USA \u2014 Gibsonton Dr, Gibsonton","fuel",27.84911,-82.35516,"9023 Gibsonton Dr, Gibsonton","","Ethanol-free (E0) \u2014 price varies, call ahead"],
 ["Wawa \u2014 1st St E, Bradenton","fuel",27.493289,-82.562386,"701 1st St E, Bradenton","","Ethanol-free (E0), 89 octane \u2014 price varies, call ahead"],
 ["Wawa \u2014 N Dale Mabry Hwy, Tampa","fuel",28.093413,-82.503031,"15524 N Dale Mabry Hwy, Tampa","","Ethanol-free (E0), 89 octane \u2014 price varies, call ahead"],
-["Wawa \u2014 E Fletcher Ave, Tampa","fuel",28.068681,-82.431461,"2325 E Fletcher Ave, Tampa","","Ethanol-free (E0), 89 octane \u2014 price varies, call ahead"],
+["Wawa \u2014 E Fletcher Ave, Tampa","fuel",28.068681,-82.431461,"2325 E Fletcher Ave, Tampa","","Ethanol-free (E0), 89 octane — $4.419/gal, checked Oct 22 on wawa.com — prices change, call ahead"],
 ["Wawa \u2014 SR-60, Valrico","fuel",27.93851,-82.235904,"2926 SR-60 E, Valrico","","Ethanol-free (E0), 89 octane \u2014 price varies, call ahead"],
 ["Wawa \u2014 US-19, Holiday","fuel",28.186923,-82.740788,"1929 US-19, Holiday","","Ethanol-free (E0), 89 octane \u2014 price varies, call ahead"],
 ["Wawa \u2014 Gulf to Bay Blvd, Clearwater","fuel",27.959961,-82.74743,"2177 Gulf to Bay Blvd, Clearwater","","Ethanol-free (E0), 89 octane \u2014 price varies, call ahead"],
@@ -3640,7 +3640,7 @@ const MAP_PINS = [
 ["Robert J. Strickland Memorial Park","ramp",28.362749,-82.709985,"6345 Clark St, Hudson","(727) 861-3010","Public ramp · saltwater — Gulf of Mexico / Hudson Beach · single lane · 💡 Boat/trailer parking is $10/day here — Pasco's Annual Boat Ramp Pass is $75/yr for residents ($100 non-resident), covers both Pasco county ramps, and pays for itself in 8 days. Details at pascocountyfl.gov"],
 ["Moon Lake Park","ramp",28.287255,-82.60726,"8985 Lake Dr, New Port Richey","(727) 856-1793","Public ramp · freshwater — Moon Lake"],
 ["Wawa — Thonotosassa Rd, Plant City","fuel",28.025897,-82.151831,"2705 Thonotosassa Rd, Plant City","","Ethanol-free (E0), 89 octane — price varies, call ahead"],
-["Wawa — 1760 W Hillsborough Ave, Tampa","fuel",27.995491,-82.477993,"1760 W Hillsborough Ave, Tampa","","Ethanol-free (E0), 89 octane · Diesel $5.619/gal, checked Oct 21 on wawa.com — prices change, call ahead"],
+["Wawa — 1760 W Hillsborough Ave, Tampa","fuel",27.995491,-82.477993,"1760 W Hillsborough Ave, Tampa","","Ethanol-free (E0), 89 octane · Diesel $5.619/gal, checked Oct 22 on wawa.com — prices change, call ahead"],
 ["Wawa — 34th St S, St. Petersburg","fuel",27.734887,-82.680034,"3637 34th St S, St. Petersburg","","Ethanol-free (E0), 89 octane — price varies, call ahead"],
 ["Wawa — 4th St N, St. Petersburg","fuel",27.851146,-82.638475,"8601 4th St N, St. Petersburg","","Ethanol-free (E0), 89 octane — price varies, call ahead"],
 ["Wawa — Walsingham Rd, Largo","fuel",27.879893,-82.815446,"12750 Walsingham Rd, Largo","","Ethanol-free (E0) — price varies, call ahead"],
@@ -3653,7 +3653,7 @@ const MAP_PINS = [
 ["Bass Pro Shops Boating Center","parts",27.934761,-82.334070,"10501 Palm River Rd, Tampa","(813) 655-2080","Marine parts & supplies — Tracker boating center inside the full Outdoor World store"],
 ["Bass Pro Shops Boating Center","service",27.934761,-82.334070,"10501 Palm River Rd, Tampa","(813) 655-2080","Boat service & repair, repowers — service dept Mon–Sat 8 AM–5 PM"],
 ["Sara Bay Marina","dealer",27.415205,-82.574884,"7040 N Tamiami Trl, Sarasota","(941) 359-0390","New & used boat sales — World Cat, Cobalt, Key West; also marina & storage"],
-["Wawa — Maren Way, Land O' Lakes","fuel",28.189659,-82.400359,"25155 Maren Way, Land O' Lakes","","Ethanol-free (E0), 89 octane — $4.399/gal, checked Oct 21 on wawa.com — prices change, call ahead"],
+["Wawa — Maren Way, Land O' Lakes","fuel",28.189659,-82.400359,"25155 Maren Way, Land O' Lakes","","Ethanol-free (E0), 89 octane — price varies, call ahead"],
 ["Shell — US Hwy 41, Gibsonton","fuel",27.844956,-82.381368,"10820 US Hwy 41, Gibsonton","","Ethanol-free (E0) — price varies, call ahead"],
 ["Shell — Hwy 60, Plant City","fuel",27.937171,-82.1219,"101 FL Hwy 60, Plant City","","Ethanol-free (E0), 90 octane — price varies, call ahead"],
 ["Chevron — W Waters Ave, Tampa","fuel",28.02592,-82.57132,"8145 W Waters Ave, Tampa","","Ethanol-free (E0), 90 octane — price varies, call ahead"],
@@ -5941,26 +5941,26 @@ function toggleAppHow(){
 <!-- FUEL-DEAL-DATA-START -->
 <script>
 window.TBB_FUEL_DEAL = {
-  pin: "Wawa — Maren Way, Land O' Lakes",
-  price: 4.399,
+  pin: "Wawa — E Fletcher Ave, Tampa",
+  price: 4.419,
   grade: "Non-ethanol (E0)",
   gradeShort: "non-ethanol",
-  where: "Wawa · Maren Way, Land O' Lakes",
-  reported: "checked Oct 21 · wawa.com",
+  where: "Wawa · E Fletcher Ave, Tampa",
+  reported: "checked Oct 22 · wawa.com",
   threshold: 4.60,
   diesel: {
     pin: "Wawa — 1760 W Hillsborough Ave, Tampa",
     price: 5.619,
     where: "Wawa · 1760 W Hillsborough Ave, Tampa",
-    reported: "checked Oct 21 · wawa.com"
+    reported: "checked Oct 22 · wawa.com"
   }
 };
 </script>
 <!-- FUEL-DEAL-DATA-END -->
 <!-- FUEL-PRICES-DATA-START -->
 <script>
-window.TBB_FUEL_PRICES = [{"pin": "Wawa \\u2014 Gandy Blvd, Pinellas Park", "store": 5110, "lat": 27.84562, "lng": -82.67738, "e0": 4.579, "diesel": null}, {"pin": "Wawa \\u2014 Bloomingdale Ave, Riverview", "store": 5133, "lat": 27.89338, "lng": -82.33574, "e0": 4.459, "diesel": 5.959}, {"pin": "Wawa — Ulmerton Rd, Largo", "store": 5141, "lat": 27.893795, "lng": -82.763085, "e0": 4.579, "diesel": 5.939}, {"pin": "Wawa — Walsingham Rd, Largo", "store": 5147, "lat": 27.879893, "lng": -82.815446, "e0": 4.639, "diesel": 5.859}, {"pin": "Wawa \\u2014 SR-60, Valrico", "store": 5152, "lat": 27.93851, "lng": -82.235904, "e0": 4.539, "diesel": 5.859}, {"pin": "Wawa — Thonotosassa Rd, Plant City", "store": 5162, "lat": 28.025897, "lng": -82.151831, "e0": 4.649, "diesel": 6.159}, {"pin": "Wawa \\u2014 Gulf to Bay Blvd, Clearwater", "store": 5163, "lat": 27.959961, "lng": -82.74743, "e0": 4.539, "diesel": null}, {"pin": "Wawa \\u2014 1st St E, Bradenton", "store": 5165, "lat": 27.493289, "lng": -82.562386, "e0": 4.429, "diesel": 5.879}, {"pin": "Wawa \\u2014 US-301, Gibsonton", "store": 5167, "lat": 27.85843, "lng": -82.32759, "e0": 4.459, "diesel": 5.879}, {"pin": "Wawa — Missouri Ave N, Largo", "store": 5176, "lat": 27.928822, "lng": -82.788522, "e0": 4.579, "diesel": 5.969}, {"pin": "Wawa — SR 64 E, Bradenton", "store": 5178, "lat": 27.499006, "lng": -82.508297, "e0": 4.449, "diesel": null}, {"pin": "Wawa \\u2014 US-19, Holiday", "store": 5181, "lat": 28.186923, "lng": -82.740788, "e0": 4.599, "diesel": 5.939}, {"pin": "Wawa — 1760 W Hillsborough Ave, Tampa", "store": 5183, "lat": 27.995491, "lng": -82.477993, "e0": 4.429, "diesel": 5.619}, {"pin": "Wawa \\u2014 N Dale Mabry Hwy, Tampa", "store": 5191, "lat": 28.093413, "lng": -82.503031, "e0": 4.419, "diesel": null}, {"pin": "Wawa \\u2014 E Fletcher Ave, Tampa", "store": 5199, "lat": 28.068681, "lng": -82.431461, "e0": 4.419, "diesel": 5.899}, {"pin": "Wawa \\u2014 53rd Ave E, Bradenton", "store": 5203, "lat": 27.44541, "lng": -82.5049, "e0": 4.459, "diesel": null}, {"pin": "Wawa — S Tamiami Trl, Venice", "store": 5216, "lat": 27.049448, "lng": -82.405574, "e0": 4.439, "diesel": 5.899}, {"pin": "Wawa — Times Cir, Venice", "store": 5225, "lat": 27.105602, "lng": -82.383505, "e0": 4.399, "diesel": 5.739}, {"pin": "Wawa — 4th St N, St. Petersburg", "store": 5252, "lat": 27.851146, "lng": -82.638475, "e0": 4.549, "diesel": 6.169}, {"pin": "Wawa — Maren Way, Land O' Lakes", "store": 5267, "lat": 28.189659, "lng": -82.400359, "e0": 4.399, "diesel": 5.939}, {"pin": "Wawa \\u2014 S Tamiami Trail, Nokomis", "store": 5281, "lat": 27.1243, "lng": -82.454153, "e0": 4.569, "diesel": 5.979}, {"pin": "Wawa \\u2014 Boyette Rd, Riverview", "store": 5286, "lat": 27.85296, "lng": -82.26997, "e0": 4.469, "diesel": 5.879}, {"pin": "Wawa \\u2014 W Gandy Blvd, Tampa", "store": 5301, "lat": 27.89312, "lng": -82.50456, "e0": 4.509, "diesel": null}, {"pin": "Wawa — 34th St S, St. Petersburg", "store": 5306, "lat": 27.734887, "lng": -82.680034, "e0": 4.579, "diesel": 5.919}, {"pin": "Wawa \\u2014 W Hillsborough Ave, Tampa", "store": 5311, "lat": 27.99628, "lng": -82.56433, "e0": 4.459, "diesel": 5.939}];
-window.TBB_FUEL_PRICES_DATE = "Oct 21";
+window.TBB_FUEL_PRICES = [{"pin": "Wawa — W Gandy Blvd, Tampa", "store": 5301, "lat": 27.89312, "lng": -82.50456, "e0": null, "diesel": null}, {"pin": "Wawa — W Hillsborough Ave, Tampa", "store": 5311, "lat": 27.99628, "lng": -82.56433, "e0": 4.619, "diesel": 5.939}, {"pin": "Wawa — Bloomingdale Ave, Riverview", "store": 5133, "lat": 27.89338, "lng": -82.33574, "e0": 4.499, "diesel": 5.959}, {"pin": "Wawa — Gandy Blvd, Pinellas Park", "store": 5110, "lat": 27.84562, "lng": -82.67738, "e0": null, "diesel": null}, {"pin": "Wawa — 53rd Ave E, Bradenton", "store": 5203, "lat": 27.44541, "lng": -82.5049, "e0": null, "diesel": null}, {"pin": "Wawa — 1st St E, Bradenton", "store": 5165, "lat": 27.493289, "lng": -82.562386, "e0": 4.469, "diesel": 5.879}, {"pin": "Wawa — SR-60, Valrico", "store": 5152, "lat": 27.93851, "lng": -82.235904, "e0": 4.549, "diesel": 5.859}, {"pin": "Wawa — S Tamiami Trail, Nokomis", "store": 5281, "lat": 27.1243, "lng": -82.454153, "e0": 4.629, "diesel": 5.979}, {"pin": "Wawa — Boyette Rd, Riverview", "store": 5286, "lat": 27.85296, "lng": -82.26997, "e0": 4.469, "diesel": 5.879}, {"pin": "Wawa — US-301, Gibsonton", "store": 5167, "lat": 27.85843, "lng": -82.32759, "e0": 4.469, "diesel": 5.879}, {"pin": "Wawa — Gulf to Bay Blvd, Clearwater", "store": 5163, "lat": 27.959961, "lng": -82.74743, "e0": null, "diesel": null}, {"pin": "Wawa — Walsingham Rd, Largo", "store": 5147, "lat": 27.879893, "lng": -82.815446, "e0": 4.659, "diesel": 5.859}, {"pin": "Wawa — Ulmerton Rd, Largo", "store": 5141, "lat": 27.893795, "lng": -82.763085, "e0": 4.579, "diesel": 5.939}, {"pin": "Wawa — N Dale Mabry Hwy, Tampa", "store": 5191, "lat": 28.093413, "lng": -82.503031, "e0": null, "diesel": null}, {"pin": "Wawa — E Fletcher Ave, Tampa", "store": 5199, "lat": 28.068681, "lng": -82.431461, "e0": 4.419, "diesel": 5.899}, {"pin": "Wawa — US-19, Holiday", "store": 5181, "lat": 28.186923, "lng": -82.740788, "e0": 4.619, "diesel": 5.939}, {"pin": "Wawa — Thonotosassa Rd, Plant City", "store": 5162, "lat": 28.025897, "lng": -82.151831, "e0": 4.959, "diesel": 6.159}, {"pin": "Wawa — 1760 W Hillsborough Ave, Tampa", "store": 5183, "lat": 27.995491, "lng": -82.477993, "e0": 4.429, "diesel": 5.619}, {"pin": "Wawa — 34th St S, St. Petersburg", "store": 5306, "lat": 27.734887, "lng": -82.680034, "e0": 4.669, "diesel": 5.919}, {"pin": "Wawa — 4th St N, St. Petersburg", "store": 5252, "lat": 27.851146, "lng": -82.638475, "e0": 4.939, "diesel": 6.169}, {"pin": "Wawa — Missouri Ave N, Largo", "store": 5176, "lat": 27.928822, "lng": -82.788522, "e0": 4.579, "diesel": 5.969}, {"pin": "Wawa — SR 64 E, Bradenton", "store": 5178, "lat": 27.499006, "lng": -82.508297, "e0": 4.419, "diesel": 5.839}, {"pin": "Wawa — S Tamiami Trl, Venice", "store": 5216, "lat": 27.049448, "lng": -82.405574, "e0": 4.459, "diesel": 5.899}, {"pin": "Wawa — Times Cir, Venice", "store": 5225, "lat": 27.105602, "lng": -82.383505, "e0": 4.459, "diesel": 5.739}, {"pin": "Wawa — Maren Way, Land O' Lakes", "store": 5267, "lat": 28.189659, "lng": -82.400359, "e0": 4.439, "diesel": 5.939}];
+window.TBB_FUEL_PRICES_DATE = "Oct 22";
 </script>
 <!-- FUEL-PRICES-DATA-END -->
 

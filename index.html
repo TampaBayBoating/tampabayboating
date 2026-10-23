@@ -3179,7 +3179,7 @@ window.tbbOpenPin=function(p){
 </script>
 <script>
 const MAP_PINS = [
-["Tierra Verde Boat Rentals","rent",27.694142,-82.717324,"100 Pinellas Bayway S, St. Petersburg","(727) 867-0077","Deck boats, center consoles & pontoons — self-drive"],
+["Tierra Verde Boat Rentals","rent",27.69215,-82.720258,"100 Pinellas Bayway S, St. Petersburg","(727) 867-0077","Deck boats, center consoles & pontoons — self-drive"],
 ["Mad Beach Boat Rentals","rent",27.777595,-82.714219,"8612 Bay Pines Blvd, St. Petersburg","(727) 648-0925","Deck boats & pontoons"],
 ["Blind Pass Boat and Jet Ski Rental","rent",27.756459,-82.759607,"9555 Blind Pass Rd, St. Pete Beach","(727) 360-8669","Deck boats you drive yourself; jet skis too"],
 ["Lagoon Pontoons of St. Pete Beach","rent",27.740966,-82.695876,"4630 29th Ave S, Gulfport (Gulfport Marina)","(727) 348-8020","Pontoon & tritoon rentals at Gulfport Marina"],
@@ -5210,6 +5210,8 @@ function tbbVerdict(ps){
   score = Math.round(score);
   if(tropical) score = 3;
   score = Math.max(3, Math.min(100, score));
+  if(level===2) score = Math.min(score, 29);
+  else if(level===1) score = Math.min(score, 69);
   return { level: level, score: score, why: why.join(" · ") };
 }
 function renderVerdict(ps, label, isToday){

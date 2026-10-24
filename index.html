@@ -503,24 +503,23 @@ body.dark .photo-card{background:#16202e;border-color:#2a3a4f}
 body.dark .photo-card .pc-body b{color:#e8eef4}
 body.dark .photo-card .pc-body i{color:#8fa8bd}
 @media(max-width:860px){.today-grid.photo-cards{grid-template-columns:1fr 1fr}.photo-card .pc-img{height:100px}}
-/* OCT24 v2: Today's Briefing — compressed (half-height pass) */
+/* OCT24 v3: Today's Briefing — two cards only (rotating card removed), natural heights, tighter */
 .brief-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:10px}
 .brief-title{font-family:Georgia,serif;font-size:1.55rem;color:#0a2540;margin:0}
 .brief-date{font-size:.82rem;font-weight:700;color:#0e7c7b;letter-spacing:.4px;white-space:nowrap}
-.brief-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.brief-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;align-items:start;max-width:920px;margin-left:auto;margin-right:auto}
 .brief-card{display:flex;flex-direction:column;background:#fff;border:1px solid #e6ded1;border-radius:12px;overflow:hidden;text-decoration:none;color:#0a2540;transition:.2s}
 .brief-card:hover{transform:translateY(-3px);box-shadow:0 10px 24px rgba(10,37,64,.12)}
 .brief-card .bf-img{display:block;height:84px;background-size:cover;background-position:center;flex:none}
-.brief-card .bf-body{display:block;padding:10px 12px}
+.brief-card .bf-body{display:block;padding:10px}
 .brief-card .bf-kick{display:block;font-size:.7rem;font-weight:800;letter-spacing:1.4px;text-transform:uppercase;color:#0e7c7b;margin-bottom:4px}
 .brief-card .bf-main{display:block;font-size:.98rem;font-weight:800;line-height:1.28;margin-bottom:3px}
 .brief-card .bf-sub{display:block;font-style:normal;font-size:.82rem;color:#5b6b7c;line-height:1.4}
 .brief-card .bf-sub:empty{display:none}
 .brief-card u{display:block;text-decoration:none;color:#0e7c7b;font-weight:700;font-size:.8rem;letter-spacing:.3px;margin-top:6px}
-.brief-card.bf-today u{display:none}
 .brief-card .bf-fish{display:block}
 .bf-bets{list-style:none;margin:0 0 6px;padding:0}
-.bf-bets li{font-size:.84rem;line-height:1.38;color:#0a2540;margin-bottom:5px}
+.bf-bets li{font-size:.84rem;line-height:1.35;color:#0a2540;margin-bottom:5px}
 .bf-bets li:last-child{margin-bottom:0}
 .bf-bets li b{font-weight:800}
 .bf-tidewin{font-size:.78rem;color:#5b6b7c;line-height:1.35;border-top:1px dashed #e6ded1;padding-top:5px;margin-top:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -529,19 +528,11 @@ body.dark .brief-title{color:#e8eef4}
 body.dark .brief-card .bf-sub,body.dark .bf-tidewin{color:#8fa8bd}
 body.dark .bf-bets li{color:#e8eef4}
 @media(max-width:860px){
-.brief-grid{grid-template-columns:1fr 1fr;gap:8px}
 .brief-head{margin-bottom:8px}
 .brief-title{font-size:1.3rem}
-.brief-card .bf-img{height:56px}
-.brief-card .bf-body{padding:10px}
+.brief-card .bf-img{height:52px}
 .brief-card .bf-main{font-size:.93rem}
 .bf-tidewin{font-size:.75rem}
-.brief-card.bf-today{grid-column:1/-1;flex-direction:row}
-.brief-card.bf-today .bf-img{width:64px;height:auto;min-height:64px}
-.brief-card.bf-today .bf-body{display:flex;flex-direction:column;justify-content:center;flex:1;min-width:0;padding:8px 12px}
-.brief-card.bf-today .bf-kick{margin-bottom:2px}
-.brief-card.bf-today .bf-main{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px}
-.brief-card.bf-today .bf-sub{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 }
 .cat-cards{max-width:1180px;margin:30px auto 0;padding:0 20px 60px;background:#fff}
 .cat-cards .tabs-label{font-size:1.15rem;letter-spacing:2px;text-transform:uppercase;color:#0a2540;font-weight:900;margin-bottom:16px;text-align:center}
@@ -1496,15 +1487,6 @@ if(typeof document!=='undefined'){
         <span class="bf-kick">Fishing &mdash; today's best bets</span>
         <span class="bf-fish" id="bfFish"><i class="bf-sub">See what's biting</i></span>
         <u>Full report &rarr;</u>
-      </span>
-    </a>
-    <a class="brief-card bf-today" href="#/events" id="bfCardToday">
-      <span class="bf-img" id="bfImgToday" style="background-image:url('assets/tiktok-beercanisland.jpg')"></span>
-      <span class="bf-body">
-        <span class="bf-kick" id="bfKickToday">Today</span>
-        <b class="bf-main" id="bfTitleToday">See what's happening</b>
-        <i class="bf-sub" id="bfSubToday"></i>
-        <u id="bfLinkToday">Find events &rarr;</u>
       </span>
     </a>
   </div>
@@ -5946,7 +5928,7 @@ async function loadForecastBadges(){
 }
 
 /* ---- init ---- */
-/* ---- Today's Briefing (home): conditions + real fishing content + one rotating "today" card ---- */
+/* ---- Today's Briefing (home): conditions + real fishing content ---- */
 function renderBriefing(){
   var decEl = document.createElement("textarea");
   function decodeEntities(s){ decEl.innerHTML = s; return decEl.value; }
@@ -5955,10 +5937,6 @@ function renderBriefing(){
     var parts = new Intl.DateTimeFormat("en-US",{timeZone:"America/New_York",year:"numeric",month:"2-digit",day:"2-digit"}).formatToParts(new Date());
     var o = {}; parts.forEach(function(p){ o[p.type] = p.value; });
     return o.year + "-" + o.month + "-" + o.day;
-  }
-  function addDays(str, n){
-    var p = str.split("-"); var d = new Date(+p[0], +p[1]-1, +p[2] + n);
-    return d.getFullYear() + "-" + String(d.getMonth()+1).padStart(2,"0") + "-" + String(d.getDate()).padStart(2,"0");
   }
   var today = etToday();
   /* date line, e.g. "Saturday, Oct 24" */
@@ -5995,11 +5973,14 @@ function renderBriefing(){
           if(body.indexOf(species) === 0) body = body.slice(species.length);
           body = body.replace(/^\s*[\u2014\u2013-]\s*/, "");
           var sent = body.split(/\.\s/)[0];
-          var clause = sent.split(/[,;]\s/)[0];
-          if(clause.length >= 24 && clause.length < sent.length){ sent = clause; }
-          else if(sent.length > 48){ sent = sent.slice(0, 47); var cut = sent.lastIndexOf(" "); if(cut > 24) sent = sent.slice(0, cut); sent += "\u2026"; }
-          else if(body.length > sent.length) sent += ".";
-          bets.push({species: species, snippet: sent});
+          var desc = sent.split(/[,;]\s/)[0];
+          if(desc.length > 34){
+            var dcut = desc.slice(0, 34);
+            var dsp = dcut.lastIndexOf(" ");
+            if(dsp > 12) dcut = dcut.slice(0, dsp);
+            desc = dcut + "\u2026";
+          }
+          bets.push({species: species, snippet: desc});
         }
         if(!tideWin && /Tide windows:/i.test(seg)){
           var twText = strip(seg);
@@ -6036,57 +6017,6 @@ function renderBriefing(){
         var first = strip(segs[0] || "");
         if(first.length > 140) first = first.slice(0, 140);
         fishBox.innerHTML = "<i class=\"bf-sub\">" + esc((sp.length ? "Today's best bets: " + sp.join(", ") + ". " : "") + first) + "</i>";
-      }
-    }
-  }catch(e){}
-  /* rotating card: event on today > event within 3 days > dock & dine spot of the day */
-  try{
-    var card = document.getElementById("bfCardToday");
-    var kick = document.getElementById("bfKickToday");
-    var ttl = document.getElementById("bfTitleToday");
-    var sub = document.getElementById("bfSubToday");
-    var lnk = document.getElementById("bfLinkToday");
-    var img = document.getElementById("bfImgToday");
-    if(card && kick && ttl && sub){
-      var evs = (typeof EVENTS !== "undefined" ? EVENTS.slice() : []).sort(function(a,b){ return a.start < b.start ? -1 : 1; });
-      var ongoing = null, upcoming = null, limit = addDays(today, 3);
-      evs.forEach(function(e){
-        var end = e.end || e.start;
-        if(!ongoing && e.start <= today && today <= end) ongoing = e;
-        if(!upcoming && e.start > today && e.start <= limit) upcoming = e;
-      });
-      var evPool = ["assets/tiktok-beercanisland.jpg", "assets/events/st-pete-boat-show.jpg"];
-      var setEvent = function(e, kickText){
-        card.setAttribute("href", "#/events");
-        kick.textContent = kickText;
-        var t = e.title || "";
-        ttl.textContent = t.length > 70 ? t.slice(0, 69) + "\u2026" : t;
-        sub.textContent = [e.when, e.where].filter(Boolean).join(" \u00b7 ");
-        if(lnk) lnk.textContent = "Find events \u2192";
-        if(img) img.style.backgroundImage = "url('" + evPool[doyR % evPool.length] + "')";
-      };
-      if(ongoing){ setEvent(ongoing, "Happening today"); }
-      else if(upcoming){
-        var up = upcoming.start.split("-");
-        var upd = new Date(+up[0], +up[1]-1, +up[2]);
-        setEvent(upcoming, "Coming up " + upd.toLocaleDateString("en-US",{weekday:"long"}));
-      } else {
-        var DINE_PHOTOS = { "Rick's on the River": "assets/dining/ricks-on-the-river.jpg", "Armature Works": "assets/dining/armature-works.jpg" };
-        var done = false;
-        if(typeof DINE !== "undefined" && DINE.length){
-          var spots = DINE.filter(function(e){ return DINE_PHOTOS[e[0]]; });
-          if(spots.length){
-            var pick = spots[doyR % spots.length];
-            card.setAttribute("href", "#/dining");
-            kick.textContent = "Dock & dine";
-            ttl.textContent = pick[0];
-            sub.textContent = [pick[1], pick[2]].filter(Boolean).join(" \u00b7 ");
-            if(lnk) lnk.textContent = "Find a spot \u2192";
-            if(img) img.style.backgroundImage = "url('" + DINE_PHOTOS[pick[0]] + "')";
-            done = true;
-          }
-        }
-        if(!done){ kick.textContent = "Today"; ttl.textContent = "See what's happening"; sub.textContent = ""; if(lnk) lnk.textContent = "Find events \u2192"; }
       }
     }
   }catch(e){}

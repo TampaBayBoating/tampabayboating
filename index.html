@@ -224,8 +224,8 @@ body.dark .gear-cat{color:#e8eef4}
 .emg-more{margin-top:7px; font-size:.84rem}
 .hero-music{display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-top:4px}
 .hm-label{color:#7fd1c0; letter-spacing:2px; font-size:.72rem; font-weight:800; text-transform:uppercase; width:100%}
-.hm-btn{display:inline-flex; align-items:center; gap:8px; padding:11px 22px; border-radius:999px; color:#fff; font-weight:800; font-size:.95rem; text-decoration:none}
-.hm-btn svg{width:16px; height:16px; fill:#fff}
+.hm-btn{display:inline-flex; align-items:center; justify-content:center; gap:8px; flex:1 1 0; max-width:200px; height:46px; line-height:1; white-space:nowrap; box-sizing:border-box; padding:11px 22px; border-radius:999px; color:#fff; font-weight:800; font-size:.95rem; text-decoration:none}
+.hm-btn svg{width:16px; height:16px; fill:#fff; flex:0 0 auto}
 .hm-sp{background:#1DB954}
 .hm-am{background:#FA243C}
 .diag-warn{background:#fdf0f0; border:1px solid #f0caca; border-left:5px solid #c0272d; border-radius:10px; padding:12px 14px; font-size:.92rem; color:#333}
@@ -521,6 +521,11 @@ body.dark .photo-card .pc-body i{color:#8fa8bd}
 .bf-species{display:block;font-size:.88rem;line-height:1.4;color:#0a2540}
 .bf-species b{font-weight:800}
 .bf-tidewin{font-size:.78rem;color:#5b6b7c;line-height:1.35;border-top:1px dashed #e6ded1;padding-top:5px;margin-top:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.brief-card .bf-zone{display:block}
+.brief-card .bf-zone+.bf-zone{margin-top:6px;border-top:1px dashed #e6ded1;padding-top:6px}
+.brief-card .bf-zline{display:block;font-size:.9rem;line-height:1.3;color:#0a2540}
+.brief-card .bf-zscore{color:#0e7c7b;font-weight:800}
+body.dark .brief-card .bf-zline{color:#e8eef4}
 body.dark .brief-card{background:#16202e;border-color:#2a3a4f}
 body.dark .brief-title{color:#e8eef4}
 body.dark .brief-card .bf-sub,body.dark .bf-tidewin{color:#8fa8bd}
@@ -1349,7 +1354,7 @@ results.addEventListener('click',function(e){
     <a href="#/fishing" class="bite-hero"><svg class=ic aria-hidden=true><use href=#i-fish></use></svg> Today's bite</a>
     <a href="#/events" class="cal-hero"><svg class=ic aria-hidden=true><use href=#i-cal></use></svg> Calendar</a>
     <a href="#/shop" class="merch-hero"><svg class=ic aria-hidden=true><use href=#i-bag></use></svg> Merch</a>
-    <div class="hero-music"><span class="hm-label">Music for the boat</span><a class="hm-btn hm-sp" href="https://open.spotify.com/playlist/37i9dQZF1DXb3m918yXHxA" target="_blank" rel="noopener" aria-label="Open boat music in Spotify"><svg class="pl-ic" aria-hidden="true"><use href="#i-spotify"></use></svg><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>Spotify</a><a class="hm-btn hm-am" href="https://music.apple.com/us/playlist/pl.1870421bdeb74580831f17505e5d32d9" target="_blank" rel="noopener" aria-label="Open boat music in Apple Music"><svg class="pl-ic" aria-hidden="true"><use href="#i-applemusic"></use></svg><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>Apple Music</a></div>
+    <div class="hero-music"><span class="hm-label">Music for the boat</span><a class="hm-btn hm-sp" href="https://open.spotify.com/playlist/37i9dQZF1DXb3m918yXHxA" target="_blank" rel="noopener" aria-label="Open boat music in Spotify"><svg class="pl-ic" aria-hidden="true"><use href="#i-spotify"></use></svg>Spotify</a><a class="hm-btn hm-am" href="https://music.apple.com/us/playlist/pl.1870421bdeb74580831f17505e5d32d9" target="_blank" rel="noopener" aria-label="Open boat music in Apple Music"><svg class="pl-ic" aria-hidden="true"><use href="#i-applemusic"></use></svg>Apple Music</a></div>
   </div>
 </section>
 <!-- ===== HAPPENING NOW STRIP ===== -->
@@ -1473,8 +1478,8 @@ if(typeof document!=='undefined'){
       <span class="bf-img" id="bfImgCond" style="background-image:url('assets/hero-skyway.jpg')"></span>
       <span class="bf-body">
         <span class="bf-kick">Conditions</span>
-        <b class="bf-main"><span id="bfScore">Plan around the water</span></b>
-        <i class="bf-sub" id="bfWhy"></i>
+        <span class="bf-zone"><span class="bf-zline"><b>In Tampa Bay</b> <b class="bf-zscore" id="bfBayScore">&hellip;</b></span><i class="bf-sub" id="bfBayWhy"></i></span>
+        <span class="bf-zone"><span class="bf-zline"><b>In the Gulf</b> <b class="bf-zscore" id="bfGulfScore">&hellip;</b></span><i class="bf-sub" id="bfGulfWhy"></i></span>
         <i class="bf-sub" id="bfTide">Checking the tides&hellip;</i>
         <u>Full forecast &rarr;</u>
       </span>
@@ -5464,10 +5469,55 @@ function renderVerdict(ps, label, isToday){
   const marker = document.getElementById("score-marker");
   if(marker) marker.style.left = Math.max(2, Math.min(98, 100 - s)) + "%";
   const vstamp = document.getElementById("verdict-stamp"); if(vstamp) vstamp.textContent = tbbStamp(marineIssuedISO);
-  const bfScore = document.getElementById("bfScore");
-  if(bfScore && isToday) bfScore.textContent = s + "% today — " + band;
-  const bfWhy = document.getElementById("bfWhy");
-  if(bfWhy && isToday) bfWhy.textContent = v.why ? (v.why.charAt(0).toUpperCase() + v.why.slice(1)) : "";
+  /* Briefing tile: filled per zone by loadBriefingConditions() (bay vs Gulf split). */
+}
+/* ---- Today's Briefing conditions: bay vs Gulf, each scored from its own zone forecast ---- */
+async function bfZoneAdvisories(){
+  const out = { "GMZ830": "", "GMZ853": "" };
+  try{
+    const r = await fetch("https://api.weather.gov/alerts/active?zone=GMZ830,GMZ853", {headers:{"User-Agent":"tampabayboating.com"}});
+    const d = await r.json();
+    const now = Date.now();
+    (d.features||[]).forEach(function(f){
+      const p = f.properties||{};
+      const ev = String(p.event||"");
+      if(!/small craft advisory|gale warning|storm warning/i.test(ev)) return;
+      const zones = (p.affectedZones||[]).join(" ");
+      let label = ev;
+      const onset = p.onset ? Date.parse(p.onset) : 0;
+      if(onset && onset > now){
+        const dt = new Date(onset); let h = dt.getHours(); const ap = h >= 12 ? "PM" : "AM"; h = h % 12; if(h === 0) h = 12;
+        label = ev + " from " + h + " " + ap;
+      }
+      if(zones.indexOf("GMZ830") >= 0 && !out.GMZ830) out.GMZ830 = label;
+      if(zones.indexOf("GMZ853") >= 0 && !out.GMZ853) out.GMZ853 = label;
+    });
+  }catch(e){}
+  return out;
+}
+async function loadBriefingConditions(){
+  const bayScore = document.getElementById("bfBayScore"), bayWhy = document.getElementById("bfBayWhy");
+  const gulfScore = document.getElementById("bfGulfScore"), gulfWhy = document.getElementById("bfGulfWhy");
+  if(!bayScore || !bayWhy || !gulfScore || !gulfWhy) return;
+  const adv = await bfZoneAdvisories();
+  async function bfZone(zoneId, scoreEl, whyEl, advText){
+    try{
+      const periods = await getMarinePeriods(zoneId);
+      const b = groupMarine(periods)[0];
+      const ps = b ? [b.day, b.night].filter(Boolean) : [];
+      if(!ps.length) throw 0;
+      const v = tbbVerdict(ps);
+      scoreEl.textContent = v.score + "%";
+      const parts = [];
+      if(advText) parts.push("\u26a0\ufe0f " + advText);
+      if(v.why) parts.push(v.why.charAt(0).toUpperCase() + v.why.slice(1));
+      whyEl.textContent = parts.join(" \u00b7 ");
+    }catch(e){
+      scoreEl.textContent = "";
+      whyEl.textContent = "Conditions unavailable right now";
+    }
+  }
+  await Promise.all([bfZone("GMZ830", bayScore, bayWhy, adv.GMZ830), bfZone("GMZ853", gulfScore, gulfWhy, adv.GMZ853)]);
 }
 let marineCache = {};
 let marineIssuedISO = null;
@@ -6017,13 +6067,13 @@ function renderBriefing(){
     }
   }catch(e){}
 }
-["renderGrid","renderDir","updateCartUI","renderCalendar","loadTides","loadMarine","loadWaves","loadSpot","loadWeek","loadForecastBadges","renderFuel","renderSvc","renderOwner","renderDealers","renderGear","renderBriefing"].forEach(fn=>{ try{ window[fn](); }catch(e){ console.warn("init "+fn+" failed:", e.message); } });
+["renderGrid","renderDir","updateCartUI","renderCalendar","loadTides","loadMarine","loadWaves","loadSpot","loadWeek","loadForecastBadges","renderFuel","renderSvc","renderOwner","renderDealers","renderGear","renderBriefing","loadBriefingConditions"].forEach(fn=>{ try{ window[fn](); }catch(e){ console.warn("init "+fn+" failed:", e.message); } });
 /* Weather auto-refresh: re-pull every 5 minutes while the page is open (and on return to the tab if stale), so the "Last checked" stamps and the data behind them stay current. */
 let __wxLastRefresh = Date.now();
 function refreshWeather(){
   try{
     marineCache = {}; wxPeriodCache = {}; __wxLastRefresh = Date.now();
-    ["loadTides","loadMarine","loadWaves","loadSpot","loadWeek","loadForecastBadges"].forEach(function(fn){ try{ window[fn](); }catch(e){} });
+    ["loadTides","loadMarine","loadWaves","loadSpot","loadWeek","loadForecastBadges","loadBriefingConditions"].forEach(function(fn){ try{ window[fn](); }catch(e){} });
   }catch(e){}
 }
 setInterval(function(){ if(!document.hidden) refreshWeather(); }, 300000);

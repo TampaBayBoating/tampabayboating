@@ -503,11 +503,11 @@ body.dark .photo-card{background:#16202e;border-color:#2a3a4f}
 body.dark .photo-card .pc-body b{color:#e8eef4}
 body.dark .photo-card .pc-body i{color:#8fa8bd}
 @media(max-width:860px){.today-grid.photo-cards{grid-template-columns:1fr 1fr}.photo-card .pc-img{height:100px}}
-/* OCT24 v3: Today's Briefing — two cards only (rotating card removed), natural heights, tighter */
+/* OCT24 v4: Today's Briefing — two cards, equal heights; fishing compressed to short kick + species paragraph */
 .brief-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:10px}
 .brief-title{font-family:Georgia,serif;font-size:1.55rem;color:#0a2540;margin:0}
 .brief-date{font-size:.82rem;font-weight:700;color:#0e7c7b;letter-spacing:.4px;white-space:nowrap}
-.brief-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;align-items:start;max-width:920px;margin-left:auto;margin-right:auto}
+.brief-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;align-items:stretch;max-width:920px;margin-left:auto;margin-right:auto}
 .brief-card{display:flex;flex-direction:column;background:#fff;border:1px solid #e6ded1;border-radius:12px;overflow:hidden;text-decoration:none;color:#0a2540;transition:.2s}
 .brief-card:hover{transform:translateY(-3px);box-shadow:0 10px 24px rgba(10,37,64,.12)}
 .brief-card .bf-img{display:block;height:84px;background-size:cover;background-position:center;flex:none}
@@ -518,15 +518,13 @@ body.dark .photo-card .pc-body i{color:#8fa8bd}
 .brief-card .bf-sub:empty{display:none}
 .brief-card u{display:block;text-decoration:none;color:#0e7c7b;font-weight:700;font-size:.8rem;letter-spacing:.3px;margin-top:6px}
 .brief-card .bf-fish{display:block}
-.bf-bets{list-style:none;margin:0 0 6px;padding:0}
-.bf-bets li{font-size:.84rem;line-height:1.35;color:#0a2540;margin-bottom:5px}
-.bf-bets li:last-child{margin-bottom:0}
-.bf-bets li b{font-weight:800}
+.bf-species{display:block;font-size:.88rem;line-height:1.4;color:#0a2540}
+.bf-species b{font-weight:800}
 .bf-tidewin{font-size:.78rem;color:#5b6b7c;line-height:1.35;border-top:1px dashed #e6ded1;padding-top:5px;margin-top:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 body.dark .brief-card{background:#16202e;border-color:#2a3a4f}
 body.dark .brief-title{color:#e8eef4}
 body.dark .brief-card .bf-sub,body.dark .bf-tidewin{color:#8fa8bd}
-body.dark .bf-bets li{color:#e8eef4}
+body.dark .bf-species{color:#e8eef4}
 @media(max-width:860px){
 .brief-head{margin-bottom:8px}
 .brief-title{font-size:1.3rem}
@@ -1484,7 +1482,7 @@ if(typeof document!=='undefined'){
     <a class="brief-card" href="#/fishing">
       <span class="bf-img" id="bfImgFish" style="background-image:url('assets/card-fishing.jpg')"></span>
       <span class="bf-body">
-        <span class="bf-kick">Fishing &mdash; today's best bets</span>
+        <span class="bf-kick">Best bets</span>
         <span class="bf-fish" id="bfFish"><i class="bf-sub">See what's biting</i></span>
         <u>Full report &rarr;</u>
       </span>
@@ -6006,9 +6004,7 @@ function renderBriefing(){
         }
       });
       if(bets.length){
-        var h = "<ul class=\"bf-bets\">";
-        bets.forEach(function(b){ h += "<li><b>" + esc(b.species) + "</b> \u2014 " + esc(b.snippet) + "</li>"; });
-        h += "</ul>";
+        var h = "<span class=\"bf-species\">" + bets.map(function(b){ return "<b>" + esc(b.species) + "</b>"; }).join(" \u00b7 ") + "</span>";
         if(tideWin) h += "<div class=\"bf-tidewin\">" + esc(tideWin) + "</div>";
         fishBox.innerHTML = h;
       } else {

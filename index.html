@@ -358,6 +358,17 @@ section{padding:40px 0}
 .sight-sec{padding:36px 20px 10px}
 .sight-sec .dir-card .city svg{vertical-align:-2px;margin-right:5px}
 .kbg-disclaimer{max-width:760px;margin:18px auto 0;text-align:center;color:var(--muted);font-size:.85rem;font-style:italic}
+@media (max-width:700px){
+  .hn-strip{padding:8px 0}
+  .hn-in{gap:6px 10px}
+  .hn-items{gap:8px;width:100%}
+  .hn-item{flex-wrap:nowrap;width:100%;gap:8px}
+  .hn-item b{font-size:.95rem;flex:0 1 auto;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .hn-item .hn-meta{flex:1 1 auto;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .hn-item .hn-host{display:none}
+  .hn-item .hn-when{flex:none}
+  .hn-btn{padding:4px 12px;font-size:.8rem;flex:none}
+}
 </style>
 
 <!-- Google Analytics 4 - Tampa Bay Boating (added Oct 13, 2026) -->
@@ -1234,7 +1245,7 @@ var PAGES=[
 ["advertise","Advertise","advertise sponsor business"],
 ["contact","Contact","contact email david"],
 ["about","About","about story"]];
-var PIN_LABEL={fuel:"Fuel",bait:"Bait",tackle:"Fishing Tackle",dine:"Dock & Dine",play:"Destination",club:"Boat Club",storage:"Storage",stay:"Boat-Up Stay",dealer:"Boat Dealers",trailer:"Trailer Services",parts:"Parts & Supply",service:"Marine Services",detail:"Boat Detailing",ramp:"Boat Ramp", rent:"Boat Rental", ice:"Ice", springs:"Freshwater Spring"};
+var PIN_LABEL={fuel:"Fuel",bait:"Bait",tackle:"Fishing Tackle",dine:"Dock & Dine",play:"Destination",club:"Boat Club",storage:"Storage",stay:"Boat-Up Stay",dealer:"Boat Dealers",trailer:"Trailer Services",parts:"Parts & Supply",service:"Marine Services",detail:"Boat Detailing",ramp:"Boat Ramp", rent:"Boat Rental", ice:"Ice", springs:"Freshwater Spring", sights:"Sightseeing", tricky:"Tricky Water"};
 var panel=document.getElementById('search-panel'),input=document.getElementById('site-search'),
     results=document.getElementById('search-results'),btn=document.getElementById('search-btn');
 function esc(t){return String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
@@ -1324,8 +1335,10 @@ var LIVE_SHOWS=[
  {name:'Reel Animals',station:'970 WFLA',host:'Capt. Mike Anderson',url:'https://wflanews.iheart.com/',days:[6],start:360,end:480},
  {name:'Reel Animals',station:'WDAE',host:'Capt. Mike Anderson',url:'https://957wdae.iheart.com/',days:[0],start:420,end:540}
 ];
-/* One-off dated events go here later, e.g. {name:'Event name',station:'Where',host:'',url:'https://...',date:'2026-11-07',start:600,end:720} (start/end = minutes after midnight ET) */
-const LIVE_EVENTS=[];
+/* Multi-day all-day dated events: {name, station (venue text), host:'', url (optional - button omitted if absent), startDate:'YYYY-MM-DD', endDate:'YYYY-MM-DD'} - live all day ET from startDate through endDate. */
+const LIVE_EVENTS=[
+ {name:'2026 RedSnook Catch & Release Charity Fishing Tournament',station:'Southwest Florida (Naples area)',host:'',url:'https://conservancy.org/conservancy-of-southwest-florida-announces-2026-redsnook-catch-release-charity-fishing-tournament/',startDate:'2026-10-23',endDate:'2026-10-25'}
+];
 function hnETParts(date){
   var fmt=new Intl.DateTimeFormat('en-US',{timeZone:'America/New_York',weekday:'short',hour:'numeric',minute:'numeric',hour12:false});
   var o={}; fmt.formatToParts(date).forEach(function(p){o[p.type]=p.value;});
@@ -1335,13 +1348,25 @@ function hnETParts(date){
 function hnCurrentKey(){
   var p=hnETParts(new Date()); return p.day*1440+p.mins;
 }
-function hnEvaluate(nowKey){
+function hnETDateStr(date){
+  var fmt=new Intl.DateTimeFormat('en-US',{timeZone:'America/New_York',year:'numeric',month:'2-digit',day:'2-digit'});
+  var o={}; fmt.formatToParts(date).forEach(function(p){o[p.type]=p.value;});
+  return o.year+'-'+o.month+'-'+o.day;
+}
+function hnEvaluate(nowKey, todayStr){
   var live=[], next=null;
   LIVE_SHOWS.forEach(function(s){ s.days.forEach(function(day){
     var st=day*1440+s.start, en=day*1440+s.end;
     if(nowKey>=st&&nowKey<en) live.push(s);
     for(var w=0;w<2;w++){ var cand=st+w*10080; if(cand>nowKey&&(!next||cand<next.at)) next={show:s,at:cand}; }
   });});
+  if(todayStr){
+    LIVE_EVENTS.forEach(function(ev){
+      if(ev.startDate&&ev.endDate&&todayStr>=ev.startDate&&todayStr<=ev.endDate){
+        live.push({name:ev.name, station:ev.station, host:ev.host||'', url:ev.url||'', btn:'Details'});
+      }
+    });
+  }
   return {live:live, next:next};
 }
 function hnWhen(at,nowKey){
@@ -1354,15 +1379,15 @@ function hnWhen(at,nowKey){
   return days[d]+' '+t;
 }
 function hnItemHTML(s,when){
-  var h='<div class="hn-item"><b>'+s.name+'</b><span class="hn-meta">'+s.station+(s.host?' &middot; with '+s.host:'')+'</span>';
+  var h='<div class="hn-item"><b>'+s.name+'</b><span class="hn-meta">'+s.station+(s.host?'<span class="hn-host"> &middot; with '+s.host+'</span>':'')+'</span>';
   if(when) h+='<span class="hn-when">'+when+'</span>';
-  h+='<a class="hn-btn" href="'+s.url+'" target="_blank" rel="noopener">Listen Live</a></div>';
-  return h;
+  if(s.url) h+='<a class="hn-btn" href="'+s.url+'" target="_blank" rel="noopener">'+(s.btn||'Listen Live')+'</a>';
+  return h+'</div>';
 }
 function hnRender(){
   var label=document.getElementById('hnLabel'), box=document.getElementById('hnItems');
   if(!label||!box) return;
-  var key=hnCurrentKey(), r=hnEvaluate(key);
+  var key=hnCurrentKey(), r=hnEvaluate(key, hnETDateStr(new Date()));
   if(r.live.length){
     label.innerHTML='<span class="hn-dot"></span> HAPPENING NOW'; label.classList.remove('up');
     box.innerHTML=r.live.map(function(s){return hnItemHTML(s,null);}).join('');
@@ -1476,6 +1501,8 @@ if(typeof document!=='undefined'){
 </div></div>
 <div class="view" id="view-sightseeing"><div class="wrap"><a class="back-link" href="#/">&#8249; All categories</a></div><div class="wrap sight-sec">
   <div class="sec-head"><h2>Things to See From the Water</h2><p>Postcard views you can only get from a boat. Run them slow, camera ready.</p></div>
+  <div id="sight-leaflet-map" style="height:340px; border-radius:14px; border:1px solid var(--line); z-index:1"></div>
+  <p style="text-align:center; color:var(--muted); font-size:.85rem; margin:8px auto 14px">Tap a marker for the view.</p>
   <div class="dir-grid">
     <div class="dir-card"><div class="city"><svg class=ic aria-hidden=true><use href=#i-bridge></use></svg>Sightseeing</div><h4>Sunshine Skyway Bridge</h4><div class="type">The postcard shot of the bay - run under the cables at golden hour and bring a camera.</div></div>
     <div class="dir-card"><div class="city"><svg class=ic aria-hidden=true><use href=#i-compass></use></svg>Sightseeing</div><h4>Egmont Key &amp; the Lighthouse</h4><div class="type">A lighthouse standing over a quiet island anchorage at the mouth of the bay - beachcomb the shore and watch the ships slide past.</div></div>
@@ -1487,6 +1514,8 @@ if(typeof document!=='undefined'){
 </div></div>
 <div class="view" id="view-knowbeforeyougo"><div class="wrap"><a class="back-link" href="#/">&#8249; All categories</a></div><div class="wrap sight-sec">
   <div class="sec-head"><h2>Know Before You Go</h2><p>The passes and channels that demand respect - local water that bites if you run it casual.</p></div>
+  <div id="kbg-leaflet-map" style="height:340px; border-radius:14px; border:1px solid var(--line); z-index:1"></div>
+  <p style="text-align:center; color:var(--muted); font-size:.85rem; margin:8px auto 14px">Tap a marked zone for the caution. Zones are general areas, not exact boundaries.</p>
   <div class="dir-grid">
     <div class="dir-card"><div class="city"><svg class=ic aria-hidden=true><use href=#i-siren></use></svg>Tricky water</div><h4>John's Pass</h4><div class="type">A narrow cut with a swift tidal current and shoals that shift after storms. Take it slow, mind the markers, and do not cut the corners.</div></div>
     <div class="dir-card"><div class="city"><svg class=ic aria-hidden=true><use href=#i-siren></use></svg>Tricky water</div><h4>Bunces Pass</h4><div class="type">Shifting sand and shoals that move with the seasons. Yesterday's safe line may not be today's - ease in and read the water.</div></div>
@@ -1895,10 +1924,12 @@ if(typeof document!=='undefined'){
         <button class="map-filter" data-cat="dine" style="--c:#8b5cf6" onclick="mapFilter('dine',this)"><span class="dot"></span><svg class=ic aria-hidden=true><use href=#i-dine></use></svg> Dock &amp; Dine</button>
         <button class="map-filter" data-cat="ramp" style="--c:#4f46e5" onclick="mapFilter('ramp',this)"><span class="dot"></span><svg class=ic aria-hidden=true><use href=#i-anchor></use></svg> Boat Ramps</button>
         <button class="map-filter" data-cat="cam" style="--c:#e02424" onclick="mapFilter('cam',this)"><span class="dot"></span><svg class=ic aria-hidden=true><use href=#i-video></use></svg> Live Cams</button>
+        <button class="map-filter" data-cat="tricky" style="--c:#991b1b" onclick="mapFilter('tricky',this)"><span class="dot"></span><svg class=ic aria-hidden=true><use href=#i-siren></use></svg> Tricky Water</button>
       </div>
       <div class="map-group">
         <div class="map-group-label">Places to Go</div>
         <button class="map-filter" data-cat="play" style="--c:#0e7490" onclick="mapFilter('play',this)"><span class="dot"></span><svg class=ic aria-hidden=true><use href=#i-palm></use></svg> Destinations</button><button class="map-filter" data-cat="springs" style="--c:#db2777" onclick="mapFilter('springs',this)"><span class="dot"></span><svg class=ic aria-hidden=true><use href=#i-palm></use></svg> Freshwater Springs</button>
+        <button class="map-filter" data-cat="sights" style="--c:#9333ea" onclick="mapFilter('sights',this)"><span class="dot"></span><svg class=ic aria-hidden=true><use href=#i-compass></use></svg> Sightseeing</button>
         <button class="map-filter" data-cat="stay" style="--c:#2563eb" onclick="mapFilter('stay',this)"><span class="dot"></span><svg class=ic aria-hidden=true><use href=#i-bed></use></svg> Boat-Up Stays</button>
         <button class="map-filter" data-cat="club" style="--c:#d946ef" onclick="mapFilter('club',this)"><span class="dot"></span><svg class=ic aria-hidden=true><use href=#i-ship></use></svg> Boat Clubs</button><button class="map-filter" data-cat="rent" style="--c:#0284c7" onclick="mapFilter('rent',this)"><span class="dot"></span><svg class=ic aria-hidden=true><use href=#i-ship></use></svg> Boat Rentals</button>
       </div>
@@ -4048,12 +4079,24 @@ const MAP_PINS = [
 ["Blue Grotto Dive Resort", "springs", 29.387719, -82.48562, "Blue Grotto Dive Resort, Williston (Levy County)", "", "Privately run scuba spring \u2014 operator-run diving in a large cavern basin. Certified divers\u2019 territory."],
 ["KP Hole Park", "springs", 29.0867, -82.4295, "KP Hole Park, Dunnellon (Marion County)", "", "County-park launch for the Rainbow River \u2014 float-tubing, a kayak and canoe launch, and swimming."],
 ["King Spring", "springs", 28.881898, -82.594655, "Kings Bay, Crystal River (Citrus County) \u2014 water access only", "", "Spring vent in Kings Bay \u2014 year-round scuba and snorkeling confirmed by the U.S. Fish & Wildlife Service."],
+["Sunshine Skyway Bridge", "sights", 27.6179, -82.6553, "Main span, mouth of Tampa Bay", "", "The postcard shot of the bay - run under the cables at golden hour and bring a camera."],
+["Egmont Key & the Lighthouse", "sights", 27.58692, -82.76081, "Mouth of Tampa Bay", "", "A lighthouse standing over a quiet island anchorage at the mouth of the bay - beachcomb the shore and watch the ships slide past."],
+["Downtown Tampa From the Hillsborough River", "sights", 27.941967, -82.456219, "Hillsborough River, downtown Tampa", "", "Idle upriver into downtown and the skyline stacks up right over the bow."],
+["John's Pass Boardwalk", "sights", 27.78466, -82.78227, "John's Pass, Madeira Beach", "", "Come in off the Gulf and watch the fishing fleet unload along the boardwalk."],
+["Shell Key Preserve", "sights", 27.66222, -82.73694, "Tierra Verde, Pinellas County", "", "Anchor off clear, quiet shallows just south of Pass-a-Grille - the sandbar day, minus the crowd."],
+["The Don CeSar From Pass-a-Grille", "sights", 27.709, -82.7393, "St. Pete Beach, seen from the Pass-a-Grille Channel", "", "The pink palace on the sand - cruise the channel at golden hour for the best angle in the bay."],
+["John's Pass", "tricky", 27.7862, -82.7878, "Between Madeira Beach and Treasure Island", "", "Tricky water: swift tidal current and shoals that shift after storms. Take it slow, mind the markers, and do not cut the corners."],
+["Bunces Pass", "tricky", 27.649, -82.718, "Between Shell Key and Fort De Soto", "", "Tricky water: shifting sand and shoals that move with the seasons. Yesterday's safe line may not be today's - ease in and read the water."],
+["Egmont Channel & the Main Ship Channel", "tricky", 27.613, -82.72, "Tampa Bay entrance channel", "", "Tricky water: freighters and cruise ships cannot slow down or turn for a small boat. Stay clear of the big hulls and cross with care."],
+["Blind Pass", "tricky", 27.7445, -82.768, "Between Treasure Island and St. Pete Beach", "", "Tricky water: narrow and winding, with shoaling between the markers. Trust your depth sounder over your memory."],
+["Longboat Pass", "tricky", 27.4094, -82.6906, "Between Anna Maria Island and Longboat Key", "", "Tricky water: strong current under the bridge and shoals at both ends. Time it near slack water if you can."],
+["The Skyway on a Strong Tide", "tricky", 27.6179, -82.6553, "Main channel under the Sunshine Skyway", "", "Tricky water: steep, close chop stacks up when a hard tide runs against the wind. If it looks angry, wait it out."],
 ];
 const RAMP_CLASS = {"Gandy Boat Ramp": "PAID", "Causeway Boat Ramp": "PAID", "Picnic Island Boat Ramp": "FREE", "Egan Park Boat Ramp": "MIXED", "Treasure Island Boat Ramp": "FREE", "Maximo Park": "FREE", "Bay Vista Park": "FREE", "Demens Landing Boat Ramp": "FREE", "Jungle Prada Boat Ramp": "FREE", "Crisp Park": "FREE", "Coffee Pot Park": "FREE", "Grandview Park": "FREE", "Lake Maggiore Park": "FREE", "Sunlit Cove Boat Ramp": "FREE", "Kingfish Boat Ramp": "FREE", "Captain Scott Moore Boat Ramp": "FREE", "Coquina South Boat Ramp": "FREE", "Warner's Bayou Boat Ramp": "FREE", "State Road 64 Boat Ramp": "FREE", "Riverside Park Boat Ramp": "FREE", "Fort Hamer Park Boat Ramp": "FREE", "63rd Street Boat Ramp": "FREE", "Bishop Harbor Boat Ramp": "FREE", "Turtle Beach Public Boat Ramp": "FREE", "Blackburn Point Park Boat Ramp": "FREE", "Higel Marine Park": "FREE", "Nokomis Beach": "FREE", "Indian Mound Park": "FREE", "Manasota Key Beach": "FREE", "Marina Park and Boat Ramp": "FREE", "Marina Park": "FREE", "Nick's Park Boat Ramp": "FREE", "Sims Park Boat Ramp": "FREE", "Snook Haven Park Boat Ramp": "FREE", "Safety Harbor Marina Boat Launch": "FREE", "Davis Island Boat Ramp": "FREE", "Ballast Point Park": "FREE", "Lowry Park Boat Ramp": "FREE", "Cockroach Bay Boat Ramp": "PAID", "Williams Park Boat Ramp": "PAID", "Domino Park Boat Ramp": "PAID", "Wildcat Park Boat Ramp": "PAID", "Baker Creek Boat Ramp": "PAID", "Harney Park Boat Ramp": "PAID", "Brandon Boat Ramp": "PAID", "Seminole Boat Ramp": "PAID", "Ken Thompson Boat Ramp": "FREE", "Apollo Beach Marina": "PAID", "Rick's on the River": "PAID", "Madeira Beach Marina": "PAID", "O'Neill's Marina": "PAID", "Clearwater Beach Public Boat Ramp": "MIXED", "Dunedin Marina": "PAID", "Jiggs Landing Boat Ramp": "MIXED", "Gulfport Municipal Marina": "MIXED", "E.G. Simmons Conservation Park": "PAID", "Fort De Soto Boat Ramp": "PAID", "Bay Pines Boat Ramp": "PAID", "Belleair Causeway Boat Ramp": "PAID", "Park Boulevard Boat Ramp": "PAID", "Sutherland Bayou Boat Ramp": "PAID", "Anclote River Park Boat Ramp": "PAID", "Robert J. Strickland Memorial Park": "PAID", "Lake Myakka Boat Ramp": "PAID", "Lake Manatee State Park Boat Ramp": "PAID", "Commongood Boat Ramp": "PAID", "John B. Sargeant Sr. Park": "PAID", "Centennial Park": "PAID", "Morris Bridge Park": "PAID"};
 window.tbbFeeMode=null;
 /* MAP_PINS_PENDING retired 2026-10-10: 201 pins re-verified and restored. 5 rejected (stay off map): Anclote River Sandbar (play, wrong location), Marjorie Park Yacht Basin (fuel, closed), The Club at Treasure Island (fuel, no fuel dock), The Landing at Tarpon Springs Marina (fuel, dupe), Carefree Boat Club Tierra Verde (club, 2 sources only). See map-research/reverify-*.md */
 const MAP_PINS_PENDING = [];
-const MAP_COLORS = {fuel:"#e25822",  bait:"#2e9e5b", tackle:"#0d9488", dine:"#8b5cf6", play:"#0e7490", club:"#d946ef", storage:"#f59e0b", stay:"#2563eb", dealer:"#e11d48", trailer:"#92400e", parts:"#65a30d", service:"#64748b", detail:"#0891b2", ramp:"#4f46e5", cam:"#e02424", rent:"#0284c7", ice:"#22d3ee", springs:"#db2777"};
+const MAP_COLORS = {fuel:"#e25822",  bait:"#2e9e5b", tackle:"#0d9488", dine:"#8b5cf6", play:"#0e7490", club:"#d946ef", storage:"#f59e0b", stay:"#2563eb", dealer:"#e11d48", trailer:"#92400e", parts:"#65a30d", service:"#64748b", detail:"#0891b2", ramp:"#4f46e5", cam:"#e02424", rent:"#0284c7", ice:"#22d3ee", springs:"#db2777", sights:"#9333ea", tricky:"#991b1b"};
 window.mapFilter=function(cat,btn){
   document.querySelectorAll('.map-filter').forEach(x => x.classList.remove('active'));
   if(btn) btn.classList.add('active');
@@ -5823,13 +5866,22 @@ function renderTodayCards(){
     const today = now.getFullYear() + "-" + String(now.getMonth()+1).padStart(2,"0") + "-" + String(now.getDate()).padStart(2,"0");
     const up = EVENTS.filter(e => (e.end || e.start) >= today).sort((a,b) => a.start < b.start ? -1 : 1)[0];
     const evEl = document.getElementById("tcEvent");
-    if(up && evEl){
-      const p = up.start.split("-");
-      const d = new Date(+p[0], +p[1]-1, +p[2]);
-      const when = d.toLocaleDateString("en-US",{weekday:"short"}) + ", " + d.toLocaleDateString("en-US",{month:"short", day:"numeric"});
-      let t = up.title || "";
+    if(evEl){
+      let t = (up && up.title) || "";
       if(t.length > 42) t = t.slice(0, 41) + "\u2026";
-      evEl.textContent = "Next: " + when + " \u00b7 " + t;
+      if(up && today >= up.start && today <= (up.end || up.start)){
+        const ep = (up.end || up.start).split("-");
+        const ed = new Date(+ep[0], +ep[1]-1, +ep[2]);
+        const endWhen = ed.toLocaleDateString("en-US",{weekday:"short"}) + ", " + ed.toLocaleDateString("en-US",{month:"short", day:"numeric"});
+        evEl.textContent = "Happening now \u00b7 through " + endWhen + " \u00b7 " + t;
+      } else if(up){
+        const p = up.start.split("-");
+        const d = new Date(+p[0], +p[1]-1, +p[2]);
+        const when = d.toLocaleDateString("en-US",{weekday:"short"}) + ", " + d.toLocaleDateString("en-US",{month:"short", day:"numeric"});
+        evEl.textContent = "Next: " + when + " \u00b7 " + t;
+      } else {
+        evEl.textContent = "Nothing scheduled \u2014 see the calendar";
+      }
     }
   }catch(e){}
   try{
@@ -5859,9 +5911,10 @@ function renderTodayCards(){
     const rep = document.querySelector(".daily-report .type");
     if(fishEl && rep){
       const species = [];
+      const decodeEntities = function(s){ const ta = document.createElement("textarea"); ta.innerHTML = s; return ta.value; };
       const re = /<b>\d+\.\s*([^<]+)<\/b>/g;
       let m;
-      while((m = re.exec(rep.innerHTML)) && species.length < 3) species.push(m[1].trim());
+      while((m = re.exec(rep.innerHTML)) && species.length < 3) species.push(decodeEntities(m[1].trim()));
       if(species.length) fishEl.textContent = "Today's best bets: " + species.join(", ");
     }
   }catch(e){}
@@ -5946,6 +5999,61 @@ document.getElementById("springs-dir").addEventListener("click", function(e){
 renderSprings();
 </script>
 <script>
+/* ---- Mini-maps: Know Before You Go hazard zones + Sightseeing spots (lazy init on first view) ---- */
+var TBB_ESRI_OCEAN = 'https://server.arcgisonline.com/ArcGIS/rest/services/Ocean/World_Ocean_Base/MapServer/tile/{z}/{y}/{x}';
+var KBG_ZONES = [
+ {name:"John's Pass", lat:27.7862, lng:-82.7878, r:700, note:"Swift tidal current and shoals that shift after storms. Take it slow, mind the markers, and do not cut the corners."},
+ {name:"Bunces Pass", lat:27.649, lng:-82.718, r:900, note:"Shifting sand and shoals that move with the seasons. Yesterday's safe line may not be today's - ease in and read the water."},
+ {name:"Egmont Channel &amp; the Main Ship Channel", lat:27.613, lng:-82.72, r:1000, note:"Freighters and cruise ships cannot slow down or turn for a small boat. Stay clear of the big hulls and cross with care."},
+ {name:"Blind Pass", lat:27.7445, lng:-82.768, r:500, note:"Narrow and winding, with shoaling between the markers. Trust your depth sounder over your memory."},
+ {name:"Longboat Pass", lat:27.4094, lng:-82.6906, r:700, note:"Strong current under the bridge and shoals at both ends. Time it near slack water if you can."},
+ {name:"The Skyway on a Strong Tide", lat:27.6179, lng:-82.6553, r:1000, note:"Steep, close chop stacks up when a hard tide runs against the wind. If it looks angry, wait it out."}
+];
+var SIGHT_SPOTS = [
+ {name:"Sunshine Skyway Bridge", lat:27.6179, lng:-82.6553, note:"The postcard shot of the bay - run under the cables at golden hour and bring a camera."},
+ {name:"Egmont Key &amp; the Lighthouse", lat:27.58692, lng:-82.76081, note:"A lighthouse standing over a quiet island anchorage at the mouth of the bay - beachcomb the shore and watch the ships slide past."},
+ {name:"Downtown Tampa From the Hillsborough River", lat:27.941967, lng:-82.456219, note:"Idle upriver into downtown and the skyline stacks up right over the bow."},
+ {name:"John's Pass Boardwalk", lat:27.78466, lng:-82.78227, note:"Come in off the Gulf and watch the fishing fleet unload along the boardwalk."},
+ {name:"Shell Key Preserve", lat:27.66222, lng:-82.73694, note:"Anchor off clear, quiet shallows just south of Pass-a-Grille - the sandbar day, minus the crowd."},
+ {name:"The Don CeSar From Pass-a-Grille", lat:27.709, lng:-82.7393, note:"The pink palace on the sand - cruise the channel at golden hour for the best angle in the bay."}
+];
+function tbbMiniBase(map){ return L.tileLayer(TBB_ESRI_OCEAN, {maxZoom:18, maxNativeZoom:16, attribution:'Esri, GEBCO, NOAA, NGS, OSU'}).addTo(map); }
+window.tbbKbgMapInit = (function(){
+  var done = false;
+  return function(){
+    if(done) return; done = true;
+    var el = document.getElementById('kbg-leaflet-map');
+    if(!el || typeof L === 'undefined') return;
+    var map = window.tbbKbgMap = L.map('kbg-leaflet-map', {scrollWheelZoom:false});
+    tbbMiniBase(map);
+    var pts = [];
+    KBG_ZONES.forEach(function(z){
+      var pop = '<b>' + z.name + '</b><br>' + z.note;
+      L.circle([z.lat, z.lng], {radius:z.r, color:'#b91c1c', weight:1.5, opacity:.85, fillColor:'#ef4444', fillOpacity:.18}).addTo(map).bindPopup(pop);
+      L.marker([z.lat, z.lng]).addTo(map).bindPopup(pop);
+      pts.push([z.lat, z.lng]);
+    });
+    map.fitBounds(pts, {padding:[18,18]});
+  };
+})();
+window.tbbSightMapInit = (function(){
+  var done = false;
+  return function(){
+    if(done) return; done = true;
+    var el = document.getElementById('sight-leaflet-map');
+    if(!el || typeof L === 'undefined') return;
+    var map = window.tbbSightMap = L.map('sight-leaflet-map', {scrollWheelZoom:false});
+    tbbMiniBase(map);
+    var pts = [];
+    SIGHT_SPOTS.forEach(function(s){
+      L.marker([s.lat, s.lng]).addTo(map).bindPopup('<b>' + s.name + '</b><br>' + s.note);
+      pts.push([s.lat, s.lng]);
+    });
+    map.fitBounds(pts, {padding:[18,18]});
+  };
+})();
+</script>
+<script>
 /* ---- SPA router: approved app-style redesign ---- */
 const ID2VIEW = {conditions:'tides',fishing:'fishing',events:'events',dining:'dining',baymap:'map',paddling:'paddling',ramps:'ramps',bridges:'bridges',logbook:'logbook',charters:'charters',fuel:'fuel',services:'services',detailing:'services',parts:'parts',storage:'storage','boat-clubs':'boat-clubs',navigation:'navigation',tips:'tips',safety:'safety',stopped:'stopped',manatee:'manatee',courses:'courses',hurricane:'hurricane',insurance:'insurance',shop:'shop',boatsales:'boatsales',gear:'gear',videos:'videos',meetups:'meetups',news:'news',newsletter:'newsletter',advertise:'advertise',contact:'contact','nav-charts':'navigation'};
 const VIEWS = ['home','plan','local','smart','newboater','maintenance','diagnostics','history','registration','rentals','springs','sightseeing','knowbeforeyougo','shopc','tides','fishing','events','dining','stay','map','paddling','ramps','bridges','logbook','savings','charters','fuel','services','parts','storage','boat-clubs','navigation','tips','safety','stopped','manatee','etiquette','courses','hurricane','insurance','shop','boatsales','gear','videos','cams','music','seasonal','meetups','news','newsletter','advertise','contact','about','privacy','terms'];
@@ -5955,6 +6063,8 @@ function showView(name){
   document.getElementById('view-'+name).classList.add('active');
   window.scrollTo(0,0);
   if(name==='map'){if(window.tbbMapInit)window.tbbMapInit();setTimeout(function(){if(window.tbbMap)window.tbbMap.invalidateSize();},200);}
+  if(name==='knowbeforeyougo'){if(window.tbbKbgMapInit)window.tbbKbgMapInit();setTimeout(function(){if(window.tbbKbgMap)window.tbbKbgMap.invalidateSize();},200);}
+  if(name==='sightseeing'){if(window.tbbSightMapInit)window.tbbSightMapInit();setTimeout(function(){if(window.tbbSightMap)window.tbbSightMap.invalidateSize();},200);}
 }
 function route(){
   var h=location.hash||'#/';

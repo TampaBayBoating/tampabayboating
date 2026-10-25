@@ -2358,6 +2358,53 @@ if(typeof document!=='undefined'){
 </div>
 </div>
 </section></div>
+<div class="view" id="view-card"><div class="wrap"><a class="back-link" href="#/">&#8249; All categories</a></div>
+<style>
+#view-card .tbbc-hero{width:100%;height:240px;object-fit:cover;display:block}
+#view-card .tbbc-head{text-align:center;padding:0 24px}
+#view-card .tbbc-logo{width:118px;height:118px;border-radius:50%;border:4px solid #fff;background:#fff;object-fit:cover;margin-top:-59px;position:relative}
+#view-card .tbbc-name{font-size:30px;font-weight:800;margin-top:14px;color:#0B2A4A}
+#view-card .tbbc-biz{font-size:19px;font-weight:700;color:#1B6E8C;margin-top:4px}
+#view-card .tbbc-slogan{font-size:15px;font-style:italic;color:#33536E;margin-top:8px}
+#view-card .tbbc-sub{font-size:14px;color:#5A7691;margin-top:10px;line-height:1.45}
+#view-card .tbbc-buttons{padding:26px 20px 0;max-width:480px;margin:0 auto}
+#view-card .tbbc-btn{display:flex;align-items:center;gap:14px;background:#fff;color:#0B2A4A;text-decoration:none;border:1px solid #D8E4EE;border-radius:16px;padding:17px 20px;margin-bottom:14px;font-size:17px;font-weight:700;box-shadow:0 4px 14px rgba(11,42,74,.18);width:100%;text-align:left;font-family:inherit;cursor:pointer}
+#view-card .tbbc-btn .tbbc-ico{font-size:24px;width:30px;text-align:center}
+#view-card .tbbc-btn .tbbc-go{margin-left:auto;color:#8AA5BC;font-weight:400}
+#view-card .tbbc-primary{background:#FFD34D}
+#view-card .tbbc-save{background:#0B2A4A;color:#fff;border:2px solid #7FD1E8}
+#view-card .tbbc-foot{text-align:center;color:#7E9DB8;font-size:13px;margin:26px 0 40px;line-height:1.6}
+</style>
+<img class="tbbc-hero" src="assets/hero-bow-skyway.jpg" alt="Bow of a boat heading toward the Sunshine Skyway Bridge">
+<div class="tbbc-head">
+<img class="tbbc-logo" src="assets/logo-tbb.png" alt="Tampa Bay Boating logo">
+<div class="tbbc-name">David MacDonald</div>
+<div class="tbbc-biz">Tampa Bay Boating</div>
+<div class="tbbc-slogan">"Bringing the boating community together."</div>
+<div class="tbbc-sub">Tampa Bay's free boating hub - the boater's map, tides, weather, fishing reports, cheapest fuel and events. Always free for boaters.</div>
+</div>
+<div class="tbbc-buttons">
+<a class="tbbc-btn tbbc-primary" href="#/"><span class="tbbc-ico">&#9974;</span>Visit TampaBayBoating.com<span class="tbbc-go">&rsaquo;</span></a>
+<button class="tbbc-btn tbbc-save" id="tbbc-save" type="button"><span class="tbbc-ico">&#128100;</span>Save My Contact<span class="tbbc-go">&rsaquo;</span></button>
+<a class="tbbc-btn" href="https://instagram.com/tampabayboating" target="_blank" rel="noopener"><span class="tbbc-ico">&#128247;</span>Instagram<span class="tbbc-go">&rsaquo;</span></a>
+<a class="tbbc-btn" href="https://www.tiktok.com/@tampabayboating" target="_blank" rel="noopener"><span class="tbbc-ico">&#127925;</span>TikTok<span class="tbbc-go">&rsaquo;</span></a>
+<a class="tbbc-btn" href="https://facebook.com/tampabayboating" target="_blank" rel="noopener"><span class="tbbc-ico">&#128077;</span>Facebook<span class="tbbc-go">&rsaquo;</span></a>
+<a class="tbbc-btn" href="mailto:david@tampabayboating.com"><span class="tbbc-ico">&#9993;</span>Email David<span class="tbbc-go">&rsaquo;</span></a>
+</div>
+<div class="tbbc-foot">TampaBayBoating.com<br>St. Petersburg - Tampa - Clearwater</div>
+<script>
+document.getElementById('tbbc-save').addEventListener('click', function () {
+  var vcf = ['BEGIN:VCARD','VERSION:3.0','FN:David MacDonald','ORG:Tampa Bay Boating','TITLE:Owner','EMAIL:david@tampabayboating.com','URL:https://tampabayboating.com','NOTE:Bringing the boating community together. Tampa Bay boating map, tides, fishing, fuel and events - always free.','END:VCARD'].join('\n');
+  var blob = new Blob([vcf], { type: 'text/vcard' });
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'David-MacDonald-TampaBayBoating.vcf';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+});
+</script>
+</div>
 <div class="view" id="view-contact"><div class="wrap"><a class="back-link" href="#/">&#8249; All categories</a></div><section id="contact">
 <div class="wrap">
 <div class="sec-head"><span class="sec-kicker">Get In Touch</span>
@@ -6230,7 +6277,7 @@ window.tbbSightMapInit = (function(){
 <script>
 /* ---- SPA router: approved app-style redesign ---- */
 const ID2VIEW = {conditions:'tides',fishing:'fishing',events:'events',dining:'dining',baymap:'map',paddling:'paddling',ramps:'ramps',bridges:'bridges',logbook:'logbook',charters:'charters',fuel:'fuel',services:'services',detailing:'services',parts:'parts',storage:'storage','boat-clubs':'boat-clubs',navigation:'navigation',tips:'tips',safety:'safety',stopped:'stopped',manatee:'manatee',courses:'courses',hurricane:'hurricane',insurance:'insurance',shop:'shop',boatsales:'boatsales',gear:'gear',videos:'videos',meetups:'meetups',news:'news',newsletter:'newsletter',advertise:'advertise',contact:'contact','nav-charts':'navigation'};
-const VIEWS = ['home','plan','local','smart','newboater','maintenance','diagnostics','history','registration','rentals','springs','sightseeing','knowbeforeyougo','shopc','tides','fishing','events','dining','stay','map','paddling','ramps','bridges','logbook','savings','charters','fuel','services','parts','storage','boat-clubs','navigation','tips','safety','stopped','manatee','etiquette','courses','hurricane','insurance','shop','boatsales','gear','videos','cams','music','seasonal','meetups','news','newsletter','advertise','contact','about','privacy','terms'];
+const VIEWS = ['home','plan','local','smart','newboater','maintenance','diagnostics','history','registration','rentals','springs','sightseeing','knowbeforeyougo','shopc','tides','fishing','events','dining','stay','map','paddling','ramps','bridges','logbook','savings','charters','fuel','services','parts','storage','boat-clubs','navigation','tips','safety','stopped','manatee','etiquette','courses','hurricane','insurance','shop','boatsales','gear','videos','cams','music','seasonal','meetups','news','newsletter','advertise','contact','about','privacy','terms','card'];
 function showView(name){
   if(VIEWS.indexOf(name)<0) name='home';
   document.querySelectorAll('.view').forEach(function(v){v.classList.remove('active');});

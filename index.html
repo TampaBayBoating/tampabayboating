@@ -5572,7 +5572,19 @@ async function loadBriefingConditions(){
       const v = tbbVerdict(ps);
       scoreEl.textContent = v.score + "%";
       const parts = [];
-      if(advText) parts.push("\u26a0\ufe0f " + advText);
+      if(advText){
+        let advSeg = advText;
+        if(zoneId === "GMZ830"){
+          const t0 = String((ps[0] && ps[0].detailedForecast) || "");
+          const wm2 = t0.match(/[A-Za-z]+ winds? [^.]+/i);
+          const vm2 = t0.match(/waves (\d+)(?: to (\d+))? feet/i);
+          const bits2 = [];
+          if(wm2) bits2.push((typeof windToMph === "function" ? windToMph(wm2[0].trim()) : wm2[0].trim()));
+          if(vm2) bits2.push("waves " + vm2[1] + (vm2[2] ? " to " + vm2[2] : "") + " ft");
+          if(bits2.length) advSeg = advText + " \u2014 Tampa Bay: " + bits2.join(", ");
+        }
+        parts.push("\u26a0\ufe0f " + advSeg);
+      }
       if(v.why) parts.push(v.why.charAt(0).toUpperCase() + v.why.slice(1));
       whyEl.textContent = parts.join(" \u00b7 ");
     }catch(e){
@@ -6285,17 +6297,46 @@ document.addEventListener('click',function(e){ var p=document.getElementById('tr
       let sub=(top.headline||'').replace(/\s+/g,' ').trim();
       if(sub.length>110) sub=sub.slice(0,107)+'…';
       if(feats.length>1) sub+=' (+'+(feats.length-1)+' more)';
-      /* build expandable details: NWS alerts */
-      let det='';
-      feats.slice(0,3).forEach(p=>{
-        const pr=p.properties||{};
-        det+='<div class="wx-d-sec"><b>'+esc(pr.event)+'</b>'+esc(pr.headline||'');
-        if(pr.description) det+='<br><br>'+esc(pr.description);
-        if(pr.instruction) det+='<br><br><i>'+esc(pr.instruction)+'</i>';
-        det+='</div>';
-      });
-      det+='<div class="wx-d-sec"><a class="wx-d-link" href="#/tides">View full forecast →</a></div>';
-      showBar(top.event, sub, det);
+      /* Bay-first: a marine advisory that covers Tampa Bay waters leads with the
+         BAY zone's own numbers (GMZ830), not the combined product's Gulf wording. */
+      const topZones=((top.affectedZones||[]).join(' '));
+      const isMarineAdv=/small craft|gale|storm warning/i.test(top.event||'') && topZones.indexOf('GMZ830')>=0;
+      function buildDet(baySec){
+        let det=baySec||'';
+        feats.slice(0,3).forEach(p=>{
+          const pr=p.properties||{};
+          det+='<div class="wx-d-sec"><b>'+esc(pr.event)+'</b>'+esc(pr.headline||'');
+          if(pr.description) det+='<br><br>'+esc(pr.description);
+          if(pr.instruction) det+='<br><br><i>'+esc(pr.instruction)+'</i>';
+          det+='</div>';
+        });
+        det+='<div class="wx-d-sec"><a class="wx-d-link" href="#/tides">View full forecast →</a></div>';
+        return det;
+      }
+      if(!isMarineAdv){ showBar(top.event, sub, buildDet('')); return; }
+      fetch('https://api.weather.gov/zones/forecast/GMZ830/forecast',{headers:{'User-Agent':'tampabayboating.com'}})
+        .then(r=>r.json())
+        .then(bj=>{
+          const bp=(((bj||{}).properties||{}).periods||[])[0];
+          if(!bp){ showBar(top.event, sub, buildDet('')); return; }
+          const txt=String(bp.detailedForecast||'');
+          const conv=(typeof windToMph==='function')?windToMph:((s)=>s);
+          const wm=txt.match(/[A-Za-z]+ winds? [^.]+/i);
+          const windTxt=wm?conv(wm[0].trim()):'';
+          const vm=txt.match(/waves (\d+)(?: to (\d+))? feet/i);
+          const waveTxt=vm?('waves '+vm[1]+(vm[2]?' to '+vm[2]:'')+' ft'):'';
+          let until='';
+          const endTs=top.ends||top.expires;
+          if(endTs){ const ed=new Date(endTs); const days=['Sun','Mon','Tue','Wed','Thu','Fri','Sat']; let hh=ed.getHours(); const ap=hh>=12?'PM':'AM'; hh=hh%12; if(hh===0)hh=12; until='until '+days[ed.getDay()]+' '+hh+' '+ap; }
+          const bits=[];
+          if(windTxt) bits.push(windTxt);
+          if(waveTxt) bits.push(waveTxt);
+          if(until) bits.push(until);
+          if(bits.length) sub='Tampa Bay: '+bits.join(' · ');
+          const baySec='<div class="wx-d-sec"><b>Tampa Bay waters — today</b><br>'+esc(txt)+'</div>';
+          showBar(top.event, sub, buildDet(baySec));
+        })
+        .catch(()=>{ showBar(top.event, sub, buildDet('')); });
     })
     .catch(()=>{
       /* NWS fetch failed — bar stays hidden */

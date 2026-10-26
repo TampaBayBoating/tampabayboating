@@ -3307,7 +3307,7 @@ document.getElementById('tbbc-save').addEventListener('click', function () {
 <style>
 #view-listyourboat .lb-form{max-width:560px;margin:0 auto}
 #view-listyourboat .lb-form label{display:block;font-weight:700;color:var(--navy);margin:16px 0 6px;font-size:.95rem}
-#view-listyourboat .lb-form input[type=text],#view-listyourboat .lb-form textarea{width:100%;box-sizing:border-box;padding:12px 14px;border:2px solid var(--line);border-radius:10px;font-size:16px;font-family:inherit;background:#fff}
+#view-listyourboat .lb-form input[type=text],#view-listyourboat .lb-form input[type=email],#view-listyourboat .lb-form textarea{width:100%;box-sizing:border-box;padding:12px 14px;border:2px solid var(--line);border-radius:10px;font-size:16px;font-family:inherit;background:#fff}
 #view-listyourboat .lb-form input[type=file]{width:100%;box-sizing:border-box;font-size:16px;padding:10px 0}
 #view-listyourboat .lb-form .lb-help{display:block;font-weight:400;color:var(--muted);font-size:.85rem;margin-top:4px}
 #view-listyourboat .lb-perm{display:flex;gap:10px;align-items:flex-start;margin-top:20px;font-weight:400;font-size:.95rem}
@@ -3329,14 +3329,14 @@ document.getElementById('tbbc-save').addEventListener('click', function () {
 <label for="lb-link">Link to your current listing &mdash; Marketplace, Boat Trader, etc.</label>
 <input type="text" id="lb-link" name="Listing link">
 <label for="lb-phone">Phone number to show buyers<span class="lb-help">Leave blank and buyers will reach you through your listing link instead.</span></label>
-<input type="text" id="lb-phone" name="Phone for buyers">
+<input type="text" id="lb-phone" name="Phone for buyers"> <label for="lb-email">Your email<span class="lb-help">So we can send you your live link &mdash; and the newsletter too, if you check the box below.</span></label> <input type="email" id="lb-email" name="Email">
 <label for="lb-photos">Photos<span class="lb-help">Up to a few photos &mdash; or skip this and we&rsquo;ll use the photos from your listing link.</span></label>
 <input type="file" id="lb-photos" name="attachment" accept="image/*">
 <label for="lb-details">Anything buyers should know &mdash; engines, hours, trailer, condition</label>
 <textarea id="lb-details" name="Details" rows="4"></textarea>
-<label class="lb-perm"><input type="checkbox" name="Permission" value="Yes" required><span>I give Tampa Bay Boating permission to show my boat, its photos, and my chosen contact info on TampaBayBoating.com &mdash; free, until it sells.</span></label>
+<label class="lb-perm"><input type="checkbox" name="Newsletter" value="Yes"><span>Also sign me up for <b>This Week on the Water</b> &mdash; Tampa Bay Boating&rsquo;s free weekly newsletter.</span></label> <label class="lb-perm"><input type="checkbox" name="Permission" value="Yes" required><span>I give Tampa Bay Boating permission to show my boat, its photos, and my chosen contact info on TampaBayBoating.com &mdash; free, until it sells.</span></label>
 <button type="submit" class="lb-submit">List My Boat &mdash; Free</button>
-</form>
+</form> <p class="lb-help" style="text-align:center; margin-top:14px">Already listed and sold your boat? Email <a href="mailto:david@tampabayboating.com">david@tampabayboating.com</a> and we&rsquo;ll take it down the same day.</p>
 </div>
 </section></div>
 <div class="view" id="view-listthanks"><div class="wrap"><a class="back-link" href="#/">&lsaquo; All categories</a></div><section id="listthanks">

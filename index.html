@@ -3286,9 +3286,9 @@ document.getElementById('tbbc-save').addEventListener('click', function () {
       <div class="search" style="margin:14px 0"><input id="owner-input" type="text" placeholder="Search boats..." oninput="renderOwner()"></div>
       <div class="dir-grid" id="owner-grid"></div>
       <div class="ad-cta" style="margin-top:20px">
-        <a href="mailto:david@tampabayboating.com?subject=Boat%20for%20sale%20listing&body=Boat%20(year%2Fmake%2Fmodel)%3A%0APrice%3A%0ALocation%3A%0ADescription%3A%0APhotos%3A%20(attach%20a%20few%20photos)">List your boat — $29 for 30 days</a>
+        <a href="#/listyourboat">List your boat — FREE</a>
       </div>
-      <p style="text-align:center; color:var(--muted); font-size:.85rem; margin-top:10px">Your boat with photos, in front of Tampa Bay boaters. Dealers: ask about monthly plans.</p>
+      <p style="text-align:center; color:var(--muted); font-size:.85rem; margin-top:10px">Your boat with photos, in front of Tampa Bay boaters — free until it sells. Dealers: ask about monthly plans.</p>
     </div>
     <div id="dealer-pane" style="display:none">
       <div class="search" style="margin:14px 0"><input id="dealer-input" type="text" placeholder="Search dealers..." oninput="renderDealers()"></div>
@@ -3298,6 +3298,57 @@ document.getElementById('tbbc-save').addEventListener('click', function () {
 
   </div>
 </div></div>
+
+<div class="view" id="view-listyourboat"><div class="wrap"><a class="back-link" href="#/">&lsaquo; All categories</a></div><section id="listyourboat">
+<div class="wrap">
+<div class="hub-head"><span class="sec-kicker">Boats for Sale</span>
+<h2>List Your Boat &mdash; Free</h2>
+<p>Selling your boat? Put it in front of Tampa Bay boaters &mdash; free, and it stays up until it sells. Fill this out and we&rsquo;ll post it within 24 hours and send you the link.</p></div>
+<style>
+#view-listyourboat .lb-form{max-width:560px;margin:0 auto}
+#view-listyourboat .lb-form label{display:block;font-weight:700;color:var(--navy);margin:16px 0 6px;font-size:.95rem}
+#view-listyourboat .lb-form input[type=text],#view-listyourboat .lb-form textarea{width:100%;box-sizing:border-box;padding:12px 14px;border:2px solid var(--line);border-radius:10px;font-size:16px;font-family:inherit;background:#fff}
+#view-listyourboat .lb-form input[type=file]{width:100%;box-sizing:border-box;font-size:16px;padding:10px 0}
+#view-listyourboat .lb-form .lb-help{display:block;font-weight:400;color:var(--muted);font-size:.85rem;margin-top:4px}
+#view-listyourboat .lb-perm{display:flex;gap:10px;align-items:flex-start;margin-top:20px;font-weight:400;font-size:.95rem}
+#view-listyourboat .lb-perm input{width:20px;height:20px;margin-top:2px;accent-color:var(--teal);flex:none}
+#view-listyourboat .lb-submit{width:100%;margin-top:22px;background:var(--teal);color:#fff;border:none;padding:15px;border-radius:10px;font-weight:800;font-size:1.05rem;cursor:pointer;font-family:inherit}
+</style>
+<form class="lb-form" method="POST" enctype="multipart/form-data" action="https://formsubmit.co/david@tampabayboating.com">
+<input type="hidden" name="_subject" value="New boat listing &mdash; TampaBayBoating.com">
+<input type="hidden" name="_template" value="table">
+<input type="hidden" name="_next" value="https://tampabayboating.com/#/listthanks">
+<label for="lb-name">Your name</label>
+<input type="text" id="lb-name" name="Name" required>
+<label for="lb-boat">Boat &mdash; year, make, model</label>
+<input type="text" id="lb-boat" name="Boat" placeholder="2018 Sea Pro 219" required>
+<label for="lb-price">Asking price</label>
+<input type="text" id="lb-price" name="Price" required>
+<label for="lb-city">City where the boat is</label>
+<input type="text" id="lb-city" name="City" required>
+<label for="lb-link">Link to your current listing &mdash; Marketplace, Boat Trader, etc.</label>
+<input type="text" id="lb-link" name="Listing link">
+<label for="lb-phone">Phone number to show buyers<span class="lb-help">Leave blank and buyers will reach you through your listing link instead.</span></label>
+<input type="text" id="lb-phone" name="Phone for buyers">
+<label for="lb-photos">Photos<span class="lb-help">Up to a few photos &mdash; or skip this and we&rsquo;ll use the photos from your listing link.</span></label>
+<input type="file" id="lb-photos" name="attachment" accept="image/*">
+<label for="lb-details">Anything buyers should know &mdash; engines, hours, trailer, condition</label>
+<textarea id="lb-details" name="Details" rows="4"></textarea>
+<label class="lb-perm"><input type="checkbox" name="Permission" value="Yes" required><span>I give Tampa Bay Boating permission to show my boat, its photos, and my chosen contact info on TampaBayBoating.com &mdash; free, until it sells.</span></label>
+<button type="submit" class="lb-submit">List My Boat &mdash; Free</button>
+</form>
+</div>
+</section></div>
+<div class="view" id="view-listthanks"><div class="wrap"><a class="back-link" href="#/">&lsaquo; All categories</a></div><section id="listthanks">
+<div class="wrap">
+<div class="sec-head"><span class="sec-kicker">Boats for Sale</span>
+<h2>You&rsquo;re in.</h2>
+<p>Thanks &mdash; your boat will be on TampaBayBoating.com within 24 hours. We&rsquo;ll reach out with your live link. Tell us when it sells and we&rsquo;ll take it down.</p></div>
+<div class="ad-cta">
+<a href="#/boatsales">See Boats for Sale</a>
+</div>
+</div>
+</section></div>
 
 <div class="view" id="view-etiquette"><div class="wrap"><a class="back-link" href="#/">&#8249; All categories</a></div><img class="hub-photo" loading="lazy" src="assets/banner-beercan.jpg" alt="Beer Can Island from the air" style="object-position:center">><div class="acc-item open" id="etiquette">
 <button class="acc-head" aria-expanded="false" onclick="toggleAcc(this)"> <span class="acc-title">Boating Etiquette</span> <span class="acc-chev" aria-hidden="true">&#9662;</span> </button>
@@ -5742,7 +5793,7 @@ function renderOwner(){
   document.getElementById("owner-grid").innerHTML = list.length ? list.map(b=>`
     <div class="dir-card"><div class="city">${b[3]}</div><h4>${b[0]}</h4><div class="type">${b[1]}</div>
     <div class="dir-price">${b[2]}</div><div class="contact"><svg class=ic aria-hidden=true><use href=#i-phone></use></svg> ${b[4]}</div></div>`).join("")
-    : '<div class="no-results">No boats listed yet — <b>be the first.</b> List yours for $29 and it shows up here.</div>';
+    : '<div class="no-results">No boats listed yet — <b>be the first.</b> List yours free and it shows up here.</div>';
 }
 function renderDealers(){
   const q = document.getElementById("dealer-input").value.trim().toLowerCase();
@@ -6192,8 +6243,8 @@ window.tbbSightMapInit = (function(){
 </script>
 <script>
 /* ---- SPA router: approved app-style redesign ---- */
-const ID2VIEW = {conditions:'tides',fishing:'fishing',events:'events',dining:'dining',baymap:'map',paddling:'paddling',ramps:'ramps',bridges:'bridges',logbook:'logbook',charters:'charters',fuel:'fuel',services:'services',detailing:'services',parts:'parts',storage:'storage','boat-clubs':'boat-clubs',navigation:'navigation',tips:'tips',safety:'safety',stopped:'stopped',manatee:'manatee',courses:'courses',hurricane:'hurricane',insurance:'insurance',shop:'shop',boatsales:'boatsales',gear:'gear',videos:'videos',meetups:'meetups',news:'news',newsletter:'newsletter',advertise:'advertise',contact:'contact','nav-charts':'navigation'};
-const VIEWS = ['home','plan','local','smart','newboater','maintenance','diagnostics','history','registration','rentals','springs','sightseeing','knowbeforeyougo','shopc','tides','fishing','events','dining','stay','map','paddling','ramps','bridges','logbook','savings','charters','fuel','services','parts','storage','boat-clubs','navigation','tips','safety','stopped','manatee','etiquette','courses','hurricane','insurance','shop','boatsales','gear','videos','cams','music','seasonal','meetups','news','newsletter','advertise','contact','about','privacy','terms','card'];
+const ID2VIEW = {conditions:'tides',fishing:'fishing',events:'events',dining:'dining',baymap:'map',paddling:'paddling',ramps:'ramps',bridges:'bridges',logbook:'logbook',charters:'charters',fuel:'fuel',services:'services',detailing:'services',parts:'parts',storage:'storage','boat-clubs':'boat-clubs',navigation:'navigation',tips:'tips',safety:'safety',stopped:'stopped',manatee:'manatee',courses:'courses',hurricane:'hurricane',insurance:'insurance',shop:'shop',boatsales:'boatsales',listyourboat:'listyourboat',listthanks:'listthanks',gear:'gear',videos:'videos',meetups:'meetups',news:'news',newsletter:'newsletter',advertise:'advertise',contact:'contact','nav-charts':'navigation'};
+const VIEWS = ['home','plan','local','smart','newboater','maintenance','diagnostics','history','registration','rentals','springs','sightseeing','knowbeforeyougo','shopc','tides','fishing','events','dining','stay','map','paddling','ramps','bridges','logbook','savings','charters','fuel','services','parts','storage','boat-clubs','navigation','tips','safety','stopped','manatee','etiquette','courses','hurricane','insurance','shop','boatsales','listyourboat','listthanks','gear','videos','cams','music','seasonal','meetups','news','newsletter','advertise','contact','about','privacy','terms','card'];
 function showView(name){
   if(VIEWS.indexOf(name)<0) name='home';
   document.querySelectorAll('.view').forEach(function(v){v.classList.remove('active');});
@@ -6393,7 +6444,7 @@ window.TBB_FUEL_DEAL = {
 <!-- FUEL-DEAL-DATA-END -->
 <!-- FUEL-PRICES-DATA-START -->
 <script>
-window.TBB_FUEL_PRICES = [{"pin": "Wawa \u2014 W Gandy Blvd, Tampa", "store": 5301, "lat": 27.89312, "lng": -82.50456, "e0": 4.699, "diesel": 6.199}, {"pin": "Wawa \u2014 W Hillsborough Ave, Tampa", "store": 5311, "lat": 27.99628, "lng": -82.56433, "e0": 4.829, "diesel": 6.159}, {"pin": "Wawa \u2014 Bloomingdale Ave, Riverview", "store": 5133, "lat": 27.89338, "lng": -82.33574, "e0": 4.699, "diesel": 6.119}, {"pin": "Wawa \u2014 Gandy Blvd, Pinellas Park", "store": 5110, "lat": 27.84562, "lng": -82.67738, "e0": 4.789, "diesel": 6.199}, {"pin": "Wawa \u2014 53rd Ave E, Bradenton", "store": 5203, "lat": 27.44541, "lng": -82.5049, "e0": 4.799, "diesel": 6.199}, {"pin": "Wawa \u2014 1st St E, Bradenton", "store": 5165, "lat": 27.493289, "lng": -82.562386, "e0": 4.829, "diesel": 6.199}, {"pin": "Wawa \u2014 SR-60, Valrico", "store": 5152, "lat": 27.93851, "lng": -82.235904, "e0": 4.699, "diesel": 6.159}, {"pin": "Wawa \u2014 S Tamiami Trail, Nokomis", "store": 5281, "lat": 27.1243, "lng": -82.454153, "e0": 4.839, "diesel": 6.199}, {"pin": "Wawa \u2014 Boyette Rd, Riverview", "store": 5286, "lat": 27.85296, "lng": -82.26997, "e0": 4.799, "diesel": 6.199}, {"pin": "Wawa \u2014 US-301, Gibsonton", "store": 5167, "lat": 27.85843, "lng": -82.32759, "e0": 4.699, "diesel": 6.199}, {"pin": "Wawa \u2014 Gulf to Bay Blvd, Clearwater", "store": 5163, "lat": 27.959961, "lng": -82.74743, "e0": 4.799, "diesel": 6.199}, {"pin": "Wawa \u2014 Walsingham Rd, Largo", "store": 5147, "lat": 27.879893, "lng": -82.815446, "e0": 4.869, "diesel": 6.199}, {"pin": "Wawa \u2014 Ulmerton Rd, Largo", "store": 5141, "lat": 27.893795, "lng": -82.763085, "e0": 4.819, "diesel": 6.199}, {"pin": "Wawa \u2014 N Dale Mabry Hwy, Tampa", "store": 5191, "lat": 28.093413, "lng": -82.503031, "e0": 4.739, "diesel": 6.199}, {"pin": "Wawa \u2014 E Fletcher Ave, Tampa", "store": 5199, "lat": 28.068681, "lng": -82.431461, "e0": 4.849, "diesel": 6.199}, {"pin": "Wawa \u2014 US-19, Holiday", "store": 5181, "lat": 28.186923, "lng": -82.740788, "e0": 4.799, "diesel": 6.159}, {"pin": "Wawa \u2014 Thonotosassa Rd, Plant City", "store": 5162, "lat": 28.025897, "lng": -82.151831, "e0": 4.719, "diesel": 6.199}, {"pin": "Wawa \u2014 1760 W Hillsborough Ave, Tampa", "store": 5183, "lat": 27.995491, "lng": -82.477993, "e0": 4.719, "diesel": 6.199}, {"pin": "Wawa \u2014 34th St S, St. Petersburg", "store": 5306, "lat": 27.734887, "lng": -82.680034, "e0": 4.839, "diesel": 6.199}, {"pin": "Wawa \u2014 4th St N, St. Petersburg", "store": 5252, "lat": 27.851146, "lng": -82.638475, "e0": 4.799, "diesel": 6.199}, {"pin": "Wawa \u2014 Missouri Ave N, Largo", "store": 5176, "lat": 27.928822, "lng": -82.788522, "e0": 4.819, "diesel": 6.199}, {"pin": "Wawa \u2014 SR 64 E, Bradenton", "store": 5178, "lat": 27.499006, "lng": -82.508297, "e0": 4.799, "diesel": 6.199}, {"pin": "Wawa \u2014 S Tamiami Trl, Venice", "store": 5216, "lat": 27.049448, "lng": -82.405574, "e0": 4.769, "diesel": 6.199}, {"pin": "Wawa \u2014 Times Cir, Venice", "store": 5225, "lat": 27.105602, "lng": -82.383505, "e0": 4.529, "diesel": 6.149}, {"pin": "Wawa \u2014 Maren Way, Land O' Lakes", "store": 5267, "lat": 28.189659, "lng": -82.400359, "e0": 4.619, "diesel": 6.199}];
+window.TBB_FUEL_PRICES = [{"pin": "Wawa \u2014 W Gandy Blvd, Tampa", "store": 5301, "lat": 27.89312, "lng": -82.50456, "e0": 4.699, "diesel": 6.199}, {"pin": "Wawa \u2014 W Hillsborough Ave, Tampa", "store": 5311, "lat": 27.99628, "lng": -82.56433, "e0": 4.829, "diesel": 6.159}, {"pin": "Wawa \u2014 Bloomingdale Ave, Riverview", "store": 5133, "lat": 27.89338, "lng": -82.33574, "e0": 4.699, "diesel": 6.119}, {"pin": "Wawa \u2014 Gandy Blvd, Pinellas Park", "store": 5110, "lat": 27.84562, "lng": -82.67738, "e0": 4.789, "diesel": 6.199}, {"pin": "Wawa \u2014 53rd Ave E, Bradenton", "store": 5203, "lat": 27.44541, "lng": -82.5049, "e0": 4.799, "diesel": 6.199}, {"pin": "Wawa \u2014 1st St E, Bradenton", "store": 5165, "lat": 27.493289, "lng": -82.562386, "e0": 4.829, "diesel": 6.199}, {"pin": "Wawa \u2014 SR-60, Valrico", "store": 5152, "lat": 27.93851, "lng": -82.235904, "e0": 4.699, "diesel": 6.159}, {"pin": "Wawa \u2014 S Tamiami Trail, Nokomis", "store": 5281, "lat": 27.1243, "lng": -82.454153, "e0": 4.839, "diesel": 6.199}, {"pin": "Wawa \u2014 Boyette Rd, Riverview", "store": 5286, "lat": 27.85296, "lng": -82.26997, "e0": 4.799, "diesel": 6.199}, {"pin": "Wawa \u2014 US-301, Gibsonton", "store": 5167, "lat": 27.85843, "lng": -82.32759, "e0": 4.699, "diesel": 6.199}, {"pin": "Wawa \u2014 Gulf to Bay Blvd, Clearwater", "store": 5163, "lat": 27.959961, "lng": -82.74743, "e0": 4.799, "diesel": 6.199}, {"pin": "Wawa \u2014 Walsingham Rd, Largo", "store": 5147, "lat": 27.879893, "lng": -82.815446, "e0": 4.869, "diesel": 6.199}, {"pin": "Wawa \u2014 Ulmerton Rd, Largo", "store": 5141, "lat": 27.893795, "lng": -82.763085, "e0": 4.819, "diesel": 6.199}, {"pin": "Wawa \u2014 N Dale Mabry Hwy, Tampa", "store": 5191, "lat": 28.093413, "lng": -82.503031, "e0": 4.739, "diesel": 6.199}, {"pin": "Wawa \u2014 E Fletcher Ave, Tampa", "store": 5199, "lat": 28.068681, "lng": -82.431461, "e0": 4.849, "diesel": 6.199}, {"pin": "Wawa \u2014 US-19, Holiday", "store": 5181, "lat": 28.186923, "lng": -82.740788, "e0": 4.799, "diesel": 6.159}, {"pin": "Wawa \u2014 Thonotosassa Rd, Plant City", "store": 5162, "lat": 28.025897, "lng": -82.151831, "e0": 4.719, "diesel": 6.199}, {"pin": "Wawa \u2014 1760 W Hillsborough Ave, Tampa", "store": 5183, "lat": 27.995491, "lng": -82.477993, "e0": 4.719, "diesel": 6.199}, {"pin": "Wawa \u2014 34th St S, St. Petersburg", "store": 5306, "lat": 27.734887, "lng": -82.680034, "e0": 4.839, "diesel": 6.199}, {"pin": "Wawa \u2014 4th St N, St. Petersburg", "store": 5252, "lat": 27.851146, "lng": -82.638475, "e0": 4.799, "diesel": 6.199}, {"pin": "Wawa \u2014 Missouri Ave N, Largo", "store": 5176, "lat": 27.928822, "lng": -82.788522, "e0": 4.819, "diesel": 6.199}, {"pin": "Wawa \u2014 SR 64 E, Bradenton", "store": 5178, "lat": 27.499006, "lng": -82.508297, "e0": 4.799, "diesel": 6.199}, {"pin": "Wawa \u2014 S Tamiami Trl, Venice", "store": 5216, "lat": 27.049448, "lng": -82.405574, "e0": 4.769, "diesel": 6.199}, {"pin": "Wawa \u2014 Times Cir, Venice", "store": 5225, "lat": 27.105602, "lng": -82.383505, "e0": 4.529, "diesel": 6.139}, {"pin": "Wawa \u2014 Maren Way, Land O' Lakes", "store": 5267, "lat": 28.189659, "lng": -82.400359, "e0": 4.599, "diesel": 6.159}];
 window.TBB_FUEL_PRICES_DATE = "Oct 26";
 </script>
 <!-- FUEL-PRICES-DATA-END -->

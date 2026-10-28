@@ -409,6 +409,9 @@ section{padding:40px 0}
 .lang-row .check{margin-left:auto;color:#0072B2;font-weight:700;visibility:hidden}
 .lang-row.active{background:#EEF6F9;font-weight:600}
 .lang-row.active .check{visibility:visible}
+.lang-search{padding:2px 0 8px}
+.lang-search input{width:100%;box-sizing:border-box;padding:10px;border:1px solid #bcd9e8;border-radius:8px;font-size:.95rem;font-family:inherit;color:#0b3d62;background:#fff}
+.lang-search input:focus{outline:2px solid #0072B2;border-color:#0072B2}
 .goog-te-banner-frame{display:none !important}
 iframe.goog-te-banner-frame{display:none !important}
 .goog-te-banner-frame.skiptranslate{display:none !important}
@@ -1310,7 +1313,7 @@ body.dark body.dark /* ---- Tampa Bay Boating Shop ---- */
     <div class="tb-search-box"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg><input id="site-search" type="search" placeholder="Search pages, places, ramps..." aria-label="Search the site" autocomplete="off"></div>
     <div class="tb-search-results" id="search-results"></div>
   </div>
-  <div class="tb-translate" id="translate-panel"><div class="lang-list" role="menu" aria-label="Choose language">
+  <div class="tb-translate" id="translate-panel"><div class="lang-search"><input id="lang-q" type="text" placeholder="Search languages\u2026" aria-label="Search languages" autocomplete="off"></div><div class="lang-list" role="menu" aria-label="Choose language">
 <button class="lang-row active" data-lang="en"><span class="flag">🇺🇸</span>English<span class="check">&#10003;</span></button>
 <button class="lang-row" data-lang="af"><span class="flag">🇿🇦</span>Afrikaans<span class="check">&#10003;</span></button>
 <button class="lang-row" data-lang="sq"><span class="flag">🇦🇱</span>Shqip<span class="check">&#10003;</span></button>
@@ -1414,7 +1417,7 @@ body.dark body.dark /* ---- Tampa Bay Boating Shop ---- */
 <button class="lang-row" data-lang="xh"><span class="flag">🇿🇦</span>isiXhosa<span class="check">&#10003;</span></button>
 <button class="lang-row" data-lang="yi"><span class="flag">🌐</span>ייִדיש<span class="check">&#10003;</span></button>
 <button class="lang-row" data-lang="yo"><span class="flag">🇳🇬</span>Yorùbá<span class="check">&#10003;</span></button>
-<button class="lang-row" data-lang="zu"><span class="flag">🇿🇦</span>isiZulu<span class="check">&#10003;</span></button>
+<button class="lang-row" data-lang="zu"><span class="flag">🇿🇦</span>isiZulu<span class="check">&#10003;</span></button><div id="lang-none" style="display:none;padding:10px;font-size:.9rem;color:#445A6A">No language matches</div>
 </div></div>
 <div class="tb-gadget-hidden" aria-hidden="true"><div id="google_translate_element"></div></div>
 </header>
@@ -6650,6 +6653,26 @@ document.addEventListener('click',function(e){ var p=document.getElementById('tr
   var cur=m?m[1]:'en';
   rows.forEach(function(r){ r.classList.toggle('active', r.getAttribute('data-lang')===cur); });
   rows.forEach(function(r){ r.addEventListener('click',function(){ gtSet(r.getAttribute('data-lang')); location.reload(); }); });
+})();
+</script>
+<script>
+/* Language search: filter the 104 rows by native name, English name, or code */
+(function(){
+  var EN = {"en": "English", "af": "Afrikaans", "sq": "Albanian", "am": "Amharic", "ar": "Arabic", "hy": "Armenian", "az": "Azerbaijani", "eu": "Basque", "be": "Belarusian", "bn": "Bengali", "bs": "Bosnian", "bg": "Bulgarian", "ca": "Catalan", "ceb": "Cebuano", "zh-CN": "Chinese Simplified", "zh-TW": "Chinese Traditional", "co": "Corsican", "hr": "Croatian", "cs": "Czech", "da": "Danish", "nl": "Dutch", "eo": "Esperanto", "et": "Estonian", "fi": "Finnish", "fr": "French", "fy": "Frisian", "gl": "Galician", "ka": "Georgian", "de": "German", "el": "Greek", "gu": "Gujarati", "ht": "Haitian Creole", "ha": "Hausa", "haw": "Hawaiian", "iw": "Hebrew", "hi": "Hindi", "hmn": "Hmong", "hu": "Hungarian", "is": "Icelandic", "ig": "Igbo", "id": "Indonesian", "ga": "Irish", "it": "Italian", "ja": "Japanese", "jv": "Javanese", "kn": "Kannada", "kk": "Kazakh", "km": "Khmer", "ko": "Korean", "ku": "Kurdish", "ky": "Kyrgyz", "lo": "Lao", "la": "Latin", "lv": "Latvian", "lt": "Lithuanian", "lb": "Luxembourgish", "mk": "Macedonian", "mg": "Malagasy", "ms": "Malay", "ml": "Malayalam", "mt": "Maltese", "mi": "Maori", "mr": "Marathi", "mn": "Mongolian", "my": "Myanmar Burmese", "ne": "Nepali", "no": "Norwegian", "ny": "Nyanja Chichewa", "ps": "Pashto", "fa": "Persian", "pl": "Polish", "pt": "Portuguese", "pa": "Punjabi", "ro": "Romanian", "ru": "Russian", "sm": "Samoan", "gd": "Scots Gaelic", "sr": "Serbian", "st": "Sesotho", "sn": "Shona", "sd": "Sindhi", "si": "Sinhala", "sk": "Slovak", "sl": "Slovenian", "so": "Somali", "es": "Spanish", "su": "Sundanese", "sw": "Swahili", "sv": "Swedish", "tl": "Tagalog Filipino", "tg": "Tajik", "ta": "Tamil", "te": "Telugu", "th": "Thai", "tr": "Turkish", "uk": "Ukrainian", "ur": "Urdu", "uz": "Uzbek", "vi": "Vietnamese", "cy": "Welsh", "xh": "Xhosa", "yi": "Yiddish", "yo": "Yoruba", "zu": "Zulu"};
+  function norm(s){ return (s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,''); }
+  var q = document.getElementById('lang-q'); if(!q) return;
+  var rows = Array.prototype.slice.call(document.querySelectorAll('#translate-panel .lang-row'));
+  var none = document.getElementById('lang-none');
+  q.addEventListener('click', function(e){ e.stopPropagation(); });
+  q.addEventListener('input', function(){
+    var t = norm(q.value.trim()), shown = 0;
+    rows.forEach(function(r){
+      var code = r.getAttribute('data-lang');
+      var hit = !t || norm(r.textContent).indexOf(t) >= 0 || norm(EN[code]||'').indexOf(t) >= 0 || code.toLowerCase() === t;
+      r.style.display = hit ? '' : 'none'; if(hit) shown++;
+    });
+    if(none) none.style.display = shown ? 'none' : '';
+  });
 })();
 </script>
 <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>

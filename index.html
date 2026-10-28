@@ -535,6 +535,24 @@ body.dark .cat-card{background:#0E2A3F}
 .wv-ruler{position:relative;height:24px;margin-top:1px}
 .wv-tick{position:absolute;top:0;width:1px;height:6px;background:rgba(185,210,228,.55)}
 .wv-tnum{position:absolute;top:8px;font-size:.58rem;font-style:normal;color:#b9d2e4;transform:translateX(-50%)}
+.wv-tabs{display:flex;gap:6px;margin-bottom:12px}
+.wv-tab{flex:1;padding:9px 4px;border-radius:10px;border:1px solid rgba(185,210,228,.45);background:transparent;color:#dcebf5;font-weight:700;font-size:.88rem;cursor:pointer;font-family:inherit}
+.wv-tab.on{background:#8fd0f0;color:#0a2540;border-color:#8fd0f0}
+.wv-panel[hidden]{display:none}
+.wv-picker{margin-top:14px;border-top:1px dashed rgba(185,210,228,.35);padding-top:12px}
+.wv-pick-h{font-size:.8rem;text-transform:uppercase;letter-spacing:2px;color:var(--sun);font-weight:800;margin-bottom:4px}
+.wv-pick-sub{font-size:.86rem;color:#b9d2e4;line-height:1.5;margin:0 0 8px}
+.wv-pick-row{display:flex;gap:8px;margin-bottom:8px}
+.wv-pick-row input{flex:1;min-width:0;padding:9px 12px;border-radius:10px;border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.08);color:#fff;font-size:.95rem;font-family:inherit}
+.wv-pick-row input::placeholder{color:#8fa8bd}
+.wv-go{background:#FFB703;color:#0a2540;border:2px solid #0a2540;border-radius:10px;font-weight:800;padding:9px 18px;cursor:pointer;font-family:inherit}
+.wv-chips{display:flex;flex-wrap:wrap;gap:6px}
+.wv-chip{border:1px solid rgba(185,210,228,.5);background:transparent;color:#dcebf5;border-radius:999px;padding:5px 11px;font-size:.8rem;font-weight:600;cursor:pointer;font-family:inherit}
+.wv-chip.on{background:#8fd0f0;color:#0a2540;border-color:#8fd0f0}
+.wv-anote{font-size:.78rem;color:#8fa8bd;margin-top:4px}
+.wv-plain{margin:10px 0 4px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);border-radius:12px;padding:12px 14px}
+.wv-plain h4{margin:0 0 6px;font-size:.78rem;letter-spacing:2px;text-transform:uppercase;color:var(--sun)}
+.wv-plain p{margin:0;font-size:.95rem;line-height:1.55;color:#eaf3fa}
 .support-card{background:#dbe9f4;border-radius:16px;padding:28px;max-width:720px;margin:0 auto;box-shadow:0 6px 18px rgba(10,37,64,.07)}
 .support-card h3{color:#0a2540;font-size:1.3rem;margin:0 0 10px}
 .support-card p{color:#0a2540;font-size:.95rem;margin-bottom:18px}
@@ -1861,7 +1879,25 @@ if(typeof document!=='undefined'){
       </div>
       <div class="cond-card" id="wave-card">
         <h3>Jet Ski Wave Report</h3>
+        <div class="wv-tabs" role="tablist" aria-label="Jet ski report sections">
+          <button type="button" class="wv-tab on" onclick="wvTab('today',this)">Today</button>
+          <button type="button" class="wv-tab" onclick="wvTab('plain',this)">Plain English</button>
+          <button type="button" class="wv-tab" onclick="wvTab('spot',this)">Your Spot</button>
+        </div>
         <div id="wave-body"><p class="cond-fallback">Checking the Gulf…</p></div>
+        <div id="wv-plain-panel" class="wv-panel" hidden><p class="wv-anote">One moment…</p></div>
+        <div id="wv-spot-panel" class="wv-panel" hidden>
+        <div class="wv-picker" style="margin-top:0;border-top:0;padding-top:0">
+          <div class="wv-pick-h">Your spot</div>
+          <p class="wv-pick-sub">That report is the big picture. Pick your area — or type it, or a ZIP code — for its own bars.</p>
+          <div class="wv-pick-row">
+            <input id="wv-input" type="text" placeholder="Area or ZIP — e.g. Clearwater or 33755" aria-label="Type your area or ZIP code">
+            <button type="button" class="wv-go" onclick="wvGo()">Go</button>
+          </div>
+          <div class="wv-chips" id="wv-chips"></div>
+          <div id="wv-area"></div>
+        </div>
+        </div>
       </div>
       <div class="cond-card">
         <h3>Doppler Radar</h3>
@@ -5898,6 +5934,61 @@ function renderMarine(){
 function refreshMarine(){ if(marineNow) renderMarine(); else loadMarine(); }
 
 
+const WV_AREAS = {
+  tampa:{name:"Tampa Bay", zone:"GMZ830"}, oldtb:{name:"Old Tampa Bay", zone:"GMZ830"},
+  stpete:{name:"St. Petersburg", zone:"GMZ853"}, bocaciega:{name:"Boca Ciega Bay", zone:"GMZ853"},
+  clearwater:{name:"Clearwater", zone:"GMZ853"}, desoto:{name:"Fort De Soto", zone:"GMZ853"},
+  ruskin:{name:"Ruskin", zone:"GMZ830"}, apollo:{name:"Apollo Beach", zone:"GMZ830"},
+  riverview:{name:"Riverview", zone:"GMZ830"}, palmetto:{name:"Palmetto", zone:"GMZ830"},
+  bradenton:{name:"Bradenton", zone:"GMZ830"}, egmont:{name:"Egmont Key", zone:"GMZ853"},
+  ami:{name:"Anna Maria Island", zone:"GMZ853"}, cortez:{name:"Cortez", zone:"GMZ853"},
+  longboat:{name:"Longboat Key", zone:"GMZ853"}, sarasota:{name:"Sarasota", zone:"GMZ853"}
+};
+const WV_ZIPS = {"33602":"tampa","33603":"tampa","33604":"tampa","33605":"tampa","33606":"tampa","33607":"tampa","33609":"tampa","33611":"tampa","33616":"tampa","33619":"tampa","33634":"tampa","33635":"tampa","34677":"oldtb","34695":"oldtb","33701":"stpete","33702":"stpete","33703":"stpete","33704":"stpete","33705":"stpete","33710":"stpete","33711":"stpete","33712":"stpete","33713":"stpete","33714":"stpete","33706":"bocaciega","33707":"bocaciega","33708":"bocaciega","33772":"bocaciega","33715":"desoto","33755":"clearwater","33756":"clearwater","33759":"clearwater","33761":"clearwater","33763":"clearwater","33764":"clearwater","33765":"clearwater","33767":"clearwater","33570":"ruskin","33571":"ruskin","33572":"apollo","33569":"riverview","33578":"riverview","33579":"riverview","33596":"riverview","34221":"palmetto","34222":"palmetto","34203":"bradenton","34205":"bradenton","34207":"bradenton","34208":"bradenton","34209":"bradenton","34210":"bradenton","34216":"ami","34217":"ami","34215":"cortez","34228":"longboat","34231":"sarasota","34232":"sarasota","34236":"sarasota","34239":"sarasota","34243":"sarasota"};
+function wvPctBar(score){ if(score==null) return ""; const bb = tbbBandFor(score); const left = Math.max(3, Math.min(97, 100 - score)); return '<span class="mini-track"><span class="mini-dot on ' + bb.cls + '" style="left:' + left + '%"></span></span>'; }
+function wvRuler(){ let t = ''; for(let i = 0; i <= 20; i++){ const l = i * 5; const tr = i === 0 ? 'transform:none' : i === 20 ? 'transform:translateX(-100%)' : ''; t += '<i class="wv-tick" style="left:' + l + '%' + (i === 20 ? ';margin-left:-1px' : '') + '"></i><i class="wv-tnum" style="left:' + l + '%;' + tr + '">' + i + '</i>'; } return '<div class="wv-ruler">' + t + '</div>'; }
+function wvHBar(lo, hi){ if(lo==null || hi==null) return ""; const l = Math.max(0, lo/20*100), w = Math.max(3, (hi-lo)/20*100); const col = hi<=2 ? "#57a639" : hi<=4 ? "#d9a400" : hi<=7 ? "#e07b28" : "#c0392b"; return '<div class="wv-hbar"><span class="wv-hseg" style="left:' + l + '%;width:' + w + '%;background:' + col + '"></span></div>' + wvRuler(); }
+function wvZoneBlock(name, score, lo, hi){ if(score==null && lo==null) return ""; const bb = score!=null ? tbbBandFor(score) : null; return '<div class="wv-zone"><div class="wv-zline"><b>' + name + '</b>' + (score!=null ? '<b class="wv-pct ' + bb.cls + '">' + score + '%</b>' : '') + '</div>' + wvPctBar(score) + '<div class="wv-hlbl" style="margin-top:8px"><span>Wave height</span></div>' + wvHBar(lo, hi) + '</div>'; }
+async function wvShowArea(key){
+  const box = document.getElementById("wv-area"); if(!box) return;
+  const a = WV_AREAS[key]; if(!a) return;
+  document.querySelectorAll('.wv-chip').forEach(function(c){ c.classList.toggle('on', c.getAttribute('data-k') === key); });
+  box.innerHTML = '<p class="wv-anote">Checking ' + a.name + '\u2026</p>';
+  try{
+    let d = (window._wvData || {})[a.zone];
+    if(!d){
+      const per = await getMarinePeriods(a.zone);
+      const bk = groupMarine(per)[0]; const ps = bk ? [bk.day, bk.night].filter(Boolean) : [];
+      const sc = ps.length ? tbbVerdict(ps).score : null;
+      const t0 = String((ps[0]||{}).detailedForecast||"").toLowerCase();
+      let lo = null, hi = null;
+      const sm2 = t0.match(/seas[^0-9]{0,14}(\d+)\s*(?:to\s*(\d+))?\s*(?:feet|foot)/);
+      if(sm2){ lo = parseInt(sm2[1],10); hi = parseInt(sm2[2]||sm2[1],10); }
+      else { const cm = t0.match(/(very rough|light chop|moderate chop|smooth|choppy|rough)/); const CR = {"smooth":[0,1],"light chop":[1,2],"moderate chop":[1,2],"choppy":[2,3],"rough":[3,4],"very rough":[4,6]}; if(cm && CR[cm[1]]){ lo = CR[cm[1]][0]; hi = CR[cm[1]][1]; } }
+      d = {score: sc, lo: lo, hi: hi};
+    }
+    const zoneName = a.zone === "GMZ830" ? "Tampa Bay waters forecast" : "Gulf coastal waters forecast";
+    box.innerHTML = wvZoneBlock(a.name, d.score, d.lo, d.hi) + '<div class="wv-anote">From the ' + zoneName + ' \u2014 the same forecast behind the general report above.</div>';
+  }catch(e){ box.innerHTML = '<p class="wv-anote">Could not load that area right now.</p>'; }
+}
+function wvGo(){
+  const inp = document.getElementById("wv-input"); const box = document.getElementById("wv-area");
+  const q = ((inp && inp.value) || "").trim().toLowerCase(); if(!q) return;
+  let key = null;
+  if(/^\d{5}$/.test(q)) key = WV_ZIPS[q] || null;
+  if(!key){ for(const k in WV_AREAS){ if(WV_AREAS[k].name.toLowerCase() === q){ key = k; break; } } }
+  if(!key){ for(const k in WV_AREAS){ const n = WV_AREAS[k].name.toLowerCase(); if(n.indexOf(q) >= 0 || q.indexOf(n) >= 0){ key = k; break; } } }
+  if(key) wvShowArea(key);
+  else if(box) box.innerHTML = '<p class="wv-anote">That is outside the Tampa Bay area we cover \u2014 try Clearwater, St. Petersburg, Fort De Soto, Sarasota\u2026</p>';
+}
+function wvTab(which, btn){
+  document.querySelectorAll('.wv-tab').forEach(function(t){ t.classList.remove('on'); });
+  if(btn) btn.classList.add('on');
+  const b = document.getElementById("wave-body"), p = document.getElementById("wv-plain-panel"), sp = document.getElementById("wv-spot-panel");
+  if(b) b.style.display = which === 'today' ? '' : 'none';
+  if(p) p.hidden = which !== 'plain';
+  if(sp) sp.hidden = which !== 'spot';
+}
 async function loadWaves(){
   const card = document.getElementById("wave-card");
   const body = document.getElementById("wave-body");
@@ -5965,6 +6056,7 @@ async function loadWaves(){
       function zoneBlock(name, score, hLbl, lo, hi){ if(score==null && lo==null) return ""; const bb = score!=null ? tbbBandFor(score) : null; return '<div class="wv-zone"><div class="wv-zline"><b>' + name + '</b>' + (score!=null ? '<b class="wv-pct ' + bb.cls + '">' + score + '%</b>' : '') + '</div>' + pctBar(score) + '<div class="wv-hlbl" style="margin-top:8px"><span>Wave height</span></div>' + hBar(lo, hi) + '</div>'; }
       barsHTML = zoneBlock("Inside Tampa Bay", bScore, bayLabel + (bRange ? ' \u00b7 \u2248 ' + bRange[0] + '\u2013' + bRange[1] + ' ft' : ''), bRange ? bRange[0] : null, bRange ? bRange[1] : null)
                + zoneBlock("Outside the Bay \u00b7 Gulf", gScore, seasLabel, gLo, gHi);
+      window._wvData = { "GMZ830": {score: bScore, lo: bRange ? bRange[0] : null, hi: bRange ? bRange[1] : null}, "GMZ853": {score: gScore, lo: gLo, hi: gHi} };
     }catch(e){ barsHTML = ""; }
     let rating;
     if(sca && todayMax >= 6){
@@ -5984,6 +6076,43 @@ async function loadWaves(){
     else if(todayMax===5) rating = "Heavy water \u2014 your day if you're experienced. Top end, though: ride with a buddy watching, or don't ride.";
     else rating = "Too big \u2014 even the pros sit this one out. Stay in the bay.";
     if(!sca && dm){ const per = parseInt(dm[3],10); if(per<=4 && todayMax>=3) rating += " Short-period wind chop though \u2014 messy faces, not clean rollers."; else if(per>=6 && todayMax>=2 && todayMax<=4) rating += " Clean, long-period rollers \u2014 the best shape it gets here."; }
+    let plainHTML = "";
+    try{
+      function windOf(t){ const m = String(t||"").match(/([A-Za-z]+) winds? (?:around )?(\d+)(?: to (\d+))? knots?(?: with gusts (?:up )?to (\d+))?/i); if(!m) return null; const mph = function(kt){ return Math.round(kt*1.15078); }; return { dir: m[1].toLowerCase(), lo: mph(parseInt(m[2],10)), hi: mph(parseInt(m[3]||m[2],10)), gust: m[4] ? mph(parseInt(m[4],10)) : 0 }; }
+      const wUse = windOf(bp && bp.detailedForecast) || windOf(gp && gp.detailedForecast);
+      let tideTxt = "";
+      try{
+        const tr = await fetch("https://api.tidesandcurrents.noaa.gov/api/prod/datagetter?date=today&station=8726674&product=predictions&datum=MLLW&time_zone=lst_ldt&units=english&interval=hilo&format=json", {headers:{"User-Agent":"tampabayboating.com"}, signal:sig});
+        const tj = await tr.json(); const now2 = Date.now();
+        const nx = (tj.predictions||[]).map(function(pp){ return {type: pp.type, t: new Date(String(pp.t).replace(" ","T"))}; }).filter(function(x){ return x.t.getTime() > now2; }).sort(function(a,b){ return a.t - b.t; })[0];
+        if(nx){ let hh = nx.t.getHours(); const ap = hh >= 12 ? "PM" : "AM"; hh = hh % 12; if(hh === 0) hh = 12; const mm2 = nx.t.getMinutes(); const tstr = hh + (mm2 ? ":" + String(mm2).padStart(2,"0") : "") + " " + ap;
+          if(nx.type === "L") tideTxt = "The tide is running out of the bay until about " + tstr + ". Where that outgoing water meets the waves coming in \u2014 the passes \u2014 the water stacks up steep and rough. The passes are the worst water around until the tide turns.";
+          else tideTxt = "The tide is coming in until about " + tstr + ". Incoming water moves the same way as the incoming waves, so the passes stay a little calmer than they would on an outgoing tide.";
+        }
+      }catch(e){}
+      const bits = [];
+      if(wUse) bits.push("The wind is blowing from the " + wUse.dir + " at " + (wUse.lo === wUse.hi ? wUse.lo + " mph" : wUse.lo + "\u2013" + wUse.hi + " mph") + (wUse.gust ? ", gusting to " + wUse.gust + " mph" : "") + ".");
+      const dl = wUse ? wUse.dir : "";
+      if(dl === "northeast" || dl === "east") bits.push("A wind off the land pushes the bay's chop toward the Pinellas side and piles waves up where the bay meets the Gulf. Out in the Gulf it does not build new waves \u2014 but the swell already rolling in still breaks hard at the passes.");
+      else if(dl === "north" || dl === "southeast") bits.push("That wind runs the length of the bay, so the chop builds the farther you go \u2014 the lower bay and the passes take the worst of it.");
+      else if(dl === "south" || dl === "southwest" || dl === "west") bits.push("That wind comes off the Gulf and pushes water straight at the beaches and into the passes \u2014 there is no sheltered side out there, and it shoves bay chop up toward Tampa.");
+      else if(dl === "northwest") bits.push("That wind comes off the Gulf at an angle \u2014 it roughs up the beaches and passes and pushes bay chop toward the east shore.");
+      if(seasHi){ const feel = seasHi <= 1 ? "ankle-high \u2014 basically flat" : seasHi === 2 ? "about knee-high" : seasHi === 3 ? "about waist-high" : seasHi <= 5 ? "about chest-high \u2014 that will toss a jet ski around" : "head-high or bigger \u2014 serious water"; bits.push("In the Gulf the waves are " + seasLabel + " \u2014 " + feel + "."); }
+      const bR2 = (window._wvData && window._wvData.GMZ830 && window._wvData.GMZ830.lo != null) ? [window._wvData.GMZ830.lo, window._wvData.GMZ830.hi] : null;
+      if(bayLabel && bayLabel !== "\u2014") bits.push("Inside the bay it is " + bayLabel.toLowerCase() + (bR2 ? " \u2014 short, steep little waves about " + bR2[0] + "\u2013" + bR2[1] + " ft that slap the hull instead of rolling under it" : "") + ".");
+      if(tideTxt) bits.push(tideTxt);
+      const wd2 = window._wvData || {}; const bs2 = wd2.GMZ830 ? wd2.GMZ830.score : null, gs2 = wd2.GMZ853 ? wd2.GMZ853.score : null;
+      if(sca) bits.push("Bottom line: there is a Small Craft Advisory on \u2014 today is for experienced riders only. New to this? It is a watch-from-the-dock day.");
+      else if(bs2 != null && gs2 != null && bs2 >= 70 && gs2 >= 70) bits.push("Bottom line: a good day to ride. Lanyard on, buddy up, and go.");
+      else bits.push("Bottom line: rideable if you pick your place and your hour \u2014 sheltered water beats the passes today.");
+      if(bits.length) plainHTML = '<div class="wv-plain"><h4>In plain English</h4><p>' + bits.join(" ") + '</p></div>';
+    }catch(e){ plainHTML = ""; }
+    const pp = document.getElementById("wv-plain-panel");
+    if(pp) pp.innerHTML = plainHTML || '<p class="wv-anote">The plain-English rundown is not available right now \u2014 the bars on the Today tab are live.</p>';
+    const chipsBox = document.getElementById("wv-chips");
+    if(chipsBox && !chipsBox.children.length){ Object.keys(WV_AREAS).forEach(function(k){ const b = document.createElement("button"); b.type = "button"; b.className = "wv-chip"; b.textContent = WV_AREAS[k].name; b.setAttribute("data-k", k); b.onclick = function(){ wvShowArea(k); }; chipsBox.appendChild(b); }); }
+    const wvInp = document.getElementById("wv-input");
+    if(wvInp && !wvInp._wvBound){ wvInp._wvBound = 1; wvInp.addEventListener("keydown", function(ev){ if(ev.key === "Enter") wvGo(); }); }
     body.innerHTML = barsHTML +
       '<div class="wave-grid">' +
         '<div class="wave-stat"><div class="wave-num">' + seasLabel + '</div><div class="wave-lbl">Gulf seas \u00b7 outside the passes</div>' + (detail ? '<div class="wave-detail">' + detail + '</div>' : '') + '</div>' +

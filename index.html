@@ -542,6 +542,9 @@ body.dark .cat-card{background:#0E2A3F}
 .wv-tab{flex:1;padding:9px 4px;border-radius:10px;border:1px solid rgba(185,210,228,.45);background:transparent;color:#dcebf5;font-weight:700;font-size:.88rem;cursor:pointer;font-family:inherit}
 .wv-tab.on{background:#8fd0f0;color:#0a2540;border-color:#8fd0f0}
 .wv-panel[hidden]{display:none}
+.bt-tabs{display:flex;gap:6px;margin:14px 0 12px}
+.bt-tab{flex:1;padding:9px 4px;border-radius:10px;border:1px solid #bcd9e8;background:#fff;color:#0b3d62;font-weight:700;font-size:.88rem;cursor:pointer;font-family:inherit}
+.bt-tab.sel{background:#0a2540;color:#fff;border-color:#0a2540}
 .wv-picker{margin-top:14px;border-top:1px dashed rgba(185,210,228,.35);padding-top:12px}
 .wv-pick-h{font-size:.8rem;text-transform:uppercase;letter-spacing:2px;color:var(--sun);font-weight:800;margin-bottom:4px}
 .wv-pick-sub{font-size:.86rem;color:#b9d2e4;line-height:1.5;margin:0 0 8px}
@@ -2054,6 +2057,62 @@ if(typeof document!=='undefined'){
           • <b>Soft plastics on jig heads</b> — paddle tails in new penny &amp; white<br>
           • <b>Cut ladyfish or mullet</b> — for bull reds<br><br>
           <svg class=ic aria-hidden=true><use href=#i-worm></use></svg> Grab bait on the way: <a href="#fuel">see the bait shop directory</a>
+        </div>
+      </div>
+    </div>
+    <div class="sec-head" style="margin-top:28px">
+      <span class="sec-kicker">Pick Your Water</span>
+      <h2>Today's Bite &mdash; By the Water</h2>
+      <p>Saltwater to freshwater, it's all within a short drive: the Gulf, the bay, the rivers and the lakes. Pick your water &mdash; here's what's biting and how to catch it.</p>
+    </div>
+    <div class="bt-tabs">
+      <button class="bt-tab sel" onclick="biteTab('ocean',this)">Ocean</button>
+      <button class="bt-tab" onclick="biteTab('bays',this)">Bays</button>
+      <button class="bt-tab" onclick="biteTab('rivers',this)">Rivers</button>
+      <button class="bt-tab" onclick="biteTab('lakes',this)">Lakes</button>
+    </div>
+    <div class="bt-panel" id="bt-ocean">
+      <div class="dir-card">
+        <div class="city">The Gulf &mdash; saltwater</div><h4><svg class=ic aria-hidden=true><use href=#i-waves></use></svg> Offshore &amp; Nearshore</h4>
+        <div class="type">
+          &bull; <b>Nearshore reefs &amp; ledges (3&ndash;9 mi)</b> &mdash; king mackerel on the fall run, Spanish mackerel, cobia &amp; tripletail around structure<br>
+          &bull; <b>Hard bottom &amp; ledges (60&ndash;120 ft)</b> &mdash; red grouper, mangrove &amp; lane snapper on live pinfish or cut bait<br>
+          &bull; <b>Deeper drops (120 ft+)</b> &mdash; gag grouper, red snapper (seasonal) &amp; amberjack<br><br>
+          Troll or cast spoons for the kings; drop live bait on the ledges for the rest. Check the <a href="#conditions">marine forecast</a> before you go &mdash; if seas are 3&ndash;5 ft, stay inside.
+        </div>
+      </div>
+    </div>
+    <div class="bt-panel" id="bt-bays" style="display:none">
+      <div class="dir-card">
+        <div class="city">Tampa Bay &mdash; saltwater</div><h4><svg class=ic aria-hidden=true><use href=#i-fish></use></svg> Flats, Passes &amp; Mangroves</h4>
+        <div class="type">
+          &bull; <b>Redfish</b> &mdash; schools on the grass flats, oyster bars and mangrove shorelines<br>
+          &bull; <b>Spotted trout</b> &mdash; over grass edges and potholes in 5&ndash;8 ft<br>
+          &bull; <b>Snook</b> &mdash; mangrove points, passes and night dock lights<br>
+          &bull; <b>Spanish mackerel</b> &mdash; bait schools at the passes and channel edges<br><br>
+          Live shrimp under a popping cork, live whitebait, gold spoons and soft-plastic jigs cover all of it. The tide runs this fishing &mdash; see today's report at the top of this page for the windows.
+        </div>
+      </div>
+    </div>
+    <div class="bt-panel" id="bt-rivers" style="display:none">
+      <div class="dir-card">
+        <div class="city">Brackish &mdash; salt meets fresh</div><h4><svg class=ic aria-hidden=true><use href=#i-pin></use></svg> The Rivers</h4>
+        <div class="type">
+          &bull; <b>Hillsborough River</b> &mdash; snook and tarpon around downtown bridges and docks; bass farther upriver<br>
+          &bull; <b>Alafia River</b> &mdash; snook &amp; redfish near the mouth; bass and catfish upstream<br>
+          &bull; <b>Little Manatee &amp; Manatee Rivers</b> &mdash; snook, trout at the mouths, bass up toward the lakes<br><br>
+          The rule of every river here: the closer to the bay, the saltier the fish; the farther up you go, the more it fishes like a lake. Live shrimp works everywhere. Mind the idle-speed and manatee zones &mdash; the rivers are full of them.
+        </div>
+      </div>
+    </div>
+    <div class="bt-panel" id="bt-lakes" style="display:none">
+      <div class="dir-card">
+        <div class="city">Freshwater</div><h4><svg class=ic aria-hidden=true><use href=#i-target></use></svg> Tampa Bay Lakes</h4>
+        <div class="type">
+          <b>The lakes:</b> Lake Tarpon (the big-bass lake), Lake Seminole, Lake Maggiore, Lake Thonotosassa, Lake Carroll, Lake Rogers, Crescent Lake &mdash; most have bank fishing, no boat required.<br><br>
+          <b>What bites:</b> largemouth bass year-round, bluegill everywhere, black crappie ("specks") in the cooler months, channel catfish all day. Fish early or at last light, around docks, pads and shade.<br><br>
+          <b>Bait:</b> live shiners for bass, red worms &amp; crickets for bluegill, small minnows &amp; jigs for crappie, plastic worms &amp; spinnerbaits for lures.<br><br>
+          <b>Beginner setup:</b> one 6'6" to 7 ft medium spinning combo, 8&ndash;12 lb line, a bobber rig for panfish and a weedless plastic worm for bass. Lakes need a <b>Florida freshwater license</b> (separate from saltwater; kids under 16 free) &mdash; <a href="https://gooutdoorsflorida.com/" target="_blank" rel="noopener">Go Outdoors Florida</a>.
         </div>
       </div>
     </div>
@@ -5194,6 +5253,13 @@ function renderSvc(){
   const list = SERVICES.filter(b => b[2]===svcMode && (!q || (b[0]+" "+b[1]+" "+b[3]).toLowerCase().includes(q)));
   document.getElementById("svc-grid").innerHTML = list.length ? list.map(svcCard).join("")
     : '<div class="no-results">No matches — try clearing the search.</div>';
+}
+
+
+/* ================= TODAY'S BITE — BY THE WATER TABS ================= */
+function biteTab(which, btn){
+  ["ocean","bays","rivers","lakes"].forEach(function(k){ var p=document.getElementById("bt-"+k); if(p) p.style.display = (k===which)?"":"none"; });
+  if(btn && btn.parentElement){ btn.parentElement.querySelectorAll(".bt-tab").forEach(function(t){ t.classList.toggle("sel", t===btn); }); }
 }
 
 /* ================= EVENTS CALENDAR ================= */

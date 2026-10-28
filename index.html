@@ -532,6 +532,9 @@ body.dark .cat-card{background:#0E2A3F}
 .wv-hlbl{display:flex;justify-content:space-between;font-size:.78rem;color:#b9d2e4;margin-top:6px}
 .wv-hbar{position:relative;height:8px;border-radius:99px;background:rgba(255,255,255,.14);margin:4px 0 2px}
 .wv-hseg{position:absolute;top:0;height:8px;border-radius:99px}
+.wv-ruler{position:relative;height:24px;margin-top:1px}
+.wv-tick{position:absolute;top:0;width:1px;height:6px;background:rgba(185,210,228,.55)}
+.wv-tnum{position:absolute;top:8px;font-size:.58rem;font-style:normal;color:#b9d2e4;transform:translateX(-50%)}
 .support-card{background:#dbe9f4;border-radius:16px;padding:28px;max-width:720px;margin:0 auto;box-shadow:0 6px 18px rgba(10,37,64,.07)}
 .support-card h3{color:#0a2540;font-size:1.3rem;margin:0 0 10px}
 .support-card p{color:#0a2540;font-size:.95rem;margin-bottom:18px}
@@ -1856,6 +1859,10 @@ if(typeof document!=='undefined'){
         <h3 id="spot-title">At This Spot &mdash; Tampa Bay</h3>
         <div id="spot-body"><p class="cond-fallback">Loading local weather&hellip;</p></div>
       </div>
+      <div class="cond-card" id="wave-card">
+        <h3>Jet Ski Wave Report</h3>
+        <div id="wave-body"><p class="cond-fallback">Checking the Gulf…</p></div>
+      </div>
       <div class="cond-card">
         <h3>Doppler Radar</h3>
         <iframe id="bay-radar" title="Live Doppler radar" loading="lazy" style="width:100%;height:300px;border:0;border-radius:10px;display:block" referrerpolicy="no-referrer-when-downgrade"></iframe>
@@ -1872,10 +1879,6 @@ if(typeof document!=='undefined'){
           <button type="button" class="layer-chip" onclick="setRadarLayer('temp',this)">Temp</button>
         </div>
         <p style="font-size:.78rem;color:#a9c6c5;margin:8px 0 0">Tap a layer — the map switches. Centered on the selected area &middot; Windy data. <a href="https://radar.weather.gov/" target="_blank" rel="noopener" style="color:#fff">Open the full NWS radar &rarr;</a></p>
-      </div>
-      <div class="cond-card" id="wave-card">
-        <h3>Jet Ski Wave Report</h3>
-        <div id="wave-body"><p class="cond-fallback">Checking the Gulf…</p></div>
       </div>
     </div>
     <div class="cond-link"><a href="https://tampabayboating.com/conditions/" target="_blank" rel="noopener">Full 7-day tides, weather &amp; marine forecast →</a></div>
@@ -5957,8 +5960,9 @@ async function loadWaves(){
       let bRange = null;
       if(bp){ const bl2 = String(bp.detailedForecast||"").toLowerCase(); const cm2 = bl2.match(/(very rough|light chop|moderate chop|smooth|choppy|rough)/); if(cm2 && chopRanges[cm2[1]]) bRange = chopRanges[cm2[1]]; }
       function pctBar(score){ if(score==null) return ""; const bb = tbbBandFor(score); const left = Math.max(3, Math.min(97, 100 - score)); return '<span class="mini-track"><span class="mini-dot on ' + bb.cls + '" style="left:' + left + '%"></span></span>'; }
-      function hBar(lo, hi){ if(lo==null || hi==null) return ""; const l = Math.max(0, lo/20*100), w = Math.max(3, (hi-lo)/20*100); const col = hi<=2 ? "#57a639" : hi<=4 ? "#d9a400" : hi<=7 ? "#e07b28" : "#c0392b"; return '<div class="wv-hbar"><span class="wv-hseg" style="left:' + l + '%;width:' + w + '%;background:' + col + '"></span></div><div class="wv-hlbl"><span>0 ft</span><span>20 ft</span></div>'; }
-      function zoneBlock(name, score, hLbl, lo, hi){ if(score==null && lo==null) return ""; const bb = score!=null ? tbbBandFor(score) : null; return '<div class="wv-zone"><div class="wv-zline"><b>' + name + '</b>' + (score!=null ? '<b class="wv-pct ' + bb.cls + '">' + score + '%</b>' : '') + '</div>' + pctBar(score) + '<div class="wv-hlbl" style="margin-top:8px"><span>Wave height</span><span>' + hLbl + '</span></div>' + hBar(lo, hi) + '</div>'; }
+      function hBar(lo, hi){ if(lo==null || hi==null) return ""; const l = Math.max(0, lo/20*100), w = Math.max(3, (hi-lo)/20*100); const col = hi<=2 ? "#57a639" : hi<=4 ? "#d9a400" : hi<=7 ? "#e07b28" : "#c0392b"; return '<div class="wv-hbar"><span class="wv-hseg" style="left:' + l + '%;width:' + w + '%;background:' + col + '"></span></div>' + ruler(); }
+      function ruler(){ let t = ''; for(let i = 0; i <= 20; i++){ const l = i * 5; const tr = i === 0 ? 'transform:none' : i === 20 ? 'transform:translateX(-100%)' : ''; t += '<i class="wv-tick" style="left:' + l + '%' + (i === 20 ? ';margin-left:-1px' : '') + '"></i><i class="wv-tnum" style="left:' + l + '%;' + tr + '">' + i + '</i>'; } return '<div class="wv-ruler">' + t + '</div>'; }
+      function zoneBlock(name, score, hLbl, lo, hi){ if(score==null && lo==null) return ""; const bb = score!=null ? tbbBandFor(score) : null; return '<div class="wv-zone"><div class="wv-zline"><b>' + name + '</b>' + (score!=null ? '<b class="wv-pct ' + bb.cls + '">' + score + '%</b>' : '') + '</div>' + pctBar(score) + '<div class="wv-hlbl" style="margin-top:8px"><span>Wave height</span></div>' + hBar(lo, hi) + '</div>'; }
       barsHTML = zoneBlock("Inside Tampa Bay", bScore, bayLabel + (bRange ? ' \u00b7 \u2248 ' + bRange[0] + '\u2013' + bRange[1] + ' ft' : ''), bRange ? bRange[0] : null, bRange ? bRange[1] : null)
                + zoneBlock("Outside the Bay \u00b7 Gulf", gScore, seasLabel, gLo, gHi);
     }catch(e){ barsHTML = ""; }

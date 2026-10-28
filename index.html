@@ -398,6 +398,14 @@ section{padding:40px 0}
 .tb-translate{display:none;position:absolute;top:100%;right:12px;background:#fff;border-radius:10px;padding:8px 10px;box-shadow:0 10px 32px rgba(0,0,0,.3);z-index:62}
 .tb-translate.open{display:block}
 .tb-translate .goog-te-gadget{font-size:.85rem}
+.tb-gadget-hidden{position:absolute;left:-9999px;top:-9999px;width:1px;height:1px;overflow:hidden}
+.lang-list{min-width:216px}
+.lang-row{display:flex;align-items:center;gap:10px;width:100%;padding:10px;border:0;background:#fff;border-radius:8px;font-size:.95rem;color:#0b3d62;cursor:pointer;text-align:left;font-family:inherit}
+.lang-row:hover{background:#EEF6F9}
+.lang-row .flag{font-size:1.15rem;line-height:1}
+.lang-row .check{margin-left:auto;color:#0072B2;font-weight:700;visibility:hidden}
+.lang-row.active{background:#EEF6F9;font-weight:600}
+.lang-row.active .check{visibility:visible}
 .goog-te-banner-frame{display:none !important}
 body{top:0 !important}
 .tb-row{display:flex;align-items:center;gap:10px;padding:8px 20px;max-width:1180px;margin:0 auto}
@@ -1262,7 +1270,14 @@ body.dark body.dark /* ---- Tampa Bay Boating Shop ---- */
     <div class="tb-search-box"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg><input id="site-search" type="search" placeholder="Search pages, places, ramps..." aria-label="Search the site" autocomplete="off"></div>
     <div class="tb-search-results" id="search-results"></div>
   </div>
-  <div class="tb-translate" id="translate-panel"><div id="google_translate_element"></div></div>
+  <div class="tb-translate" id="translate-panel"><div class="lang-list" role="menu" aria-label="Choose language">
+<button class="lang-row active" data-lang="en"><span class="flag">🇺🇸</span>English<span class="check">&#10003;</span></button>
+<button class="lang-row" data-lang="es"><span class="flag">🇪🇸</span>Espa&#241;ol<span class="check">&#10003;</span></button>
+<button class="lang-row" data-lang="pt"><span class="flag">🇧🇷</span>Portugu&#234;s<span class="check">&#10003;</span></button>
+<button class="lang-row" data-lang="fr"><span class="flag">🇫🇷</span>Fran&#231;ais<span class="check">&#10003;</span></button>
+<button class="lang-row" data-lang="de"><span class="flag">🇩🇪</span>Deutsch<span class="check">&#10003;</span></button>
+</div></div>
+<div class="tb-gadget-hidden" aria-hidden="true"><div id="google_translate_element"></div></div>
 </header>
 <script>
 /* ---- Site search: pages + map pins ---- */
@@ -6351,6 +6366,7 @@ route();
 function googleTranslateElementInit(){ new google.translate.TranslateElement({pageLanguage:'en',layout:google.translate.TranslateElement.InlineLayout.SIMPLE,autoDisplay:false},'google_translate_element'); }
 document.getElementById('lang-btn').addEventListener('click',function(e){ e.stopPropagation(); document.getElementById('translate-panel').classList.toggle('open'); });
 document.addEventListener('click',function(e){ var p=document.getElementById('translate-panel'); if(p&&p.classList.contains('open')&&!e.target.closest('#translate-panel')&&!e.target.closest('#lang-btn')) p.classList.remove('open'); });
+document.querySelectorAll('#translate-panel .lang-row').forEach(function(r){ r.addEventListener('click',function(){ var code=r.getAttribute('data-lang'); var sel=document.querySelector('select.goog-te-combo'); if(sel){ sel.value=(code==='en')?'':code; sel.dispatchEvent(new Event('change')); } document.querySelectorAll('#translate-panel .lang-row').forEach(function(x){ x.classList.toggle('active',x===r); }); document.getElementById('translate-panel').classList.remove('open'); }); });
 </script>
 <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 <script>

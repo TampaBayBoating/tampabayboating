@@ -488,6 +488,19 @@ body{top:0 !important}
 .cat-card{background:#EEF6F9}
 .brief-card{background:#EEF6F9}
 body.dark{--sand:#071826;--white:#0E2A3F}
+.tb-cond{flex-wrap:wrap;padding:3px 4px 0}
+.tb-cond-card{padding:0 10px;line-height:1.18}
+.tb-score{display:flex;align-items:center;gap:7px;flex:0 0 100%;border-top:1px solid #b8d4e8;margin-top:0;padding:1px 4px 0}
+.tb-score-track{position:relative;flex:1;height:4px;border-radius:99px;background:linear-gradient(90deg,#1e9e6a 0%,#7bc950 30%,#e3c008 55%,#e07b28 78%,#c0392b 100%)}
+.tb-score-dot{position:absolute;top:50%;left:50%;width:11px;height:11px;border-radius:50%;background:#0a2540;border:2px solid #fff;box-shadow:0 1px 3px rgba(10,37,64,.4);transform:translate(-50%,-50%);opacity:0;transition:left .7s ease,opacity .3s}
+.tb-score-dot.on{opacity:1}
+.tb-score-pct{font-size:9px;font-weight:800;color:#0b3d62;line-height:1;min-width:24px;text-align:right}
+.mini-track{position:relative;display:block;height:4px;border-radius:99px;background:linear-gradient(90deg,#1e9e6a 0%,#7bc950 30%,#e3c008 55%,#e07b28 78%,#c0392b 100%);margin:5px 0 3px}
+.mini-dot{position:absolute;top:50%;left:50%;width:11px;height:11px;border-radius:50%;background:#0a2540;border:2px solid #fff;box-shadow:0 1px 3px rgba(10,37,64,.4);transform:translate(-50%,-50%);opacity:0;transition:left .7s ease,opacity .3s}
+.mini-dot.on{opacity:1}
+.brief-card .bf-zscore.ds-go{color:#1e9e6a}.brief-card .bf-zscore.ds-good{color:#57a639}.brief-card .bf-zscore.ds-caution{color:#a87e00}.brief-card .bf-zscore.ds-rough{color:#d96f1e}.brief-card .bf-zscore.ds-stay{color:#c0392b}
+.mini-dot.ds-go{background:#1e9e6a}.mini-dot.ds-good{background:#57a639}.mini-dot.ds-caution{background:#d9a400}.mini-dot.ds-rough{background:#e07b28}.mini-dot.ds-stay{background:#c0392b}
+.verdict-card .cond-stamp{color:#445A6A;opacity:1}
 body.dark .brief-card{background:#0E2A3F}
 body.dark .cat-card{background:#0E2A3F}
 .wave-grid{display:flex;gap:14px;flex-wrap:wrap;margin:8px 0 10px}
@@ -654,7 +667,7 @@ footer.tbb-foot a.soc svg{width:15px!important;height:15px!important;fill:#fff!i
 @media(max-width:700px){footer.tbb-foot .foot-grid{grid-template-columns:1fr 1fr;gap:20px}}
 .ad-group{color:#0a2540;font-size:1.3rem;margin:30px 0 4px;text-align:center}
 .ad-group-sub{text-align:center;color:#5b6b7c;margin-bottom:6px}
-@media(max-width:860px){.today-grid,.cat-grid{grid-template-columns:1fr 1fr}.tb-wx{display:none}.tb-cond{gap:0;margin-left:6px;padding:4px 2px}.tb-cond-card{min-width:40px;padding:2px 6px}.tb-cond-card .tic{width:13px;height:13px}.tb-cond-card b{font-size:11px}.hero2 h1{font-size:2.3rem}
+@media(max-width:860px){.today-grid,.cat-grid{grid-template-columns:1fr 1fr}.tb-wx{display:none}.tb-cond{gap:0;margin-left:6px;padding:2px 2px 0}.tb-cond-card{min-width:40px;padding:0 6px}.tb-cond-card .tic{width:13px;height:13px}.tb-cond-card b{font-size:11px}.hero2 h1{font-size:2.3rem}
 .hero2 h1{font-size:1.75rem}
 .hero2-inner{padding:22px 20px}
 .hero2-kicker{margin-bottom:8px}
@@ -1181,6 +1194,7 @@ body.dark body.dark /* ---- Tampa Bay Boating Shop ---- */
       <span class="tb-cond-card"><svg class="tic" aria-hidden="true"><use href="#i-waves"></use></svg><b id="tbWater">--&deg;</b><i>Water</i></span>
       <span class="tb-cond-card"><svg class="tic" aria-hidden="true"><use href="#i-wind"></use></svg><b id="tbWind">--</b><i>Wind</i></span>
       <span class="tb-cond-card"><svg class="tic" aria-hidden="true"><use id="tbTideUse" href="#i-tide-up"></use></svg><b id="tbTide">--</b><i>Tide</i></span>
+      <span class="tb-score" id="tbScore" aria-hidden="true"><span class="tb-score-track"><span class="tb-score-dot" id="tbScoreDot"></span></span><b class="tb-score-pct" id="tbScorePct">--%</b></span>
     </a>
     <a class="tb-wx" href="#/tides" aria-label="Tides and forecast" title="Tides &amp; forecast"><svg viewBox="0 0 24 24"><circle cx="8.5" cy="7.5" r="2.4"/><path d="M10.9 7.5h.01"/><path d="M17.5 18.5a4.5 4.5 0 0 0 .42-8.98 6 6 0 0 0-11.7 1.62A4 4 0 0 0 7 18.5h10.5z"/><path d="M4 21.5c1.5 1.2 3.5 1.2 5 0s3.5-1.2 5 0 3.5 1.2 5 0"/></svg></a>
     <button class="tb-search" id="search-btn" aria-label="Search the site" title="Search"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg></button>
@@ -1380,7 +1394,7 @@ results.addEventListener('click',function(e){
     <a href="#/fishing" class="bite-hero"><svg class=ic aria-hidden=true><use href=#i-fish></use></svg> Today's bite</a>
     <a href="#/events" class="cal-hero"><svg class=ic aria-hidden=true><use href=#i-cal></use></svg> Calendar</a>
     <a href="#/shop" class="merch-hero"><svg class=ic aria-hidden=true><use href=#i-bag></use></svg> Merch</a>
-    <div class="hero-music"><span class="hm-label">Music for the boat</span><a class="hm-btn hm-sp" href="https://open.spotify.com/playlist/37i9dQZF1DXb3m918yXHxA" target="_blank" rel="noopener" aria-label="Open boat music in Spotify"><svg class="pl-ic" aria-hidden="true"><use href="#i-spotify"></use></svg>Spotify</a><a class="hm-btn hm-am" href="https://music.apple.com/us/playlist/pl.1870421bdeb74580831f17505e5d32d9" target="_blank" rel="noopener" aria-label="Open boat music in Apple Music"><svg class="pl-ic" aria-hidden="true"><use href="#i-applemusic"></use></svg>Apple Music</a></div>
+    <div class="hero-music"><span class="hm-label">Music for the boat</span><a class="hm-btn hm-sp" href="#/music" aria-label="Browse boat music playlists"><svg class="pl-ic" aria-hidden="true"><use href="#i-spotify"></use></svg>Spotify</a><a class="hm-btn hm-am" href="#/music" aria-label="Browse boat music playlists"><svg class="pl-ic" aria-hidden="true"><use href="#i-applemusic"></use></svg>Apple Music</a></div>
   </div>
 </section>
 <!-- ===== HAPPENING NOW STRIP ===== -->
@@ -1504,8 +1518,8 @@ if(typeof document!=='undefined'){
       <span class="bf-img" id="bfImgCond" style="background-image:url('assets/hero-skyway.jpg')"></span>
       <span class="bf-body">
         <span class="bf-kick">Today's Boating Score</span>
-        <span class="bf-zone"><span class="bf-zline"><b>In Tampa Bay</b> <b class="bf-zscore" id="bfBayScore">&hellip;</b></span><b class="ds-band" id="dsBand"></b><i class="bf-sub" id="bfBayWhy"></i></span>
-        <span class="bf-zone"><span class="bf-zline"><b>In the Gulf</b> <b class="bf-zscore" id="bfGulfScore">&hellip;</b></span><i class="bf-sub" id="bfGulfWhy"></i></span>
+        <span class="bf-zone"><span class="bf-zline"><b>In Tampa Bay</b> <b class="bf-zscore" id="bfBayScore">&hellip;</b></span><span class="mini-track"><span class="mini-dot" id="bfBayDot"></span></span><b class="ds-band" id="dsBand"></b><i class="bf-sub" id="bfBayWhy"></i></span>
+        <span class="bf-zone"><span class="bf-zline"><b>In the Gulf</b> <b class="bf-zscore" id="bfGulfScore">&hellip;</b></span><span class="mini-track"><span class="mini-dot" id="bfGulfDot"></span></span><i class="bf-sub" id="bfGulfWhy"></i></span>
         <i class="bf-sub" id="bfTide">Checking the tides&hellip;</i>
         <u>Full forecast &rarr;</u>
       </span>
@@ -5629,6 +5643,11 @@ async function loadBriefingConditions(){
       if(!ps.length) throw 0;
       const v = tbbVerdict(ps);
       scoreEl.textContent = v.score + "%";
+      const zd = document.getElementById(zoneId === "GMZ830" ? "bfBayDot" : "bfGulfDot");
+      const bb2 = tbbBandFor(v.score);
+      scoreEl.classList.remove("ds-go","ds-good","ds-caution","ds-rough","ds-stay");
+      scoreEl.classList.add(bb2.cls);
+      if(zd){ zd.style.left = Math.max(3, Math.min(97, 100 - v.score)) + "%"; zd.classList.remove("ds-go","ds-good","ds-caution","ds-rough","ds-stay"); zd.classList.add("on", bb2.cls); }
       let whyUse = v.why;
       if(zoneId === "GMZ830"){
         const t0 = String((ps[0] && ps[0].detailedForecast) || "");
@@ -5644,6 +5663,12 @@ async function loadBriefingConditions(){
           bandEl.textContent = bb.label;
           cardEl.classList.remove("ds-go","ds-good","ds-caution","ds-rough","ds-stay");
           cardEl.classList.add(bb.cls);
+        }
+        const dotEl = document.getElementById("tbScoreDot"), pctEl = document.getElementById("tbScorePct");
+        if(dotEl && pctEl){
+          pctEl.textContent = v.score + "%";
+          dotEl.style.left = Math.max(3, Math.min(97, 100 - v.score)) + "%";
+          dotEl.classList.add("on");
         }
       }
       const parts = [];

@@ -6500,9 +6500,18 @@ document.addEventListener('click',function(e){ var p=document.getElementById('tr
 /* Keep Google Translate's top banner hidden: GT re-injects it on every
    translation, so watch for it and hide it each time it appears. */
 (function(){
+  function hideEl(f){ f.style.setProperty('display','none','important'); f.style.setProperty('visibility','hidden','important'); }
   function killBar(){
-    document.querySelectorAll('.goog-te-banner-frame').forEach(function(f){ f.style.setProperty('display','none','important'); f.style.setProperty('visibility','hidden','important'); });
+    document.querySelectorAll('.goog-te-banner-frame').forEach(hideEl);
     var tt=document.getElementById('goog-gt-tt'); if(tt) tt.style.setProperty('display','none','important');
+    document.querySelectorAll('iframe').forEach(function(f){
+      try{
+        var src=f.getAttribute('src')||'';
+        if(src.indexOf('translate')>-1){ hideEl(f); return; }
+        var r=f.getBoundingClientRect(), cs=getComputedStyle(f);
+        if((cs.position==='fixed'||cs.position==='absolute') && r.top<=2 && r.height>=20 && r.height<=180 && r.width>=window.innerWidth*0.9) hideEl(f);
+      }catch(e){}
+    });
     if(document.body) document.body.style.setProperty('top','0px','important');
   }
   new MutationObserver(killBar).observe(document.documentElement,{childList:true,subtree:true});

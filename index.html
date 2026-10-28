@@ -468,6 +468,28 @@ body{top:0 !important}
 .score-ends{display:flex;justify-content:space-between;font-size:.72rem;font-weight:700;color:#5b7a94;margin:0 1px 6px;text-transform:uppercase;letter-spacing:.4px}
 .verdict-card.v-good{border-color:#57a639;background:#eef7e8}.verdict-card.v-good .verdict-dot{background:#57a639}
 .verdict-card.v-rough{border-color:#e07b28;background:#fdf0e2}.verdict-card.v-rough .verdict-dot{background:#e07b28}
+.ds-band{display:block;font-size:1.02rem;font-weight:800;margin:1px 0 2px}
+#bfBayScore{font-size:1.45rem}
+.brief-card.ds-go{box-shadow:inset 0 0 0 2px #1e9e6a,0 6px 18px rgba(10,37,64,.07)}
+.brief-card.ds-good{box-shadow:inset 0 0 0 2px #57a639,0 6px 18px rgba(10,37,64,.07)}
+.brief-card.ds-caution{box-shadow:inset 0 0 0 2px #d9a400,0 6px 18px rgba(10,37,64,.07)}
+.brief-card.ds-rough{box-shadow:inset 0 0 0 2px #e07b28,0 6px 18px rgba(10,37,64,.07)}
+.brief-card.ds-stay{box-shadow:inset 0 0 0 2px #c0392b,0 6px 18px rgba(10,37,64,.07)}
+.brief-card.ds-go #bfBayScore{color:#1e9e6a}
+.brief-card.ds-good #bfBayScore{color:#57a639}
+.brief-card.ds-caution #bfBayScore{color:#a87e00}
+.brief-card.ds-rough #bfBayScore{color:#d96f1e}
+.brief-card.ds-stay #bfBayScore{color:#c0392b}
+.ds-presented{max-width:1180px;margin:6px auto 0;padding:0 20px;text-align:center;font-size:.86rem;color:#33536e}
+.ds-presented a{color:#0a6ebd;font-weight:700}
+/* ===== COLOR MOCK-UP — research palette (blue-first, one warm CTA) ===== */
+:root{--teal:#0072B2;--muted:#445A6A;--sand:#ffffff}
+.hero2-cta,.ad-card-btn,.app-btn{background:#FFB703;border:2px solid #0a2540}
+.cat-card{background:#EEF6F9}
+.brief-card{background:#EEF6F9}
+body.dark{--sand:#071826;--white:#0E2A3F}
+body.dark .brief-card{background:#0E2A3F}
+body.dark .cat-card{background:#0E2A3F}
 .wave-grid{display:flex;gap:14px;flex-wrap:wrap;margin:8px 0 10px}
 .wave-stat{flex:1;min-width:150px;background:#eef5fb;border:1px solid #d7e6f2;border-radius:12px;padding:12px 14px}
 .wave-num{font-size:1.5rem;font-weight:800;color:#0a2540;line-height:1.15}
@@ -1478,11 +1500,11 @@ if(typeof document!=='undefined'){
     <div class="brief-date" id="bfDate"></div>
   </div>
   <div class="brief-grid">
-    <a class="brief-card" href="#/tides">
+    <a class="brief-card" href="#/tides" id="dsCard">
       <span class="bf-img" id="bfImgCond" style="background-image:url('assets/hero-skyway.jpg')"></span>
       <span class="bf-body">
-        <span class="bf-kick">Conditions</span>
-        <span class="bf-zone"><span class="bf-zline"><b>In Tampa Bay</b> <b class="bf-zscore" id="bfBayScore">&hellip;</b></span><i class="bf-sub" id="bfBayWhy"></i></span>
+        <span class="bf-kick">Today's Boating Score</span>
+        <span class="bf-zone"><span class="bf-zline"><b>In Tampa Bay</b> <b class="bf-zscore" id="bfBayScore">&hellip;</b></span><b class="ds-band" id="dsBand"></b><i class="bf-sub" id="bfBayWhy"></i></span>
         <span class="bf-zone"><span class="bf-zline"><b>In the Gulf</b> <b class="bf-zscore" id="bfGulfScore">&hellip;</b></span><i class="bf-sub" id="bfGulfWhy"></i></span>
         <i class="bf-sub" id="bfTide">Checking the tides&hellip;</i>
         <u>Full forecast &rarr;</u>
@@ -1498,6 +1520,7 @@ if(typeof document!=='undefined'){
     </a>
   </div>
 </div>
+<div class="ds-presented">Today's Boating Score is presented by &mdash; <a href="#/advertise">your business here</a></div>
 <div class="ad-card">
   <div class="ad-card-inner">
     <div class="ad-card-ico"><svg class=tic aria-hidden=true><use href=#i-store></use></svg></div>
@@ -5586,6 +5609,13 @@ async function bfZoneAdvisories(){
   }catch(e){}
   return out;
 }
+function tbbBandFor(s){
+  if(s>=85) return {label:"Perfect day on the bay", cls:"ds-go"};
+  if(s>=70) return {label:"Good day to be out", cls:"ds-good"};
+  if(s>=50) return {label:"Choppy \u2014 pick your window", cls:"ds-caution"};
+  if(s>=30) return {label:"Rough \u2014 experienced skippers only", cls:"ds-rough"};
+  return {label:"Stay home today", cls:"ds-stay"};
+}
 async function loadBriefingConditions(){
   const bayScore = document.getElementById("bfBayScore"), bayWhy = document.getElementById("bfBayWhy");
   const gulfScore = document.getElementById("bfGulfScore"), gulfWhy = document.getElementById("bfGulfWhy");
@@ -5599,6 +5629,23 @@ async function loadBriefingConditions(){
       if(!ps.length) throw 0;
       const v = tbbVerdict(ps);
       scoreEl.textContent = v.score + "%";
+      let whyUse = v.why;
+      if(zoneId === "GMZ830"){
+        const t0 = String((ps[0] && ps[0].detailedForecast) || "");
+        const wm3 = t0.match(/[A-Za-z]+ winds? [^.]+/i);
+        const vm3 = t0.match(/waves (\d+)(?: to (\d+))? feet/i);
+        const bits3 = [];
+        if(wm3) bits3.push((typeof windToMph === "function" ? windToMph(wm3[0].trim()) : wm3[0].trim()));
+        if(vm3) bits3.push("waves " + vm3[1] + (vm3[2] ? " to " + vm3[2] : "") + " ft");
+        if(bits3.length) whyUse = bits3.join(", ");
+        const bandEl = document.getElementById("dsBand"), cardEl = document.getElementById("dsCard");
+        if(bandEl && cardEl){
+          const bb = tbbBandFor(v.score);
+          bandEl.textContent = bb.label;
+          cardEl.classList.remove("ds-go","ds-good","ds-caution","ds-rough","ds-stay");
+          cardEl.classList.add(bb.cls);
+        }
+      }
       const parts = [];
       if(advText){
         let advSeg = advText;
@@ -5613,7 +5660,8 @@ async function loadBriefingConditions(){
         }
         parts.push("\u26a0\ufe0f " + advSeg);
       }
-      if(v.why) parts.push(v.why.charAt(0).toUpperCase() + v.why.slice(1));
+      if(advText){ if(v.why) parts.push(v.why.charAt(0).toUpperCase() + v.why.slice(1)); }
+      else if(whyUse) parts.push(whyUse.charAt(0).toUpperCase() + whyUse.slice(1));
       whyEl.textContent = parts.join(" \u00b7 ");
     }catch(e){
       scoreEl.textContent = "";

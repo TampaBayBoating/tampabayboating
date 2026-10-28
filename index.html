@@ -524,6 +524,14 @@ body.dark .cat-card{background:#0E2A3F}
 .wave-rating{font-size:1.02rem;font-weight:700;color:#ffffff;margin:2px 0 8px;line-height:1.45}
 .cond-stamp{font-size:.74rem;opacity:.72;margin-top:10px;letter-spacing:.2px}
 .wave-note{font-size:.86rem;color:#b9d2e4;line-height:1.55;margin:0 0 6px}
+.wv-zone{margin:2px 0 10px}
+.wv-zone+.wv-zone{border-top:1px dashed rgba(185,210,228,.35);padding-top:10px}
+.wv-zline{display:flex;justify-content:space-between;align-items:baseline;font-size:.98rem;color:#fff}
+.wv-pct{font-weight:800}
+.wv-pct.ds-go{color:#35c37d}.wv-pct.ds-good{color:#8fd45a}.wv-pct.ds-caution{color:#e3c008}.wv-pct.ds-rough{color:#f08a3c}.wv-pct.ds-stay{color:#ff6b5e}
+.wv-hlbl{display:flex;justify-content:space-between;font-size:.78rem;color:#b9d2e4;margin-top:6px}
+.wv-hbar{position:relative;height:8px;border-radius:99px;background:rgba(255,255,255,.14);margin:4px 0 2px}
+.wv-hseg{position:absolute;top:0;height:8px;border-radius:99px}
 .support-card{background:#dbe9f4;border-radius:16px;padding:28px;max-width:720px;margin:0 auto;box-shadow:0 6px 18px rgba(10,37,64,.07)}
 .support-card h3{color:#0a2540;font-size:1.3rem;margin:0 0 10px}
 .support-card p{color:#0a2540;font-size:.95rem;margin-bottom:18px}
@@ -5938,6 +5946,22 @@ async function loadWaves(){
     let bayLabel = "\u2014";
     if(bp){ const bl = String(bp.detailedForecast||"").toLowerCase(); const cm = bl.match(/(smooth|light chop|moderate chop|choppy|very rough|rough)/); if(cm) bayLabel = cm[1].charAt(0).toUpperCase() + cm[1].slice(1); }
     const todayMax = seasMax(low);
+    let barsHTML = "";
+    try{
+      const perPair = await Promise.all([getMarinePeriods("GMZ830"), getMarinePeriods("GMZ853")]);
+      function scoreOf(per){ const bk = groupMarine(per)[0]; const ps = bk ? [bk.day, bk.night].filter(Boolean) : []; return ps.length ? tbbVerdict(ps).score : null; }
+      const bScore = scoreOf(perPair[0]), gScore = scoreOf(perPair[1]);
+      let gLo = null, gHi = null;
+      if(sm){ gLo = parseInt(sm[1],10); gHi = seasHi; }
+      const chopRanges = {"smooth":[0,1],"light chop":[1,2],"moderate chop":[1,2],"choppy":[2,3],"rough":[3,4],"very rough":[4,6]};
+      let bRange = null;
+      if(bp){ const bl2 = String(bp.detailedForecast||"").toLowerCase(); const cm2 = bl2.match(/(very rough|light chop|moderate chop|smooth|choppy|rough)/); if(cm2 && chopRanges[cm2[1]]) bRange = chopRanges[cm2[1]]; }
+      function pctBar(score){ if(score==null) return ""; const bb = tbbBandFor(score); const left = Math.max(3, Math.min(97, 100 - score)); return '<span class="mini-track"><span class="mini-dot on ' + bb.cls + '" style="left:' + left + '%"></span></span>'; }
+      function hBar(lo, hi){ if(lo==null || hi==null) return ""; const l = Math.max(0, lo/20*100), w = Math.max(3, (hi-lo)/20*100); const col = hi<=2 ? "#57a639" : hi<=4 ? "#d9a400" : hi<=7 ? "#e07b28" : "#c0392b"; return '<div class="wv-hbar"><span class="wv-hseg" style="left:' + l + '%;width:' + w + '%;background:' + col + '"></span></div><div class="wv-hlbl"><span>0 ft</span><span>20 ft</span></div>'; }
+      function zoneBlock(name, score, hLbl, lo, hi){ if(score==null && lo==null) return ""; const bb = score!=null ? tbbBandFor(score) : null; return '<div class="wv-zone"><div class="wv-zline"><b>' + name + '</b>' + (score!=null ? '<b class="wv-pct ' + bb.cls + '">' + score + '%</b>' : '') + '</div>' + pctBar(score) + '<div class="wv-hlbl" style="margin-top:8px"><span>Wave height</span><span>' + hLbl + '</span></div>' + hBar(lo, hi) + '</div>'; }
+      barsHTML = zoneBlock("Inside Tampa Bay", bScore, bayLabel + (bRange ? ' \u00b7 \u2248 ' + bRange[0] + '\u2013' + bRange[1] + ' ft' : ''), bRange ? bRange[0] : null, bRange ? bRange[1] : null)
+               + zoneBlock("Outside the Bay \u00b7 Gulf", gScore, seasLabel, gLo, gHi);
+    }catch(e){ barsHTML = ""; }
     let rating;
     if(sca && todayMax >= 6){
       rating = "\u26a0\ufe0f Small Craft Advisory " + (scaNow ? "in effect" : "takes effect at " + scaWhen + " today") + " \u2014 and the Gulf is running " + todayMax + " ft. Too big even for the air-chasers. Sit this one out.";
@@ -5956,7 +5980,7 @@ async function loadWaves(){
     else if(todayMax===5) rating = "Heavy water \u2014 your day if you're experienced. Top end, though: ride with a buddy watching, or don't ride.";
     else rating = "Too big \u2014 even the pros sit this one out. Stay in the bay.";
     if(!sca && dm){ const per = parseInt(dm[3],10); if(per<=4 && todayMax>=3) rating += " Short-period wind chop though \u2014 messy faces, not clean rollers."; else if(per>=6 && todayMax>=2 && todayMax<=4) rating += " Clean, long-period rollers \u2014 the best shape it gets here."; }
-    body.innerHTML =
+    body.innerHTML = barsHTML +
       '<div class="wave-grid">' +
         '<div class="wave-stat"><div class="wave-num">' + seasLabel + '</div><div class="wave-lbl">Gulf seas \u00b7 outside the passes</div>' + (detail ? '<div class="wave-detail">' + detail + '</div>' : '') + '</div>' +
         '<div class="wave-stat"><div class="wave-num">' + bayLabel + '</div><div class="wave-lbl">Inside Tampa Bay</div></div>' +

@@ -399,7 +399,10 @@ section{padding:40px 0}
 .tb-translate.open{display:block}
 .tb-translate .goog-te-gadget{font-size:.85rem}
 .tb-gadget-hidden{position:absolute;left:-9999px;top:-9999px;width:1px;height:1px;overflow:hidden}
-.lang-list{min-width:216px}
+.lang-list{min-width:216px;max-height:46vh;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;scrollbar-width:thin;scrollbar-color:#bcd9e8 transparent}
+.lang-list::-webkit-scrollbar{width:8px}
+.lang-list::-webkit-scrollbar-thumb{background:#bcd9e8;border-radius:8px}
+.lang-list::-webkit-scrollbar-track{background:transparent}
 .lang-row{display:flex;align-items:center;gap:10px;width:100%;padding:10px;border:0;background:#fff;border-radius:8px;font-size:.95rem;color:#0b3d62;cursor:pointer;text-align:left;font-family:inherit}
 .lang-row:hover{background:#EEF6F9}
 .lang-row .flag{font-size:1.15rem;line-height:1}
@@ -1278,10 +1281,109 @@ body.dark body.dark /* ---- Tampa Bay Boating Shop ---- */
   </div>
   <div class="tb-translate" id="translate-panel"><div class="lang-list" role="menu" aria-label="Choose language">
 <button class="lang-row active" data-lang="en"><span class="flag">🇺🇸</span>English<span class="check">&#10003;</span></button>
-<button class="lang-row" data-lang="es"><span class="flag">🇪🇸</span>Espa&#241;ol<span class="check">&#10003;</span></button>
-<button class="lang-row" data-lang="pt"><span class="flag">🇧🇷</span>Portugu&#234;s<span class="check">&#10003;</span></button>
-<button class="lang-row" data-lang="fr"><span class="flag">🇫🇷</span>Fran&#231;ais<span class="check">&#10003;</span></button>
+<button class="lang-row" data-lang="af"><span class="flag">🇿🇦</span>Afrikaans<span class="check">&#10003;</span></button>
+<button class="lang-row" data-lang="sq"><span class="flag">🇦🇱</span>Shqip<span class="check">&#10003;</span></button>
+<button class="lang-row" data-lang="am"><span class="flag">🇪🇹</span>አማርኛ<span class="check">&#10003;</span></button>
+<button class="lang-row" data-lang="ar"><span class="flag">🇸🇦</span>العربية<span class="check">&#10003;</span></button>
+<button class="lang-row" data-lang="hy"><span class="flag">🇦🇲</span>Հայերեն<span class="check">&#10003;</span></button>
+<button class="lang-row" data-lang="az"><span class="flag">🇦🇿</span>Azərbaycan<span class="check">&#10003;</span></button>
+<button class="lang-row" data-lang="eu"><span class="flag">🇪🇸</span>Euskara<span class="check">&#10003;</span></button>
+<button class="lang-row" data-lang="be"><span class="flag">🇧🇾</span>Беларуская<span class="check">&#10003;</span></button>
+<button class="lang-row" data-lang="bn"><span class="flag">🇧🇩</span>বাংলা<span class="check">&#10003;</span></button>
+<button class="lang-row" data-lang="bs"><span class="flag">🇧🇦</span>Bosanski<span class="check">&#10003;</span></button>
+<button class="lang-row" data-lang="bg"><span class="flag">🇧🇬</span>Български<span class="check">&#10003;</span></button>
+<button class="lang-row" data-lang="ca"><span class="flag">🇪🇸</span>Català<span class="check">&#10003;</span></button>
+<button class="lang-row" data-lang="ceb"><span class="flag">🇵🇭</span>Cebuano<span class="check">&#10003;</span></button>
+<button class="lang-row" data-lang="zh-CN"><span class="flag">🇨🇳</span>简体中文<span class="check">&#10003;</span></button>
+<button class="lang-row" data-lang="zh-TW"><span class="flag">🇹🇼</span>繁體中文<span class="check">&#10003;</span></button>
+<button class="lang-row" data-lang="co"><span class="flag">🇫🇷</span>Corsu<span class="check">&#10003;</span></button>
+<button class="lang-row" data-lang="hr"><span class="flag">🇭🇷</span>Hrvatski<span class="check">&#10003;</span></button>
+<button class="lang-row" data-lang="cs"><span class="flag">🇨🇿</span>Čeština<span class="check">&#10003;</span></button>
+<button class="lang-row" data-lang="da"><span class="flag">🇩🇰</span>Dansk<span class="check">&#10003;</span></button>
+<button class="lang-row" data-lang="nl"><span class="flag">🇳🇱</span>Nederlands<span class="check">&#10003;</span></button>
+<button class="lang-row" data-lang="eo"><span class="flag">🌐</span>Esperanto<span class="check">&#10003;</span></button>
+<button class="lang-row" data-lang="et"><span class="flag">🇪🇪</span>Eesti<span class="check">&#10003;</span></button>
+<button class="lang-row" data-lang="fi"><span class="flag">🇫🇮</span>Suomi<span class="check">&#10003;</span></button>
+<button class="lang-row" data-lang="fr"><span class="flag">🇫🇷</span>Français<span class="check">&#10003;</span></button>
+<button class="lang-row" data-lang="fy"><span class="flag">🇳🇱</span>Frysk<span class="check">&#10003;</span></button>
+<button class="lang-row" data-lang="gl"><span class="flag">🇪🇸</span>Galego<span class="check">&#10003;</span></button>
+<button class="lang-row" data-lang="ka"><span class="flag">🇬🇪</span>ქართული<span class="check">&#10003;</span></button>
 <button class="lang-row" data-lang="de"><span class="flag">🇩🇪</span>Deutsch<span class="check">&#10003;</span></button>
+<button class="lang-row" data-lang="el"><span class="flag">🇬🇷</span>Ελληνικά<span class="check">&#10003;</span></button>
+<button class="lang-row" data-lang="gu"><span class="flag">🇮🇳</span>ગુજરાતી<span class="check">&#10003;</span></button>
+<button class="lang-row" data-lang="ht"><span class="flag">🇭🇹</span>Kreyòl Ayisyen<span class="check">&#10003;</span></button>
+<button class="lang-row" data-lang="ha"><span class="flag">🇳🇬</span>Hausa<span class="check">&#10003;</span></button>
+<button class="lang-row" data-lang="haw"><span class="flag">🇺🇸</span>ʻŌlelo Hawaiʻi<span class="check">&#10003;</span></button>
+<button class="lang-row" data-lang="iw"><span class="flag">🇮🇱</span>עברית<span class="check">&#10003;</span></button>
+<button class="lang-row" data-lang="hi"><span class="flag">🇮🇳</span>हिन्दी<span class="check">&#10003;</span></button>
+<button class="lang-row" data-lang="hmn"><span class="flag">🌐</span>Hmong<span class="check">&#10003;</span></button>
+<button class="lang-row" data-lang="hu"><span class="flag">🇭🇺</span>Magyar<span class="check">&#10003;</span></button>
+<button class="lang-row" data-lang="is"><span class="flag">🇮🇸</span>Íslenska<span class="check">&#10003;</span></button>
+<button class="lang-row" data-lang="ig"><span class="flag">🇳🇬</span>Igbo<span class="check">&#10003;</span></button>
+<button class="lang-row" data-lang="id"><span class="flag">🇮🇩</span>Bahasa Indonesia<span class="check">&#10003;</span></button>
+<button class="lang-row" data-lang="ga"><span class="flag">🇮🇪</span>Gaeilge<span class="check">&#10003;</span></button>
+<button class="lang-row" data-lang="it"><span class="flag">🇮🇹</span>Italiano<span class="check">&#10003;</span></button>
+<button class="lang-row" data-lang="ja"><span class="flag">🇯🇵</span>日本語<span class="check">&#10003;</span></button>
+<button class="lang-row" data-lang="jv"><span class="flag">🇮🇩</span>Basa Jawa<span class="check">&#10003;</span></button>
+<button class="lang-row" data-lang="kn"><span class="flag">🇮🇳</span>ಕನ್ನಡ<span class="check">&#10003;</span></button>
+<button class="lang-row" data-lang="kk"><span class="flag">🇰🇿</span>Қазақша<span class="check">&#10003;</span></button>
+<button class="lang-row" data-lang="km"><span class="flag">🇰🇭</span>ខ្មែរ<span class="check">&#10003;</span></button>
+<button class="lang-row" data-lang="ko"><span class="flag">🇰🇷</span>한국어<span class="check">&#10003;</span></button>
+<button class="lang-row" data-lang="ku"><span class="flag">🌐</span>Kurdî<span class="check">&#10003;</span></button>
+<button class="lang-row" data-lang="ky"><span class="flag">🇰🇬</span>Кыргызча<span class="check">&#10003;</span></button>
+<button class="lang-row" data-lang="lo"><span class="flag">🇱🇦</span>ລາວ<span class="check">&#10003;</span></button>
+<button class="lang-row" data-lang="la"><span class="flag">🌐</span>Latīna<span class="check">&#10003;</span></button>
+<button class="lang-row" data-lang="lv"><span class="flag">🇱🇻</span>Latviešu<span class="check">&#10003;</span></button>
+<button class="lang-row" data-lang="lt"><span class="flag">🇱🇹</span>Lietuvių<span class="check">&#10003;</span></button>
+<button class="lang-row" data-lang="lb"><span class="flag">🇱🇺</span>Lëtzebuergesch<span class="check">&#10003;</span></button>
+<button class="lang-row" data-lang="mk"><span class="flag">🇲🇰</span>Македонски<span class="check">&#10003;</span></button>
+<button class="lang-row" data-lang="mg"><span class="flag">🇲🇬</span>Malagasy<span class="check">&#10003;</span></button>
+<button class="lang-row" data-lang="ms"><span class="flag">🇲🇾</span>Bahasa Melayu<span class="check">&#10003;</span></button>
+<button class="lang-row" data-lang="ml"><span class="flag">🇮🇳</span>മലയാളം<span class="check">&#10003;</span></button>
+<button class="lang-row" data-lang="mt"><span class="flag">🇲🇹</span>Malti<span class="check">&#10003;</span></button>
+<button class="lang-row" data-lang="mi"><span class="flag">🇳🇿</span>Te Reo Māori<span class="check">&#10003;</span></button>
+<button class="lang-row" data-lang="mr"><span class="flag">🇮🇳</span>मराठी<span class="check">&#10003;</span></button>
+<button class="lang-row" data-lang="mn"><span class="flag">🇲🇳</span>Монгол<span class="check">&#10003;</span></button>
+<button class="lang-row" data-lang="my"><span class="flag">🇲🇲</span>မြန်မာ<span class="check">&#10003;</span></button>
+<button class="lang-row" data-lang="ne"><span class="flag">🇳🇵</span>नेपाली<span class="check">&#10003;</span></button>
+<button class="lang-row" data-lang="no"><span class="flag">🇳🇴</span>Norsk<span class="check">&#10003;</span></button>
+<button class="lang-row" data-lang="ny"><span class="flag">🇲🇼</span>Chichewa<span class="check">&#10003;</span></button>
+<button class="lang-row" data-lang="ps"><span class="flag">🇦🇫</span>پښتو<span class="check">&#10003;</span></button>
+<button class="lang-row" data-lang="fa"><span class="flag">🇮🇷</span>فارسی<span class="check">&#10003;</span></button>
+<button class="lang-row" data-lang="pl"><span class="flag">🇵🇱</span>Polski<span class="check">&#10003;</span></button>
+<button class="lang-row" data-lang="pt"><span class="flag">🇧🇷</span>Português<span class="check">&#10003;</span></button>
+<button class="lang-row" data-lang="pa"><span class="flag">🇮🇳</span>ਪੰਜਾਬੀ<span class="check">&#10003;</span></button>
+<button class="lang-row" data-lang="ro"><span class="flag">🇷🇴</span>Română<span class="check">&#10003;</span></button>
+<button class="lang-row" data-lang="ru"><span class="flag">🇷🇺</span>Русский<span class="check">&#10003;</span></button>
+<button class="lang-row" data-lang="sm"><span class="flag">🇼🇸</span>Gagana Samoa<span class="check">&#10003;</span></button>
+<button class="lang-row" data-lang="gd"><span class="flag">🇬🇧</span>Gàidhlig<span class="check">&#10003;</span></button>
+<button class="lang-row" data-lang="sr"><span class="flag">🇷🇸</span>Српски<span class="check">&#10003;</span></button>
+<button class="lang-row" data-lang="st"><span class="flag">🇱🇸</span>Sesotho<span class="check">&#10003;</span></button>
+<button class="lang-row" data-lang="sn"><span class="flag">🇿🇼</span>Shona<span class="check">&#10003;</span></button>
+<button class="lang-row" data-lang="sd"><span class="flag">🇵🇰</span>سنڌي<span class="check">&#10003;</span></button>
+<button class="lang-row" data-lang="si"><span class="flag">🇱🇰</span>සිංහල<span class="check">&#10003;</span></button>
+<button class="lang-row" data-lang="sk"><span class="flag">🇸🇰</span>Slovenčina<span class="check">&#10003;</span></button>
+<button class="lang-row" data-lang="sl"><span class="flag">🇸🇮</span>Slovenščina<span class="check">&#10003;</span></button>
+<button class="lang-row" data-lang="so"><span class="flag">🇸🇴</span>Soomaali<span class="check">&#10003;</span></button>
+<button class="lang-row" data-lang="es"><span class="flag">🇪🇸</span>Español<span class="check">&#10003;</span></button>
+<button class="lang-row" data-lang="su"><span class="flag">🇮🇩</span>Basa Sunda<span class="check">&#10003;</span></button>
+<button class="lang-row" data-lang="sw"><span class="flag">🇰🇪</span>Kiswahili<span class="check">&#10003;</span></button>
+<button class="lang-row" data-lang="sv"><span class="flag">🇸🇪</span>Svenska<span class="check">&#10003;</span></button>
+<button class="lang-row" data-lang="tl"><span class="flag">🇵🇭</span>Filipino<span class="check">&#10003;</span></button>
+<button class="lang-row" data-lang="tg"><span class="flag">🇹🇯</span>Тоҷикӣ<span class="check">&#10003;</span></button>
+<button class="lang-row" data-lang="ta"><span class="flag">🇮🇳</span>தமிழ்<span class="check">&#10003;</span></button>
+<button class="lang-row" data-lang="te"><span class="flag">🇮🇳</span>తెలుగు<span class="check">&#10003;</span></button>
+<button class="lang-row" data-lang="th"><span class="flag">🇹🇭</span>ไทย<span class="check">&#10003;</span></button>
+<button class="lang-row" data-lang="tr"><span class="flag">🇹🇷</span>Türkçe<span class="check">&#10003;</span></button>
+<button class="lang-row" data-lang="uk"><span class="flag">🇺🇦</span>Українська<span class="check">&#10003;</span></button>
+<button class="lang-row" data-lang="ur"><span class="flag">🇵🇰</span>اردو<span class="check">&#10003;</span></button>
+<button class="lang-row" data-lang="uz"><span class="flag">🇺🇿</span>Oʻzbek<span class="check">&#10003;</span></button>
+<button class="lang-row" data-lang="vi"><span class="flag">🇻🇳</span>Tiếng Việt<span class="check">&#10003;</span></button>
+<button class="lang-row" data-lang="cy"><span class="flag">🇬🇧</span>Cymraeg<span class="check">&#10003;</span></button>
+<button class="lang-row" data-lang="xh"><span class="flag">🇿🇦</span>isiXhosa<span class="check">&#10003;</span></button>
+<button class="lang-row" data-lang="yi"><span class="flag">🌐</span>ייִדיש<span class="check">&#10003;</span></button>
+<button class="lang-row" data-lang="yo"><span class="flag">🇳🇬</span>Yorùbá<span class="check">&#10003;</span></button>
+<button class="lang-row" data-lang="zu"><span class="flag">🇿🇦</span>isiZulu<span class="check">&#10003;</span></button>
 </div></div>
 <div class="tb-gadget-hidden" aria-hidden="true"><div id="google_translate_element"></div></div>
 </header>

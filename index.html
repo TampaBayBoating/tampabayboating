@@ -558,16 +558,19 @@ body.dark .photo-card .pc-body i{color:#8fa8bd}
 .brief-card{display:flex;flex-direction:column;background:#fff;border:1px solid #e6ded1;border-radius:12px;overflow:hidden;text-decoration:none;color:#0a2540;transition:.2s}
 .brief-card:hover{transform:translateY(-3px);box-shadow:0 10px 24px rgba(10,37,64,.12)}
 .brief-card .bf-img{display:block;height:84px;background-size:cover;background-position:center;flex:none}
-.brief-card .bf-body{display:block;padding:10px}
+.brief-card .bf-body{display:flex;flex-direction:column;flex:1;padding:10px}
 .brief-card .bf-kick{display:block;font-size:.7rem;font-weight:800;letter-spacing:1.4px;text-transform:uppercase;color:#0e7c7b;margin-bottom:4px}
 .brief-card .bf-main{display:block;font-size:.98rem;font-weight:800;line-height:1.28;margin-bottom:3px}
 .brief-card .bf-sub{display:block;font-style:normal;font-size:.82rem;color:#5b6b7c;line-height:1.4}
 .brief-card .bf-sub:empty{display:none}
-.brief-card u{display:block;text-decoration:none;color:#0e7c7b;font-weight:700;font-size:.8rem;letter-spacing:.3px;margin-top:6px}
+.brief-card u{display:block;text-decoration:none;color:#0e7c7b;font-weight:700;font-size:.8rem;letter-spacing:.3px;margin-top:auto;padding-top:6px}
 .brief-card .bf-fish{display:block}
 .bf-species{display:block;font-size:.88rem;line-height:1.4;color:#0a2540}
 .bf-species b{font-weight:800}
 .bf-tidewin{font-size:.78rem;color:#5b6b7c;line-height:1.35;border-top:1px dashed #e6ded1;padding-top:5px;margin-top:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bf-bet{display:block;padding:8px 0;border-bottom:1px solid #dcebf3}
+.bf-bet b{display:block;font-size:1.02rem;color:#0b3d62}
+.bf-bet-note{display:block;font-style:normal;font-size:.86rem;color:#445A6A;margin-top:1px}
 .brief-card .bf-zone{display:block}
 .brief-card .bf-zone+.bf-zone{margin-top:6px;border-top:1px dashed #e6ded1;padding-top:6px}
 .brief-card .bf-zline{display:block;font-size:.9rem;line-height:1.3;color:#0a2540}
@@ -577,6 +580,9 @@ body.dark .brief-card{background:#16202e;border-color:#2a3a4f}
 body.dark .brief-title{color:#e8eef4}
 body.dark .brief-card .bf-sub,body.dark .bf-tidewin{color:#8fa8bd}
 body.dark .bf-species{color:#e8eef4}
+body.dark .bf-bet{border-bottom-color:#1d4258}
+body.dark .bf-bet b{color:#e8eef4}
+body.dark .bf-bet-note{color:#8fa8bd}
 @media(max-width:860px){
 .brief-head{margin-bottom:8px}
 .brief-title{font-size:1.3rem}
@@ -6138,8 +6144,8 @@ function renderBriefing(){
           body = body.replace(/^\s*[\u2014\u2013-]\s*/, "");
           var sent = body.split(/\.\s/)[0];
           var desc = sent.split(/[,;]\s/)[0];
-          if(desc.length > 34){
-            var dcut = desc.slice(0, 34);
+          if(desc.length > 58){
+            var dcut = desc.slice(0, 58);
             var dsp = dcut.lastIndexOf(" ");
             if(dsp > 12) dcut = dcut.slice(0, dsp);
             desc = dcut + "\u2026";
@@ -6170,7 +6176,7 @@ function renderBriefing(){
         }
       });
       if(bets.length){
-        var h = "<span class=\"bf-species\">" + bets.map(function(b){ return "<b>" + esc(b.species) + "</b>"; }).join(" \u00b7 ") + "</span>";
+        var h = bets.map(function(b){ return "<span class=\"bf-bet\"><b>" + esc(b.species) + "</b>" + (b.snippet ? "<i class=\"bf-bet-note\">" + esc(b.snippet) + "</i>" : "") + "</span>"; }).join("");
         if(tideWin) h += "<div class=\"bf-tidewin\">" + esc(tideWin) + "</div>";
         fishBox.innerHTML = h;
       } else {

@@ -307,6 +307,29 @@ footer .soc svg{width:20px; height:20px}
 .pl-sp{background:#1db954}
 .pl-am{background:#fa2d48}
 .pl-name{text-decoration:underline;text-underline-offset:3px}
+
+.fw-doors{display:flex;gap:10px;margin:14px 0}
+.fw-door{flex:1;border:2px solid #bcd9e8;background:#EEF6F9;border-radius:16px;padding:14px 6px;text-align:center;cursor:pointer;font-family:inherit;font-size:1.12rem;font-weight:800;color:var(--navy)}
+.fw-door span{display:block;font-size:.78rem;font-weight:600;color:var(--muted);margin-top:2px}
+.fw-door.sel{background:var(--navy);color:#fff;border-color:var(--navy)}
+.fw-door.sel span{color:#bcd9e8}
+.fish-chart{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px}
+.fish-tile{border:1px solid #d7e5ee;background:#fff;border-radius:12px;padding:0;overflow:hidden;cursor:pointer;font-family:inherit}
+.fish-tile img{width:100%;height:74px;object-fit:cover;display:block}
+.fish-tile span{display:block;padding:6px 4px;font-weight:700;font-size:.8rem;color:var(--navy);line-height:1.2}
+.fish-card{background:#fff;border:1px solid #d7e5ee;border-radius:16px;overflow:hidden;margin-bottom:14px}
+.fish-card img{width:100%;height:190px;object-fit:cover;display:block}
+.fish-body{padding:12px 14px}
+.fish-body h4{margin:0 0 8px;font-size:1.3rem}
+.fish-chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}
+.fchip{background:#EEF6F9;border:1.5px solid #bcd9e8;color:var(--navy);font-weight:800;font-size:.78rem;padding:5px 10px;border-radius:999px}
+.fchip.slot{background:var(--amber,#FFB703);border-color:var(--navy)}
+.fchip.warn{background:#fde8e8;border-color:#d64545;color:#8c2b2b}
+.fish-body p{margin:0 0 6px;line-height:1.45}
+.fish-note{color:var(--muted);font-size:.9rem}
+.fish-foot{color:var(--muted);font-size:.8rem;line-height:1.5}
+.fish-flash{outline:3px solid var(--amber,#FFB703);outline-offset:2px}
+.knot-img{width:100%;border-radius:10px;display:block;margin:8px 0}
 </style>
 <script type="application/ld+json">
 {
@@ -1659,7 +1682,7 @@ if(typeof document!=='undefined'){
     <a class="cat-card" href="#/shopc"><span class="c-ico"><svg class=tic aria-hidden=true><use href=#i-bag></use></svg></span><b>Shop &amp; Connect</b><i>Merch, boats &amp; community</i></a>
     <a class="cat-card" href="#/sightseeing"><span class="c-ico"><svg class=tic aria-hidden=true><use href=#i-bridge></use></svg></span><b>Sightseeing</b><i>Things to see from the water</i></a>
     <a class="cat-card" href="#/knowbeforeyougo"><span class="c-ico"><svg class=tic aria-hidden=true><use href=#i-siren></use></svg></span><b>Know Before You Go</b><i>Tricky passes &amp; channels</i></a>
-    <a class="cat-card" href="#/newtofishing"><span class="c-ico"><svg class=tic aria-hidden=true><use href=#i-fish></use></svg></span><b>New to Fishing?</b><i>Rods, bait, spots &amp; rules &mdash; everything to start</i></a>
+    <a class="cat-card" href="#/fishing"><span class="c-ico"><svg class=tic aria-hidden=true><use href=#i-fish></use></svg></span><b>New to Fishing?</b><i>Rods, bait, spots &amp; rules &mdash; everything to start</i></a>
   </div>
 </div>
 <div class="home-intro">
@@ -1946,12 +1969,17 @@ if(typeof document!=='undefined'){
   <div class="wrap">
     <div class="sec-head">
       <span class="sec-kicker">Tight Lines</span>
-      <h2>Tampa Bay Fishing Report</h2>
-      <p>What's biting right now — plus the size and bag limits you need to stay legal.</p>
+      <h2>Tampa Bay Fishing</h2>
+      <p>Pick your water — saltwater or freshwater. Every fish has a picture and its legal size, so you always know what you caught and what you can keep.</p>
     </div>
     <div class="license-card"><div class="license-ico"><svg class="ic" aria-hidden="true"><use href="#i-doc"/></svg></div><div><h4>Is your Florida fishing license current?</h4><p>FWC checks licenses on the water. Verify yours is still active — or buy or renew in minutes — through Florida's official license system.</p><div class="license-btns"><a class="wub-btn" href="https://gooutdoorsflorida.com/" target="_blank" rel="noopener">Check / renew my license</a><a class="wub-btn" href="https://myfwc.com/license/recreational/saltwater-fishing/" target="_blank" rel="noopener">FWC license requirements</a></div></div></div>
-    <div class="dir-grid">
-        <!-- DAILY-REPORT-START (auto-updated every morning ~6am ET) -->
+    <div class="fw-doors">
+      <button class="fw-door sel" id="fw-door-salt" onclick="fwDoor('salt')">🌊 Saltwater<span>Bay, ocean &amp; rivers</span></button>
+      <button class="fw-door" id="fw-door-fresh" onclick="fwDoor('fresh')">🎣 Freshwater<span>Lakes &amp; ponds</span></button>
+    </div>
+    <div id="fw-salt">
+      <div class="bt-tabs"><button class="bt-tab sel" onclick="fwTab('salt','start',this)">Today</button><button class="bt-tab" onclick="fwTab('salt','chart',this)">Fish Chart</button><button class="bt-tab" onclick="fwTab('salt','bait',this)">Bait &amp; Rods</button><button class="bt-tab" onclick="fwTab('salt','knots',this)">Knots</button><button class="bt-tab" onclick="fwTab('salt','hooks',this)">Hooks</button></div>
+      <div class="fw-panel" id="fw-salt-start"><div class="dir-grid">        <!-- DAILY-REPORT-START (auto-updated every morning ~6am ET) -->
     <div class="dir-card daily-report" style="border:2px solid var(--teal)">
       <div class="city"><svg class=ic aria-hidden=true><use href=#i-cal></use></svg> Daily Report &mdash; Wednesday, October 28, 2026</div><h4><svg class=ic aria-hidden=true><use href=#i-target></use></svg> Today&apos;s Best Bets</h4>
       <div class="type">
@@ -1966,11 +1994,10 @@ if(typeof document!=='undefined'){
     </div>
     <!-- DAILY-REPORT-END -->
     </div>
-    <!-- SPONSOR: replace with paying sponsor's banner -->
     <div class="sponsor-banner" style="margin-top:0"><svg class=ic aria-hidden=true><use href=#i-fish></use></svg> <b>This fishing report presented by…</b> <a href="#advertise">Your tackle shop here · $149/mo</a></div>
     <div class="ad-cta" style="margin:6px 0 18px; text-align:center">
-      <a href="#charters" style="background:var(--teal)"><svg class=ic aria-hidden=true><use href=#i-fish></use></svg> Book a fishing charter</a>
-    </div>
+<a href="#charters" style="background:var(--teal)"><svg class=ic aria-hidden=true><use href=#i-fish></use></svg> Book a fishing charter</a>
+</div>
     <div class="dir-grid">
       <div class="dir-card">
         <div class="city">October</div><h4><svg class=ic aria-hidden=true><use href=#i-fish></use></svg> What's Biting Now</h4>
@@ -1984,27 +2011,6 @@ if(typeof document!=='undefined'){
         </div>
       </div>
       <div class="dir-card">
-        <div class="city">Keep legal</div><h4><svg class=ic aria-hidden=true><use href=#i-ruler></use></svg> Size &amp; Bag Limits (Gulf)</h4>
-        <div class="type">
-          <table class="regs-table">
-            <tr><th>Species</th><th>Size</th><th>Bag</th></tr>
-            <tr><td>Redfish</td><td>18–27" slot</td><td>1/day</td></tr>
-            <tr><td>Snook</td><td>28–33" slot</td><td>1/day</td></tr>
-            <tr><td>Spotted seatrout</td><td>15–19" slot</td><td>3/day</td></tr>
-            <tr><td>King mackerel</td><td>24" fork min</td><td>3/day</td></tr>
-            <tr><td>Spanish mackerel</td><td>12" fork min</td><td>15/day</td></tr>
-            <tr><td>Mangrove snapper</td><td>10" min</td><td>5/day</td></tr>
-            <tr><td>Flounder</td><td>14" min</td><td>5/day</td></tr>
-            <tr><td>Sheepshead</td><td>12" min</td><td>8/day</td></tr>
-            <tr><td>Pompano</td><td>11" fork min</td><td>6/day</td></tr>
-            <tr><td>Cobia</td><td>36" fork min</td><td>1/day</td></tr>
-            <tr><td>Black drum</td><td>14–24" slot</td><td>5/day</td></tr>
-            <tr><td>Tarpon</td><td colspan="2">Catch &amp; release only</td></tr>
-          </table>
-        </div>
-        <div class="contact"><svg class=ic aria-hidden=true><use href=#i-link></use></svg> <a href="https://myfwc.com/fishing/saltwater/recreational/" target="_blank" rel="noopener">FWC Saltwater Regulations</a></div>
-      </div>
-      <div class="dir-card">
         <div class="city">Don't forget</div><h4><svg class=ic aria-hidden=true><use href=#i-ticket></use></svg> Licenses &amp; Seasons</h4>
         <div class="type">
           • <b>FL saltwater fishing license</b> required — get one at GoOutdoorsFlorida.com<br>
@@ -2013,7 +2019,21 @@ if(typeof document!=='undefined'){
           • Regulations change — <b>always verify with FWC</b> before keeping fish
         </div>
       </div>
-      <div class="dir-card">
+    </div></div>
+      <div class="fw-panel" id="fw-salt-chart" style="display:none"><p style="margin:2px 0 10px"><b>Tap a fish</b> to jump to its picture, size and limit.</p><div class="fish-chart"><button class="fish-tile" onclick="fishGo('salt','snook')"><img src="assets/fish-snook.jpg" alt="Snook" loading="lazy"><span>Snook</span></button><button class="fish-tile" onclick="fishGo('salt','redfish')"><img src="assets/fish-redfish.jpg" alt="Redfish" loading="lazy"><span>Redfish</span></button><button class="fish-tile" onclick="fishGo('salt','seatrout')"><img src="assets/fish-seatrout.jpg" alt="Spotted Seatrout" loading="lazy"><span>Spotted Seatrout</span></button><button class="fish-tile" onclick="fishGo('salt','tarpon')"><img src="assets/fish-tarpon.jpg" alt="Tarpon" loading="lazy"><span>Tarpon</span></button><button class="fish-tile" onclick="fishGo('salt','spanish')"><img src="assets/fish-spanish-mackerel.jpg" alt="Spanish Mackerel" loading="lazy"><span>Spanish Mackerel</span></button><button class="fish-tile" onclick="fishGo('salt','king')"><img src="assets/fish-king-mackerel.jpg" alt="King Mackerel" loading="lazy"><span>King Mackerel</span></button><button class="fish-tile" onclick="fishGo('salt','cobia')"><img src="assets/fish-cobia.jpg" alt="Cobia" loading="lazy"><span>Cobia</span></button><button class="fish-tile" onclick="fishGo('salt','tripletail')"><img src="assets/fish-tripletail.jpg" alt="Tripletail" loading="lazy"><span>Tripletail</span></button><button class="fish-tile" onclick="fishGo('salt','mangrove')"><img src="assets/fish-mangrove-snapper.jpg" alt="Mangrove Snapper" loading="lazy"><span>Mangrove Snapper</span></button><button class="fish-tile" onclick="fishGo('salt','lane')"><img src="assets/fish-lane-snapper.jpg" alt="Lane Snapper" loading="lazy"><span>Lane Snapper</span></button><button class="fish-tile" onclick="fishGo('salt','sheepshead')"><img src="assets/fish-sheepshead.jpg" alt="Sheepshead" loading="lazy"><span>Sheepshead</span></button><button class="fish-tile" onclick="fishGo('salt','flounder')"><img src="assets/fish-flounder.jpg" alt="Flounder" loading="lazy"><span>Flounder</span></button><button class="fish-tile" onclick="fishGo('salt','redgrouper')"><img src="assets/fish-red-grouper.jpg" alt="Red Grouper" loading="lazy"><span>Red Grouper</span></button><button class="fish-tile" onclick="fishGo('salt','gag')"><img src="assets/fish-gag-grouper.jpg" alt="Gag Grouper" loading="lazy"><span>Gag Grouper</span></button><button class="fish-tile" onclick="fishGo('salt','redsnapper')"><img src="assets/fish-red-snapper.jpg" alt="Red Snapper" loading="lazy"><span>Red Snapper</span></button><button class="fish-tile" onclick="fishGo('salt','amberjack')"><img src="assets/fish-amberjack.jpg" alt="Greater Amberjack" loading="lazy"><span>Greater Amberjack</span></button></div><div class="fish-card" id="fish-salt-snook"><img src="assets/fish-snook.jpg" alt="Snook" loading="lazy"><div class="fish-body"><h4>Snook</h4><div class="fish-chips"><span class="fchip slot">SLOT 28–33 in</span><span class="fchip ">Keep 1</span><span class="fchip warn">Open Mar–Apr and Sep–Nov</span></div><p><b>How you know:</b> Thick black line running down its side, pointy snout, and the lower jaw pokes out in front.</p><p class="fish-note">You also need the snook permit added to your license to keep one.</p></div></div><div class="fish-card" id="fish-salt-redfish"><img src="assets/fish-redfish.jpg" alt="Redfish" loading="lazy"><div class="fish-body"><h4>Redfish</h4><div class="fish-chips"><span class="fchip slot">SLOT 18–27 in</span><span class="fchip ">Keep 1</span><span class="fchip ">Max 2 per boat</span></div><p><b>How you know:</b> Copper-red back and a black spot (sometimes two) right at the base of the tail.</p><p class="fish-note">No spot at the tail? Look again before you keep it.</p></div></div><div class="fish-card" id="fish-salt-seatrout"><img src="assets/fish-seatrout.jpg" alt="Spotted Seatrout" loading="lazy"><div class="fish-body"><h4>Spotted Seatrout</h4><div class="fish-chips"><span class="fchip slot">SLOT 15–19 in</span><span class="fchip ">Keep 3</span><span class="fchip ">1 over 19 in per boat is OK</span></div><p><b>How you know:</b> Soft gray-green body covered in black spots — the spots cover the tail fin too.</p></div></div><div class="fish-card" id="fish-salt-tarpon"><img src="assets/fish-tarpon.jpg" alt="Tarpon" loading="lazy"><div class="fish-body"><h4>Tarpon</h4><div class="fish-chips"><span class="fchip warn">CATCH AND RELEASE</span><span class="fchip ">Keep 0</span></div><p><b>How you know:</b> Giant silver scales like armor and a huge mouth that points up.</p><p class="fish-note">Keeping one needs a $50 FWC tag and is only allowed for a record try. Over 40 inches, it stays in the water while you unhook it.</p></div></div><div class="fish-card" id="fish-salt-spanish"><img src="assets/fish-spanish-mackerel.jpg" alt="Spanish Mackerel" loading="lazy"><div class="fish-body"><h4>Spanish Mackerel</h4><div class="fish-chips"><span class="fchip slot">Min 12 in (fork)</span><span class="fchip ">Keep 15</span></div><p><b>How you know:</b> Silver torpedo with yellow spots and a yellow tail fin.</p><p class="fish-note">Measured to the fork of the tail.</p></div></div><div class="fish-card" id="fish-salt-king"><img src="assets/fish-king-mackerel.jpg" alt="King Mackerel" loading="lazy"><div class="fish-body"><h4>King Mackerel</h4><div class="fish-chips"><span class="fchip slot">Min 24 in (fork)</span><span class="fchip ">Keep 3</span></div><p><b>How you know:</b> A long silver missile. Grown kings have no spots, and the dark line down the side dips down sharply in the middle.</p><p class="fish-note">Measured to the fork of the tail.</p></div></div><div class="fish-card" id="fish-salt-cobia"><img src="assets/fish-cobia.jpg" alt="Cobia" loading="lazy"><div class="fish-body"><h4>Cobia</h4><div class="fish-chips"><span class="fchip slot">Min 36 in (fork)</span><span class="fchip ">Keep 1</span><span class="fchip ">Max 2 per boat</span></div><p><b>How you know:</b> Brown with a wide, flat head like a shark and a dark stripe through the eye.</p><p class="fish-note">Look for them under rays, buoys and floating stuff.</p></div></div><div class="fish-card" id="fish-salt-tripletail"><img src="assets/fish-tripletail.jpg" alt="Tripletail" loading="lazy"><div class="fish-body"><h4>Tripletail</h4><div class="fish-chips"><span class="fchip slot">Min 18 in</span><span class="fchip ">Keep 2</span></div><p><b>How you know:</b> Looks like a big floating leaf — the fins line up so it seems to have three tails.</p><p class="fish-note">Hangs under buoys, crab-trap floats and markers, floating on its side.</p></div></div><div class="fish-card" id="fish-salt-mangrove"><img src="assets/fish-mangrove-snapper.jpg" alt="Mangrove Snapper" loading="lazy"><div class="fish-body"><h4>Mangrove Snapper</h4><div class="fish-chips"><span class="fchip slot">Min 10 in</span><span class="fchip ">Keep 5</span></div><p><b>How you know:</b> Gray-brown snapper with a dark stripe running through the eye.</p><p class="fish-note">Lives around docks, bridges and mangroves.</p></div></div><div class="fish-card" id="fish-salt-lane"><img src="assets/fish-lane-snapper.jpg" alt="Lane Snapper" loading="lazy"><div class="fish-body"><h4>Lane Snapper</h4><div class="fish-chips"><span class="fchip slot">Min 10 in</span><span class="fchip ">Keep 20</span></div><p><b>How you know:</b> Pinkish with yellow stripes and one black spot on its side.</p></div></div><div class="fish-card" id="fish-salt-sheepshead"><img src="assets/fish-sheepshead.jpg" alt="Sheepshead" loading="lazy"><div class="fish-body"><h4>Sheepshead</h4><div class="fish-chips"><span class="fchip slot">Min 12 in</span><span class="fchip ">Keep 8</span></div><p><b>How you know:</b> Black and silver stripes like a jail uniform — and flat teeth that look like a person's.</p><p class="fish-note">Eats shrimp and fiddler crabs off dock and bridge pilings.</p></div></div><div class="fish-card" id="fish-salt-flounder"><img src="assets/fish-flounder.jpg" alt="Flounder" loading="lazy"><div class="fish-body"><h4>Flounder</h4><div class="fish-chips"><span class="fchip slot">Min 14 in</span><span class="fchip ">Keep 5</span><span class="fchip warn">CLOSED Oct 15 – Nov 30</span></div><p><b>How you know:</b> Flat as a pancake with BOTH eyes on top. Brown on top, white underneath.</p><p class="fish-note">Lies flat on the sand and ambushes bait.</p></div></div><div class="fish-card" id="fish-salt-redgrouper"><img src="assets/fish-red-grouper.jpg" alt="Red Grouper" loading="lazy"><div class="fish-body"><h4>Red Grouper</h4><div class="fish-chips"><span class="fchip slot">Min 20 in</span><span class="fchip ">Keep 2</span></div><p><b>How you know:</b> Reddish-brown with pale blotches and a squared-off tail.</p><p class="fish-note">All grouper kinds together: max 4 per day.</p></div></div><div class="fish-card" id="fish-salt-gag"><img src="assets/fish-gag-grouper.jpg" alt="Gag Grouper" loading="lazy"><div class="fish-body"><h4>Gag Grouper</h4><div class="fish-chips"><span class="fchip slot">Min 24 in</span><span class="fchip ">Keep 2</span><span class="fchip warn">Short season — check FWC</span></div><p><b>How you know:</b> Gray with dark worm-like markings across the back.</p><p class="fish-note">All grouper kinds together: max 4 per day.</p></div></div><div class="fish-card" id="fish-salt-redsnapper"><img src="assets/fish-red-snapper.jpg" alt="Red Snapper" loading="lazy"><div class="fish-body"><h4>Red Snapper</h4><div class="fish-chips"><span class="fchip slot">Min 16 in</span><span class="fchip ">Keep 2</span><span class="fchip warn">Special season — check FWC</span></div><p><b>How you know:</b> All red-pink, with a pointy snout and red eyes.</p><p class="fish-note">The season is short and set each year — check FWC before any offshore trip.</p></div></div><div class="fish-card" id="fish-salt-amberjack"><img src="assets/fish-amberjack.jpg" alt="Greater Amberjack" loading="lazy"><div class="fish-body"><h4>Greater Amberjack</h4><div class="fish-chips"><span class="fchip slot">Min 34 in (fork)</span><span class="fchip ">Keep 1</span><span class="fchip warn">Season — check FWC</span></div><p><b>How you know:</b> Dark stripe through the eye and a torpedo body built for fighting.</p><p class="fish-note">Fights harder than almost anything out here. Measured to the fork of the tail.</p></div></div><p class="fish-foot">Sizes and limits from FWC (July 2026), Tampa Bay / Gulf state waters. Rules change — when in doubt, check <a href="https://myfwc.com/fishing/saltwater/recreational/" target="_blank" rel="noopener">MyFWC.com</a> before you keep a fish. <b>How to measure:</b> total length = nose to tail tip with the tail squeezed together. Fork length = nose to the V in the tail. Fish photos via Wikimedia Commons (public domain &amp; Creative Commons).</p></div>
+      <div class="fw-panel" id="fw-salt-bait" style="display:none"><div class="dir-card"><div class="city">Rods</div><h4>Two Rods Cover Saltwater</h4><div class="type"><b>The bay rod:</b> a 7 ft medium-power spinning combo, 2500–3000 reel, 10–15 lb braid with a 20 lb fluorocarbon leader. This one rod handles redfish, trout, snook and snapper.<br><br><b>Offshore:</b> a 7 ft medium-heavy spinning rod (4000–6000 reel, 30–50 lb braid) for kings and cobia, plus a 6.5–7 ft medium-heavy boat rod for dropping on grouper and snapper. First time offshore? A party boat rents you the rod, supplies the bait and knows the spots.</div></div>
+<div class="dir-card">
+        <div class="city">Tackle box</div><h4><svg class=ic aria-hidden=true><use href=#i-shrimp></use></svg> What to Throw</h4>
+        <div class="type">
+          • <b>Live shrimp</b> — the universal Tampa Bay bait; everything eats it<br>
+          • <b>Greenbacks (whitebait)</b> — the local candy for snook, trout &amp; reds<br>
+          • <b>Topwater plugs</b> — dawn patrol over the flats<br>
+          • <b>Soft plastics on jig heads</b> — paddle tails in new penny &amp; white<br>
+          • <b>Cut ladyfish or mullet</b> — for bull reds<br><br>
+          <svg class=ic aria-hidden=true><use href=#i-worm></use></svg> Grab bait on the way: <a href="#fuel">see the bait shop directory</a>
+        </div>
+      </div>
+<div class="dir-card">
         <div class="city">Timing</div><h4>⏰ When to Go</h4>
         <div class="type">
           • <b>Fish the moving tide</b> — incoming and outgoing beat slack water every time. <a href="#conditions">Check today's tides above</a><br>
@@ -2023,7 +2043,7 @@ if(typeof document!=='undefined'){
           • <b>After a front</b> — falling barometer ahead of storms often triggers a hot bite
         </div>
       </div>
-      <div class="dir-card">
+<div class="dir-card">
         <div class="city">Tampa Bay area</div><h4><svg class=ic aria-hidden=true><use href=#i-pin></use></svg> Where to Try</h4>
         <div class="type">
           • <b>Weedon Island flats</b> — redfish &amp; trout on the grass flats<br>
@@ -2034,7 +2054,7 @@ if(typeof document!=='undefined'){
           • <b>Upper bay creeks</b> — trout &amp; flounder in the potholes
         </div>
       </div>
-            <div class="dir-card" style="border:2px solid var(--teal)">
+<div class="dir-card" style="border:2px solid var(--teal)">
         <div class="city">Beyond the bay</div><h4><svg class=ic aria-hidden=true><use href=#i-waves></use></svg> Heading Offshore</h4>
         <div class="type">
           • <b>Nearshore reefs &amp; ledges (3–9 mi)</b> — king mackerel, Spanish, cobia &amp; tripletail around structure; great on calm days<br>
@@ -2047,139 +2067,37 @@ if(typeof document!=='undefined'){
           • <b>VHF radio + EPIRB/PLB</b> — cell signal dies fast offshore. <a href="#safety">See the safety section</a><br>
           • <b>Federal waters start at 9 nm</b> — different bag limits &amp; seasons apply beyond the line. <b>Verify with FWC</b> before keeping fish
         </div>
-      </div>
-<div class="dir-card">
-        <div class="city">Tackle box</div><h4><svg class=ic aria-hidden=true><use href=#i-shrimp></use></svg> What to Throw</h4>
-        <div class="type">
-          • <b>Live shrimp</b> — the universal Tampa Bay bait; everything eats it<br>
-          • <b>Greenbacks (whitebait)</b> — the local candy for snook, trout &amp; reds<br>
-          • <b>Topwater plugs</b> — dawn patrol over the flats<br>
-          • <b>Soft plastics on jig heads</b> — paddle tails in new penny &amp; white<br>
-          • <b>Cut ladyfish or mullet</b> — for bull reds<br><br>
-          <svg class=ic aria-hidden=true><use href=#i-worm></use></svg> Grab bait on the way: <a href="#fuel">see the bait shop directory</a>
-        </div>
-      </div>
+      </div></div>
+      <div class="fw-panel" id="fw-salt-knots" style="display:none"><div class="dir-card"><div class="city">Knot 1 — start here</div><h4>Palomar Knot — the easy strong one</h4>
+<img class="knot-img" src="assets/knot-palomar.jpg" alt="Palomar knot steps" loading="lazy">
+<div class="type"><b>1.</b> Fold the line in half so you have a loop.<br><b>2.</b> Push the loop through the hook's eye.<br><b>3.</b> Tie a simple overhand knot with the loop — don't pull it tight yet.<br><b>4.</b> Drop the hook through the loop, wet the line, pull tight. Snip the extra.</div></div>
+<div class="dir-card"><div class="city">Knot 2</div><h4>Improved Clinch Knot — the classic</h4>
+<img class="knot-img" src="assets/knot-clinch.jpg" alt="Clinch knot wraps" loading="lazy">
+<div class="type"><b>1.</b> Push the line through the hook's eye, leaving a hand-length of extra line.<br><b>2.</b> Wrap the extra end around the main line 5 times.<br><b>3.</b> Push the end through the little loop by the eye, then through the big loop you just made.<br><b>4.</b> Wet it, pull tight slowly, snip the extra.</div></div>
+<div class="dir-card"><div class="city">Knot 3</div><h4>Uni Knot — the one that does everything</h4>
+<img class="knot-img" src="assets/knot-uni.jpg" alt="Uni knot steps" loading="lazy">
+<div class="type"><b>1.</b> Push the line through the eye and fold it back so the line doubles up.<br><b>2.</b> Make a loop with the extra end, held against the doubled line.<br><b>3.</b> Wrap the end through the loop and around both lines 4 to 6 times.<br><b>4.</b> Wet it, pull the end to snug the wraps, then slide the knot down to the eye and pull the main line tight.</div></div></div>
+      <div class="fw-panel" id="fw-salt-hooks" style="display:none"><div class="dir-card"><div class="city">The two shapes</div><h4>Circle Hook vs J Hook</h4>
+<img class="knot-img" src="assets/hooks-compare.jpg" alt="J hook next to a circle hook" loading="lazy">
+<div class="type"><b>Circle hook</b> — the point curves back toward the shank. The fish hooks itself in the corner of the mouth. <b>Do NOT yank</b> — just start reeling.<br><br><b>J hook</b> — the classic shape. When the fish bites, you lift the rod to set the hook.<br><br>⚖️ <b>The reef rule:</b> fishing for snapper or grouper with real bait? The law says you must use circle hooks — and they release fish safer too.</div></div>
+<div class="dir-card"><div class="city">Hook + weight in one</div><h4>Jig Heads</h4>
+<img class="knot-img" src="assets/fish-jighead.jpg" alt="A jig — hook with a built-in weight" loading="lazy">
+<div class="type">A jig is a hook with the weight already molded on. Thread a soft plastic tail onto it, cast it out, and hop it back along the bottom. Inshore and in lakes, 1/8 to 1/4 oz covers most fishing.</div></div>
+<div class="dir-card"><div class="city">Sizes run backwards</div><h4>Hook Sizes, In Plain English</h4>
+<div class="type">• <b>Size 6–8</b> — tiny hooks for bluegill and small panfish. Big number = small hook.<br>• <b>2/0 circle</b> — the bay all-rounder: trout, redfish, snapper.<br>• <b>5/0–7/0</b> — offshore size for grouper and big snapper.<br>Once the number gets a "/0" it flips: a 5/0 is BIGGER than a 2/0.</div></div></div>
     </div>
-    <div class="sec-head" style="margin-top:28px">
-      <span class="sec-kicker">Pick Your Water</span>
-      <h2>Today's Bite &mdash; By the Water</h2>
-      <p>Saltwater to freshwater, it's all within a short drive: the Gulf, the bay, the rivers and the lakes. Pick your water &mdash; here's what's biting and how to catch it.</p>
-    </div>
-    <div class="bt-tabs">
-      <button class="bt-tab sel" onclick="biteTab('ocean',this)">Ocean</button>
-      <button class="bt-tab" onclick="biteTab('bays',this)">Bays</button>
-      <button class="bt-tab" onclick="biteTab('rivers',this)">Rivers</button>
-      <button class="bt-tab" onclick="biteTab('lakes',this)">Lakes</button>
-    </div>
-    <div class="bt-panel" id="bt-ocean">
-      <div class="dir-card">
-        <div class="city">The Gulf &mdash; saltwater</div><h4><svg class=ic aria-hidden=true><use href=#i-waves></use></svg> Offshore &amp; Nearshore</h4>
-        <div class="type">
-          &bull; <b>Nearshore reefs &amp; ledges (3&ndash;9 mi)</b> &mdash; king mackerel on the fall run, Spanish mackerel, cobia &amp; tripletail around structure<br>
-          &bull; <b>Hard bottom &amp; ledges (60&ndash;120 ft)</b> &mdash; red grouper, mangrove &amp; lane snapper on live pinfish or cut bait<br>
-          &bull; <b>Deeper drops (120 ft+)</b> &mdash; gag grouper, red snapper (seasonal) &amp; amberjack<br><br>
-          Troll or cast spoons for the kings; drop live bait on the ledges for the rest. Check the <a href="#conditions">marine forecast</a> before you go &mdash; if seas are 3&ndash;5 ft, stay inside.
-        </div>
-      </div>
-    </div>
-    <div class="bt-panel" id="bt-bays" style="display:none">
-      <div class="dir-card">
-        <div class="city">Tampa Bay &mdash; saltwater</div><h4><svg class=ic aria-hidden=true><use href=#i-fish></use></svg> Flats, Passes &amp; Mangroves</h4>
-        <div class="type">
-          &bull; <b>Redfish</b> &mdash; schools on the grass flats, oyster bars and mangrove shorelines<br>
-          &bull; <b>Spotted trout</b> &mdash; over grass edges and potholes in 5&ndash;8 ft<br>
-          &bull; <b>Snook</b> &mdash; mangrove points, passes and night dock lights<br>
-          &bull; <b>Spanish mackerel</b> &mdash; bait schools at the passes and channel edges<br><br>
-          Live shrimp under a popping cork, live whitebait, gold spoons and soft-plastic jigs cover all of it. The tide runs this fishing &mdash; see today's report at the top of this page for the windows.
-        </div>
-      </div>
-    </div>
-    <div class="bt-panel" id="bt-rivers" style="display:none">
-      <div class="dir-card">
-        <div class="city">Brackish &mdash; salt meets fresh</div><h4><svg class=ic aria-hidden=true><use href=#i-pin></use></svg> The Rivers</h4>
-        <div class="type">
-          &bull; <b>Hillsborough River</b> &mdash; snook and tarpon around downtown bridges and docks; bass farther upriver<br>
-          &bull; <b>Alafia River</b> &mdash; snook &amp; redfish near the mouth; bass and catfish upstream<br>
-          &bull; <b>Little Manatee &amp; Manatee Rivers</b> &mdash; snook, trout at the mouths, bass up toward the lakes<br><br>
-          The rule of every river here: the closer to the bay, the saltier the fish; the farther up you go, the more it fishes like a lake. Live shrimp works everywhere. Mind the idle-speed and manatee zones &mdash; the rivers are full of them.
-        </div>
-      </div>
-    </div>
-    <div class="bt-panel" id="bt-lakes" style="display:none">
-      <div class="dir-card">
-        <div class="city">Freshwater</div><h4><svg class=ic aria-hidden=true><use href=#i-target></use></svg> Tampa Bay Lakes</h4>
-        <div class="type">
-          <b>The lakes:</b> Lake Tarpon (the big-bass lake), Lake Seminole, Lake Maggiore, Lake Thonotosassa, Lake Carroll, Lake Rogers, Crescent Lake &mdash; most have bank fishing, no boat required.<br><br>
-          <b>What bites:</b> largemouth bass year-round, bluegill everywhere, black crappie ("specks") in the cooler months, channel catfish all day. Fish early or at last light, around docks, pads and shade.<br><br>
-          <b>Bait:</b> live shiners for bass, red worms &amp; crickets for bluegill, small minnows &amp; jigs for crappie, plastic worms &amp; spinnerbaits for lures.<br><br>
-          <b>Beginner setup:</b> one 6'6" to 7 ft medium spinning combo, 8&ndash;12 lb line, a bobber rig for panfish and a weedless plastic worm for bass. Lakes need a <b>Florida freshwater license</b> (separate from saltwater; kids under 16 free) &mdash; <a href="https://gooutdoorsflorida.com/" target="_blank" rel="noopener">Go Outdoors Florida</a>.
-        </div>
-      </div>
-    </div>
-    <p style="text-align:center; color:var(--muted); font-size:.82rem; margin-top:16px">Regulations summarized from FWC for Gulf state waters — verify current rules at myfwc.com before your trip.</p>
-  </div>
-</section></div>
-<div class="view" id="view-newtofishing"><div class="wrap"><a class="back-link" href="#/">&#8249; All categories</a></div><section>
-  <div class="wrap">
-    <div class="sec-head">
-      <span class="sec-kicker">Start Here</span>
-      <h2>New to Fishing?</h2>
-      <p>Everything about fishing the Tampa Bay area in one place &mdash; the ocean, the bay, the rivers, the lakes and the ponds. What fish are where, what rod and bait to use, where to buy it all, and the rules that keep you legal.</p>
-    </div>
-    <div class="bt-tabs">
-      <button class="bt-tab sel" onclick="nfTab('start',this)">Start</button>
-      <button class="bt-tab" onclick="nfTab('ocean',this)">Ocean</button>
-      <button class="bt-tab" onclick="nfTab('bays',this)">Bays</button>
-      <button class="bt-tab" onclick="nfTab('rivers',this)">Rivers</button>
-      <button class="bt-tab" onclick="nfTab('lakes',this)">Lakes</button>
-      <button class="bt-tab" onclick="nfTab('gear',this)">Gear &amp; Bait</button>
-    </div>
-    <div class="nf-panel" id="nf-start">
-      <div class="dir-card">
+    <div id="fw-fresh" style="display:none">
+      <div class="bt-tabs"><button class="bt-tab sel" onclick="fwTab('fresh','start',this)">Start Here</button><button class="bt-tab" onclick="fwTab('fresh','chart',this)">Fish Chart</button><button class="bt-tab" onclick="fwTab('fresh','bait',this)">Bait &amp; Rods</button><button class="bt-tab" onclick="fwTab('fresh','knots',this)">Knots</button><button class="bt-tab" onclick="fwTab('fresh','hooks',this)">Hooks</button></div>
+      <div class="fw-panel" id="fw-fresh-start"><div class="dir-card">
         <div class="city">The 60-second version</div><h4><svg class=ic aria-hidden=true><use href=#i-compass></use></svg> How This Works</h4>
         <div class="type">
           <b>1. Pick your water</b> &mdash; each tab above is a different kind of fishing: Ocean, Bays, Rivers, Lakes (ponds are in the Lakes tab). The fish, the rod and the bait change with the water.<br><br>
           <b>2. One rod covers most of it</b> &mdash; a 7 ft medium spinning combo handles the bay, the rivers and most lake fishing. The Gear tab tells you exactly what to buy.<br><br>
           <b>3. Get legal</b> &mdash; Florida has TWO licenses: saltwater and freshwater, and you need the one that matches your water. Kids under 16 fish free. Florida residents fishing saltwater from shore get a free shoreline license &mdash; but you still have to sign up for it. Fishing from a charter boat? The boat's license covers you. Snook needs a small add-on permit if you plan to keep one.<br><br>
           <b>4. Easiest first fish</b> &mdash; a pier or a lake bank, a bobber, a small hook and live shrimp (saltwater) or worms (freshwater). Something WILL bite.<br><br>
-          <b>5. Know before you keep</b> &mdash; almost every fish here has a size limit, a bag limit or a season. The <a href="#/fishing">Fishing Report page</a> lists the main ones; FWC's rules at myfwc.com are the final word. When in doubt, let it go.
+          <b>5. Know before you keep</b> &mdash; almost every fish here has a size limit, a bag limit or a season. The <b>Fish Chart</b> tab on this page shows every fish with its picture and legal size; FWC's rules at myfwc.com are the final word. When in doubt, let it go.
         </div>
       </div>
-    </div>
-    <div class="nf-panel" id="nf-ocean" style="display:none">
-      <div class="dir-card">
-        <div class="city">The Gulf &mdash; saltwater</div><h4><svg class=ic aria-hidden=true><use href=#i-waves></use></svg> Ocean Fishing</h4>
-        <div class="type">
-          <b>What you'll catch:</b> king mackerel &amp; Spanish mackerel (trolling &amp; casting), cobia, tripletail, red &amp; gag grouper, mangrove &amp; lane snapper, amberjack, sharks. Nearshore reefs sit 3&ndash;9 miles out; grouper grounds run 60&ndash;120 ft and deeper.<br><br>
-          <b>Rods:</b> two setups cover it &mdash; a 7 ft medium-heavy spinning rod (4000&ndash;6000 reel, 30&ndash;50 lb braid) for kings, cobia and casting; and a 6.5&ndash;7 ft medium-heavy conventional (boat) rod for dropping on grouper and snapper. First time? Take a party boat or charter &mdash; they rent you the rod, supply the bait and know the spots. Hubbard's Marina runs the famous ones out of John's Pass.<br><br>
-          <b>Bait:</b> live pinfish and scaled sardines for grouper and kings; frozen sardines and squid work fine on the bottom; spoons and jigs for mackerel.<br><br>
-          <b>Know this:</b> snapper and grouper seasons open and close during the year &mdash; check FWC before you keep anything. Check the <a href="#conditions">marine forecast</a> first; if seas are 3&ndash;5 ft, fish the bay instead.
-        </div>
-      </div>
-    </div>
-    <div class="nf-panel" id="nf-bays" style="display:none">
-      <div class="dir-card">
-        <div class="city">Tampa Bay &mdash; saltwater</div><h4><svg class=ic aria-hidden=true><use href=#i-fish></use></svg> Bay Fishing</h4>
-        <div class="type">
-          <b>What you'll catch:</b> redfish, spotted trout, snook, Spanish mackerel, mangrove snapper, sheepshead around pilings, flounder (release Oct 15&ndash;Dec 1 &mdash; harvest is closed), tarpon in the summer around the Skyway and passes.<br><br>
-          <b>Rod:</b> the bay rod is a 7 ft medium-power spinning combo, 2500&ndash;3000 reel, 10&ndash;15 lb braid with a 20 lb fluorocarbon leader (or straight 10&ndash;12 lb mono if you want it simple).<br><br>
-          <b>Bait &amp; rigs:</b> live shrimp under a popping cork catches everything. Live whitebait (greenbacks) for snook and reds, live pinfish under the mangroves, fiddler crabs or small shrimp for sheepshead, gold spoons and soft-plastic jigs when you want lures.<br><br>
-          <b>Where:</b> grass flats and potholes, mangrove edges, oyster bars, passes and dock lights at night. No boat? The Skyway Fishing Piers (open around the clock), the Fort De Soto piers, Ballast Point Pier in Tampa and the Rod &amp; Reel Pier on Anna Maria are the classic beginner spots. The tide runs all of it &mdash; moving water is feeding time.
-        </div>
-      </div>
-    </div>
-    <div class="nf-panel" id="nf-rivers" style="display:none">
-      <div class="dir-card">
-        <div class="city">Brackish &mdash; salt meets fresh</div><h4><svg class=ic aria-hidden=true><use href=#i-pin></use></svg> River Fishing</h4>
-        <div class="type">
-          <b>What you'll catch:</b> near the mouths &mdash; snook, redfish, trout, mangrove snapper, tarpon (Hillsborough &amp; Alafia). Farther up &mdash; largemouth bass, bluegill, catfish, gar. Same river, two different fisheries: the closer to the bay, the saltier the fish.<br><br>
-          <b>Rods:</b> your bay spinning rod works at the mouths. Upriver, go lighter: a 6.5&ndash;7 ft medium-light spinning combo with 8&ndash;10 lb line for bass and panfish around docks, fallen trees and bridge pilings.<br><br>
-          <b>Bait:</b> live shrimp works everywhere in a river. Shiners and plastic worms for bass, worms under a bobber for bluegill, jigs tipped with minnows in the cooler months.<br><br>
-          <b>Where:</b> Hillsborough River (Rowlett Park and Riverhills Park in Tampa), Alafia River (Lithia Springs Park), Little Manatee River State Park, Manatee River (Emerson Point Preserve). License watch-out: rivers can need BOTH licenses &mdash; saltwater below, freshwater above, and the line is not always obvious. If you're not sure which side of it you're fishing, carry both. Mind the idle-speed and manatee zones.
-        </div>
-      </div>
-    </div>
-    <div class="nf-panel" id="nf-lakes" style="display:none">
       <div class="dir-card">
         <div class="city">Freshwater</div><h4><svg class=ic aria-hidden=true><use href=#i-target></use></svg> Lakes &amp; Ponds</h4>
         <div class="type">
@@ -2189,20 +2107,28 @@ if(typeof document!=='undefined'){
           <b>Rod:</b> one 6'6" to 7 ft medium spinning combo, 8&ndash;12 lb line. For ponds, a light 6&ndash;6.5 ft combo with 6&ndash;8 lb line is even more fun.<br><br>
           <b>Bait:</b> live shiners are the #1 Florida bass bait (under a bobber), red worms and crickets for bluegill, small minnows and jigs for crappie, plastic worms and spinnerbaits for lures. Lakes need the <b>freshwater license</b>.
         </div>
-      </div>
+      </div></div>
+      <div class="fw-panel" id="fw-fresh-chart" style="display:none"><p style="margin:2px 0 10px"><b>Tap a fish</b> to jump to its picture, size and limit.</p><div class="fish-chart"><button class="fish-tile" onclick="fishGo('fresh','bass')"><img src="assets/fish-bass.jpg" alt="Largemouth Bass" loading="lazy"><span>Largemouth Bass</span></button><button class="fish-tile" onclick="fishGo('fresh','bluegill')"><img src="assets/fish-bluegill.jpg" alt="Bluegill" loading="lazy"><span>Bluegill</span></button><button class="fish-tile" onclick="fishGo('fresh','crappie')"><img src="assets/fish-crappie.jpg" alt="Black Crappie" loading="lazy"><span>Black Crappie</span></button><button class="fish-tile" onclick="fishGo('fresh','catfish')"><img src="assets/fish-catfish.jpg" alt="Channel Catfish" loading="lazy"><span>Channel Catfish</span></button><button class="fish-tile" onclick="fishGo('fresh','bowfin')"><img src="assets/fish-bowfin.jpg" alt="Bowfin" loading="lazy"><span>Bowfin</span></button><button class="fish-tile" onclick="fishGo('fresh','gar')"><img src="assets/fish-gar.jpg" alt="Florida Gar" loading="lazy"><span>Florida Gar</span></button></div><div class="fish-card" id="fish-fresh-bass"><img src="assets/fish-bass.jpg" alt="Largemouth Bass" loading="lazy"><div class="fish-body"><h4>Largemouth Bass</h4><div class="fish-chips"><span class="fchip slot">No minimum size</span><span class="fchip ">Keep 5</span><span class="fchip ">Only 1 over 16 in</span></div><p><b>How you know:</b> Green with a dark stripe down the side and a huge mouth — the corner of the jaw reaches past the eye.</p></div></div><div class="fish-card" id="fish-fresh-bluegill"><img src="assets/fish-bluegill.jpg" alt="Bluegill" loading="lazy"><div class="fish-body"><h4>Bluegill</h4><div class="fish-chips"><span class="fchip slot">No size limit</span><span class="fchip ">50 panfish a day</span></div><p><b>How you know:</b> Small, round panfish with a dark blue flap by its gill and a yellow-orange belly.</p><p class="fish-note">The 50 is for ALL panfish kinds mixed together.</p></div></div><div class="fish-card" id="fish-fresh-crappie"><img src="assets/fish-crappie.jpg" alt="Black Crappie" loading="lazy"><div class="fish-body"><h4>Black Crappie</h4><div class="fish-chips"><span class="fchip slot">No size limit</span><span class="fchip ">Keep 25</span></div><p><b>How you know:</b> Silver with black speckles scattered like a checkerboard.</p><p class="fish-note">Best in the cooler months, around docks and brush.</p></div></div><div class="fish-card" id="fish-fresh-catfish"><img src="assets/fish-catfish.jpg" alt="Channel Catfish" loading="lazy"><div class="fish-body"><h4>Channel Catfish</h4><div class="fish-chips"><span class="fchip slot">No size limit</span><span class="fchip ">No bag limit</span></div><p><b>How you know:</b> Smooth skin with no scales, long whiskers, and a tail with a deep V in it.</p></div></div><div class="fish-card" id="fish-fresh-bowfin"><img src="assets/fish-bowfin.jpg" alt="Bowfin" loading="lazy"><div class="fish-body"><h4>Bowfin</h4><div class="fish-chips"><span class="fchip slot">No size limit</span><span class="fchip ">No bag limit</span></div><p><b>How you know:</b> One long fin running down its back and a round tail with a black spot.</p><p class="fish-note">Strong fighter. The teeth are sharp — use pliers.</p></div></div><div class="fish-card" id="fish-fresh-gar"><img src="assets/fish-gar.jpg" alt="Florida Gar" loading="lazy"><div class="fish-body"><h4>Florida Gar</h4><div class="fish-chips"><span class="fchip slot">No size limit</span><span class="fchip ">No bag limit</span></div><p><b>How you know:</b> A long, skinny snout full of needle teeth and spotted, armor-hard scales.</p><p class="fish-note">Watch the teeth when you unhook it.</p></div></div><p class="fish-foot">Sizes and limits from FWC statewide freshwater rules. Some lakes and Fish Management Areas have their own rules — read the sign at your lake. Fish photos via Wikimedia Commons (public domain &amp; Creative Commons).</p></div>
+      <div class="fw-panel" id="fw-fresh-bait" style="display:none"><div class="dir-card"><div class="city">Rods &amp; bait</div><h4>One Rod Covers Freshwater</h4><div class="type"><b>The lake rod:</b> one 6'6" to 7 ft medium spinning combo with 8–12 lb line. For ponds, a light 6–6.5 ft combo with 6–8 lb line is even more fun.<br><br><b>Bait:</b> live shiners are the #1 Florida bass bait (fished under a bobber), red worms and crickets for bluegill, small minnows and little jigs for crappie, plastic worms and spinnerbaits when you want lures.<br><br><b>The bobber rig:</b> hook, small split shot, bobber clipped a foot or two above the hook. Cast it near weeds, docks or fallen trees and watch the bobber — when it goes under, reel.</div></div>
+<div class="dir-card"><div class="city">What to buy &amp; where</div><h4>Gear &amp; Bait Shops</h4><div class="type"><b>Buying a rod, in plain English:</b> length = how far you cast (7 ft is the all-around answer). Power = how stiff it is (medium for lakes and the bay). Buy a rod-and-reel COMBO first — it's matched at the factory and costs less.<br><br><b>Tackle shops on our map:</b> Tampa Fishing Outfitters, St. Pete Fishing Outfitters, Tarpon Fishing Outfitters, Economy Tackle, Dogfish Tackle, Tackle Shack — open the <a href="#/map">Boater's Map</a> and tap <b>Fishing Tackle</b>. Budget route: Bass Pro Shops Tampa, Walmart, Dick's.<br><br><b>Bait shops:</b> Gandy Bait &amp; Tackle, Skyway Bait and Tackle, Hubbard's Marina, O'Neill's Marina, Ruskin Bait and Tackle — on the map under <b>Bait</b>. Get an aerated "bubble bucket" or your shrimp die before the fish see them.</div></div></div>
+      <div class="fw-panel" id="fw-fresh-knots" style="display:none"><div class="dir-card"><div class="city">Knot 1 — start here</div><h4>Palomar Knot — the easy strong one</h4>
+<img class="knot-img" src="assets/knot-palomar.jpg" alt="Palomar knot steps" loading="lazy">
+<div class="type"><b>1.</b> Fold the line in half so you have a loop.<br><b>2.</b> Push the loop through the hook's eye.<br><b>3.</b> Tie a simple overhand knot with the loop — don't pull it tight yet.<br><b>4.</b> Drop the hook through the loop, wet the line, pull tight. Snip the extra.</div></div>
+<div class="dir-card"><div class="city">Knot 2</div><h4>Improved Clinch Knot — the classic</h4>
+<img class="knot-img" src="assets/knot-clinch.jpg" alt="Clinch knot wraps" loading="lazy">
+<div class="type"><b>1.</b> Push the line through the hook's eye, leaving a hand-length of extra line.<br><b>2.</b> Wrap the extra end around the main line 5 times.<br><b>3.</b> Push the end through the little loop by the eye, then through the big loop you just made.<br><b>4.</b> Wet it, pull tight slowly, snip the extra.</div></div>
+<div class="dir-card"><div class="city">Knot 3</div><h4>Uni Knot — the one that does everything</h4>
+<img class="knot-img" src="assets/knot-uni.jpg" alt="Uni knot steps" loading="lazy">
+<div class="type"><b>1.</b> Push the line through the eye and fold it back so the line doubles up.<br><b>2.</b> Make a loop with the extra end, held against the doubled line.<br><b>3.</b> Wrap the end through the loop and around both lines 4 to 6 times.<br><b>4.</b> Wet it, pull the end to snug the wraps, then slide the knot down to the eye and pull the main line tight.</div></div></div>
+      <div class="fw-panel" id="fw-fresh-hooks" style="display:none"><div class="dir-card"><div class="city">The two shapes</div><h4>Circle Hook vs J Hook</h4>
+<img class="knot-img" src="assets/hooks-compare.jpg" alt="J hook next to a circle hook" loading="lazy">
+<div class="type"><b>Circle hook</b> — the point curves back toward the shank. The fish hooks itself in the corner of the mouth. <b>Do NOT yank</b> — just start reeling.<br><br><b>J hook</b> — the classic shape. When the fish bites, you lift the rod to set the hook.<br><br><b>Panfish tip:</b> bluegill have tiny mouths and steal bait — long-shank hooks in size 6–8 are easier to unhook.</div></div>
+<div class="dir-card"><div class="city">Hook + weight in one</div><h4>Jig Heads</h4>
+<img class="knot-img" src="assets/fish-jighead.jpg" alt="A jig — hook with a built-in weight" loading="lazy">
+<div class="type">A jig is a hook with the weight already molded on. Thread a soft plastic tail onto it, cast it out, and hop it back along the bottom. Inshore and in lakes, 1/8 to 1/4 oz covers most fishing.</div></div>
+<div class="dir-card"><div class="city">Sizes run backwards</div><h4>Hook Sizes, In Plain English</h4>
+<div class="type">• <b>Size 6–8</b> — tiny hooks for bluegill and small panfish. Big number = small hook.<br>• <b>2/0 circle</b> — the bay all-rounder: trout, redfish, snapper.<br>• <b>5/0–7/0</b> — offshore size for grouper and big snapper.<br>Once the number gets a "/0" it flips: a 5/0 is BIGGER than a 2/0.</div></div></div>
     </div>
-    <div class="nf-panel" id="nf-gear" style="display:none">
-      <div class="dir-card">
-        <div class="city">What to buy &amp; where</div><h4><svg class=ic aria-hidden=true><use href=#i-bag></use></svg> Gear &amp; Bait</h4>
-        <div class="type">
-          <b>Buying a rod, in plain English:</b> length = how far you cast and how much control you have (7 ft is the all-around answer). Power = how stiff it is (medium for the bay and lakes, medium-heavy for the ocean). Buy a rod-and-reel COMBO first &mdash; it's matched at the factory and costs less. Roughly: budget combos run under $50 at the big stores; a good combo from a local shop runs about $100 and lasts for years. The local shop will spool your line and match the combo to your water for free &mdash; that's worth real money when you're starting.<br><br>
-          <b>Where to get rods &amp; tackle:</b> local shops on our map include Tampa Fishing Outfitters, St. Pete Fishing Outfitters and Tarpon Fishing Outfitters, Economy Tackle, Dogfish Tackle and the Tackle Shack &mdash; open the <a href="#/map">Boater's Map</a> and tap <b>Fishing Tackle</b> for all of them. Budget route: Bass Pro Shops in Tampa, Walmart and Dick's Sporting Goods all sell starter combos.<br><br>
-          <b>Where to get bait:</b> live bait comes from bait shops, not big stores &mdash; shrimp by the dozen, shiners, pinfish, crabs, plus frozen bait. Names boaters here use: Gandy Bait &amp; Tackle, Skyway Bait and Tackle, Hubbard's Marina, O'Neill's Marina and Ruskin Bait and Tackle. The full list is on the <a href="#/map">Boater's Map</a> &mdash; tap <b>Bait</b>. Buy an aerated bait bucket (a "bubble bucket") or your shrimp will die before the fish see them.<br><br>
-          <b>The starter tackle kit:</b> circle hooks (2/0&ndash;4/0 for saltwater), small hooks (No. 6&ndash;8 for panfish), jig heads (1/8&ndash;1/4 oz), a couple of popping corks, split shot, bobbers, 20&ndash;30 lb leader line, long-nose pliers and a small cooler. That's the whole shopping list.
-        </div>
-      </div>
-    </div>
-    <p style="text-align:center; color:var(--muted); font-size:.82rem; margin-top:16px">Sizes, limits and seasons summarized from FWC &mdash; verify current rules at myfwc.com before your trip.</p>
   </div>
 </section></div>
 <div class="view" id="view-events"><div class="wrap"><a class="back-link" href="#/">&#8249; All categories</a></div><section id="events">
@@ -5343,6 +5269,9 @@ function renderSvc(){
 
 
 /* ================= TODAY'S BITE — BY THE WATER TABS ================= */
+function fwDoor(w){document.getElementById('fw-salt').style.display=w==='salt'?'':'none';document.getElementById('fw-fresh').style.display=w==='fresh'?'':'none';document.getElementById('fw-door-salt').classList.toggle('sel',w==='salt');document.getElementById('fw-door-fresh').classList.toggle('sel',w==='fresh');window.scrollTo({top:0,behavior:'smooth'});}
+function fwTab(side,name,btn){['start','chart','bait','knots','hooks'].forEach(function(k){var p=document.getElementById('fw-'+side+'-'+k);if(p)p.style.display=k===name?'':'none';});var tabs=btn.parentElement.querySelectorAll('.bt-tab');tabs.forEach(function(t){t.classList.toggle('sel',t===btn);});}
+function fishGo(side,slug){fwDoor(side);var chartBtn=document.querySelectorAll('#fw-'+side+' .bt-tab')[1];fwTab(side,'chart',chartBtn);setTimeout(function(){var c=document.getElementById('fish-'+side+'-'+slug);if(c){c.scrollIntoView({behavior:'smooth',block:'start'});c.classList.add('fish-flash');setTimeout(function(){c.classList.remove('fish-flash');},1800);}},60);}
 function biteTab(which, btn){
   ["ocean","bays","rivers","lakes"].forEach(function(k){ var p=document.getElementById("bt-"+k); if(p) p.style.display = (k===which)?"":"none"; });
   if(btn && btn.parentElement){ btn.parentElement.querySelectorAll(".bt-tab").forEach(function(t){ t.classList.toggle("sel", t===btn); }); }
@@ -6760,7 +6689,7 @@ window.tbbSightMapInit = (function(){
 </script>
 <script>
 /* ---- SPA router: approved app-style redesign ---- */
-const ID2VIEW = {conditions:'tides',fishing:'fishing',newtofishing:'newtofishing',events:'events',dining:'dining',baymap:'map',paddling:'paddling',ramps:'ramps',bridges:'bridges',logbook:'logbook',charters:'charters',fuel:'fuel',services:'services',detailing:'services',parts:'parts',storage:'storage','boat-clubs':'boat-clubs',navigation:'navigation',tips:'tips',safety:'safety',stopped:'stopped',manatee:'manatee',courses:'courses',hurricane:'hurricane',insurance:'insurance',shop:'shop',boatsales:'boatsales',listyourboat:'listyourboat',listthanks:'listthanks',gear:'gear',videos:'videos',meetups:'meetups',news:'news',newsletter:'newsletter',advertise:'advertise',contact:'contact','nav-charts':'navigation'};
+const ID2VIEW = {conditions:'tides',fishing:'fishing',newtofishing:'fishing',events:'events',dining:'dining',baymap:'map',paddling:'paddling',ramps:'ramps',bridges:'bridges',logbook:'logbook',charters:'charters',fuel:'fuel',services:'services',detailing:'services',parts:'parts',storage:'storage','boat-clubs':'boat-clubs',navigation:'navigation',tips:'tips',safety:'safety',stopped:'stopped',manatee:'manatee',courses:'courses',hurricane:'hurricane',insurance:'insurance',shop:'shop',boatsales:'boatsales',listyourboat:'listyourboat',listthanks:'listthanks',gear:'gear',videos:'videos',meetups:'meetups',news:'news',newsletter:'newsletter',advertise:'advertise',contact:'contact','nav-charts':'navigation'};
 const VIEWS = ['home','plan','local','smart','newboater','maintenance','diagnostics','history','registration','rentals','springs','sightseeing','knowbeforeyougo','shopc','tides','fishing','newtofishing','events','dining','stay','map','paddling','ramps','bridges','logbook','savings','charters','fuel','services','parts','storage','boat-clubs','navigation','tips','safety','stopped','manatee','etiquette','courses','hurricane','insurance','shop','boatsales','listyourboat','listthanks','gear','videos','cams','music','seasonal','meetups','news','newsletter','advertise','contact','about','privacy','terms','card'];
 function showView(name){
   if(VIEWS.indexOf(name)<0) name='home';
@@ -6774,6 +6703,7 @@ function showView(name){
 function route(){
   var h=location.hash||'#/';
   if(h==='#/detailing'){showView('services');if(window.svcTab)window.svcTab('Detailing');return;}
+  if(h==='#/newtofishing'){showView('fishing');return;}
   if(h.indexOf('#/')===0){showView(h.slice(2)||'home');return;}
   var id=h.slice(1);
   if(id&&ID2VIEW[id]){showView(ID2VIEW[id]);}

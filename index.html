@@ -1542,21 +1542,6 @@ results.addEventListener('click',function(e){
 })();
 </script>
 
-<aside class="cart-drawer" id="cart-drawer">
-  <div class="cart-head"><h3>Your Cart</h3><button class="modal-close" style="position:static" onclick="closeCart()">&times;</button></div>
-  <div class="cart-items" id="cart-items"></div>
-  <div class="cart-foot">
-    <div class="cart-total"><span>Total</span><span id="cart-total">$0.00</span></div>
-    <button class="checkout" type="button" disabled aria-disabled="true">Checkout via Shopify — coming soon</button>
-  </div>
-</aside>
-<div class="cart-back" id="cart-back" onclick="closeCart()"></div>
-<div class="modal-back" id="modal-back" onclick="if(event.target===this)closeModal()">
-  <div class="modal-wrap">
-    <button class="modal-close" onclick="closeModal()">&times;</button>
-    <div class="modal" id="modal"></div>
-  </div>
-</div>
 <div id="wx-alert-bar" role="alert"><a href="#/tides" id="wx-alert-link"><span class="wx-icon"><svg class=ic aria-hidden=true><use href=#i-warn></use></svg></span><span class="wx-txt"><b id="wx-alert-title"></b><span class="wx-sub" id="wx-alert-sub"></span></span><span class="wx-more" id="wx-more-btn">Details ↓</span></a><div id="wx-alert-detail"></div></div>
 <div class="view active" id="view-home">
 <section class="hero2" style="position:relative">
@@ -2388,7 +2373,7 @@ if(typeof document!=='undefined'){
     <h3 class="shop-h"><svg class=ic aria-hidden=true><use href=#i-star></use></svg> Top Picks for Tampa Bay Boaters</h3>
     <div class="shop-grid" id="shop-top"></div>
     <h3 class="shop-h"><svg class=ic aria-hidden=true><use href=#i-ship></use></svg> On David's Boat</h3>
-    <p class="shop-sub">The actual gear on my boat — video walkthroughs coming soon.</p>
+    <p class="shop-sub">The actual gear on my boat.</p>
     <div class="shop-grid" id="shop-boat"></div>
     <h3 class="shop-h">Shop All Gear</h3>
     <div class="shop-grid" id="shop-all"></div>
@@ -2574,7 +2559,7 @@ if(typeof document!=='undefined'){
 <div class="proof-stats"><span><b>31</b> likes</span><span><b>9</b> comments</span><span>Alafia River / Riverview</span></div>
 <div class="proof-src">Watch on Instagram &rarr;</div></div></a>
 </div>
-<p class="proof-note">More top videos coming soon &mdash; follow <a href="https://www.tiktok.com/@tampabayboating" target="_blank" rel="noopener">@tampabayboating</a> to see them first.</p>
+<p class="proof-note">Follow <a href="https://www.tiktok.com/@tampabayboating" target="_blank" rel="noopener">@tampabayboating</a> to see them first.</p>
 </div>
 
 <h3 class="ad-group">Ongoing exposure</h3>
@@ -2887,9 +2872,9 @@ document.getElementById('tbbc-save').addEventListener('click', function () {
     <div class="sec-head">
       <span class="sec-kicker">Get On The Water</span>
       
-      <p>Local fishing charters, sunset cruises, dolphin tours &amp; more. Featured advertising for charter companies coming soon.</p>
+      <p>Local fishing charters, sunset cruises, dolphin tours &amp; more.</p>
     </div>
-    <div class="phase-note"><b>Phase 2 — coming soon:</b> featured listings, homepage spotlights &amp; sponsored posts for Tampa Bay charter companies.</div>
+    
     <div class="dir-search">
       <input id="dir-input" type="text" placeholder="Search charters by name, city, or type..." oninput="renderDir()">
       <button onclick="renderDir()">Search</button>
@@ -4836,39 +4821,6 @@ renderParts();
 <script>
 /* Global HTML-escape helper (used by directory renderers below) */
 function esc(t){return String(t==null?"":t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
-/* ================= PRODUCTS ================= */
-const PRODUCTS = [
- {id:1, name:"Vintage Bay Badge Tee", cat:"T-Shirts", price:27.99, img:"assets/tbb-mock-badge-tee.webp", desc:"The original badge — anchor, rod, and Tampa Bay pride on a soft everyday tee.", colors:[{n:"White",i:"assets/tbb-mock-badge-tee.webp",c:"#f5f5f5"},{n:"Navy",i:"assets/tbb-mock-badge-tee-navy.webp",c:"#1b2a4a"}]},
- {id:2, name:"Tarpon Sunset Performance Shirt", cat:"Performance Shirts", price:39.99, img:"assets/tbb-mock-tarpon-performance.webp", desc:"Silver king at sunset. Sun-protective performance fabric for long days on the flats."},
- {id:3, name:"Redfish Dawn Performance Shirt", cat:"Performance Shirts", price:39.99, img:"assets/tbb-mock-redfish-performance.webp", desc:"Redfish cruising the grass flats at first light. Built for anglers."},
- {id:4, name:"Beer Can Island Tank Top", cat:"Tank Tops", price:26.99, img:"assets/tbb-mock-tank-beercan.webp", desc:"Rep the legendary sandbar. For boat days that turn into sunset sessions.", colors:[{n:"Navy",i:"assets/tbb-mock-tank-beercan.webp",c:"#1b2a4a"},{n:"White",i:"assets/tbb-mock-tank-beercan-white.webp",c:"#f5f5f5"}]},
- {id:5, name:"Sunset Palms Lifestyle Tee", cat:"T-Shirts", price:27.99, img:"assets/tbb-mock-sunset-tee.webp", desc:"Palms, golden hour, and the bay. The laid-back local uniform."},
- {id:6, name:"Anchor & Rod Trucker Hat", cat:"Hats", price:29.99, img:"assets/tbb-mock-hat.webp", desc:"Classic trucker with the anchor-and-rod patch. One size fits most.", onesize:true},
- {id:7, name:"Anchor Koozie", cat:"Koozies", price:9.99, img:"assets/tbb-mock-koozie.webp", desc:"Keeps it cold from the ramp to the sandbar. Fits standard cans.", onesize:true},
- {id:8, name:'"We Do Boat Stuff" Varsity Tee', cat:"T-Shirts", price:27.99, img:"assets/tbb-mock-boat-stuff-tee.webp", desc:"Our motto in vintage collegiate letters. If you know, you know.", colors:[{n:"White",i:"assets/tbb-mock-boat-stuff-tee.webp",c:"#f5f5f5"},{n:"Gray",i:"assets/tbb-mock-boat-stuff-tee-gray.webp",c:"#9aa0a6"}]},
- {id:9, name:"Sandbar Social Club Tee", cat:"T-Shirts", price:27.99, img:"assets/tbb-mock-sandbar-tee.webp", desc:"Members only: everyone with a boat. Crossed-oars crest in navy and gold."},
- {id:10, name:"Boat Day Retro Tee", cat:"T-Shirts", price:27.99, img:"assets/tbb-mock-boat-day-tee.webp", desc:"70s sunshine and good waves. The retro boat-day staple."},
- {id:11, name:"TBB Minimal Logo Tee", cat:"T-Shirts", price:27.99, img:"assets/tbb-mock-minimal-tee.webp", desc:"Clean TBB monogram in deep navy. Premium minimal look."},
- {id:12, name:"Official Logo Tee", cat:"T-Shirts", price:27.99, img:"assets/tbb-mock-official-tee.webp", desc:"The official Tampa Bay Boating logo — Skyway bridge, dolphin, turtle and all.", colors:[{n:"White",i:"assets/tbb-mock-official-tee.webp",c:"#f5f5f5"},{n:"Navy",i:"assets/tbb-mock-official-tee-navy.webp",c:"#1b2a4a"}]},
- {id:13, name:"Skyway Sun Shirt", cat:"Performance Shirts", price:44.99, img:"assets/tbb-mock2-skyway-sunshirt.webp", desc:"Long-sleeve UPF sun shirt with the Skyway bridge on the chest pocket."},
- {id:14, name:"Saltwater Social Club Tee", cat:"T-Shirts", price:27.99, img:"assets/tbb-mock2-saltwater-social-tee.webp", desc:"Crossed-oars crest on a navy pocket tee. Members: everyone salty."},
- {id:15, name:"Sunset Beach Towel", cat:"Beach Gear", price:34.99, img:"assets/tbb-mock2-beach-towel.webp", desc:"Oversized beach towel with an all-over Tampa Bay sunset design.", onesize:true},
- {id:16, name:"Canvas Boat Tote", cat:"Beach Gear", price:24.99, img:"assets/tbb-mock2-canvas-tote.webp", desc:"Heavy canvas tote with a small anchor mark. Hauls it all.", onesize:true},
- {id:17, name:'"We Do Boat Stuff" Hoodie', cat:"Hoodies", price:49.99, img:"assets/tbb-mock2-boat-stuff-hoodie.webp", desc:"Our motto on a charcoal pullover. For chilly morning runs."},
- {id:18, name:"Sunset Racerback Tank", cat:"Tank Tops", price:26.99, img:"assets/tbb-mock2-racerback-tank.webp", desc:"Women's racerback in coral with a small sunset chest graphic."},
- {id:19, name:"Slim-Can Koozie", cat:"Koozies", price:9.99, img:"assets/tbb-mock2-slim-koozie.webp", desc:"Slim-can koozie in navy with the sunset palms design.", onesize:true},
- {id:20, name:"Sticker Pack (4)", cat:"Accessories", price:12.99, img:"assets/tbb-mock2-sticker-pack.webp", desc:"Four die-cut vinyl stickers — anchor, badge, dolphin, Skyway. Slap 'em everywhere.", onesize:true},
- {id:21, name:"Beer Can Island Art Print", cat:"Accessories", price:29.99, img:"assets/tbb-mock2-beercan-poster.webp", desc:"Vintage travel-poster style print of the legendary sandbar.", onesize:true},
- {id:22, name:"Future Skipper Youth Tee", cat:"Youth", price:24.99, img:"assets/tbb-mock2-future-skipper-tee.webp", desc:"For the little skippers — small sailboat graphic on a youth pocket tee."},
- {id:23, name:"Tarpon Long-Sleeve Fishing Tee", cat:"Performance Shirts", price:42.99, img:"assets/tbb-mock2-tarpon-fishing-tee.webp", desc:"Sage long-sleeve fishing tee with a small tarpon pocket logo."},
- {id:24, name:"Washed Dad Hat", cat:"Hats", price:29.99, img:"assets/tbb-mock2-dad-hat.webp", desc:"Unstructured washed-khaki dad hat with a small embroidered anchor.", onesize:true}
-];
-const CATS = ["T-Shirts","Tank Tops","Performance Shirts","Hoodies","Hats","Koozies","Beach Gear","Youth","Accessories"];
-const money = n => "$" + n.toFixed(2);
-
-/* ---- category filters removed: merch moved to the Fourthwall store ---- */
-
-/* ---- product grid ---- */
 function activeCats(){ return [...document.querySelectorAll(".cat-f:checked")].map(x=>x.value); }
 function activePrices(){ return [...document.querySelectorAll(".price-f:checked")].map(x=>x.value); }
 function inPrice(p, ranges){
@@ -4879,40 +4831,6 @@ function renderGrid(){ /* Merch grid removed — the shop page now links to the 
 let merchExpanded = false;
 window.addEventListener("resize", ()=>{ const was = merchExpanded; if(!window.matchMedia("(max-width: 768px)").matches) merchExpanded = true; if(was!==merchExpanded) renderGrid(); });
 
-/* ---- product modal ---- */
-let modalSize = "M", modalQty = 1, modalId = null, modalColor = null;
-function openModal(id){
-  const p = PRODUCTS.find(x=>x.id===id); if(!p) return;
-  modalId=id; modalSize = p.onesize ? "One Size" : "M"; modalQty = 1;
-  modalColor = p.colors ? p.colors[0].n : null;
-  const sizes = p.onesize ? ["One Size"] : ["S","M","L","XL","XXL"];
-  const colorHtml = p.colors ? `<div class="opt-label">Color: <b id="color-name">${p.colors[0].n}</b></div><div class="swatch-row">${p.colors.map((c,ix)=>`<button class="swatch${ix===0?" sel":""}" style="background:${c.c}" title="${c.n}" aria-label="${c.n}" onclick="pickColor('${c.n}')"></button>`).join("")}</div>` : "";
-  document.getElementById("modal").innerHTML = `
-    <img id="modal-img" src="${p.img}" alt="${p.name}">
-    <div class="modal-info">
-      <div class="card-cat">${p.cat}</div>
-      <h3>${p.name}</h3>
-      <div class="modal-price">${money(p.price)}</div>
-      <p>${p.desc}</p>
-      ${colorHtml}
-      <div class="opt-label">Size</div>
-      <div class="size-row" id="size-row">${sizes.map(s=>`<button class="size${s===modalSize?" sel":""}" onclick="pickSize('${s}')">${s}</button>`).join("")}</div>
-      <div class="opt-label">Quantity</div>
-      <div class="qty-row">
-        <button class="qty-btn" onclick="chQty(-1)">−</button><b id="qty-n">1</b><button class="qty-btn" onclick="chQty(1)">+</button>
-      </div>
-      <button class="add-btn" style="padding:14px" onclick="modalAdd()">Add to Cart — <span id="modal-line-total">${money(p.price)}</span></button>
-      <p style="font-size:.82rem; color:var(--muted)">Fulfilled via our Shopify store — launching soon. Prices are placeholders.</p>
-    </div>`;
-  document.getElementById("modal-back").classList.add("open");
-  document.body.style.overflow="hidden";
-}
-function pickSize(s){ modalSize=s; document.querySelectorAll("#size-row .size").forEach(b=>b.classList.toggle("sel", b.textContent===s)); }
-function pickColor(n){ const p=PRODUCTS.find(x=>x.id===modalId); modalColor=n; const c=p.colors.find(x=>x.n===n); document.getElementById("modal-img").src=c.i; document.getElementById("color-name").textContent=n; document.querySelectorAll(".swatch-row .swatch").forEach(b=>b.classList.toggle("sel", b.title===n)); }
-function chQty(d){ modalQty=Math.max(1, Math.min(99, modalQty+d)); const p=PRODUCTS.find(x=>x.id===modalId); document.getElementById("qty-n").textContent=modalQty; document.getElementById("modal-line-total").textContent=money(p.price*modalQty); }
-function closeModal(){ document.getElementById("modal-back").classList.remove("open"); document.body.style.overflow=""; }
-function modalAdd(){ addToCart(modalId, modalSize, modalQty, modalColor); closeModal(); openCart(); }
-function quickAdd(id){ const p=PRODUCTS.find(x=>x.id===id); addToCart(id, p.onesize?"One Size":"M", 1, p.colors?p.colors[0].n:null); openCart(); }
 function toggleNavMenu(e){ if(e) e.stopPropagation(); document.getElementById("nav-dropdown").classList.toggle("open"); }
 function closeNavMenu(){ const dd=document.getElementById("nav-dropdown"); if(dd) dd.classList.remove("open"); }
 document.addEventListener("click", function(e){ const dd=document.getElementById("nav-dropdown"); if(dd && dd.classList.contains("open") && !e.target.closest(".topnav")) closeNavMenu(); });
@@ -4920,35 +4838,6 @@ document.addEventListener("keydown", function(e){ if(e.key==="Escape") closeNavM
 
 /* ---- cart ---- */
 let cart = [];
-function addToCart(id, size, qty, color){
-  const found = cart.find(i=>i.id===id && i.size===size && i.color===color);
-  if(found) found.qty+=qty; else cart.push({id, size, qty, color});
-  updateCartUI();
-}
-function cartQty(){ return cart.reduce((a,i)=>a+i.qty,0); }
-function cartTotal(){ return cart.reduce((a,i)=>{ const p=PRODUCTS.find(x=>x.id===i.id); return a+p.price*i.qty; },0); }
-function updateCartUI(){
-  const cc = document.getElementById("cart-count");
-  if(cc) cc.textContent = cartQty();
-  const ct = document.getElementById("cart-total");
-  if(ct) ct.textContent = money(cartTotal());
-  const box = document.getElementById("cart-items");
-  if(!box) return;
-  if(!cart.length){ box.innerHTML = '<div class="cart-empty">Your cart is empty.<br>Go rep the bay.</div>'; return; }
-  box.innerHTML = cart.map((i,idx)=>{ const p=PRODUCTS.find(x=>x.id===i.id); const cimg = (p.colors && i.color) ? ((p.colors.find(c=>c.n===i.color)||{}).i || p.img) : p.img; return `
-    <div class="cart-item">
-      <img src="${cimg}" alt="">
-      <div><div class="t">${p.name}</div><div class="s">${i.size}${i.color?" · "+i.color:""} · ${money(p.price)}</div>
-      <div class="qty-step"><button onclick="chQty(${idx},-1)" aria-label="Decrease quantity">−</button><span>${i.qty}</span><button onclick="chQty(${idx},1)" aria-label="Increase quantity">+</button></div>
-      <button class="rm" onclick="rmItem(${idx})">Remove</button></div>
-      <div class="r">${money(p.price*i.qty)}</div>
-    </div>`; }).join("");
-}
-function rmItem(idx){ cart.splice(idx,1); updateCartUI(); }
-function chQty(idx,d){ const it=cart[idx]; if(!it) return; it.qty+=d; if(it.qty<1) cart.splice(idx,1); updateCartUI(); }
-function openCart(){ document.getElementById("cart-drawer").classList.add("open"); document.getElementById("cart-back").classList.add("open"); }
-function closeCart(){ document.getElementById("cart-drawer").classList.remove("open"); document.getElementById("cart-back").classList.remove("open"); }
-
 /* ================= DIRECTORY ================= */
 const COMPANIES = [
  ["Shallow Point Tampa Fishing Charters","Tampa","Inshore fishing (tarpon, snook, redfish, trout)","(813) 758-3406","http://www.shallowpointcharters.com/","charter-logos/shallow-point.png","4.9 ★ (249 reviews)"],
@@ -6399,7 +6288,7 @@ function renderGear(){
     SHOP_TOP.map(function(i, n){ return shopCard(GEAR[i], i, n + 1); }).join("");
   document.getElementById("shop-boat").innerHTML =
     SHOP_BOAT.map(function(b){
-      var vid = b[4] ? ' <strong><svg class=ic aria-hidden=true><use href=#i-video></use></svg> Video walkthrough coming soon.</strong>' : '';
+      var vid = '';
       return shopCard([b[0], b[1], b[2] + vid, b[3], "On David's Boat"], null);
     }).join("");
   var cats = ["All"], seen = {};

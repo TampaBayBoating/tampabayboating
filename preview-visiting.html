@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Visiting Tampa Bay? Start Here — Tampa Bay Boating</title>
+<meta name="description" content="New to Tampa Bay's water? The attractions you need to see — boat-only islands, sandbars, beaches and waterfront towns — plus free tides, weather, events and the cheapest fuel.">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:#071826;color:#e8eef4;font-family:-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;line-height:1.45}
+  .topbar{background:#0a2540;padding:10px 16px;display:flex;align-items:center;gap:10px;border-bottom:2px solid #123c5e}
+  .topbar img{width:38px;height:38px;border-radius:50%}
+  .topbar b{font-size:1.05rem;letter-spacing:.2px}
+  .wrap{max-width:760px;margin:0 auto;padding:18px 14px 30px}
+  .kicker{color:#FFB703;font-weight:800;font-size:.75rem;letter-spacing:2px;text-transform:uppercase;text-align:center}
+  h1{font-size:1.7rem;line-height:1.15;text-align:center;margin:6px 0 8px}
+  .intro{text-align:center;color:#c9d8e4;font-size:.98rem;max-width:560px;margin:0 auto 16px}
+  .tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+  .tab{flex:1 1 40%;padding:10px 8px;border-radius:999px;border:1.5px solid rgba(232,238,244,.35);background:transparent;color:#e8eef4;font-weight:800;font-size:.92rem;cursor:pointer;font-family:inherit}
+  .tab.on{background:#FFB703;color:#0a2540;border-color:#FFB703}
+  .panel{display:none}
+  .panel.on{display:block}
+  .spot{background:#eef5fb;color:#0a2540;border-radius:14px;padding:13px 15px;margin-bottom:10px}
+  .spot h3{font-size:1.05rem;margin-bottom:3px}
+  .spot p{font-size:.92rem;color:#33536e}
+  .spot .tag{display:inline-block;font-size:.66rem;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:#0072B2;margin-bottom:2px}
+  .tools{background:#0a2540;border:1px solid #123c5e;border-radius:16px;padding:16px;margin-top:16px;text-align:center}
+  .tools h2{font-size:1.2rem;margin-bottom:6px}
+  .tools p{color:#c9d8e4;font-size:.93rem;margin-bottom:12px}
+  .toolbtns{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+  .toolbtns a{flex:1 1 30%;background:#123c5e;color:#fff;text-decoration:none;font-weight:800;font-size:.9rem;padding:11px 6px;border-radius:10px;text-align:center}
+  .nl{background:#fdf6da;color:#0a2540;border-radius:16px;padding:16px;margin-top:14px;text-align:center}
+  .nl h2{font-size:1.15rem;margin-bottom:5px}
+  .nl p{font-size:.92rem;color:#33536e;margin-bottom:10px}
+  .fine{text-align:center;color:#7d97ab;font-size:.8rem;margin-top:16px}
+  .fine b{color:#c9d8e4}
+</style>
+</head>
+<body>
+<div class="topbar"><img src="assets/tbb-logo.webp" alt="Tampa Bay Boating logo"><b>Tampa Bay Boating</b></div>
+<div class="wrap">
+  <div class="kicker">For Visitors &amp; New Boaters</div>
+  <h1>Visiting Tampa Bay? Start Here.</h1>
+  <p class="intro">New to our water? Tampa Bay is one of the best boating areas in America — warm water most of the year, islands you can only reach by boat, and a sunset worth planning your day around. These are the places we'd send our own family.</p>
+
+  <div class="tabs">
+    <button type="button" class="tab on" onclick="vTab('water',this)">From the Water</button>
+    <button type="button" class="tab" onclick="vTab('beach',this)">Beaches &amp; Islands</button>
+    <button type="button" class="tab" onclick="vTab('town',this)">Around Town</button>
+    <button type="button" class="tab" onclick="vTab('season',this)">In Season</button>
+  </div>
+
+  <div class="panel on" id="p-water">
+    <div class="spot"><span class="tag">Don't miss</span><h3>Sunshine Skyway Bridge</h3><p>The giant yellow bridge over the mouth of the bay. Sailing under it is a Tampa Bay rite of passage — and it's stunning at sunset.</p></div>
+    <div class="spot"><span class="tag">Boat only</span><h3>Egmont Key</h3><p>A boat-only island at the mouth of the bay with a lighthouse, old fort ruins, and clear water. No cars, no crowds.</p></div>
+    <div class="spot"><span class="tag">Boat only</span><h3>Shell Key</h3><p>An undeveloped island preserve near St. Pete Beach. Anchor off it for swimming and shelling — it feels like the Florida of 100 years ago.</p></div>
+    <div class="spot"><span class="tag">Sandbar</span><h3>Beer Can Island</h3><p>Tampa Bay's famous sandbar hangout. On a weekend it's a floating party; on a weekday it's your own private beach.</p></div>
+    <div class="spot"><span class="tag">Boat only</span><h3>Three Rooker Island &amp; Anclote Key</h3><p>A chain of white-sand islands off Tarpon Springs. The water here is as clear as it gets in Tampa Bay.</p></div>
+    <div class="spot"><span class="tag">Dock &amp; walk</span><h3>The St. Pete Pier</h3><p>Dock downtown and walk the pier — restaurants, a rooftop view of the whole bay, and the best skyline photo in the area.</p></div>
+    <div class="spot"><span class="tag">Dock &amp; walk</span><h3>Tampa Riverwalk</h3><p>Arrive by boat or water taxi and walk 2.6 miles of downtown waterfront — restaurants, parks, and museums the whole way.</p></div>
+  </div>
+
+  <div class="panel" id="p-beach">
+    <div class="spot"><span class="tag">Start here</span><h3>Fort De Soto Park</h3><p>Five connected islands with a historic fort, two fishing piers, and the ferry to Egmont Key. Start here if you only have one day.</p></div>
+    <div class="spot"><span class="tag">Ferry or boat</span><h3>Caladesi Island</h3><p>Reached by ferry or your own boat. Natural, quiet, and regularly named one of the best beaches in America.</p></div>
+    <div class="spot"><span class="tag">Sunset</span><h3>Clearwater Beach &amp; Pier 60</h3><p>Wide white sand and a sunset celebration with street performers every single night at the pier.</p></div>
+    <div class="spot"><span class="tag">Nature</span><h3>Honeymoon Island</h3><p>Four miles of beach plus a nature trail with osprey and eagle nests.</p></div>
+  </div>
+
+  <div class="panel" id="p-town">
+    <div class="spot"><span class="tag">Waterfront</span><h3>John's Pass Village</h3><p>A working fishing village turned boardwalk — dolphin tours, seafood restaurants, and boats coming and going all day.</p></div>
+    <div class="spot"><span class="tag">Waterfront</span><h3>Tarpon Springs Sponge Docks</h3><p>A Greek sponge-diving village. Tour boats, bakeries, and a working waterfront unlike anywhere else in Florida.</p></div>
+    <div class="spot"><span class="tag">Winter · Free</span><h3>TECO Manatee Viewing Center, Apollo Beach</h3><p>In winter (roughly November–April), hundreds of manatees gather in the warm water here. Free, and unforgettable.</p></div>
+    <div class="spot"><span class="tag">Downtown</span><h3>The Florida Aquarium &amp; Ybor City</h3><p>One of the country's best aquariums, then dinner in Tampa's historic cigar district.</p></div>
+    <div class="spot"><span class="tag">Downtown</span><h3>The Dalí Museum, St. Petersburg</h3><p>World-class art in a building that's a work of art itself, right on the downtown waterfront.</p></div>
+    <div class="spot"><span class="tag">Families</span><h3>Busch Gardens</h3><p>The big one for families — coasters and a safari in the middle of Tampa.</p></div>
+  </div>
+
+  <div class="panel" id="p-season">
+    <div class="spot"><span class="tag">Jan – Feb</span><h3>Gasparilla</h3><p>Tampa's pirate invasion and parade season — hundreds of boats join the flotilla. The biggest weekends of the year on our water.</p></div>
+    <div class="spot"><span class="tag">December</span><h3>Holiday Boat Parades</h3><p>Lighted boat parades all month, all over the bay. Every date is on our Events calendar.</p></div>
+    <div class="spot"><span class="tag">Nov – Apr</span><h3>Winter: Peak Season</h3><p>Manatees inshore, mild weather, and the best boating of the year. This is when Tampa Bay shows off.</p></div>
+    <div class="spot"><span class="tag">All year</span><h3>Florida Boat Shows</h3><p>Every boat show in Florida — Fort Lauderdale, Miami, Palm Beach and more — is on our Events calendar, free.</p></div>
+  </div>
+
+  <div class="tools">
+    <h2>Plan it with the free tools</h2>
+    <p>Every spot above is on our Boater's Map. Tides, weather, the full events calendar and the cheapest fuel in the bay are here too — free, always.</p>
+    <div class="toolbtns">
+      <a href="https://tampabayboating.com/#/map">Boater's Map</a>
+      <a href="https://tampabayboating.com/#/events">Events Calendar</a>
+      <a href="https://tampabayboating.com/#/tides">Tides &amp; Weather</a>
+    </div>
+  </div>
+
+  <div class="nl">
+    <h2>Planning a trip? Take the Cheat Sheet.</h2>
+    <p>One short email a week — the weekend's events, the best weather windows, and local know-how. Free, no spam, ever.</p>
+    <script async src="https://subscribe-forms.beehiiv.com/v3/loader.js" data-beehiiv-form="fc80b921-2ab0-471d-ad1a-4d01d0ca594b"></script>
+  </div>
+
+  <p class="fine"><b>TampaBayBoating.com is 100% free for everyone</b> — local marine businesses sponsor it so boaters and visitors never pay.</p>
+</div>
+<script>
+function vTab(name, btn){
+  document.querySelectorAll('.panel').forEach(function(p){ p.classList.remove('on'); });
+  document.getElementById('p-' + name).classList.add('on');
+  document.querySelectorAll('.tab').forEach(function(t){ t.classList.toggle('on', t === btn); });
+}
+var q = new URLSearchParams(location.search).get('tab');
+if(q){ var b = document.querySelectorAll('.tab')[{water:0,beach:1,town:2,season:3}[q]]; if(b) b.click(); }
+</script>
+</body>
+</html>

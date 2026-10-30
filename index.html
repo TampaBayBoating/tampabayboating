@@ -1891,10 +1891,31 @@ if(typeof document!=='undefined'){
         <div><b>TampaWeatherLady</b><br><span style="opacity:.85">NWA Sealed Meteorologist · Tampa Bay’s boating forecast</span><br><a href="https://www.tiktok.com/@tampaweatherlady" target="_blank" rel="noopener">Follow her on TikTok</a></div>
       </div>
       <!--TWL-VIDEO-START-->
-      <blockquote class="tiktok-embed" cite="https://www.tiktok.com/@tampaweatherlady/video/7702139604039634207" data-video-id="7702139604039634207" style="max-width:605px;min-width:288px;margin:0 auto"><section><a target="_blank" rel="noopener" href="https://www.tiktok.com/@tampaweatherlady/video/7702139604039634207">Watch the Tampa Bay boating forecast on TikTok</a></section></blockquote>
+      <div class="twl-player" data-vid="7702139604039634207">
+        <button type="button" onclick="twlPlay(this)" aria-label="Play TampaWeatherLady's latest boating forecast" style="position:relative;display:block;width:100%;height:380px;border:0;border-radius:12px;overflow:hidden;padding:0;cursor:pointer;background:#0a1622">
+          <img src="assets/tampaweatherlady.jpg" alt="TampaWeatherLady" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 22%">
+          <span style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(4,16,28,.05) 40%,rgba(4,16,28,.78))"></span>
+          <span style="position:absolute;left:50%;top:50%;transform:translate(-50%,-58%);width:74px;height:74px;border-radius:50%;background:rgba(255,183,3,.95);color:#0a1622;font-size:30px;line-height:74px;text-align:center;box-shadow:0 6px 22px rgba(0,0,0,.45)">&#9654;</span>
+          <span style="position:absolute;left:0;right:0;bottom:14px;color:#fff;font-weight:700;font-size:1.02em;padding:0 14px">Tap to watch her latest boating forecast</span>
+        </button>
+      </div>
       <!--TWL-VIDEO-END-->
     </div>
-    <script async src="https://www.tiktok.com/embed.js"></script>
+    <script>
+function twlPlay(btn){
+  var wrap = btn.parentNode, vid = wrap.getAttribute('data-vid');
+  var f = document.createElement('iframe');
+  f.src = 'https://www.tiktok.com/player/v1/' + vid + '?autoplay=1&description=0&music_info=0&rel=0';
+  f.style.cssText = 'width:100%;aspect-ratio:9/16;max-height:560px;border:0;border-radius:12px;background:#000;display:block';
+  f.setAttribute('allow', 'autoplay; encrypted-media; picture-in-picture; fullscreen');
+  f.setAttribute('allowfullscreen', '');
+  wrap.replaceChild(f, btn);
+  var note = document.createElement('div');
+  note.style.cssText = 'text-align:center;margin-top:6px;font-size:.92em';
+  note.innerHTML = 'Not loading? <a href="https://www.tiktok.com/@tampaweatherlady/video/' + vid + '" target="_blank" rel="noopener">Watch it on TikTok</a>';
+  wrap.appendChild(note);
+}
+</script>
     <!--TWL-CARD-END-->
 <div class="cond-grid">
       <div class="cond-card">

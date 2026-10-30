@@ -865,6 +865,12 @@ body.dark .travel-box .travel-note{color:#8fa8bd}
 #hourly-block .cond-stamp{margin-top:4px;font-size:.68rem;color:#445A6A;white-space:normal}
 .hr-head{display:flex;flex-wrap:wrap;align-items:baseline;column-gap:8px;row-gap:1px;margin-bottom:2px}
 #hourly-block h3{margin:0;font-size:1.05rem}
+#week-block{flex:1 1 100%;min-width:0}
+#verdict-card .area-chips{flex:1 1 100%;min-width:0;margin:8px 0 0}
+#verdict-card .area-label{color:#0a2540}
+#verdict-card #bay-q-msg{color:#9c6d00}
+#verdict-card #week-detail{color:#0a2540;background:rgba(10,37,64,.05);border-color:rgba(10,37,64,.18)}
+#verdict-card .week-part{border-bottom-color:rgba(10,37,64,.15)}
 .hr-take{font-size:.86rem;font-weight:700;line-height:1.25;margin:0;flex:1 1 100%;color:#0a2540}
 .hr-unit{font-size:.62rem;font-weight:700;letter-spacing:.6px;text-transform:uppercase;opacity:1;color:#445A6A;white-space:nowrap;margin-left:auto}
 .hr-strip{display:flex;gap:4px;overflow-x:auto;padding:5px 1px 3px;-webkit-overflow-scrolling:touch;max-width:100%;box-sizing:border-box}
@@ -1887,12 +1893,10 @@ if(typeof document!=='undefined'){
       </div>
       <div class="hr-strip" id="hourly-strip"><p class="cond-fallback">Loading the next 24 hours&hellip;</p></div>
       <div id="hourly-stamp"></div>
-    </div></div>
-    <div id="week-block" style="margin:14px 0 2px">
+    </div><div id="week-block" style="margin:12px 0 2px;border-top:1px solid rgba(10,37,64,.14);padding-top:10px">
         <div class="week-strip" id="week-strip"><p class="cond-fallback">Loading the week&hellip;</p></div>
         <div id="week-detail"></div>
-      </div>
-    <div class="area-chips" role="group" aria-label="Choose your part of Tampa Bay">
+      </div><div class="area-chips" role="group" aria-label="Choose your part of Tampa Bay">
       <span class="area-label">Your part of the bay</span>
       <div style="flex:1 1 100%;grid-column:1 / -1;width:100%;display:flex;gap:8px;margin:4px 0 2px">
         <input id="bay-q" type="text" inputmode="search" autocomplete="off" placeholder="Type your city or ZIP — e.g. Ruskin or 33570" aria-label="Type your city or ZIP code" style="flex:1;min-width:0;padding:10px 14px;border-radius:999px;border:2px solid #0072B2;font-size:1rem;background:#fff;color:#0b2a4a" onkeydown="if(event.key==='Enter'){event.preventDefault();baySearch();}">
@@ -1914,7 +1918,9 @@ if(typeof document!=='undefined'){
       <button type="button" class="area-chip" onclick="setBayArea('cortez',this)">Cortez</button>
       <button type="button" class="area-chip" onclick="setBayArea('longboat',this)">Longboat Key</button>
       <button type="button" class="area-chip" onclick="setBayArea('sarasota',this)">Sarasota</button>
-    </div>
+    </div></div>
+    
+    
     
     <!--TWL-CARD-START-->
     <div class="cond-card" style="margin:10px 0">

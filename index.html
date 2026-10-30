@@ -1862,6 +1862,11 @@ if(typeof document!=='undefined'){
       </div>
     <div class="area-chips" role="group" aria-label="Choose your part of Tampa Bay">
       <span class="area-label">Your part of the bay</span>
+      <div style="flex:1 1 100%;grid-column:1 / -1;width:100%;display:flex;gap:8px;margin:4px 0 2px">
+        <input id="bay-q" type="text" inputmode="search" autocomplete="off" placeholder="Type your city or ZIP \u2014 e.g. Ruskin or 33570" aria-label="Type your city or ZIP code" style="flex:1;min-width:0;padding:10px 14px;border-radius:999px;border:2px solid #0072B2;font-size:1rem;background:#fff;color:#0b2a4a" onkeydown="if(event.key==='Enter'){event.preventDefault();baySearch();}">
+        <button type="button" onclick="baySearch()" style="padding:10px 20px;border-radius:999px;border:2px solid #0b2a4a;background:#FFB703;color:#0b2a4a;font-weight:800;font-size:1rem;cursor:pointer">Go</button>
+      </div>
+      <div id="bay-q-msg" role="status" style="flex:1 1 100%;grid-column:1 / -1;width:100%;font-size:.92rem;min-height:1.1em;color:#ffd54f"></div>
       <button type="button" class="area-chip active" onclick="setBayArea('tampa',this)">Tampa Bay</button>
       <button type="button" class="area-chip" onclick="setBayArea('oldtb',this)">Old Tampa Bay</button>
       <button type="button" class="area-chip" onclick="setBayArea('stpete',this)">St. Petersburg</button>
@@ -5570,6 +5575,22 @@ function setBayArea(key, btn){
   document.getElementById("tides-title").textContent = b.name + " Tides & Marine Forecast";
   document.getElementById("tides-sub").textContent = "Live from NOAA & the National Weather Service \u00B7 " + b.slabel;
   loadTides(); loadMarine(); loadSpot(); loadWeek();
+}
+const BAY_ALIASES = {"tampa":"tampa","old tampa bay":"oldtb","safety harbor":"oldtb","oldsmar":"oldtb","st petersburg":"stpete","st pete":"stpete","saint petersburg":"stpete","boca ciega":"bocaciega","boca ciega bay":"bocaciega","gulfport":"bocaciega","madeira beach":"bocaciega","treasure island":"bocaciega","st pete beach":"bocaciega","clearwater":"clearwater","clearwater beach":"clearwater","dunedin":"clearwater","ruskin":"ruskin","apollo beach":"apollo","riverview":"riverview","palmetto":"palmetto","bradenton":"bradenton","egmont key":"egmont","fort de soto":"egmont","anna maria":"ami","anna maria island":"ami","holmes beach":"ami","bradenton beach":"ami","cortez":"cortez","longboat key":"longboat","sarasota":"sarasota","siesta key":"sarasota"};
+function baySearch(){
+  const inp = document.getElementById("bay-q"), msg = document.getElementById("bay-q-msg");
+  if(!inp) return;
+  const raw = (inp.value || "").trim().toLowerCase();
+  let key = null;
+  const zip = raw.replace(/\D/g, "").slice(0, 5);
+  if(zip.length === 5 && typeof WV_ZIPS !== "undefined" && WV_ZIPS[zip]) key = (WV_ZIPS[zip] === "desoto") ? "egmont" : WV_ZIPS[zip];
+  if(!key && raw && BAY_ALIASES[raw]) key = BAY_ALIASES[raw];
+  if(!key && raw.length >= 3){ for(const a in BAY_ALIASES){ if(a.indexOf(raw) === 0){ key = BAY_ALIASES[a]; break; } } }
+  if(!key && raw){ for(const k in BAY_AREAS){ if(BAY_AREAS[k].name.toLowerCase() === raw){ key = k; break; } } }
+  if(!key){ if(msg) msg.textContent = "We don't cover that spot yet \u2014 pick the closest area below."; return; }
+  const chip = Array.prototype.slice.call(document.querySelectorAll(".area-chip")).filter(function(c){ return (c.getAttribute("onclick") || "").indexOf("'" + key + "'") >= 0; })[0];
+  setBayArea(key, chip || null);
+  if(msg) msg.textContent = "Showing: " + BAY_AREAS[key].name;
 }
 function windToMph(s){
   return String(s||"").replace(/(\d+)\s*(?:to\s*(\d+))?\s*(?:knots|kt)\b/gi, function(m, a, b){

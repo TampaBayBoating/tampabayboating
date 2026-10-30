@@ -2177,24 +2177,6 @@ function twlPlay(btn){
       <h2>Boating Events Calendar</h2>
       <p>Boat shows, concerts on the water, tournaments &amp; anything boating-related around Tampa Bay. Companies can pay to list their events here.</p>
     </div>
-    <div class="nl-band" style="border-radius:16px;margin:0 0 18px">
-    <div class="nl-kick"><svg class=ic aria-hidden=true><use href=#i-mail></use></svg> Weekly Newsletter</div>
-    <h2>Get the weekend lineup by email</h2>
-    <p>Every boating event around Tampa Bay, in one short free email a week. No spam, ever.</p>
-    <div class="nl-form" style="display:block; max-width:540px; margin:0 auto">
-      <script async src="https://subscribe-forms.beehiiv.com/v3/loader.js" data-beehiiv-form="fc80b921-2ab0-471d-ad1a-4d01d0ca594b"></script>
-    </div>
-</div>
-<div class="wub-spot">
-      <div class="wub-badge">Event Spotlight</div>
-      <h3>Wub Island &mdash; Two Sold-Out Parties</h3>
-      <p>DJ Nugget's Wub Island started at Beer Can Island (Pine Key), then took over the John's Pass sandbar &mdash; house and dubstep on the water, both events packed. We were there.</p>
-      <div class="wub-links">
-        <a href="https://www.facebook.com/reel/2241762100011859/" target="_blank" rel="noopener" class="wub-btn">&#9654; Watch the John's Pass recap</a>
-        <a href="https://nuggetpartytime.com/pages/wub-island" target="_blank" rel="noopener" class="wub-btn ghost">Join the waitlist for the next one</a>
-      </div>
-      <p class="wub-note">Coverage of DJ Nugget's Wub Island, shared with his permission &mdash; we'll post future events as they're confirmed.</p>
-    </div>
     <div class="cal-wrap">
       <div class="cal-box">
         <div id="calendar"></div>
@@ -2220,6 +2202,27 @@ function twlPlay(btn){
         </div>
       </div>
     </div>
+    <div class="wub-spot">
+      <div class="wub-badge">Event Spotlight</div>
+      <h3>Wub Island &mdash; Two Sold-Out Parties</h3>
+      <p>DJ Nugget's Wub Island started at Beer Can Island (Pine Key), then took over the John's Pass sandbar &mdash; house and dubstep on the water, both events packed. We were there.</p>
+      <div class="wub-links">
+        <a href="https://www.facebook.com/reel/2241762100011859/" target="_blank" rel="noopener" class="wub-btn">&#9654; Watch the John's Pass recap</a>
+        <a href="https://nuggetpartytime.com/pages/wub-island" target="_blank" rel="noopener" class="wub-btn ghost">Join the waitlist for the next one</a>
+      </div>
+      <p class="wub-note">Coverage of DJ Nugget's Wub Island, shared with his permission &mdash; we'll post future events as they're confirmed.</p>
+    </div>
+    <div class="nl-band" style="border-radius:16px;margin:18px 0 0">
+    <div class="nl-kick"><svg class=ic aria-hidden=true><use href=#i-mail></use></svg> Weekly Newsletter</div>
+    <h2>Get the weekend lineup by email</h2>
+    <p>Every boating event around Tampa Bay, in one short free email a week. No spam, ever.</p>
+    <div class="nl-form" style="display:block; max-width:540px; margin:0 auto">
+      <script async src="https://subscribe-forms.beehiiv.com/v3/loader.js" data-beehiiv-form="fc80b921-2ab0-471d-ad1a-4d01d0ca594b"></script>
+    </div>
+</div>
+    
+
+    
   </div>
 </section></div>
 <div class="view" id="view-map"><div class="wrap"><a class="back-link" href="#/">&#8249; All categories</a></div><section id="baymap">
@@ -5649,7 +5652,7 @@ function renderUpcoming(){
   const todayStr = now.getFullYear()+"-"+String(now.getMonth()+1).padStart(2,"0")+"-"+String(now.getDate()).padStart(2,"0");
   const up = EVENTS.filter(e=>e.end>=todayStr).sort((a,b)=>a.start<b.start?-1:1);
   document.getElementById("upcoming-events").innerHTML =
-    up.length ? up.map(evCard).join("") : "<p style='color:var(--muted)'>No upcoming events yet — check back soon.</p>";
+    up.length ? up.slice(0,10).map(evCard).join("") + (up.length>10 ? "<p style='color:var(--muted);font-size:.9rem;margin-top:10px'>Everything else is on the calendar above — tap a day to see what's on.</p>" : "") : "<p style='color:var(--muted)'>No upcoming events yet — check back soon.</p>";
 }
 
 /* ================= LIVE CONDITIONS ================= */

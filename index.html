@@ -880,10 +880,19 @@ body.dark .travel-box .travel-note{color:#8fa8bd}
 .hr-take{font-size:.86rem;font-weight:700;line-height:1.25;margin:0;flex:1 1 100%;color:#0a2540}
 .hr-unit{font-size:.62rem;font-weight:700;letter-spacing:.6px;text-transform:uppercase;opacity:1;color:#445A6A;white-space:nowrap;margin-left:auto}
 .hr-strip{display:flex;gap:4px;overflow-x:auto;padding:5px 1px 3px;-webkit-overflow-scrolling:touch;max-width:100%;box-sizing:border-box}
-.hr-col{flex:0 0 auto;width:33px;text-align:center;border-radius:8px;padding:3px 0 4px}
+.hr-col{flex:0 0 auto;width:46px;text-align:center;border-radius:8px;padding:3px 0 4px}
 .hr-col.now{background:rgba(143,208,240,.16);box-shadow:inset 0 0 0 1.5px #8fd0f0}
 .hr-hr{font-weight:800;font-size:.64rem;line-height:1.2;white-space:nowrap;color:#33536e}
 .hr-col.now .hr-hr{color:#0072B2}
+.hr-now-row{display:flex;align-items:center;gap:12px;margin:4px 0 2px}
+.hr-pct-circle{flex:0 0 auto;width:56px;height:56px;border-radius:50%;background:#f5b921;color:#0a2540;font-weight:800;font-size:1.02rem;display:flex;align-items:center;justify-content:center;box-shadow:inset 0 0 0 2px rgba(10,37,64,.15)}
+#hr-detail{font-size:.95rem;color:#0a2540;line-height:1.35}
+#hr-detail b{color:#0072B2}
+#hr-slider{-webkit-appearance:none;appearance:none;width:100%;height:10px;border-radius:99px;background:linear-gradient(90deg,#1e9e6a 0%,#7bc950 30%,#e3c008 55%,#e07b28 78%,#c0392b 100%);outline:none;margin:10px 0 4px}
+#hr-slider::-webkit-slider-thumb{-webkit-appearance:none;width:24px;height:24px;border-radius:50%;background:#fff;border:3.5px solid #0a2540;box-shadow:0 1px 5px rgba(0,0,0,.35);cursor:pointer}
+#hr-slider::-moz-range-thumb{width:22px;height:22px;border-radius:50%;background:#fff;border:3.5px solid #0a2540;box-shadow:0 1px 5px rgba(0,0,0,.35);cursor:pointer}
+.hr-ticks{display:flex;justify-content:space-between;font-size:.74rem;color:#5b6b7c;padding:0 1px}
+.day-best{margin-top:9px;background:rgba(143,208,240,.16);border:1px solid rgba(0,114,178,.35);border-radius:10px;padding:8px 10px;font-size:.92rem;color:#0a2540}
 .hr-it{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;line-height:1.15;margin-top:1px}
 .hr-ic{font-size:.72rem;line-height:1.1}
 .hr-tp{font-weight:800;font-size:.78rem;color:#0a2540}
@@ -1861,10 +1870,12 @@ if(typeof document!=='undefined'){
     <div class="verdict-card" id="verdict-card"><div class="v-tabs"><button type="button" class="v-tab on" onclick="verdictTab('today',this)">Today</button><button type="button" class="v-tab" onclick="verdictTab('hourly',this)">Hour by Hour</button></div><div class="v-row" id="v-panel-today"><div class="verdict-dot" id="verdict-dot"><span id="verdict-score">–</span></div><div class="verdict-main"><h3 id="verdict-title">Checking today's conditions…</h3><div class="score-track"><div class="score-marker" id="score-marker" style="left:50%"></div></div><div class="score-ends"><span>Perfect day</span><span>Stay home</span></div><div class="cond-stamp" id="verdict-stamp"></div></div></div><div id="hourly-block" style="display:none">
       <div class="hr-head">
         <h3>Hour by Hour — <span id="hourly-area">Tampa Bay</span></h3>
-        <span class="hr-unit">Wind mph</span>
+        <span class="hr-unit">Boating score %</span>
         <p class="hr-take" id="hourly-take"></p>
       </div>
-      <div class="hr-strip" id="hourly-strip"><p class="cond-fallback">Loading the next 24 hours&hellip;</p></div>
+      <div class="hr-now-row"><span class="hr-pct-circle" id="hr-pct">&ndash;</span><div id="hr-detail"><span class="cond-fallback">Loading the next 24 hours&hellip;</span></div></div>
+       <input type="range" id="hr-slider" min="0" max="23" step="1" value="0" oninput="hrPick(+this.value)" aria-label="Slide through the day">
+       <div class="hr-ticks" id="hr-ticks"></div>
       <div id="hourly-stamp"></div>
     </div><div id="week-block" style="margin:7px 0 0;border-top:1px solid rgba(10,37,64,.14);padding-top:6px">
         <div class="week-strip" id="week-strip"><p class="cond-fallback">Loading the week&hellip;</p></div>
@@ -5797,9 +5808,34 @@ function hrTakeaway(periods, winds){
   if(peakI > bestI + 3 && winds[peakI] >= bestAvg + 8) line += " \u00B7 it builds after that, peaking around " + hrHourLabel(new Date(periods[peakI].startTime)) + " at " + winds[peakI] + " mph";
   return line + ".";
 }
+function hrScore(p, mph){
+  const kt = mph * 0.868976;
+  const gustKt = (p.windGust ? (parseInt(p.windGust, 10) || 0) : 0) * 0.868976;
+  let score = 100;
+  score -= Math.max(0, kt - 5) * 1.8;
+  score -= Math.max(0, gustKt - 18) * 1.2;
+  const pop = (p.probabilityOfPrecipitation && p.probabilityOfPrecipitation.value) || 0;
+  score -= pop * 0.15;
+  const low = String(p.shortForecast || "").toLowerCase();
+  let storm = 0;
+  if(low.indexOf("thunder") >= 0){ storm = /numerous/.test(low) ? 3 : (/scattered|widespread/.test(low) ? 2 : 1); }
+  if(storm === 1) score -= 8; else if(storm === 2) score -= 18; else if(storm === 3) score -= 30;
+  score = Math.round(Math.max(3, Math.min(100, score)));
+  if(kt >= 25 || storm === 3) score = Math.min(score, 29);
+  else if(kt >= 15 || gustKt >= 25 || storm === 2) score = Math.min(score, 69);
+  return score;
+}
+function hrPick(i){
+  var hours = window._hrHours || []; var h = hours[i]; if(!h) return;
+  var sl = document.getElementById("hr-slider"); if(sl && +sl.value !== i) sl.value = i;
+  var pc = document.getElementById("hr-pct"); if(pc) pc.textContent = h.score + "%";
+  var read = h.score >= 85 ? "Smooth \u2014 a great hour to be out." : h.score >= 70 ? "Good hour \u2014 light chop at most." : h.score >= 55 ? "Choppy \u2014 smaller boats will feel it." : h.score >= 40 ? "Rough \u2014 only for boats that handle it." : "Best to wait for a calmer stretch.";
+  var el = document.getElementById("hr-detail");
+  if(el) el.innerHTML = "<b>" + h.label + "</b> \u2014 wind " + h.mph + " mph" + (h.dir ? " " + h.dir : "") + (h.gust > h.mph ? ", gusting " + h.gust : "") + (h.temp ? " \u00B7 " + h.temp : "") + (h.pop >= 20 ? " \u00B7 rain " + h.pop + "%" : "") + " \u2014 " + read;
+}
 async function loadHourly(){
-  const strip = document.getElementById("hourly-strip");
-  if(!strip) return;
+  const slider = document.getElementById("hr-slider");
+  const ticks = document.getElementById("hr-ticks");
   const loc = wxLoc();
   const areaEl = document.getElementById("hourly-area");
   if(areaEl) areaEl.textContent = loc.name;
@@ -5809,43 +5845,28 @@ async function loadHourly(){
     if(!periods.length) throw 0;
     const winds = periods.map(hrWindMph);
     if(take) take.textContent = hrTakeaway(periods, winds);
-    strip.replaceChildren();
-    periods.forEach(function(p, i){
-      const mph = winds[i];
-      const pop = (p.probabilityOfPrecipitation && p.probabilityOfPrecipitation.value) || 0;
-      const d = new Date(p.startTime);
-      const col = document.createElement("div");
-      col.className = "hr-col" + (i === 0 ? " now" : "");
-      const hr = document.createElement("div"); hr.className = "hr-hr";
-      hr.textContent = i === 0 ? "Now" : hrHourLabel(d);
-      const it = document.createElement("div"); it.className = "hr-it";
-      const ic = document.createElement("span"); ic.className = "hr-ic"; ic.textContent = hrIcon(p);
-      const tp = document.createElement("span"); tp.className = "hr-tp";
-      tp.textContent = (p.temperature != null ? p.temperature + "\u00B0" + (p.temperatureUnit || "F") : "");
-      it.append(ic, tp);
-      const chart = document.createElement("div"); chart.className = "hr-chart";
-      const bar = document.createElement("div"); bar.className = "hr-bar";
-      bar.style.height = Math.max(4, Math.min(54, Math.round(mph / 25 * 54))) + "px";
-      bar.style.background = hrWindColor(mph);
-      bar.title = (i === 0 ? "Now" : hrHourLabel(d)) + " \u00B7 " + String(p.shortForecast || "") + " \u00B7 wind " + mph + " mph" + (pop ? " \u00B7 rain " + pop + "%" : "");
-      if(pop > 0){
-        const rf = document.createElement("div"); rf.className = "hr-rain";
-        rf.style.height = Math.min(100, pop) + "%";
-        bar.appendChild(rf);
-      }
-      chart.appendChild(bar);
-      const wd = document.createElement("div"); wd.className = "hr-wd";
-      wd.textContent = mph + (p.windDirection ? " " + p.windDirection : "");
-      const rn = document.createElement("div"); rn.className = "hr-rn";
-      rn.textContent = pop >= 20 ? pop + "%" : "";
-      col.append(hr, it, chart, wd, rn);
-      strip.appendChild(col);
+    const hours = periods.map(function(p, k){
+      return {label:(k === 0 ? "Now" : hrHourLabel(new Date(p.startTime))), mph:winds[k], dir:(p.windDirection || ""), temp:(p.temperature != null ? p.temperature + "\u00B0" + (p.temperatureUnit || "F") : ""), pop:((p.probabilityOfPrecipitation && p.probabilityOfPrecipitation.value) || 0), gust:(p.windGust ? parseInt(p.windGust, 10) || 0 : 0), score:hrScore(p, winds[k])};
     });
+    window._hrHours = hours;
+    if(slider){ slider.max = hours.length - 1; slider.value = 0; slider.disabled = false; }
+    if(ticks){
+      ticks.replaceChildren();
+      hours.forEach(function(h, k){
+        if(k % 4 !== 0 && k !== hours.length - 1) return;
+        const t = document.createElement("span"); t.className = "hr-tick";
+        t.textContent = h.label + (h.temp ? " \u00B7 " + h.temp : "");
+        ticks.appendChild(t);
+      });
+    }
+    hrPick(0);
     const st = document.getElementById("hourly-stamp");
     if(st){ st.replaceChildren(); st.appendChild(stampEl(hourlyIssued(loc))); }
   }catch(e){
-    strip.innerHTML = '<p class="cond-fallback">Hourly forecast unavailable right now \u2014 see the forecast below.</p>';
     if(take) take.textContent = "";
+    const el = document.getElementById("hr-detail"); if(el) el.innerHTML = '<span class="cond-fallback">Hourly forecast unavailable right now \u2014 see the forecast below.</span>';
+    const pc = document.getElementById("hr-pct"); if(pc) pc.textContent = "\u2013";
+    if(slider) slider.disabled = true;
   }
 }
 function smartTab(name, btn){
@@ -5935,6 +5956,39 @@ function renderDayDetail(i){
     row.append(t, d);
     det.appendChild(row);
   });
+  const best = document.createElement("div"); best.className = "day-best"; best.id = "day-best";
+  best.textContent = "Finding the best time to go out\u2026";
+  det.appendChild(best);
+  fillDayBest(wd.date);
+}
+async function fillDayBest(date){
+  const el = document.getElementById("day-best"); if(!el) return;
+  try{
+    const periods = await getHourlyPeriods(wxLoc());
+    const key = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();
+    const now = new Date();
+    const isToday = key === (now.getFullYear() + "-" + (now.getMonth() + 1) + "-" + now.getDate());
+    const rows = [];
+    periods.forEach(function(p){
+      const d = new Date(p.startTime); if(isNaN(d)) return;
+      const k = d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate();
+      if(k !== key) return;
+      if(isToday && d.getTime() < now.getTime() - 1800000) return;
+      rows.push({d: d, mph: hrWindMph(p), score: hrScore(p, hrWindMph(p))});
+    });
+    if(rows.length < 2){ el.remove(); return; }
+    const win = Math.min(4, rows.length);
+    let bi = 0, ba = -1;
+    for(let a = 0; a + win <= rows.length; a++){
+      let avg = 0; for(let b = 0; b < win; b++) avg += rows[a + b].score;
+      avg /= win; if(avg > ba){ ba = avg; bi = a; }
+    }
+    const seg = rows.slice(bi, bi + win);
+    const sMin = Math.min.apply(null, seg.map(function(r){ return r.score; })), sMax = Math.max.apply(null, seg.map(function(r){ return r.score; }));
+    const wMin = Math.min.apply(null, seg.map(function(r){ return r.mph; })), wMax = Math.max.apply(null, seg.map(function(r){ return r.mph; }));
+    const end = new Date(seg[seg.length - 1].d); end.setHours(end.getHours() + 1);
+    el.innerHTML = "\u2B50 <b>Best time to go out: " + hrHourLabel(seg[0].d) + "\u2013" + hrHourLabel(end) + "</b> \u00B7 score " + (sMin === sMax ? sMax + "%" : sMin + "\u2013" + sMax + "%") + " \u00B7 winds " + (wMin === wMax ? wMax : wMin + "\u2013" + wMax) + " mph";
+  }catch(e){ el.remove(); }
 }
 function tbbStamp(issuedISO){
   function f(d){ return d.toLocaleDateString("en-US",{weekday:"short", month:"short", day:"numeric"}) + " \u00b7 " + d.toLocaleTimeString("en-US",{hour:"numeric", minute:"2-digit"}); }

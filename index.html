@@ -892,6 +892,15 @@ body.dark .travel-box .travel-note{color:#8fa8bd}
 #hr-slider::-webkit-slider-thumb{-webkit-appearance:none;width:24px;height:24px;border-radius:50%;background:#fff;border:3.5px solid #0a2540;box-shadow:0 1px 5px rgba(0,0,0,.35);cursor:pointer}
 #hr-slider::-moz-range-thumb{width:22px;height:22px;border-radius:50%;background:#fff;border:3.5px solid #0a2540;box-shadow:0 1px 5px rgba(0,0,0,.35);cursor:pointer}
 .hr-ticks{display:flex;justify-content:space-between;font-size:.74rem;color:#5b6b7c;padding:0 1px}
+.skill-box{margin-top:10px;border-top:1px solid rgba(10,37,64,.14);padding-top:8px}
+.skill-head{font-size:.78rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#33506b;margin-bottom:6px}
+.skill-row{display:flex;align-items:center;gap:8px;padding:3px 0}
+.skill-name{flex:0 0 92px;font-size:.88rem;font-weight:600;color:#0a2540}
+.skill-track{position:relative;flex:1;height:8px;border-radius:99px;background:linear-gradient(90deg,#1e9e6a 0%,#7bc950 30%,#e3c008 55%,#e07b28 78%,#c0392b 100%)}
+.skill-dot{position:absolute;top:50%;width:13px;height:13px;border-radius:50%;background:#fff;border:3px solid #0a2540;transform:translate(-50%,-50%)}
+.skill-pct{flex:0 0 40px;text-align:right;font-weight:800;font-size:.9rem;color:#0a2540}
+.skill-call{flex:0 0 88px;font-size:.72rem;font-weight:800;letter-spacing:.04em}
+.c-go{color:#1e9e6a}.c-caution{color:#a67c00}.c-risky{color:#e07b28}.c-stay{color:#c0392b}
 .day-best{margin-top:9px;background:rgba(143,208,240,.16);border:1px solid rgba(0,114,178,.35);border-radius:10px;padding:8px 10px;font-size:.92rem;color:#0a2540}
 .hr-it{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;line-height:1.15;margin-top:1px}
 .hr-ic{font-size:.72rem;line-height:1.1}
@@ -1867,7 +1876,7 @@ if(typeof document!=='undefined'){
     <h2 id="tides-title">Tampa Bay Tides &amp; Marine Forecast</h2>
     <div class="sub" id="tides-sub">Live from NOAA &amp; the National Weather Service · East Bay / Tampa Bay</div>
     <div class="cond-link" style="margin:2px 0 10px;font-size:.95rem"><span style="color:#ffd54f;font-weight:800"><svg class=ic aria-hidden=true><use href=#i-star></use></svg> Tampa Bay's top weather pick:</span> <a href="https://spaghettimodels.com/" target="_blank" rel="noopener">Mike's Weather Page</a></div>
-    <div class="verdict-card" id="verdict-card"><div class="v-tabs"><button type="button" class="v-tab on" onclick="verdictTab('today',this)">Today</button><button type="button" class="v-tab" onclick="verdictTab('hourly',this)">Hour by Hour</button></div><div class="v-row" id="v-panel-today"><div class="verdict-dot" id="verdict-dot"><span id="verdict-score">–</span></div><div class="verdict-main"><h3 id="verdict-title">Checking today's conditions…</h3><div class="score-track"><div class="score-marker" id="score-marker" style="left:50%"></div></div><div class="score-ends"><span>Perfect day</span><span>Stay home</span></div><div class="cond-stamp" id="verdict-stamp"></div></div></div><div id="hourly-block" style="display:none">
+    <div class="verdict-card" id="verdict-card"><div class="v-tabs"><button type="button" class="v-tab on" onclick="verdictTab('today',this)">Today</button><button type="button" class="v-tab" onclick="verdictTab('hourly',this)">Hour by Hour</button></div><div class="v-row" id="v-panel-today"><div class="verdict-dot" id="verdict-dot"><span id="verdict-score">–</span></div><div class="verdict-main"><h3 id="verdict-title">Checking today's conditions…</h3><div class="score-track"><div class="score-marker" id="score-marker" style="left:50%"></div></div><div class="score-ends"><span>Perfect day</span><span>Stay home</span></div><div class="skill-box" id="skill-today"></div><div class="cond-stamp" id="verdict-stamp"></div></div></div><div id="hourly-block" style="display:none">
       <div class="hr-head">
         <h3>Hour by Hour — <span id="hourly-area">Tampa Bay</span></h3>
         <span class="hr-unit">Boating score %</span>
@@ -1876,6 +1885,7 @@ if(typeof document!=='undefined'){
       <div class="hr-now-row"><span class="hr-pct-circle" id="hr-pct">&ndash;</span><div id="hr-detail"><span class="cond-fallback">Loading the next 24 hours&hellip;</span></div></div>
        <input type="range" id="hr-slider" min="0" max="23" step="1" value="0" oninput="hrPick(+this.value)" aria-label="Slide through the day">
        <div class="hr-ticks" id="hr-ticks"></div>
+       <div class="skill-box" id="skill-hourly"></div>
       <div id="hourly-stamp"></div>
     </div><div id="week-block" style="margin:7px 0 0;border-top:1px solid rgba(10,37,64,.14);padding-top:6px">
         <div class="week-strip" id="week-strip"><p class="cond-fallback">Loading the week&hellip;</p></div>
@@ -5825,12 +5835,37 @@ function hrScore(p, mph){
   else if(kt >= 15 || gustKt >= 25 || storm === 2) score = Math.min(score, 69);
   return score;
 }
+function skillRows(el, score){
+  if(!el) return;
+  if(score == null || isNaN(score)){ el.replaceChildren(); return; }
+  const levels = [["Beginner", -25], ["Novice", -12], ["Intermediate", 0], ["Expert", 10]];
+  el.replaceChildren();
+  const head = document.createElement("div"); head.className = "skill-head";
+  head.textContent = "Should you go out? By experience level";
+  el.appendChild(head);
+  levels.forEach(function(L){
+    const v = Math.max(3, Math.min(97, Math.round(score + L[1])));
+    const call = v >= 70 ? "GOOD TO GO" : v >= 55 ? "USE CAUTION" : v >= 40 ? "RISKY" : "STAY IN";
+    const cls = v >= 70 ? "c-go" : v >= 55 ? "c-caution" : v >= 40 ? "c-risky" : "c-stay";
+    const row = document.createElement("div"); row.className = "skill-row";
+    const nm = document.createElement("span"); nm.className = "skill-name"; nm.textContent = L[0];
+    const tr = document.createElement("div"); tr.className = "skill-track";
+    const dot = document.createElement("div"); dot.className = "skill-dot";
+    dot.style.left = Math.max(3, Math.min(97, 100 - v)) + "%";
+    tr.appendChild(dot);
+    const pc = document.createElement("span"); pc.className = "skill-pct"; pc.textContent = v + "%";
+    const cl = document.createElement("span"); cl.className = "skill-call " + cls; cl.textContent = call;
+    row.append(nm, tr, pc, cl);
+    el.appendChild(row);
+  });
+}
 function hrPick(i){
   var hours = window._hrHours || []; var h = hours[i]; if(!h) return;
   var sl = document.getElementById("hr-slider"); if(sl && +sl.value !== i) sl.value = i;
   var pc = document.getElementById("hr-pct"); if(pc) pc.textContent = h.score + "%";
   var read = h.score >= 85 ? "Smooth \u2014 a great hour to be out." : h.score >= 70 ? "Good hour \u2014 light chop at most." : h.score >= 55 ? "Choppy \u2014 smaller boats will feel it." : h.score >= 40 ? "Rough \u2014 only for boats that handle it." : "Best to wait for a calmer stretch.";
   var el = document.getElementById("hr-detail");
+  skillRows(document.getElementById("skill-hourly"), h.score);
   if(el) el.innerHTML = "<b>" + h.label + "</b> \u2014 wind " + h.mph + " mph" + (h.dir ? " " + h.dir : "") + (h.gust > h.mph ? ", gusting " + h.gust : "") + (h.temp ? " \u00B7 " + h.temp : "") + (h.pop >= 20 ? " \u00B7 rain " + h.pop + "%" : "") + " \u2014 " + read;
 }
 async function loadHourly(){
@@ -6076,6 +6111,7 @@ function renderVerdict(ps, label, isToday){
     title.textContent = "Beyond the marine forecast range";
     const sEl0 = document.getElementById("verdict-score"); if(sEl0) sEl0.textContent = "\u2013";
     const mk0 = document.getElementById("score-marker"); if(mk0) mk0.style.left = "50%";
+    skillRows(document.getElementById("skill-today"), null);
     return;
   }
   const v = tbbVerdict(ps);
@@ -6144,7 +6180,8 @@ async function loadBriefingConditions(){
       const bb2 = tbbBandFor(v.score);
       scoreEl.classList.remove("ds-go","ds-good","ds-caution","ds-rough","ds-stay");
       scoreEl.classList.add(bb2.cls);
-      if(zd){ zd.style.left = Math.max(3, Math.min(97, 100 - v.score)) + "%"; zd.classList.remove("ds-go","ds-good","ds-caution","ds-rough","ds-stay"); zd.classList.add("on", bb2.cls); }
+      if(zd){ zd.style.left = Math.max(3, Math.min(97, 100 - v.score)) + "%";
+    skillRows(document.getElementById("skill-today"), v.score); zd.classList.remove("ds-go","ds-good","ds-caution","ds-rough","ds-stay"); zd.classList.add("on", bb2.cls); }
       let whyUse = v.why;
       if(zoneId === "GMZ830"){
         const t0 = String((ps[0] && ps[0].detailedForecast) || "");

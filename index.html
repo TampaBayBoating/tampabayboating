@@ -1555,7 +1555,7 @@ var PAGES=[
 ["advertise","Advertise","advertise sponsor business"],
 ["contact","Contact","contact email david"],
 ["about","About","about story"]];
-var PIN_LABEL={fuel:"Fuel",bait:"Bait",tackle:"Fishing Tackle",dine:"Dock & Dine",play:"Destination",club:"Boat Club",storage:"Storage",stay:"Boat-Up Stay",dealer:"Boat Dealers",trailer:"Trailer Services",parts:"Parts & Supply",service:"Marine Services",detail:"Boat Detailing",ramp:"Boat Ramp", rent:"Boat Rental", ice:"Ice", springs:"Freshwater Spring", sights:"Sightseeing", tricky:"Tricky Water"};
+var PIN_LABEL={fuel:"Fuel",bait:"Bait",tackle:"Fishing Tackle",dine:"Dock & Dine",play:"Destination",club:"Boat Club",storage:"Storage",stay:"Boat-Up Stay",dealer:"Boat Dealers",trailer:"Trailer Services",parts:"Parts & Supply",service:"Marine Services",detail:"Boat Detailing",ramp:"Boat Ramp", rent:"Boat Rental", rentv:"Vacation Rentals", rentl:"Long-Term Rentals", ice:"Ice", springs:"Freshwater Spring", sights:"Sightseeing", tricky:"Tricky Water"};
 var panel=document.getElementById('search-panel'),input=document.getElementById('site-search'),
     results=document.getElementById('search-results'),btn=document.getElementById('search-btn');
 function esc(t){return String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
@@ -2328,9 +2328,9 @@ function twlPlay(btn){
   </div>
   <div class="wrap" style="margin-top:26px">
     <div class="sec-head"><span class="sec-kicker">Ramp status</span><h3 style="margin:4px 0 6px">🚧 What's closed right now</h3><p style="margin:0 0 12px">Checked Oct 29, 2026. Look here before you trailer across town — and tell us if you spot a change.</p></div>
-<div style="background:#0d2237;border-left:4px solid #e05252;border-radius:8px;padding:10px 14px;margin:0 0 8px"><b style="color:#fff">Safety Harbor Boat Ramp</b> <span style="color:#cfe3f2">— CLOSED · city target reopening end of Dec 2026 · the pier reopened Sep 12</span></div>
-<div style="background:#0d2237;border-left:4px solid #e05252;border-radius:8px;padding:10px 14px;margin:0 0 8px"><b style="color:#fff">Snook Haven, Venice</b> <span style="color:#cfe3f2">— CLOSED · reopens Nov 6, 2026</span></div>
+<div style="background:#0d2237;border-left:4px solid #e05252;border-radius:8px;padding:10px 14px;margin:0 0 8px"><b style="color:#fff">Safety Harbor Boat Ramp</b> <span style="color:#cfe3f2">— CLOSED · city target reopening end of Dec 2026 · the pier reopened Aug 27 (ribbon-cutting Sep 12)</span></div>
 <div style="background:#0d2237;border-left:4px solid #e05252;border-radius:8px;padding:10px 14px;margin:0 0 8px"><b style="color:#fff">Dunedin Marina Ramp</b> <span style="color:#cfe3f2">— CLOSED during the marina rebuild · city goal: reopen in 2026, residents only · no firm date published</span></div>
+<div style="background:#0d2237;border-left:4px solid #e05252;border-radius:8px;padding:10px 14px;margin:0 0 8px"><b style="color:#fff">Bay Pines Boat Ramp</b> <span style="color:#cfe3f2">— CLOSED for repairs through late 2026</span></div>
 <div style="background:#0d2237;border-left:4px solid #f5b921;border-radius:8px;padding:10px 14px;margin:0 0 8px"><b style="color:#fff">Fort De Soto Boat Ramp</b> <span style="color:#cfe3f2">— OPEN, REDUCED · floating docks out of service except one · full reopening expected late Dec 2026</span></div>
 <div style="background:#0d2237;border-left:4px solid #e05252;border-radius:8px;padding:10px 14px;margin:0 0 8px"><b style="color:#fff">Clearwater Beach Municipal Marina</b> <span style="color:#cfe3f2">— FUEL DOCK CLOSED for rebuild · still closed as of late Oct 2026 · no reopening date announced</span></div>
   </div>
@@ -3265,7 +3265,7 @@ document.getElementById('tbbc-save').addEventListener('click', function () {
           • One USCG-approved <b>life jacket per person</b> — right size, accessible, in good condition<br>
           • Kids <b>under 13 must wear one</b> while underway<br>
           • <b>Throwable flotation device</b> (boats 16 ft and longer)<br>
-          • <b>Fire extinguisher</b>, marine-rated — charged and not expired (12-year max)<br>
+          • <b>Fire extinguisher</b>, marine-rated — charged and in date (disposable ones expire 12 years after manufacture; rechargeable ones need current service/inspection)<br>
           • <b>Sound device</b> — horn or whistle (40 ft+ also needs a bell)<br>
           • <b>Visual distress signals</b> — day + night on coastal waters<br>
           • <b>Navigation lights</b> from sunset to sunrise<br>
@@ -3798,7 +3798,7 @@ const MAP_PINS = [
 ["Island Discount Tackle","bait",27.50799,-82.71397,"5503 Marina Dr, Holmes Beach","(941) 779-2838","Live & frozen bait, fishing licenses"],
 ["5 Boys Bait & Tackle","bait",27.72278,-82.43337,"467 N US-41, Ruskin","(813) 486-4121","Live shrimp, greenbacks; famous for after-hours bait"],
 ["Rick's on the River","dine",27.96348,-82.47418,"2305 N Willow Ave, Tampa","(813) 251-0369","BBQ & bar on the Hillsborough River; free docking while dining."],
-["The Getaway","dine",27.87106,-82.61144,"13090 Gandy Blvd N, St. Petersburg","(727) 317-5751","Keys-style tiki bar with 30+ boat slips; dock up for burgers, raw bar & live music."],
+["The Getaway","dine",27.87106,-82.61144,"13090 Gandy Blvd N, St. Petersburg","(727) 317-5751","Keys-style tiki bar with 25 boat slips; dock up for burgers, raw bar & live music."],
 ["The Big Catch at Salt Creek","dine",27.75615,-82.63489,"1500 2nd St S, St. Petersburg","(727) 289-8080","Open-air dockside seafood at Harborage Marina; watch boats come in off the docks."],
 ["Tide Tables Restaurant and Marina","dine",27.46905,-82.68837,"12507 Cortez Rd W, Cortez","(941) 567-6206","Old Florida seafood at its own marina on the ICW; 'come by boat, Marker 48.'"],
 ["Bridge Tender Inn","dine",27.46497,-82.69687,"135 Bridge St, Bradenton Beach","(941) 778-4849","Old Florida bar & grill on Sarasota Bay; docks available — 'come by sea, Mile Marker 49.'"],
@@ -3835,7 +3835,7 @@ const MAP_PINS = [
 ["Whiskey Joe's","dine",27.96756,-82.57294,"7720 W Courtney Campbell Cswy, Tampa","(813) 281-0770","Island-style bar & grill; Tampa's boat-up beach bar — drive your boat right up onto the sand."],
 ["Jackson's Bistro","dine",27.93858,-82.45499,"601 S Harbour Island Blvd, Tampa","(813) 277-0112","Upscale bistro, sushi & steak on Harbour Island; dockside waterfront dining."],
 ["Hula Bay Club","dine",27.88557,-82.53458,"5210 W Tyson Ave, Tampa","(813) 837-4852","Hawaiian/seafood/sushi tiki club; boat docking at Port 32 Marina."],
-["Fresco's Waterfront Bistro","dine",27.77302,-82.62791,"300 2nd Ave NE, St. Petersburg","(727) 894-4429","Waterfront seafood bistro at the St. Pete Pier; 10 city-owned metered boat slips nearby."],
+["Fresco's Waterfront Bistro","dine",27.77302,-82.62791,"300 2nd Ave NE, St. Petersburg","(727) 894-4429","Waterfront seafood bistro at the St. Pete Pier; 8 metered courtesy slips nearby."],
 ["Doc Ford's Rum Bar & Grille","dine",27.77284,-82.62619,"610 2nd Ave NE, St. Petersburg","(727) 857-8118","Rum bar & Caribbean seafood on the St. Pete Pier; arrive by boat."],
 ["The Island Grille & Raw Bar","dine",27.6896,-82.72232,"210 Madonna Blvd, Tierra Verde","(727) 767-0020","Island-style seafood & raw bar at Port 32 Tierra Verde Marina; dock space while you dine."],
 ["Tiki Docks Skyway","dine",27.72194,-82.68269,"3769 50th Ave S, St. Petersburg","(727) 810-8454","Tiki bar & grill at Maximo Marina; tie off at the sea wall with ample dock space."],
@@ -3850,16 +3850,16 @@ const MAP_PINS = [
 ["The Bait House Tackle & Tavern","dine",27.97697,-82.8246,"45 Causeway Blvd, Clearwater Beach","(727) 446-8134","Marina bar & tackle shop at Clearwater Marina; explicitly invites boaters to come by boat."],
 ["Salt Cracker Fish Camp","dine",27.97684,-82.82639,"25 Causeway Blvd, Clearwater Beach","(727) 442-6910","Waterfront fish camp at Clearwater Marina; dockside seating."],
 ["Crabby's Dockside Clearwater","dine",27.9769,-82.82738,"37 Causeway Blvd, Clearwater Beach","(727) 210-1313","3-story seafood spot by the Clearwater Beach marina; dock-and-dine."],
-["Olde Bay Cafe","dine",28.01207,-82.79156,"51 Main St, Dunedin","(727) 733-2542","Waterfront seafood cafe steps from Dunedin Marina; arrive by boat."],
+["Olde Bay Cafe","dine",28.01207,-82.79156,"51 Main St, Dunedin","(727) 733-2542","Waterfront seafood cafe steps from Dunedin Marina. Dunedin Marina is closed for hurricane damage — no boat access until the marina reopens."],
 ["Dimitri's on the Water","dine",28.15572,-82.75981,"690 Dodecanese Blvd, Tarpon Springs","(727) 334-2659","Upscale Greek seafood steakhouse on the Tarpon Springs Sponge Docks; waterfront on the Anclote River."],
 ["Rusty Bellies Waterfront Grill","dine",28.15521,-82.76434,"937 Dodecanese Blvd, Tarpon Springs","(727) 934-4047","Waterfront tiki-deck grill on the Anclote River; arrive by boat."],
 ["Pier 22","dine",27.50014,-82.57306,"1200 1st Ave W, Bradenton","(941) 748-8087","Historic fine dining on the Manatee River; surrounded by Twin Dolphin Marina's 225 slips."],
-["Riverhouse Waterfront Restaurant","dine",27.51011,-82.57561,"995 Riverside Dr, Palmetto","(941) 729-0616","Three-level waterfront seafood on the Manatee River; cruise up to the Reef & Grill and Snook Deck."],
+["Riverhouse Waterfront Restaurant","dine",27.51011,-82.57561,"995 Riverside Dr, Palmetto","(941) 729-0616","Two-level waterfront seafood on the Manatee River; cruise up to the Reef & Grill and Snook Deck."],
 ["Swordfish Grill","dine",27.46591,-82.6818,"4628 119th St W, Cortez","(941) 798-2035","Waterfront grill in the historic Cortez fishing village; live music."],
 ["Star Fish Company","dine",27.46608,-82.68535,"12306 46th Ave W, Cortez","(941) 794-1243","Cult-favorite dockside seafood market in Cortez; tie up nearby and eat on the dock (cash only)."],
 ["Mar Vista Dockside Restaurant & Pub","dine",27.43788,-82.68141,"760 Broadway St, Longboat Key","(941) 383-2391","Old Florida waterfront dining on Sarasota Bay; private 14-slip dock for boaters."],
-["Dry Dock Waterfront Grill","dine",27.33934,-82.58988,"412 Gulf of Mexico Dr, Longboat Key","(941) 383-0102","Dockside seafood overlooking Sarasota Bay; arrive by boat at the Boathouse Marina."],
-["Marina Jack","dine",27.33263,-82.54338,"2 Marina Plaza, Sarasota","(941) 365-4232","Waterfront dining at downtown Sarasota's marina; 316 slips and fuel dock on site."],
+["Dry Dock Waterfront Grill","dine",27.33934,-82.58988,"412 Gulf of Mexico Dr, Longboat Key","(941) 383-0102","Dockside seafood overlooking Sarasota Bay; arrive by boat at Boathouse on Longboat."],
+["Marina Jack","dine",27.33263,-82.54338,"2 Marina Plaza, Sarasota","(941) 365-4232","Waterfront dining at downtown Sarasota's marina; fuel dock on site."],
 ["The Old Salty Dog","dine",27.33417,-82.57902,"1601 Ken Thompson Pkwy, Sarasota","(941) 388-4311","Waterfront bar & grill on City Island overlooking New Pass; 8 dock slips."],
 ["New Pass Grill & Bait Shop","dine",27.33223,-82.58032,"1505 Ken Thompson Pkwy, Sarasota","(941) 388-3050","Historic waterfront shack on New Pass; 12 slips — burger stop on the way to the Gulf."],
 ["O'Leary's Tiki Bar & Grill","dine",27.33526,-82.5463,"5 Bayfront Drive, Sarasota","(941) 953-7505","Bayfront tiki bar at Marina Jack; 5 slips for dock-and-dine."],
@@ -3969,7 +3969,7 @@ const MAP_PINS = [
 ["Cortez Cove Marina","storage",27.466432,-82.682644,"4522 121st St W, Cortez","(941) 761-4554","135 wet slips, 75-ton haul-out, fuel dock"],
 ["Cut's Edge Harbor Marina","storage",27.524661,-82.608422,"4000 10th St W, Palmetto","(941) 729-4878","Boat storage + inboard/outboard service"],
 ["Sugar Creek RV and Boat Storage","storage",27.476145,-82.520879,"3332 26th Ave E, Bradenton","(941) 812-2753","Outdoor RV & boat lot, security cameras"],
-["Marina Jack","storage",27.332988,-82.546157,"2 Marina Plaza, Sarasota","(941) 955-9488","316 wet & dry slips, 24-hr fueling, downtown Sarasota"],
+["Marina Jack","storage",27.332988,-82.546157,"2 Marina Plaza, Sarasota","(941) 955-9488","24-hr fueling, downtown Sarasota"],
 ["Bayfront Yacht Works and Marina","storage",27.220026,-82.514454,"8865 Midnight Pass Rd, Siesta Key","(941) 349-9449","Dry + wet slip storage, travel lift, 24/7 fuel dock"],
 ["Reel Them In Bait and Tackle","bait",27.85377,-82.38332,"9851 US-41 S, Gibsonton","(813) 513-3823","Live shrimp, greenbacks, frozen bait, rods/reels"],
 ["Riviera Bait & Tackle","bait",27.85742,-82.64879,"1106 94th Ave N, St. Pete","(727) 954-6365","Live shrimp, tackle, custom rods, reel repair"],
@@ -4261,7 +4261,7 @@ const MAP_PINS = [
 ["Brandon Boat Ramp","ramp",27.88067,-82.299749,"836 Center Ave, Brandon","","PAID — $5 launch · Public ramp · 1 lane · $5 launch · freshwater — Alafia River"],
 ["Lake Weeks Boat Ramp","ramp",27.988437,-82.272055,"Lakeside Dr, Seffner","","Public ramp · freshwater — Lake Weeks"],
 ["Fort De Soto Boat Ramp","ramp",27.645532,-82.71726,"3500 Pinellas Bayway S, St. Petersburg","(727) 582-2267","Public ramp · 24 lanes · parking fee · open 24 hours · saltwater — Tampa Bay entrance · 💡 Ramp parking $6/day thru Nov 30, $12/day from Dec 1 — Annual Boat Pass $140/yr (also Sand Key & Fred Howard) pays for itself in ~12 ramp days. Passes at explore.pinellas.gov · Floating docks out of service except one; the ramps stay open, full reopening expected late Dec 2026"],
-["Bay Pines Boat Ramp","ramp",27.812093,-82.76816,"9600 Bay Pines Blvd, St. Petersburg","(727) 549-6165","Public ramp · 6 lanes · parking fee · saltwater — Boca Ciega Bay · CLOSED for repairs, expected reopening Nov 2026 · 💡 Ramp parking $6/day thru Nov 30, $12/day from Dec 1 — Annual Boat Pass $140/yr pays for itself in ~12 ramp days at the new rate. Passes at explore.pinellas.gov"],
+["Bay Pines Boat Ramp","ramp",27.812093,-82.76816,"9600 Bay Pines Blvd, St. Petersburg","(727) 549-6165","Public ramp · 6 lanes · parking fee · saltwater — Boca Ciega Bay · CLOSED for repairs through late 2026 · 💡 Ramp parking $6/day thru Nov 30, $12/day from Dec 1 — Annual Boat Pass $140/yr pays for itself in ~12 ramp days at the new rate. Passes at explore.pinellas.gov"],
 ["Belleair Causeway Boat Ramp","ramp",27.917349,-82.826728,"3900 W Bay Dr, Belleair Bluffs","(727) 582-2100","Public ramp · 10 lanes · parking fee · open 24 hours · saltwater — Intracoastal Waterway · 💡 Ramp parking $6/day thru Nov 30, $12/day from Dec 1 — Annual Boat Pass $140/yr pays for itself in ~12 ramp days at the new rate. Passes at explore.pinellas.gov · Courtesy docks 2 & 3 closed until further notice"],
 ["Park Boulevard Boat Ramp","ramp",27.841944,-82.839084,"18651 Gulf Blvd, Indian Shores","(727) 582-2100","Public ramp · 6 lanes · parking fee · open 24 hours · saltwater — Intracoastal Waterway · 💡 Ramp parking $6/day thru Nov 30, $12/day from Dec 1 — Annual Boat Pass $140/yr pays for itself in ~12 ramp days at the new rate. Passes at explore.pinellas.gov"],
 ["Sutherland Bayou Boat Ramp","ramp",28.086541,-82.770515,"2119 US-19 ALT, Palm Harbor","(727) 582-2100","Public ramp · 1 lane · $6 daily parking · open 24 hours · saltwater — St. Joseph Sound · 💡 Ramp parking $6/day thru Nov 30, $12/day from Dec 1 — Annual Boat Pass $140/yr pays for itself in ~12 ramp days at the new rate. Passes at explore.pinellas.gov"],
@@ -4370,7 +4370,7 @@ const MAP_PINS = [
 ["Salt Rock Grill","dine",27.84852,-82.842443,"19325 Gulf Blvd, Indian Shores","(727) 593-7625","Upscale seafood & steakhouse on the Intracoastal; dock out back — a dock-and-dine landmark"],
 ["Capt'n Jack's Waterfront Grill","dine",28.158811,-82.757455,"21 Oscar Hill Rd, Tarpon Springs","(727) 944-3346","Tiki-bar grill on the Anclote River by the Sponge Docks; if you're arriving by boat, dock right at the restaurant"],
 ["Linger Lodge Restaurant","dine",27.412295,-82.44875,"7205 85th St Ct E, Bradenton","(941) 755-2757","Old Florida lodge restaurant on the Braden River (est. 1945); accessible by boat with a courtesy dock"],
-["Bon Appetit Restaurant","dine",28.013196,-82.793252,"148 Marina Plaza, Dunedin","(727) 733-2151","Waterfront fine dining at Dunedin Marina; diners arriving by boat use the free day dock at the adjacent public marina"],
+["Bon Appetit Restaurant","dine",28.013196,-82.793252,"148 Marina Plaza, Dunedin","(727) 733-2151","Waterfront fine dining at Dunedin Marina. Dunedin Marina is closed for hurricane damage — no boat access until the marina reopens."],
 ["Shore Longboat Key","dine",27.438446,-82.680836,"800 Broadway St, Longboat Key","(941) 259-4600","Mid-century waterfront eatery on Sarasota Bay beside Mar Vista; 300-ft dock built to draw boaters"],
 ["Jimmy Guana's","dine",27.882355,-82.847886,"401 2nd St, Indian Rocks Beach","(727) 595-8356","Key West-style waterfront restaurant & tiki bar at Harbourside Marina (Holiday Inn Harbourside); boat in to the marina docks"],
 ["Marker 8","dine",28.024021,-82.791064,"1420 Bayshore Blvd, Dunedin","(727) 738-5000","Waterfront tiki bar & grill at Beso Del Sol Resort on St. Joseph Sound; 40 boat slips, dockside drink delivery"],
@@ -4447,7 +4447,7 @@ const MAP_PINS = [
 ["Boat Parts and More","service",27.183947,-82.484697,"830 S Tamiami Trl, Osprey","(941) 966-4320","Outboard service & trolling motor installation"],
 ["Lake Myakka Boat Ramp","ramp",27.264851,-82.288296,"13208 State Rd 72, Sarasota","(941) 361-6511","Public ramp · freshwater — Upper Myakka Lake · Myakka River State Park · 💡 Entry is $6/vehicle plus a $4 launch fee — the FL State Parks Annual Pass ($60/yr) covers the entry at almost every state park and pays for itself in 10 visits; the $4 launch fee still applies. floridastateparks.org"],
 ["Lake Manatee State Park Boat Ramp","ramp",27.478451,-82.337249,"20007 State Road 64 E, Bradenton","(941) 741-3028","Public ramp · freshwater — Lake Manatee · park entrance fee · motors under 20 hp only · 💡 Entry is $5/vehicle plus a $4 launch fee — the FL State Parks Annual Pass ($60/yr) covers entry and pays for itself in 12 visits; disabled veterans enter free. The $4 launch fee still applies. floridastateparks.org"],
-["Snook Haven Park Boat Ramp","ramp",27.10083,-82.33521,"4076 E Venice Ave, Venice","(941) 485-7221","FREE launch & parking (currently CLOSED — reopens Nov 6, 2026) · Public ramp · freshwater — Myakka River"],
+["Snook Haven Park Boat Ramp","ramp",27.10083,-82.33521,"4076 E Venice Ave, Venice","(941) 485-7221","FREE launch & parking · Public ramp · open daily 6 AM–sunset — the ramp stayed open during the park work (the park & restaurant reopen Nov 6, 2026) · freshwater — Myakka River"],
 ["Safety Harbor Marina Boat Launch","ramp",27.989203,-82.686914,"110 Veterans Memorial Ln, Safety Harbor","(727) 724-1572","FREE launch & parking (currently CLOSED — city target reopening end of Dec 2026) · Public ramp · 2 lanes · no launch fee · daylight hours · saltwater — Old Tampa Bay"],
 ["Apollo Beach Marina","ramp",27.784172,-82.424766,"1485 Apollo Beach Blvd, Apollo Beach","(813) 645-0720","PAID — $20 launch incl. parking (private) · Marina ramp open to the public · $20 ramp fee incl. parking · saltwater — Tampa Bay"],
 ["Rick's on the River","ramp",27.962888,-82.47375,"2305 N Willow Ave, Tampa","(813) 251-0369","PAID — launch fee (private; confirm price on site) · Restaurant/marina ramp open to the public · launch fee · freshwater — Hillsborough River"],
@@ -4475,9 +4475,7 @@ const MAP_PINS = [
 ["Betts Fishing Center", "tackle", 27.886879, -82.762746, "8926 126th Ave N, Largo", "(727) 518-7637", "Rods, reels & lures (Shimano, Daiwa, Penn); custom rod building, rod & reel repair, Penn & Minn Kota warranty center"],
 ["Bill Jackson's Shop for Adventure", "tackle", 27.85849, -82.69623, "9501 US Hwy 19 N, Pinellas Park", "(727) 576-4169", "Full fishing department — saltwater, freshwater & fly (Orvis, Tibor); family-owned outdoor superstore since 1946"],
 ["Gulf To Bay Bait & Tackle Shop", "tackle", 27.738577, -82.749365, "6920 Gulf Blvd, St. Pete Beach", "(727) 367-4756", "Full-service tackle — rod rentals & repairs, custom rods; live shrimp, pinfish & fiddlers too"],
-["Gulf To Bay Bait & Tackle Shop", "bait", 27.738577, -82.749365, "6920 Gulf Blvd, St. Pete Beach", "(727) 367-4756", "Live shrimp, pinfish, fiddler crabs, frozen bait & chum — full tackle shop too"],
 ["FISHSTALKERZ Bait & Tackle", "tackle", 28.046067, -82.781854, "2436 Bayshore Blvd, Dunedin", "(727) 637-9971", "Rods, reels & tackle — live & frozen bait too"],
-["FISHSTALKERZ Bait & Tackle", "bait", 28.046067, -82.781854, "2436 Bayshore Blvd, Dunedin", "(727) 637-9971", "Live shrimp, pinfish, grunts & fiddlers, frozen bait — rods & reels too"],
 ["Belleair Bait & Tackle", "tackle", 27.917384, -82.827739, "3900 W Bay Dr, Belleair Bluffs", "(727) 687-7151", "Full line of rods, reels, terminal tackle & lures by the Belleair Causeway ramp — daily live shrimp & pinfish too"],
 ["Belleair Bait & Tackle", "bait", 27.917384, -82.827739, "3900 W Bay Dr, Belleair Bluffs", "(727) 687-7151", "Daily live shrimp & pinfish, seasonal crabs, frozen bait — full tackle line too"],
 ["Armed Anglers", "tackle", 28.184943, -82.740613, "1801 US Highway 19, Holiday", "(727) 945-1808", "Rods, reels & tackle, line winding, pole repair — live shrimp & threadfins too"],
@@ -4942,7 +4940,7 @@ renderPaddle();
 /* ================= DOCK & DINE ================= */
 const DINE = [
   ["Rick's on the River", "Tampa", "BBQ & bar on the Hillsborough River; free docking while dining.", "2305 N Willow Ave, Tampa"],
-  ["The Getaway", "St. Petersburg", "Keys-style tiki bar with 30+ boat slips; dock up for burgers, raw bar & live music.", "13090 Gandy Blvd N, St. Petersburg"],
+  ["The Getaway", "St. Petersburg", "Keys-style tiki bar with 25 boat slips; dock up for burgers, raw bar & live music.", "13090 Gandy Blvd N, St. Petersburg"],
   ["The Big Catch at Salt Creek", "St. Petersburg", "Open-air dockside seafood at Harborage Marina; watch boats come in off the docks.", "1500 2nd St S, St. Petersburg"],
   ["Tide Tables Restaurant and Marina", "Cortez", "Old Florida seafood at its own marina on the ICW; 'come by boat, Marker 48.'", "12507 Cortez Rd W, Cortez"],
   ["Bridge Tender Inn", "Bradenton Beach", "Old Florida bar & grill on Sarasota Bay; docks available \u2014 'come by sea, Mile Marker 49.'", "135 Bridge St, Bradenton Beach"],
@@ -4956,7 +4954,7 @@ const DINE = [
   ["Whiskey Joe's", "Tampa", "Island-style bar & grill; Tampa's boat-up beach bar \u2014 drive your boat right up onto the sand.", "7720 W Courtney Campbell Cswy, Tampa"],
   ["Jackson's Bistro", "Tampa", "Upscale bistro, sushi & steak on Harbour Island; dockside waterfront dining.", "601 S Harbour Island Blvd, Tampa"],
   ["Hula Bay Club", "Tampa", "Hawaiian/seafood/sushi tiki club; boat docking at Port 32 Marina.", "5210 W Tyson Ave, Tampa"],
-  ["Fresco's Waterfront Bistro", "St. Petersburg", "Waterfront seafood bistro at the St. Pete Pier; 10 city-owned metered boat slips nearby.", "300 2nd Ave NE, St. Petersburg"],
+  ["Fresco's Waterfront Bistro", "St. Petersburg", "Waterfront seafood bistro at the St. Pete Pier; 8 metered courtesy slips nearby.", "300 2nd Ave NE, St. Petersburg"],
   ["Doc Ford's Rum Bar & Grille", "St. Petersburg", "Rum bar & Caribbean seafood on the St. Pete Pier; arrive by boat.", "610 2nd Ave NE, St. Petersburg"],
   ["The Island Grille & Raw Bar", "Tierra Verde", "Island-style seafood & raw bar at Port 32 Tierra Verde Marina; dock space while you dine.", "210 Madonna Blvd, Tierra Verde"],
   ["Tiki Docks Skyway", "St. Petersburg", "Tiki bar & grill at Maximo Marina; tie off at the sea wall with ample dock space.", "3769 50th Ave S, St. Petersburg"],
@@ -4971,16 +4969,16 @@ const DINE = [
   ["The Bait House Tackle & Tavern", "Clearwater Beach", "Marina bar & tackle shop at Clearwater Marina; explicitly invites boaters to come by boat.", "45 Causeway Blvd, Clearwater Beach"],
   ["Salt Cracker Fish Camp", "Clearwater Beach", "Waterfront fish camp at Clearwater Marina; dockside seating.", "25 Causeway Blvd, Clearwater Beach"],
   ["Crabby's Dockside Clearwater", "Clearwater Beach", "3-story seafood spot by the Clearwater Beach marina; dock-and-dine.", "37 Causeway Blvd, Clearwater Beach"],
-  ["Olde Bay Cafe", "Dunedin", "Waterfront seafood cafe steps from Dunedin Marina; arrive by boat.", "51 Main St, Dunedin"],
+  ["Olde Bay Cafe", "Dunedin", "Waterfront seafood cafe steps from Dunedin Marina. Dunedin Marina is closed for hurricane damage — no boat access until the marina reopens.", "51 Main St, Dunedin"],
   ["Dimitri's on the Water", "Tarpon Springs", "Upscale Greek seafood steakhouse on the Tarpon Springs Sponge Docks; waterfront on the Anclote River.", "690 Dodecanese Blvd, Tarpon Springs"],
   ["Rusty Bellies Waterfront Grill", "Tarpon Springs", "Waterfront tiki-deck grill on the Anclote River; arrive by boat.", "937 Dodecanese Blvd, Tarpon Springs"],
   ["Pier 22", "Bradenton", "Historic fine dining on the Manatee River; surrounded by Twin Dolphin Marina's 225 slips.", "1200 1st Ave W, Bradenton"],
-  ["Riverhouse Waterfront Restaurant", "Palmetto", "Three-level waterfront seafood on the Manatee River; cruise up to the Reef & Grill and Snook Deck.", "995 Riverside Dr, Palmetto"],
+  ["Riverhouse Waterfront Restaurant", "Palmetto", "Two-level waterfront seafood on the Manatee River; cruise up to the Reef & Grill and Snook Deck.", "995 Riverside Dr, Palmetto"],
   ["Swordfish Grill", "Cortez", "Waterfront grill in the historic Cortez fishing village; live music.", "4628 119th St W, Cortez"],
   ["Star Fish Company", "Cortez", "Cult-favorite dockside seafood market in Cortez; tie up nearby and eat on the dock (cash only).", "12306 46th Ave W, Cortez"],
   ["Mar Vista Dockside Restaurant & Pub", "Longboat Key", "Old Florida waterfront dining on Sarasota Bay; private 14-slip dock for boaters.", "760 Broadway St, Longboat Key"],
-  ["Dry Dock Waterfront Grill", "Longboat Key", "Dockside seafood overlooking Sarasota Bay; arrive by boat at the Boathouse Marina.", "412 Gulf of Mexico Dr, Longboat Key"],
-  ["Marina Jack", "Sarasota", "Waterfront dining at downtown Sarasota's marina; 316 slips and fuel dock on site.", "2 Marina Plaza, Sarasota"],
+  ["Dry Dock Waterfront Grill", "Longboat Key", "Dockside seafood overlooking Sarasota Bay; arrive by boat at Boathouse on Longboat.", "412 Gulf of Mexico Dr, Longboat Key"],
+  ["Marina Jack", "Sarasota", "Waterfront dining at downtown Sarasota's marina; fuel dock on site.", "2 Marina Plaza, Sarasota"],
   ["The Old Salty Dog", "Sarasota", "Waterfront bar & grill on City Island overlooking New Pass; 8 dock slips.", "1601 Ken Thompson Pkwy, Sarasota"],
   ["New Pass Grill & Bait Shop", "Sarasota", "Historic waterfront shack on New Pass; 12 slips \u2014 burger stop on the way to the Gulf.", "1505 Ken Thompson Pkwy, Sarasota"],
   ["O'Leary's Tiki Bar & Grill", "Sarasota", "Bayfront tiki bar at Marina Jack; 5 slips for dock-and-dine.", "5 Bayfront Drive, Sarasota"],

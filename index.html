@@ -6553,6 +6553,23 @@ async function loadWaves(){
     let bayLabel = "\u2014";
     if(bp){ const bl = String(bp.detailedForecast||"").toLowerCase(); const cm = bl.match(/(smooth|light chop|moderate chop|choppy|very rough|rough)/); if(cm) bayLabel = cm[1].charAt(0).toUpperCase() + cm[1].slice(1); }
     const todayMax = seasMax(low);
+    let nHi = 0, nLabel = "", laterWord = "later";
+    if(gpN){
+      const nl = String(gpN.detailedForecast||"").toLowerCase();
+      const nm = nl.match(/seas[^0-9]{0,14}(\d+)\s*(?:to\s*(\d+))?\s*(?:feet|foot)/);
+      if(nm){ nHi = parseInt(nm[2]||nm[1],10); nLabel = nm[2] ? (nm[1] + "–" + nHi + " ft") : ("≈ " + nHi + " ft"); if(/or less/.test(nl)) nLabel = "≤ " + nHi + " ft"; }
+      const nMax = seasMax(nl);
+      if(nMax > nHi){ nHi = nMax; nLabel = "≈ " + nHi + " ft"; }
+      if(/tonight/.test(String(gpN.name||"").toLowerCase())) laterWord = "tonight";
+    }
+    const builds = laterWord === "tonight" && (nHi - seasHi >= 2);
+    const buildsIn = !bm && (todayMax - seasHi >= 2);
+    const anyBuild = builds || buildsIn;
+    const buildLbl = builds ? nLabel : (todayMax + " ft");
+    const buildWhen = builds ? laterWord : "later";
+    const buildHi = builds ? nHi : todayMax;
+    if(builds && !bm) seasLabel = seasLabel + ", building to " + nLabel + " " + laterWord;
+    else if(buildsIn) seasLabel = seasLabel + ", building to " + todayMax + " ft later";
     let barsHTML = "";
     try{
       const perPair = await Promise.all([getMarinePeriods("GMZ830"), getMarinePeriods("GMZ853")]);
@@ -6560,6 +6577,7 @@ async function loadWaves(){
       const bScore = scoreOf(perPair[0]), gScore = scoreOf(perPair[1]);
       let gLo = null, gHi = null;
       if(sm){ gLo = parseInt(sm[1],10); gHi = seasHi; }
+      if(anyBuild && gHi != null && buildHi > gHi) gHi = buildHi;
       const chopRanges = {"smooth":[0,1],"light chop":[1,2],"moderate chop":[1,2],"choppy":[2,3],"rough":[3,4],"very rough":[4,6]};
       let bRange = null;
       if(bp){ const bl2 = String(bp.detailedForecast||"").toLowerCase(); const cm2 = bl2.match(/(very rough|light chop|moderate chop|smooth|choppy|rough)/); if(cm2 && chopRanges[cm2[1]]) bRange = chopRanges[cm2[1]]; }
@@ -6582,6 +6600,12 @@ async function loadWaves(){
       rating = "\u26a0\ufe0f Small Craft Advisory " + (scaNow ? "in effect " + scopeTxt : "takes effect at " + scaWhen + " today " + scopeTxt) + " \u2014 not a practice day. Skip the passes; if you ride at all, protected water only, and be back before the wind fills in.";
     } else if(todayMax >= 4 && seasHi <= 2){
       rating = "Small this morning, building to " + todayMax + " ft later \u2014 morning window only. Be off the Gulf before it fills in.";
+    } else if(anyBuild && todayMax<=1){
+      rating = "Flat for now — no air this morning. But the Gulf builds to " + buildLbl + " " + buildWhen + ". Bay day early; plan to be back before it fills in.";
+    } else if(anyBuild && todayMax===2){
+      rating = "Small stuff for now — bunny hops and practice runs at the passes. But it builds to " + buildLbl + " " + buildWhen + " — morning window only, be back before it fills in.";
+    } else if(anyBuild && todayMax===3){
+      rating = "Fun size for now — the sweet spot, send it with a buddy watching. But it builds to " + buildLbl + " " + buildWhen + ", so get it in early.";
     } else if(todayMax<=1) rating = "Flat out there \u2014 no air today. Make it a bay day.";
     else if(todayMax===2) rating = "Small stuff \u2014 bunny hops and practice runs at the passes.";
     else if(todayMax===3) rating = "Fun size \u2014 the sweet spot. Send it, with a buddy watching.";
@@ -6610,7 +6634,8 @@ async function loadWaves(){
       else if(dl === "north" || dl === "southeast") bits.push("That wind runs the length of the bay, so the chop builds the farther you go \u2014 the lower bay and the passes take the worst of it.");
       else if(dl === "south" || dl === "southwest" || dl === "west") bits.push("That wind comes off the Gulf and pushes water straight at the beaches and into the passes \u2014 there is no sheltered side out there, and it shoves bay chop up toward Tampa.");
       else if(dl === "northwest") bits.push("That wind comes off the Gulf at an angle \u2014 it roughs up the beaches and passes and pushes bay chop toward the east shore.");
-      if(seasHi){ const feel = seasHi <= 1 ? "ankle-high \u2014 basically flat" : seasHi === 2 ? "about knee-high" : seasHi === 3 ? "about waist-high" : seasHi <= 5 ? "about chest-high \u2014 that will toss a jet ski around" : "head-high or bigger \u2014 serious water"; bits.push("In the Gulf the waves are " + seasLabel + " \u2014 " + feel + "."); }
+      if(seasHi){ const feel = seasHi <= 1 ? "ankle-high \u2014 basically flat" : seasHi === 2 ? "about knee-high" : seasHi === 3 ? "about waist-high" : seasHi <= 5 ? "about chest-high \u2014 that will toss a jet ski around" : "head-high or bigger \u2014 serious water"; bits.push("In the Gulf the waves are " + seasLabel + (anyBuild ? "." : " \u2014 " + feel + ".")); }
+      if(anyBuild) bits.push("But it builds " + buildWhen + " — by then the Gulf is running " + buildLbl + ". Morning water and evening water are not the same today; be back before it fills in.");
       const bR2 = (window._wvData && window._wvData.GMZ830 && window._wvData.GMZ830.lo != null) ? [window._wvData.GMZ830.lo, window._wvData.GMZ830.hi] : null;
       if(bayLabel && bayLabel !== "\u2014") bits.push("Inside the bay it is " + bayLabel.toLowerCase() + (bR2 ? " \u2014 short, steep little waves about " + bR2[0] + "\u2013" + bR2[1] + " ft that slap the hull instead of rolling under it" : "") + ".");
       if(tideTxt) bits.push(tideTxt);

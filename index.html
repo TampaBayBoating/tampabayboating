@@ -573,6 +573,17 @@ body.dark .cat-card{background:#0E2A3F}
 .ft-tab.on{background:#8fd0f0;color:#0a2540;border-color:#8fd0f0}
 .ft-panel[hidden]{display:none}
 .ft-station{font-size:.78rem;color:#a9c6c5;margin-top:8px}
+.ft-slide{margin-top:14px;border-top:1px dashed rgba(185,210,228,.35);padding-top:12px}
+.ft-slide[hidden]{display:none}
+#ft-curve svg{display:block;width:100%;height:auto}
+#ft-slider{-webkit-appearance:none;appearance:none;width:100%;height:36px;background:transparent;cursor:pointer;margin:2px 0 0;padding:0}
+#ft-slider::-webkit-slider-runnable-track{height:10px;border-radius:99px;background:linear-gradient(90deg,#0f4c81,#2b7bbb)}
+#ft-slider::-webkit-slider-thumb{-webkit-appearance:none;width:28px;height:28px;margin-top:-9px;border-radius:50%;background:#fff;border:3.5px solid #0a2540;box-shadow:0 1px 5px rgba(0,0,0,.35);cursor:pointer}
+#ft-slider::-moz-range-track{height:10px;border-radius:99px;background:#2b7bbb}
+#ft-slider::-moz-range-thumb{width:24px;height:24px;border-radius:50%;background:#fff;border:3.5px solid #0a2540;box-shadow:0 1px 5px rgba(0,0,0,.35);cursor:pointer}
+.ft-read{font-size:1rem;font-weight:700;color:#dcebf5;margin-top:4px}
+.ft-read .ft-pred{font-size:.78rem;font-weight:600;color:#a9c6c5}
+.ft-hours{display:flex;justify-content:space-between;font-size:.68rem;color:#a9c6c5;margin-top:2px}
 .bt-tabs{display:flex;gap:6px;margin:14px 0 12px}
 .bt-tab{flex:1;padding:9px 4px;border-radius:10px;border:1px solid #bcd9e8;background:#fff;color:#0b3d62;font-weight:700;font-size:.88rem;cursor:pointer;font-family:inherit}
 .bt-tab.sel{background:#0a2540;color:#fff;border-color:#0a2540}
@@ -1839,7 +1850,7 @@ if(typeof document!=='undefined'){
 <a class="nb-step" href="#/etiquette"><span class="nb-num">8</span><span><b class="t">Act like you&#x27;ve been here before</b><p>Boating etiquette — the ramp rules, guest rules, and sandbar manners that keep the regulars friendly and get you invited back.</p></span><span class="go">&rarr;</span></a>
 </div>
 <div class="wrap"><div class="nb-note"><b class="t">Beginner mistakes that cost money</b><p style="color:#5b6b7c;font-size:.88rem;margin:6px 0 0">Running aground on a falling tide &middot; getting caught in an afternoon storm &middot; boating with no tow coverage &middot; buying the wrong boat before ever renting one.</p></div></div>
-</div><div class="view" id="view-smart"><div class="wrap"><a class="back-link" href="#/">&#8249; All categories</a></div><div class="hub-head"><h2>Boat Smart</h2><p>Safety, navigation and practical local know-how.</p></div><img class="hub-photo" loading="lazy" src="assets/banner-openwater.jpg" alt="Open water on Tampa Bay" style="object-position:center 45%"><div class="bt-tabs" style="max-width:860px;margin:0 auto 14px;padding:0 20px"><button type="button" class="bt-tab sel" data-smarttab="topics" onclick="smartTab('topics',this)">All Topics</button><button type="button" class="bt-tab" data-smarttab="passes" onclick="smartTab('passes',this)">Tricky Passes</button></div><div id="smart-panel-topics"><div class="tile-grid"><a class="tile" href="#/navigation"><span class="t-ico"><svg class=tic aria-hidden=true><use href=#i-compass></use></svg></span><b>Navigation Basics</b><i>Markers & right of way</i></a><a class="tile" href="#/tips"><span class="t-ico"><svg class=tic aria-hidden=true><use href=#i-bulb></use></svg></span><b>Tips & Tricks</b><i>Launching, docking & knots</i></a><a class="tile" href="#/etiquette"><span class="t-ico"><svg class=tic aria-hidden=true><use href=#i-hand></use></svg></span><b>Boating Etiquette</b><i>Ramp, guest & sandbar rules</i></a><a class="tile" href="#/maintenance"><span class="t-ico"><svg class=tic aria-hidden=true><use href=#i-wrench></use></svg></span><b>Boat Maintenance</b><i>Upkeep checklists</i></a><a class="tile" href="#/diagnostics"><span class="t-ico"><svg class=tic aria-hidden=true><use href=#i-toolbox></use></svg></span><b>Troubleshooting</b><i>Diagnose it before you tow it</i></a><a class="tile" href="#/history"><span class="t-ico"><svg class=tic aria-hidden=true><use href=#i-anchor></use></svg></span><b>Boating History</b><i>Five centuries on Tampa Bay</i></a><a class="tile" href="#/safety"><span class="t-ico"><svg class=tic aria-hidden=true><use href=#i-lifebuoy></use></svg></span><b>Safety Essentials</b><i>Equipment & smart habits</i></a><a class="tile" href="#/stopped"><span class="t-ico"><svg class=tic aria-hidden=true><use href=#i-siren></use></svg></span><b>If You're Stopped</b><i>What to expect</i></a><a class="tile" href="/manatee-zones.html"><span class="t-ico"><svg class=tic aria-hidden=true><use href=#i-turtle></use></svg></span><b>Manatee Zones</b><i>Slow zones in plain English</i></a><a class="tile" href="#/courses"><span class="t-ico"><svg class=tic aria-hidden=true><use href=#i-cap></use></svg></span><b>Boating Courses</b><i>Learn & get certified</i></a><a class="tile" href="#/hurricane"><span class="t-ico"><svg class=tic aria-hidden=true><use href=#i-storm></use></svg></span><b>Hurricane Prep</b><i>Plan before the storm</i></a><a class="tile" href="#/insurance"><span class="t-ico"><svg class=tic aria-hidden=true><use href=#i-shield></use></svg></span><b>Boaters Insurance</b><i>Coverage basics</i></a><a class="tile" href="#/registration"><span class="t-ico"><svg class=tic aria-hidden=true><use href=#i-doc></use></svg></span><b>Registration &amp; Titles</b><i>Tax Collector, fees &amp; forms</i></a></div></div><div id="smart-panel-passes" style="display:none"><div class="wrap sight-sec">
+</div><div class="view" id="view-smart"><div class="wrap"><a class="back-link" href="#/">&#8249; All categories</a></div><div class="hub-head"><h2>Boat Smart</h2><p>Safety, navigation and practical local know-how.</p></div><img class="hub-photo" loading="lazy" src="assets/banner-openwater.jpg" alt="Open water on Tampa Bay" style="object-position:center 45%"><div class="bt-tabs" style="max-width:860px;margin:0 auto 14px;padding:0 20px"><button type="button" class="bt-tab sel" data-smarttab="topics" onclick="smartTab('topics',this)">All Topics</button><button type="button" class="bt-tab" data-smarttab="passes" onclick="smartTab('passes',this)">Tricky Passes</button></div><div id="smart-panel-topics"><div class="tile-grid"><a class="tile" href="#/navigation"><span class="t-ico"><svg class=tic aria-hidden=true><use href=#i-compass></use></svg></span><b>Navigation Basics</b><i>Markers & right of way</i></a><a class="tile" href="#/tips"><span class="t-ico"><svg class=tic aria-hidden=true><use href=#i-bulb></use></svg></span><b>Tips & Tricks</b><i>Launching, docking & knots</i></a><a class="tile" href="#/etiquette"><span class="t-ico"><svg class=tic aria-hidden=true><use href=#i-hand></use></svg></span><b>Boating Etiquette</b><i>Ramp, guest & sandbar rules</i></a><a class="tile" href="#/maintenance"><span class="t-ico"><svg class=tic aria-hidden=true><use href=#i-wrench></use></svg></span><b>Boat Maintenance</b><i>Upkeep checklists</i></a><a class="tile" href="#/diagnostics"><span class="t-ico"><svg class=tic aria-hidden=true><use href=#i-toolbox></use></svg></span><b>Troubleshooting</b><i>Diagnose it before you tow it</i></a><a class="tile" href="#/history"><span class="t-ico"><svg class=tic aria-hidden=true><use href=#i-anchor></use></svg></span><b>Boating History</b><i>Five centuries on Tampa Bay</i></a><a class="tile" href="#/safety"><span class="t-ico"><svg class=tic aria-hidden=true><use href=#i-lifebuoy></use></svg></span><b>Safety Essentials</b><i>Equipment & smart habits</i></a><a class="tile" href="#/stopped"><span class="t-ico"><svg class=tic aria-hidden=true><use href=#i-siren></use></svg></span><b>If You're Stopped</b><i>What to expect</i></a><a class="tile" href="/manatee-zones.html"><span class="t-ico"><svg class=tic aria-hidden=true><use href=#i-turtle></use></svg></span><b>Manatee Zones</b><i>Slow zones in plain English</i></a><a class="tile" href="#/courses"><span class="t-ico"><svg class=tic aria-hidden=true><use href=#i-cap></use></svg></span><b>Boating Courses</b><i>Learn & get certified</i></a><a class="tile" href="#/hurricane"><span class="t-ico"><svg class=tic aria-hidden=true><use href=#i-storm></use></svg></span><b>Hurricane Prep</b><i>Plan before the storm</i></a><a class="tile" href="#/insurance"><span class="t-ico"><svg class=tic aria-hidden=true><use href=#i-shield></use></svg></span><b>Boaters Insurance</b><i>Coverage basics</i></a><a class="tile" href="#/registration"><span class="t-ico"><svg class=tic aria-hidden=true><use href=#i-doc></use></svg></span><b>Registration &amp; Titles</b><i>Tax Collector, fees &amp; forms</i></a></div><div style="max-width:860px;margin:14px auto 0;padding:0 20px"><p style="margin:0;font-size:.93rem;background:#fdf6e0;border:1px solid #e8cf7a;border-radius:10px;padding:10px 14px"><b>Manatee season starts Nov 15.</b> From Nov 15 through Mar 31, the warm-water sanctuaries &mdash; TECO Big Bend at Apollo Beach, Port Sutton and the Bartow sanctuary at Weedon Island &mdash; are closed to all boats, and winter slow-speed zones switch on. The posted sign on the water wins &mdash; see the full zone-by-zone guide on the <a href="/manatee-zones.html">Manatee Zones page</a>.</p></div></div><div id="smart-panel-passes" style="display:none"><div class="wrap sight-sec">
   <div class="sec-head"><h2>Know Before You Go</h2><p>The passes and channels that demand respect - local water that bites if you run it casual.</p></div>
   <div id="kbg-leaflet-map" style="height:340px; border-radius:14px; border:1px solid var(--line); z-index:1"></div>
   <p style="text-align:center; color:var(--muted); font-size:.85rem; margin:8px auto 14px">Tap a marked zone for the caution. Zones are general areas, not exact boundaries.</p>
@@ -1961,6 +1972,12 @@ function twlPlay(btn){
         <p class="ft-note">Predicted tides &mdash; NOAA. Wind and weather can push the actual water higher or lower than predicted.</p>
         <div class="ft-tabs" id="ft-tabs" role="tablist" aria-label="Future tides by day"></div>
         <div id="ft-panels"><p class="cond-fallback">Loading future tides&hellip;</p></div>
+        <div class="ft-slide" id="ft-slide" hidden>
+          <div id="ft-curve" aria-hidden="true"></div>
+          <input type="range" id="ft-slider" min="0" max="1439" step="1" value="720" aria-label="Slide through the day to see the predicted tide level">
+          <div class="ft-read"><span id="ft-read-text"></span> <span class="ft-pred">&middot; Predicted</span></div>
+          <div class="ft-hours"><span>12 AM</span><span>6 AM</span><span>12 PM</span><span>6 PM</span><span>11 PM</span></div>
+        </div>
       </div>
       <div class="cond-card">
         <h3>Marine Forecast</h3>
@@ -2063,7 +2080,7 @@ function twlPlay(btn){
 </div>
     <div class="dir-grid">
       <div class="dir-card">
-        <div class="city">October</div><h4><svg class=ic aria-hidden=true><use href=#i-fish></use></svg> What's Biting Now</h4>
+        <div class="city">November</div><h4><svg class=ic aria-hidden=true><use href=#i-fish></use></svg> What's Biting Now</h4>
         <div class="type">
           • <b>King mackerel</b> — the fall run is on! Kings migrating south past the bay<br>
           • <b>Redfish</b> — big schools on the flats, bulls near the passes<br>
@@ -2335,12 +2352,13 @@ function twlPlay(btn){
     </div>
   </div>
   <div class="wrap" style="margin-top:26px">
-    <div class="sec-head"><span class="sec-kicker">Ramp status</span><h3 style="margin:4px 0 6px">🚧 What's closed right now</h3><p style="margin:0 0 12px">Checked Oct 29, 2026. Look here before you trailer across town — and tell us if you spot a change.</p></div>
-<div style="background:#0d2237;border-left:4px solid #e05252;border-radius:8px;padding:10px 14px;margin:0 0 8px"><b style="color:#fff">Safety Harbor Boat Ramp</b> <span style="color:#cfe3f2">— CLOSED · city target reopening end of Dec 2026 · the pier reopened Aug 27 (ribbon-cutting Sep 12)</span></div>
+    <div class="sec-head"><span class="sec-kicker">Ramp status</span><h3 style="margin:4px 0 6px">🚧 What's closed right now</h3><p style="margin:0 0 12px">Checked Nov 8, 2026. Look here before you trailer across town — and tell us if you spot a change.</p></div>
+<div style="background:#0d2237;border-left:4px solid #e05252;border-radius:8px;padding:10px 14px;margin:0 0 8px"><b style="color:#fff">Safety Harbor Boat Ramp</b> <span style="color:#cfe3f2">— CLOSED · city now targets reopening Jan 2027 · the pier reopened Aug 27 (ribbon-cutting Sep 12)</span></div>
 <div style="background:#0d2237;border-left:4px solid #e05252;border-radius:8px;padding:10px 14px;margin:0 0 8px"><b style="color:#fff">Dunedin Marina Ramp</b> <span style="color:#cfe3f2">— CLOSED during the marina rebuild · city goal: reopen in 2026, residents only · no firm date published</span></div>
-<div style="background:#0d2237;border-left:4px solid #e05252;border-radius:8px;padding:10px 14px;margin:0 0 8px"><b style="color:#fff">Bay Pines Boat Ramp</b> <span style="color:#cfe3f2">— CLOSED for repairs through late 2026</span></div>
-<div style="background:#0d2237;border-left:4px solid #f5b921;border-radius:8px;padding:10px 14px;margin:0 0 8px"><b style="color:#fff">Fort De Soto Boat Ramp</b> <span style="color:#cfe3f2">— OPEN, REDUCED · floating docks out of service except one · full reopening expected late Dec 2026</span></div>
-<div style="background:#0d2237;border-left:4px solid #e05252;border-radius:8px;padding:10px 14px;margin:0 0 8px"><b style="color:#fff">Clearwater Beach Municipal Marina</b> <span style="color:#cfe3f2">— FUEL DOCK CLOSED for rebuild · still closed as of late Oct 2026 · no reopening date announced</span></div>
+<div style="background:#0d2237;border-left:4px solid #e05252;border-radius:8px;padding:10px 14px;margin:0 0 8px"><b style="color:#fff">Bay Pines Boat Ramp</b> <span style="color:#cfe3f2">— CLOSED for repairs · county project ran through Sep 2026 · no reopening date announced</span></div>
+<div style="background:#0d2237;border-left:4px solid #f5b921;border-radius:8px;padding:10px 14px;margin:0 0 8px"><b style="color:#fff">Fort De Soto Boat Ramp</b> <span style="color:#cfe3f2">— OPEN, REDUCED · one floating dock back in service (Aug 2026), the rest still out · ramp open dawn to dusk · no full-reopening date from the county</span></div>
+<div style="background:#0d2237;border-left:4px solid #e05252;border-radius:8px;padding:10px 14px;margin:0 0 8px"><b style="color:#fff">Clearwater Beach Municipal Marina</b> <span style="color:#cfe3f2">— FUEL DOCK CLOSED for rebuild · still closed · no reopening date announced</span></div>
+<div style="background:#0d2237;border-left:4px solid #35b558;border-radius:8px;padding:10px 14px;margin:0 0 8px"><b style="color:#fff">Snook Haven Park Boat Ramp</b> <span style="color:#cfe3f2">— REOPENED Nov 6, 2026 · the park&rsquo;s $8.75M upgrade is done, with a new fishing pier, dining pavilion &amp; stage · boat ramp and kayak launch open, dawn to dusk</span></div>
   </div>
   <div class="wrap" style="margin-top:14px">
     <div style="background:#0d2237;border:1px solid #1e3a52;border-radius:10px;padding:16px">
@@ -4265,8 +4283,8 @@ const MAP_PINS = [
 ["Rotary Riverfront Park","ramp",28.05492,-82.363676,"8000 E Fowler Ave, Temple Terrace","(813) 987-6840","Public ramp · freshwater — Hillsborough River"],
 ["Brandon Boat Ramp","ramp",27.88067,-82.299749,"836 Center Ave, Brandon","","PAID — $5 launch · Public ramp · 1 lane · $5 launch · freshwater — Alafia River"],
 ["Lake Weeks Boat Ramp","ramp",27.988437,-82.272055,"Lakeside Dr, Seffner","","Public ramp · freshwater — Lake Weeks"],
-["Fort De Soto Boat Ramp","ramp",27.645532,-82.71726,"3500 Pinellas Bayway S, St. Petersburg","(727) 582-2267","Public ramp · parking fee · open 24 hours · saltwater — Tampa Bay entrance · 💡 Ramp parking $6/day thru Nov 30, $12/day from Dec 1 — Annual Boat Pass $140/yr (also Sand Key & Fred Howard) pays for itself in ~12 ramp days. Passes at explore.pinellas.gov · Floating docks out of service except one; the ramps stay open, full reopening expected late Dec 2026"],
-["Bay Pines Boat Ramp","ramp",27.812093,-82.76816,"9600 Bay Pines Blvd, St. Petersburg","(727) 549-6165","Public ramp · 6 lanes · parking fee · saltwater — Boca Ciega Bay · CLOSED for repairs through late 2026 · 💡 Ramp parking $6/day thru Nov 30, $12/day from Dec 1 — Annual Boat Pass $140/yr pays for itself in ~12 ramp days at the new rate. Passes at explore.pinellas.gov"],
+["Fort De Soto Boat Ramp","ramp",27.645532,-82.71726,"3500 Pinellas Bayway S, St. Petersburg","(727) 582-2267","Public ramp · parking fee · open 24 hours · saltwater — Tampa Bay entrance · 💡 Ramp parking $6/day thru Nov 30, $12/day from Dec 1 — Annual Boat Pass $140/yr (also Sand Key & Fred Howard) pays for itself in ~12 ramp days. Passes at explore.pinellas.gov · One floating dock back in service (Aug 2026), the rest still out; ramps stay open dawn to dusk"],
+["Bay Pines Boat Ramp","ramp",27.812093,-82.76816,"9600 Bay Pines Blvd, St. Petersburg","(727) 549-6165","Public ramp · 6 lanes · parking fee · saltwater — Boca Ciega Bay · CLOSED for repairs · no reopening date announced · 💡 Ramp parking $6/day thru Nov 30, $12/day from Dec 1 — Annual Boat Pass $140/yr pays for itself in ~12 ramp days at the new rate. Passes at explore.pinellas.gov"],
 ["Belleair Causeway Boat Ramp","ramp",27.917349,-82.826728,"3900 W Bay Dr, Belleair Bluffs","(727) 582-2100","Public ramp · 10 lanes · parking fee · open 24 hours · saltwater — Intracoastal Waterway · 💡 Ramp parking $6/day thru Nov 30, $12/day from Dec 1 — Annual Boat Pass $140/yr pays for itself in ~12 ramp days at the new rate. Passes at explore.pinellas.gov · Courtesy docks 2 & 3 closed until further notice"],
 ["Park Boulevard Boat Ramp","ramp",27.841944,-82.839084,"18651 Gulf Blvd, Indian Shores","(727) 582-2100","Public ramp · 6 lanes · parking fee · open 24 hours · saltwater — Intracoastal Waterway · 💡 Ramp parking $6/day thru Nov 30, $12/day from Dec 1 — Annual Boat Pass $140/yr pays for itself in ~12 ramp days at the new rate. Passes at explore.pinellas.gov"],
 ["Sutherland Bayou Boat Ramp","ramp",28.086541,-82.770515,"2119 US-19 ALT, Palm Harbor","(727) 582-2100","Public ramp · 1 lane · $6 daily parking · open 24 hours · saltwater — St. Joseph Sound · 💡 Ramp parking $6/day thru Nov 30, $12/day from Dec 1 — Annual Boat Pass $140/yr pays for itself in ~12 ramp days at the new rate. Passes at explore.pinellas.gov"],
@@ -4452,7 +4470,7 @@ const MAP_PINS = [
 ["Lake Myakka Boat Ramp","ramp",27.264851,-82.288296,"13208 State Rd 72, Sarasota","(941) 361-6511","Public ramp · freshwater — Upper Myakka Lake · Myakka River State Park · 💡 Entry is $6/vehicle plus a $4 launch fee — the FL State Parks Annual Pass ($60/yr) covers the entry at almost every state park and pays for itself in 10 visits; the $4 launch fee still applies. floridastateparks.org"],
 ["Lake Manatee State Park Boat Ramp","ramp",27.478451,-82.337249,"20007 State Road 64 E, Bradenton","(941) 741-3028","Public ramp · freshwater — Lake Manatee · park entrance fee · motors under 20 hp only · 💡 Entry is $5/vehicle plus a $4 launch fee — the FL State Parks Annual Pass ($60/yr) covers entry and pays for itself in 12 visits; disabled veterans enter free. The $4 launch fee still applies. floridastateparks.org"],
 ["Snook Haven Park Boat Ramp","ramp",27.10083,-82.33521,"4076 E Venice Ave, Venice","(941) 485-7221","FREE launch & parking · Public ramp · open daily 6 AM–sunset — the ramp stayed open during the park work · freshwater — Myakka River"],
-["Safety Harbor Marina Boat Launch","ramp",27.989203,-82.686914,"110 Veterans Memorial Ln, Safety Harbor","(727) 724-1572","FREE launch & parking (currently CLOSED — city target reopening end of Dec 2026) · Public ramp · 2 lanes · no launch fee · daylight hours · saltwater — Old Tampa Bay"],
+["Safety Harbor Marina Boat Launch","ramp",27.989203,-82.686914,"110 Veterans Memorial Ln, Safety Harbor","(727) 724-1572","FREE launch & parking (currently CLOSED — city now targets reopening Jan 2027) · Public ramp · 2 lanes · no launch fee · daylight hours · saltwater — Old Tampa Bay"],
 ["Apollo Beach Marina","ramp",27.784172,-82.424766,"1485 Apollo Beach Blvd, Apollo Beach","(813) 645-0720","PAID — $20 launch incl. parking (private) · Marina ramp open to the public · $20 ramp fee incl. parking · saltwater — Tampa Bay"],
 ["Rick's on the River","ramp",27.962888,-82.47375,"2305 N Willow Ave, Tampa","(813) 251-0369","PAID — launch fee (private; confirm price on site) · Restaurant/marina ramp open to the public · launch fee · freshwater — Hillsborough River"],
 ["Gulfport Municipal Marina","ramp",27.740622,-82.696136,"4630 29th Ave S, Gulfport","(727) 893-1071","MIXED — city ramp · 💡 The lot next door is a county lot — a Pinellas Annual Boat Pass ($140/yr, explore.pinellas.gov) covers parking there · Public ramp · 2 lanes · launch fee · saltwater — Boca Ciega Bay"],
@@ -5795,7 +5813,7 @@ function changeTravelLocation(key){
   document.getElementById("tides-sub").textContent = "Live from NOAA \u0026 the National Weather Service \u00B7 " + loc.label;
   bayKey = (key==="tampa") ? "tampa" : null;
   document.querySelectorAll('.area-chip').forEach((x,i)=>x.classList.toggle('active', key==="tampa" && i===0));
-  loadTides(); loadFutureTides(); loadMarine(); loadWaves(); loadSpot(); loadWeek(); loadHourly();
+  loadTides(); loadFutureTides(); loadTideCurve(); loadMarine(); loadWaves(); loadSpot(); loadWeek(); loadHourly();
 }
 const SPOT_COORDS = { keywest:[24.5551,-81.78], destin:[30.3935,-86.4958], panamacity:[30.1766,-85.8055], stuart:[27.1975,-80.2528], fortmyers:[26.6406,-81.8723], daytona:[29.2108,-81.0228], crystalriver:[29.1386,-83.0351], naples:[26.142,-81.7948], jacksonville:[30.3929,-81.4243] };
 const BAY_AREAS = {
@@ -5831,7 +5849,7 @@ function setBayArea(key, btn){
   const b = BAY_AREAS[key];
   document.getElementById("tides-title").textContent = b.name + " Tides & Marine Forecast";
   document.getElementById("tides-sub").textContent = "Live from NOAA & the National Weather Service \u00B7 " + b.slabel;
-  loadTides(); loadFutureTides(); loadMarine(); loadSpot(); loadWeek(); loadHourly();
+  loadTides(); loadFutureTides(); loadTideCurve(); loadMarine(); loadSpot(); loadWeek(); loadHourly();
 }
 const BAY_ALIASES = {"tampa":"tampa","tampa bay":"tampa","downtown tampa":"tampa","south tampa":"tampa","hyde park":"tampa","davis island":"tampa","davis islands":"tampa","ybor city":"tampa","ybor":"tampa","westshore":"tampa","seminole heights":"tampa","temple terrace":"tampa","carrollwood":"tampa","new tampa":"tampa","lutz":"tampa","land o lakes":"tampa","town n country":"tampa","old tampa bay":"oldtb","safety harbor":"oldtb","oldsmar":"oldtb","westchase":"oldtb","odessa":"oldtb","st petersburg":"stpete","st pete":"stpete","saint petersburg":"stpete","downtown st pete":"stpete","pinellas park":"stpete","kenneth city":"stpete","lealman":"stpete","old northeast":"stpete","coquina key":"stpete","boca ciega":"bocaciega","boca ciega bay":"bocaciega","gulfport":"bocaciega","madeira beach":"bocaciega","treasure island":"bocaciega","st pete beach":"bocaciega","seminole":"bocaciega","largo":"bocaciega","redington beach":"bocaciega","redington shores":"bocaciega","north redington beach":"bocaciega","south pasadena":"bocaciega","pass-a-grille":"bocaciega","pass a grille":"bocaciega","clearwater":"clearwater","clearwater beach":"clearwater","dunedin":"clearwater","palm harbor":"clearwater","tarpon springs":"clearwater","indian rocks beach":"clearwater","belleair":"clearwater","belleair beach":"clearwater","sand key":"clearwater","ruskin":"ruskin","sun city center":"ruskin","sun city":"ruskin","wimauma":"ruskin","apollo beach":"apollo","gibsonton":"apollo","riverview":"riverview","brandon":"riverview","valrico":"riverview","bloomingdale":"riverview","fishhawk":"riverview","lithia":"riverview","plant city":"riverview","palmetto":"palmetto","ellenton":"palmetto","parrish":"palmetto","terra ceia":"palmetto","bradenton":"bradenton","west bradenton":"bradenton","lakewood ranch":"bradenton","egmont key":"egmont","egmont":"egmont","fort de soto":"egmont","fort desoto":"egmont","tierra verde":"egmont","shell key":"egmont","anna maria":"ami","anna maria island":"ami","holmes beach":"ami","bradenton beach":"ami","cortez":"cortez","longboat key":"longboat","longboat":"longboat","sarasota":"sarasota","downtown sarasota":"sarasota","siesta key":"sarasota","osprey":"sarasota","nokomis":"sarasota","venice":"sarasota","englewood":"sarasota","casey key":"sarasota","lido key":"sarasota","bird key":"sarasota"};
 const BAY_ALIAS_KEYS = Object.keys(BAY_ALIASES).sort(function(a, b){ return b.length - a.length; });
@@ -6240,10 +6258,13 @@ async function loadTides(){
     box.innerHTML = `<p class="cond-fallback">Tide data unavailable right now — <a href="https://tidesandcurrents.noaa.gov/" target="_blank" rel="noopener" style="color:#fff">see NOAA tide predictions</a>.</p>`;
   }
 }
+var FT_CURVE = { sel: 0, hourly: {}, hilo: {} };
 function ftTab(i, btn){
   document.querySelectorAll(".ft-tab").forEach(function(t){ t.classList.remove("on"); });
   if(btn) btn.classList.add("on");
   document.querySelectorAll(".ft-panel").forEach(function(p, j){ p.hidden = j !== i; });
+  FT_CURVE.sel = i;
+  try{ ftSlideRender(); }catch(_){}
 }
 async function loadFutureTides(){
   const tabsBox = document.getElementById("ft-tabs");
@@ -6299,12 +6320,139 @@ async function loadFutureTides(){
       });
       panelsBox.appendChild(panel);
     }
+    FT_CURVE.hilo = byDay;
+    FT_CURVE.sel = 0;
+    try{ ftSlideRender(); }catch(_){}
     const station = document.createElement("div");
     station.className = "ft-station";
     station.textContent = "Station: " + tloc.label + " · NOAA";
     panelsBox.appendChild(station);
   }catch(e){
     try{ panelsBox.innerHTML = "<p class=\"cond-fallback\">Couldn\u2019t load future tides \u2014 check back shortly.</p>"; }catch(_){}
+  }
+}
+function ftDayKey(offset){
+  const pad = function(n){ return String(n).padStart(2, "0"); };
+  const d = new Date(); d.setHours(0, 0, 0, 0); d.setDate(d.getDate() + offset);
+  return d.getFullYear() + "-" + pad(d.getMonth() + 1) + "-" + pad(d.getDate());
+}
+function ftInterp(pts, mins){
+  if(!pts.length) return null;
+  if(mins <= pts[0].m) return { v: pts[0].v, slope: pts.length > 1 ? pts[1].v - pts[0].v : 0 };
+  for(let i = 0; i < pts.length - 1; i++){
+    const a = pts[i], b = pts[i + 1];
+    if(mins <= b.m){
+      const f = b.m === a.m ? 0 : (mins - a.m) / (b.m - a.m);
+      return { v: a.v + (b.v - a.v) * f, slope: b.v - a.v };
+    }
+  }
+  const last = pts[pts.length - 1], prev = pts[pts.length - 2] || last;
+  return { v: last.v, slope: last.v - prev.v };
+}
+function ftSlideRender(){
+  const box = document.getElementById("ft-slide");
+  const slider = document.getElementById("ft-slider");
+  if(!box || !slider) return;
+  const pts = FT_CURVE.hourly[ftDayKey(FT_CURVE.sel)] || [];
+  if(!pts.length){ box.hidden = true; return; }
+  box.hidden = false;
+  if(FT_CURVE.sel === 0){
+    const now = new Date();
+    slider.value = now.getHours() * 60 + now.getMinutes();
+  } else {
+    slider.value = 720;
+  }
+  ftSlideDraw();
+}
+function ftSlideDraw(){
+  const curveBox = document.getElementById("ft-curve");
+  const slider = document.getElementById("ft-slider");
+  const read = document.getElementById("ft-read-text");
+  if(!curveBox || !slider || !read) return;
+  const key = ftDayKey(FT_CURVE.sel);
+  const pts = FT_CURVE.hourly[key] || [];
+  if(!pts.length) return;
+  const mins = +slider.value;
+  const cur = ftInterp(pts, mins);
+  const W = 320, H = 96, ml = 6, mr = 6, mt = 10, mb = 8;
+  const pw = W - ml - mr, ph = H - mt - mb;
+  let lo = Math.min.apply(null, pts.map(function(p){ return p.v; }));
+  let hi = Math.max.apply(null, pts.map(function(p){ return p.v; }));
+  (FT_CURVE.hilo[key] || []).forEach(function(p){ const v = Number(p.v); if(!isNaN(v)){ if(v < lo) lo = v; if(v > hi) hi = v; } });
+  if(hi - lo < 0.5){ hi += 0.25; lo -= 0.25; }
+  const padV = (hi - lo) * 0.12; hi += padV; lo -= padV;
+  const X = function(m){ return ml + (m / 1440) * pw; };
+  const Y = function(v){ return mt + (1 - (v - lo) / (hi - lo)) * ph; };
+  let dAttr = "";
+  pts.forEach(function(p, i){ dAttr += (i ? "L" : "M") + X(p.m).toFixed(1) + " " + Y(p.v).toFixed(1) + " "; });
+  let svg = "<svg viewBox=\"0 0 " + W + " " + H + "\" role=\"img\" aria-label=\"Predicted tide curve for the selected day\">";
+  svg += "<path d=\"" + dAttr + "L" + X(pts[pts.length - 1].m).toFixed(1) + " " + (mt + ph) + " L" + X(pts[0].m).toFixed(1) + " " + (mt + ph) + " Z\" fill=\"rgba(127,212,255,.16)\" stroke=\"none\"/>";
+  svg += "<path d=\"" + dAttr + "\" fill=\"none\" stroke=\"#7fd4ff\" stroke-width=\"2\" stroke-linejoin=\"round\" stroke-linecap=\"round\"/>";
+  (FT_CURVE.hilo[key] || []).forEach(function(p){
+    const t = String(p.t || "");
+    const em = (+t.slice(11, 13)) * 60 + (+t.slice(14, 16));
+    const v = Number(p.v);
+    if(isNaN(em) || isNaN(v)) return;
+    const cx = X(em).toFixed(1), cy = Y(v).toFixed(1);
+    if(p.type === "H") svg += "<circle class=\"ft-dot-h\" cx=\"" + cx + "\" cy=\"" + cy + "\" r=\"3.5\" fill=\"#7fd4ff\" stroke=\"#0a2540\" stroke-width=\"1\"/>";
+    else svg += "<circle class=\"ft-dot-l\" cx=\"" + cx + "\" cy=\"" + cy + "\" r=\"3.5\" fill=\"#0a2540\" stroke=\"#a5dcf5\" stroke-width=\"1.5\"/>";
+  });
+  if(cur){
+    const mx = X(mins).toFixed(1);
+    svg += "<line x1=\"" + mx + "\" y1=\"" + mt + "\" x2=\"" + mx + "\" y2=\"" + (mt + ph) + "\" stroke=\"#ffffff\" stroke-width=\"1\" stroke-dasharray=\"3 3\" opacity=\".65\"/>";
+    svg += "<circle cx=\"" + mx + "\" cy=\"" + Y(cur.v).toFixed(1) + "\" r=\"4\" fill=\"#ffffff\" stroke=\"#0a2540\" stroke-width=\"2\"/>";
+  }
+  svg += "</svg>";
+  curveBox.innerHTML = svg;
+  const h24 = Math.floor(mins / 60), mm2 = mins % 60;
+  const ap = h24 >= 12 ? "PM" : "AM";
+  const h12 = h24 % 12 === 0 ? 12 : h24 % 12;
+  const timeStr = h12 + ":" + String(mm2).padStart(2, "0") + " " + ap;
+  let dir = "Slack", cls = "";
+  if(cur && cur.slope > 0.001){ dir = "Rising \u25B2"; cls = "tide-H"; }
+  else if(cur && cur.slope < -0.001){ dir = "Falling \u25BC"; cls = "tide-L"; }
+  read.innerHTML = "";
+  const t1 = document.createElement("span");
+  t1.textContent = timeStr + " \u00B7 " + (cur ? cur.v.toFixed(1) : "--") + " ft \u00B7 ";
+  const t2 = document.createElement("span");
+  if(cls) t2.className = cls;
+  t2.textContent = dir;
+  read.append(t1, t2);
+}
+async function loadTideCurve(){
+  const box = document.getElementById("ft-slide");
+  if(!box) return;
+  try{
+    const tloc = wxLoc();
+    const pad = function(n){ return String(n).padStart(2, "0"); };
+    const ymd = function(d){ return d.getFullYear() + pad(d.getMonth() + 1) + pad(d.getDate()); };
+    const start = new Date(); start.setHours(0, 0, 0, 0);
+    const end = new Date(start); end.setDate(end.getDate() + 7);
+    const r = await fetch("https://api.tidesandcurrents.noaa.gov/api/prod/datagetter?begin_date=" + ymd(start) + "&end_date=" + ymd(end) + "&station=" + tloc.station + "&product=predictions&datum=MLLW&time_zone=lst_ldt&units=english&interval=h&format=json");
+    const d = await r.json();
+    const preds = d.predictions || [];
+    if(!preds.length) throw 0;
+    const byDay = {};
+    preds.forEach(function(p){
+      const t = String(p.t || "");
+      const k = t.slice(0, 10);
+      if(!k) return;
+      const mins = (+t.slice(11, 13)) * 60 + (+t.slice(14, 16));
+      const v = Number(p.v);
+      if(isNaN(v)) return;
+      (byDay[k] = byDay[k] || []).push({ m: mins, v: v });
+    });
+    Object.keys(byDay).forEach(function(k){ byDay[k].sort(function(a, b){ return a.m - b.m; }); });
+    if(!Object.keys(byDay).length) throw 0;
+    FT_CURVE.hourly = byDay;
+    const slider = document.getElementById("ft-slider");
+    if(slider && !slider._ftBound){
+      slider._ftBound = true;
+      slider.addEventListener("input", function(){ try{ ftSlideDraw(); }catch(_){} });
+    }
+    ftSlideRender();
+  }catch(e){
+    try{ box.hidden = true; }catch(_){}
   }
 }
 function tbbVerdict(ps){
@@ -7108,13 +7256,13 @@ function renderBriefing(){
     }
   }catch(e){}
 }
-["renderGrid","renderDir","updateCartUI","renderCalendar","loadTides","loadFutureTides","loadMarine","loadWaves","loadSpot","loadWeek","loadHourly","loadForecastBadges","renderFuel","renderSvc","renderOwner","renderDealers","renderGear","renderBriefing","loadBriefingConditions"].forEach(fn=>{ try{ window[fn](); }catch(e){ console.warn("init "+fn+" failed:", e.message); } });
+["renderGrid","renderDir","updateCartUI","renderCalendar","loadTides","loadFutureTides","loadTideCurve","loadMarine","loadWaves","loadSpot","loadWeek","loadHourly","loadForecastBadges","renderFuel","renderSvc","renderOwner","renderDealers","renderGear","renderBriefing","loadBriefingConditions"].forEach(fn=>{ try{ window[fn](); }catch(e){ console.warn("init "+fn+" failed:", e.message); } });
 /* Weather auto-refresh: re-pull every 5 minutes while the page is open (and on return to the tab if stale), so the "Last checked" stamps and the data behind them stay current. */
 let __wxLastRefresh = Date.now();
 function refreshWeather(){
   try{
     marineCache = {}; wxPeriodCache = {}; __wxLastRefresh = Date.now();
-    ["loadTides","loadFutureTides","loadMarine","loadWaves","loadSpot","loadWeek","loadHourly","loadForecastBadges","loadBriefingConditions"].forEach(function(fn){ try{ window[fn](); }catch(e){} });
+    ["loadTides","loadFutureTides","loadTideCurve","loadMarine","loadWaves","loadSpot","loadWeek","loadHourly","loadForecastBadges","loadBriefingConditions"].forEach(function(fn){ try{ window[fn](); }catch(e){} });
   }catch(e){}
 }
 setInterval(function(){ if(!document.hidden) refreshWeather(); }, 300000);

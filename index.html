@@ -567,6 +567,12 @@ body.dark .cat-card{background:#0E2A3F}
 .wv-tab{flex:1;padding:9px 4px;border-radius:10px;border:1px solid rgba(185,210,228,.45);background:transparent;color:#dcebf5;font-weight:700;font-size:.88rem;cursor:pointer;font-family:inherit}
 .wv-tab.on{background:#8fd0f0;color:#0a2540;border-color:#8fd0f0}
 .wv-panel[hidden]{display:none}
+.ft-note{font-size:.85rem;color:#a9c6c5;margin:0}
+.ft-tabs{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 4px}
+.ft-tab{padding:7px 10px;border-radius:10px;border:1px solid rgba(185,210,228,.45);background:transparent;color:#dcebf5;font-weight:700;font-size:.82rem;cursor:pointer;font-family:inherit}
+.ft-tab.on{background:#8fd0f0;color:#0a2540;border-color:#8fd0f0}
+.ft-panel[hidden]{display:none}
+.ft-station{font-size:.78rem;color:#a9c6c5;margin-top:8px}
 .bt-tabs{display:flex;gap:6px;margin:14px 0 12px}
 .bt-tab{flex:1;padding:9px 4px;border-radius:10px;border:1px solid #bcd9e8;background:#fff;color:#0b3d62;font-weight:700;font-size:.88rem;cursor:pointer;font-family:inherit}
 .bt-tab.sel{background:#0a2540;color:#fff;border-color:#0a2540}
@@ -1951,6 +1957,10 @@ function twlPlay(btn){
       <div class="cond-card">
         <h3>Today's Tides</h3>
         <div id="tide-list"><p class="cond-fallback">Loading tides…</p></div>
+        <h3 style="margin-top:20px">Future Tides</h3>
+        <p class="ft-note">Predicted tides &mdash; NOAA. Wind and weather can push the actual water higher or lower than predicted.</p>
+        <div class="ft-tabs" id="ft-tabs" role="tablist" aria-label="Future tides by day"></div>
+        <div id="ft-panels"><p class="cond-fallback">Loading future tides&hellip;</p></div>
       </div>
       <div class="cond-card">
         <h3>Marine Forecast</h3>
@@ -5783,7 +5793,7 @@ function changeTravelLocation(key){
   document.getElementById("tides-sub").textContent = "Live from NOAA \u0026 the National Weather Service \u00B7 " + loc.label;
   bayKey = (key==="tampa") ? "tampa" : null;
   document.querySelectorAll('.area-chip').forEach((x,i)=>x.classList.toggle('active', key==="tampa" && i===0));
-  loadTides(); loadMarine(); loadWaves(); loadSpot(); loadWeek(); loadHourly();
+  loadTides(); loadFutureTides(); loadMarine(); loadWaves(); loadSpot(); loadWeek(); loadHourly();
 }
 const SPOT_COORDS = { keywest:[24.5551,-81.78], destin:[30.3935,-86.4958], panamacity:[30.1766,-85.8055], stuart:[27.1975,-80.2528], fortmyers:[26.6406,-81.8723], daytona:[29.2108,-81.0228], crystalriver:[29.1386,-83.0351], naples:[26.142,-81.7948], jacksonville:[30.3929,-81.4243] };
 const BAY_AREAS = {
@@ -5819,7 +5829,7 @@ function setBayArea(key, btn){
   const b = BAY_AREAS[key];
   document.getElementById("tides-title").textContent = b.name + " Tides & Marine Forecast";
   document.getElementById("tides-sub").textContent = "Live from NOAA & the National Weather Service \u00B7 " + b.slabel;
-  loadTides(); loadMarine(); loadSpot(); loadWeek(); loadHourly();
+  loadTides(); loadFutureTides(); loadMarine(); loadSpot(); loadWeek(); loadHourly();
 }
 const BAY_ALIASES = {"tampa":"tampa","tampa bay":"tampa","downtown tampa":"tampa","south tampa":"tampa","hyde park":"tampa","davis island":"tampa","davis islands":"tampa","ybor city":"tampa","ybor":"tampa","westshore":"tampa","seminole heights":"tampa","temple terrace":"tampa","carrollwood":"tampa","new tampa":"tampa","lutz":"tampa","land o lakes":"tampa","town n country":"tampa","old tampa bay":"oldtb","safety harbor":"oldtb","oldsmar":"oldtb","westchase":"oldtb","odessa":"oldtb","st petersburg":"stpete","st pete":"stpete","saint petersburg":"stpete","downtown st pete":"stpete","pinellas park":"stpete","kenneth city":"stpete","lealman":"stpete","old northeast":"stpete","coquina key":"stpete","boca ciega":"bocaciega","boca ciega bay":"bocaciega","gulfport":"bocaciega","madeira beach":"bocaciega","treasure island":"bocaciega","st pete beach":"bocaciega","seminole":"bocaciega","largo":"bocaciega","redington beach":"bocaciega","redington shores":"bocaciega","north redington beach":"bocaciega","south pasadena":"bocaciega","pass-a-grille":"bocaciega","pass a grille":"bocaciega","clearwater":"clearwater","clearwater beach":"clearwater","dunedin":"clearwater","palm harbor":"clearwater","tarpon springs":"clearwater","indian rocks beach":"clearwater","belleair":"clearwater","belleair beach":"clearwater","sand key":"clearwater","ruskin":"ruskin","sun city center":"ruskin","sun city":"ruskin","wimauma":"ruskin","apollo beach":"apollo","gibsonton":"apollo","riverview":"riverview","brandon":"riverview","valrico":"riverview","bloomingdale":"riverview","fishhawk":"riverview","lithia":"riverview","plant city":"riverview","palmetto":"palmetto","ellenton":"palmetto","parrish":"palmetto","terra ceia":"palmetto","bradenton":"bradenton","west bradenton":"bradenton","lakewood ranch":"bradenton","egmont key":"egmont","egmont":"egmont","fort de soto":"egmont","fort desoto":"egmont","tierra verde":"egmont","shell key":"egmont","anna maria":"ami","anna maria island":"ami","holmes beach":"ami","bradenton beach":"ami","cortez":"cortez","longboat key":"longboat","longboat":"longboat","sarasota":"sarasota","downtown sarasota":"sarasota","siesta key":"sarasota","osprey":"sarasota","nokomis":"sarasota","venice":"sarasota","englewood":"sarasota","casey key":"sarasota","lido key":"sarasota","bird key":"sarasota"};
 const BAY_ALIAS_KEYS = Object.keys(BAY_ALIASES).sort(function(a, b){ return b.length - a.length; });
@@ -6226,6 +6236,73 @@ async function loadTides(){
     box.appendChild(stampEl(null));
   }catch(e){
     box.innerHTML = `<p class="cond-fallback">Tide data unavailable right now — <a href="https://tidesandcurrents.noaa.gov/" target="_blank" rel="noopener" style="color:#fff">see NOAA tide predictions</a>.</p>`;
+  }
+}
+function ftTab(i, btn){
+  document.querySelectorAll(".ft-tab").forEach(function(t){ t.classList.remove("on"); });
+  if(btn) btn.classList.add("on");
+  document.querySelectorAll(".ft-panel").forEach(function(p, j){ p.hidden = j !== i; });
+}
+async function loadFutureTides(){
+  const tabsBox = document.getElementById("ft-tabs");
+  const panelsBox = document.getElementById("ft-panels");
+  if(!tabsBox || !panelsBox) return;
+  try{
+    const tloc = wxLoc();
+    const pad = function(n){ return String(n).padStart(2, "0"); };
+    const ymd = function(d){ return d.getFullYear() + pad(d.getMonth() + 1) + pad(d.getDate()); };
+    const dayKey = function(d){ return d.getFullYear() + "-" + pad(d.getMonth() + 1) + "-" + pad(d.getDate()); };
+    const start = new Date(); start.setHours(0, 0, 0, 0);
+    const end = new Date(start); end.setDate(end.getDate() + 7);
+    const r = await fetch("https://api.tidesandcurrents.noaa.gov/api/prod/datagetter?begin_date=" + ymd(start) + "&end_date=" + ymd(end) + "&station=" + tloc.station + "&product=predictions&datum=MLLW&time_zone=lst_ldt&units=english&interval=hilo&format=json");
+    const d = await r.json();
+    const preds = d.predictions || [];
+    if(!preds.length) throw 0;
+    const byDay = {};
+    preds.forEach(p=>{ const k = String(p.t || "").slice(0, 10); if(k) (byDay[k] = byDay[k] || []).push(p); });
+    tabsBox.replaceChildren();
+    panelsBox.replaceChildren();
+    const wd = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+    for(let i = 0; i < 7; i++){
+      const day = new Date(start); day.setDate(day.getDate() + i);
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "ft-tab" + (i === 0 ? " on" : "");
+      btn.textContent = wd[day.getDay()] + " " + day.getDate();
+      btn.setAttribute("role", "tab");
+      const idx = i;
+      btn.addEventListener("click", function(){ ftTab(idx, btn); });
+      tabsBox.appendChild(btn);
+      const panel = document.createElement("div");
+      panel.className = "ft-panel";
+      panel.hidden = i !== 0;
+      const rows = byDay[dayKey(day)] || [];
+      if(!rows.length){
+        const none = document.createElement("p");
+        none.className = "cond-fallback";
+        none.textContent = "No tide predictions for this day.";
+        panel.appendChild(none);
+      }
+      rows.forEach(p=>{
+        const type = p.type === "H" ? "H" : "L";
+        const row = document.createElement("div");
+        row.className = "tide-row";
+        const label = document.createElement("span");
+        label.className = "tide-type tide-" + type;
+        label.textContent = type === "H" ? "High tide" : "Low tide";
+        const details = document.createElement("span");
+        details.textContent = fmtTideTime(String(p.t || "")) + " · " + Number(p.v).toFixed(1) + " ft";
+        row.append(label, details);
+        panel.appendChild(row);
+      });
+      panelsBox.appendChild(panel);
+    }
+    const station = document.createElement("div");
+    station.className = "ft-station";
+    station.textContent = "Station: " + tloc.label + " · NOAA";
+    panelsBox.appendChild(station);
+  }catch(e){
+    try{ panelsBox.innerHTML = "<p class=\"cond-fallback\">Couldn\u2019t load future tides \u2014 check back shortly.</p>"; }catch(_){}
   }
 }
 function tbbVerdict(ps){
@@ -7029,13 +7106,13 @@ function renderBriefing(){
     }
   }catch(e){}
 }
-["renderGrid","renderDir","updateCartUI","renderCalendar","loadTides","loadMarine","loadWaves","loadSpot","loadWeek","loadHourly","loadForecastBadges","renderFuel","renderSvc","renderOwner","renderDealers","renderGear","renderBriefing","loadBriefingConditions"].forEach(fn=>{ try{ window[fn](); }catch(e){ console.warn("init "+fn+" failed:", e.message); } });
+["renderGrid","renderDir","updateCartUI","renderCalendar","loadTides","loadFutureTides","loadMarine","loadWaves","loadSpot","loadWeek","loadHourly","loadForecastBadges","renderFuel","renderSvc","renderOwner","renderDealers","renderGear","renderBriefing","loadBriefingConditions"].forEach(fn=>{ try{ window[fn](); }catch(e){ console.warn("init "+fn+" failed:", e.message); } });
 /* Weather auto-refresh: re-pull every 5 minutes while the page is open (and on return to the tab if stale), so the "Last checked" stamps and the data behind them stay current. */
 let __wxLastRefresh = Date.now();
 function refreshWeather(){
   try{
     marineCache = {}; wxPeriodCache = {}; __wxLastRefresh = Date.now();
-    ["loadTides","loadMarine","loadWaves","loadSpot","loadWeek","loadHourly","loadForecastBadges","loadBriefingConditions"].forEach(function(fn){ try{ window[fn](); }catch(e){} });
+    ["loadTides","loadFutureTides","loadMarine","loadWaves","loadSpot","loadWeek","loadHourly","loadForecastBadges","loadBriefingConditions"].forEach(function(fn){ try{ window[fn](); }catch(e){} });
   }catch(e){}
 }
 setInterval(function(){ if(!document.hidden) refreshWeather(); }, 300000);

@@ -453,6 +453,10 @@ body{top:0 !important}
 .hero-socials a:hover{background:#8fd0f0}
 .hero-about-btn{position:absolute;top:12px;left:14px;z-index:5;display:inline-flex;align-items:center;height:40px;border-radius:999px;padding:0 18px;background:rgba(10,37,64,.55);border:1px solid rgba(143,208,240,.5);color:#fff;font-weight:700;font-size:.95rem;text-decoration:none;letter-spacing:.2px;backdrop-filter:blur(2px)}
 .hero-about-btn:hover{background:#8fd0f0;color:#0a2540}
+.hero-score{position:absolute;top:12px;right:14px;z-index:5;display:inline-flex;align-items:center;gap:9px;min-height:40px;border-radius:999px;padding:5px 16px;background:rgba(10,37,64,.55);border:1px solid rgba(143,208,240,.5);color:#fff;backdrop-filter:blur(2px);box-sizing:border-box}
+.hero-score-label{font-size:.64rem;font-weight:700;letter-spacing:.9px;text-transform:uppercase;line-height:1.2;color:#cfe6f5;white-space:nowrap}
+.hero-score-pct{font-size:1.4rem;font-weight:800;line-height:1;color:#fff}
+@media(max-width:400px){.hero-score{gap:7px;padding:4px 12px}.hero-score-label{font-size:.57rem;letter-spacing:.7px}.hero-score-pct{font-size:1.2rem}}
 .hero-socials a:hover svg{fill:#0a2540}
 .hero-socials svg{width:21px;height:21px;fill:#fff}
 .tb-wx{width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.14);display:flex;align-items:center;justify-content:center;text-decoration:none;margin-left:auto}
@@ -1614,6 +1618,7 @@ results.addEventListener('click',function(e){
 <div class="view active" id="view-home">
 <section class="hero2" style="position:relative">
   <a class="hero-about-btn" href="#/about" aria-label="About Tampa Bay Boating">About</a>
+  <div class="hero-score" id="hero-score"><span class="hero-score-label">Today&#8217;s Boating Score</span><span class="hero-score-pct" id="hero-score-pct">&hellip;</span></div>
   <div class="hero2-inner">
     <div class="hero2-kicker">Tampa Bay's Boating HQ</div>
     <h1>Everything you need for a day on the bay.</h1>
@@ -5708,7 +5713,16 @@ const EVENTS = [
   url:"https://sikpromotions.com/applicants/winter/corey-area-art-and-craft-festival-january", featured:false, details: "<b>When:</b> Sat, Jan 2 & Sun, Jan 3, 2027 \u00b7 10:00am\u20135:00pm both days\n<b>Where:</b> Corey Avenue, St. Pete Beach, FL 33706 \u2014 the historic Corey Avenue district, a short walk from the beach\n<b>Cost:</b> Free admission\n<b>The event:</b> The Corey Area Winter Art & Craft Festival, produced by SIK Promotions for the Corey Area Business Association \u2014 the 33rd season opener, filling Corey Avenue with handmade work from local and national artists and crafters.\n<b>Good to know:</b> A Green Market runs Sunday, Jan 3. The December edition of this festival (Dec 5\u20136, 2026) is on the calendar separately."},
  {start:"2026-12-13", end:"2026-12-13", title:"Christmas Classic Car & Cart Toy Drive 2026", when:"Sun, Dec 13, 2026 \u00b7 9:00am\u20133:30pm (parade 11:00am\u201312:00pm)", where:"Gulf Blvd from Caddy's Treasure Island, 9000 W Gulf Blvd, Treasure Island, FL 33706, through John's Pass and Madeira Beach to Caddy's Indian Shores",
   desc:"Classic cars and decorated golf carts parade Gulf Blvd from Treasure Island to Indian Shores, collecting toys for local kids.",
-  url:"https://christmasclassictoydrive.com/", featured:false, details: "<b>When:</b> Sun, Dec 13, 2026 \u00b7 Line-ups from 9:00am; parade rolls 11:00am\u201312:00pm (event window 9:00am\u20133:30pm)\n<b>Where:</b> Gulf Blvd from Caddy's Treasure Island, 9000 W Gulf Blvd, Treasure Island, through John's Pass and Madeira Beach to Caddy's Indian Shores\n<b>Cost:</b> Free to watch; $25 per vehicle plus one new unwrapped toy to enter\n<b>The event:</b> The Christmas Classic Car & Cart Toy Drive \u2014 classic cars and decorated golf carts parade the beach boulevard collecting toys for local children (Healthy Starts, Shepherd's Village and Santa's Helpers).\n<b>Good to know:</b> Pick a spot anywhere along Gulf Blvd between Treasure Island and Indian Shores; the parade itself runs about an hour late morning."}
+  url:"https://christmasclassictoydrive.com/", featured:false, details: "<b>When:</b> Sun, Dec 13, 2026 \u00b7 Line-ups from 9:00am; parade rolls 11:00am\u201312:00pm (event window 9:00am\u20133:30pm)\n<b>Where:</b> Gulf Blvd from Caddy's Treasure Island, 9000 W Gulf Blvd, Treasure Island, through John's Pass and Madeira Beach to Caddy's Indian Shores\n<b>Cost:</b> Free to watch; $25 per vehicle plus one new unwrapped toy to enter\n<b>The event:</b> The Christmas Classic Car & Cart Toy Drive \u2014 classic cars and decorated golf carts parade the beach boulevard collecting toys for local children (Healthy Starts, Shepherd's Village and Santa's Helpers).\n<b>Good to know:</b> Pick a spot anywhere along Gulf Blvd between Treasure Island and Indian Shores; the parade itself runs about an hour late morning."},
+ {start:"2026-11-27", end:"2026-11-27", title:"The Mayor's Hometown Christmas Tree Lighting (Venice)", when:"Nov 27, 2026 · 5–7pm", where:"Centennial Park gazebo, 200 West Venice Avenue, Venice, FL 34285 — historic downtown Venice (Venice Island)",
+  desc:"Venice lights its downtown Christmas tree at the Centennial Park gazebo — local choirs, Santa, and the kickoff to the city's centennial holiday weekend.",
+  url:"https://www.visitvenicefl.org/featured-events/", featured:false, details: "<b>When:</b> Fri, Nov 27, 2026 · 5:00–7:00pm\n<b>Where:</b> Centennial Park gazebo, 200 West Venice Avenue, Venice, FL 34285 — historic downtown Venice\n<b>The event:</b> The Mayor's Hometown Christmas — Venice's downtown Christmas tree lighting at the Centennial Park gazebo, with local choirs including the Venice Chorale, holiday music and a visit from Santa. It opens the city's centennial holiday weekend, ahead of the 50th annual Holiday Parade the next evening.\n<b>Good to know:</b> Bring a chair or blanket. Free public parking fills early downtown on holiday-weekend evenings." },
+ {start:"2026-11-28", end:"2026-11-28", title:"City of Venice Holiday Parade (50th Annual)", when:"Nov 28, 2026 · parade steps off 6:30pm", where:"Historic downtown Venice, FL — W. Venice Avenue route by City Hall (401 W. Venice Ave) and Centennial Park, Venice, FL 34285",
+  desc:"Venice's 50th holiday parade rolls through historic downtown under the \"Golden Traditions\" theme — led by Old Betsy, the city's 100-year-old fire engine, as grand marshal.",
+  url:"https://www.venicegov.com/", featured:false, details: "<b>When:</b> Sat, Nov 28, 2026 · Downtown activities from 2:00pm; parade steps off 6:30pm\n<b>Where:</b> Historic downtown Venice — the W. Venice Avenue route past City Hall and Centennial Park, Venice, FL 34285\n<b>Cost:</b> Free to watch\n<b>The event:</b> The 50th annual City of Venice Holiday Parade — floats, marching groups, vehicles, lit bicycles and golf carts roll through the Mediterranean Revival downtown under the theme \"Golden Traditions,\" celebrating the parade's 50th year, the City of Venice's 100th birthday and America's 250th. Old Betsy, the city's century-old fire engine, serves as grand marshal. The Elf Dash fun run kicks off down the route just before step-off.\n<b>Good to know:</b> Roads along the route close from about 2pm; arrive early for a viewing spot. The Mayor's Hometown Christmas tree lighting (separate entry) is in Centennial Park the night before." },
+ {start:"2026-12-03", end:"2026-12-03", title:"Christmas Walk (Venice)", when:"Dec 3, 2026 · 5–8pm", where:"Downtown Venice District — Miami, Tampa and West Venice avenues, Venice, FL 34285",
+  desc:"Downtown Venice stays open late for a holiday stroll — extended shop hours, treats, live music and lit storefronts along Miami, Tampa and West Venice avenues.",
+  url:"https://www.visitvenicefl.org/featured-events/", featured:false, details: "<b>When:</b> Thu, Dec 3, 2026 · 5:00–8:00pm\n<b>Where:</b> Downtown Venice — Miami, Tampa and West Venice avenues, Venice, FL 34285\n<b>Cost:</b> Free to attend\n<b>The event:</b> The annual Christmas Walk in historic downtown Venice — shops stay open late with treats and live music while decorated trees and holiday storefront windows light up Miami, Tampa and West Venice avenues.\n<b>Good to know:</b> An easy weeknight stroll; the Venice Christmas Boat Parade (already on the calendar) follows two nights later, Sat Dec 5." }
 ];
 
 /* EVENTS-END */
@@ -6489,6 +6503,11 @@ function tbbVerdict(ps){
   else if(level===1) score = Math.min(score, 69);
   return { level: level, score: score, why: why.join(" · ") };
 }
+function setHeroScore(s){
+  const el = document.getElementById("hero-score-pct");
+  if(!el) return;
+  el.textContent = (s == null || isNaN(s)) ? "\u2013" : s + "%";
+}
 function renderVerdict(ps, label, isToday){
   const card = document.getElementById("verdict-card");
   const title = document.getElementById("verdict-title");
@@ -6497,6 +6516,7 @@ function renderVerdict(ps, label, isToday){
     card.classList.remove("v-go","v-good","v-caution","v-rough","v-stay");
     title.textContent = "Beyond the marine forecast range";
     const sEl0 = document.getElementById("verdict-score"); if(sEl0) sEl0.textContent = "\u2013";
+    if(isToday) setHeroScore(null);
     const mk0 = document.getElementById("score-marker"); if(mk0) mk0.style.left = "50%";
     skillRows(document.getElementById("skill-today"), null);
     return;
@@ -6514,6 +6534,7 @@ function renderVerdict(ps, label, isToday){
   title.textContent = band;
   const scoreEl = document.getElementById("verdict-score");
   if(scoreEl) scoreEl.textContent = s + "%";
+  if(isToday) setHeroScore(s);
   const marker = document.getElementById("score-marker");
   if(marker) marker.style.left = Math.max(2, Math.min(98, 100 - s)) + "%";
   const vstamp = document.getElementById("verdict-stamp"); if(vstamp) vstamp.textContent = tbbStamp(marineIssuedISO);
@@ -6650,6 +6671,7 @@ async function loadMarine(){
   }catch(e){
     box.innerHTML = `<p class="cond-fallback">Forecast unavailable right now \u2014 <a href="https://www.weather.gov/tbw/" target="_blank" rel="noopener" style="color:#fff">see the NWS Tampa Bay forecast</a>.</p>`;
     try{ const vt=document.getElementById("verdict-title"); if(vt) vt.textContent="Verdict unavailable right now"; }catch(_){}
+    try{ setHeroScore(null); }catch(_){}
   }
 }
 function renderMarine(){

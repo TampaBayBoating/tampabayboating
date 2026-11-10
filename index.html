@@ -1903,7 +1903,7 @@ if(typeof document!=='undefined'){
         <p class="hr-take" id="hourly-take"></p>
       </div>
       <div class="hr-now-row"><span class="hr-pct-circle" id="hr-pct">&ndash;</span><div id="hr-detail"><span class="cond-fallback">Loading the next 12 hours&hellip;</span></div></div>
-       <input type="range" id="hr-slider" min="0" max="11" step="1" value="0" oninput="hrPick(+this.value)" aria-label="Slide through the day">
+       <input type="range" id="hr-slider" min="0" max="23" step="1" value="0" oninput="hrPick(+this.value)" aria-label="Slide through the day">
        <div class="hr-ticks" id="hr-ticks"></div>
        <div class="skill-box" id="skill-hourly"></div>
       <div id="hourly-stamp"></div>
@@ -6081,6 +6081,108 @@ function skillRows(el, score){
     el.appendChild(row);
   });
 }
+function hrStepNumber(value){
+  if(value == null) return NaN;
+  if(typeof value === "number") return value;
+  var n = parseFloat(String(value).replace(/[^0-9.\-]/g, ""));
+  return isNaN(n) ? NaN : n;
+}
+function hrStepFieldNumber(hour, names){
+  if(!hour) return NaN;
+  for(var i = 0; i < names.length; i++){
+    var n = hrStepNumber(hour[names[i]]);
+    if(!isNaN(n)) return n;
+  }
+  return NaN;
+}
+function hrStepRawDate(hour){
+  if(!hour) return null;
+  var raw = hour.startTime || hour.start || hour.date || hour.time || hour.d || hour.ts;
+  if(raw == null) return null;
+  var d = raw instanceof Date ? new Date(raw.getTime()) : new Date(raw);
+  return isNaN(d) ? null : d;
+}
+function hrStepMidDate(a, b){
+  var d = hrStepRawDate(a);
+  if(!d){
+    var bd = hrStepRawDate(b);
+    if(bd){ d = bd; d.setMinutes(d.getMinutes() - 30); }
+  }
+  if(!d){
+    d = new Date();
+    var m = String(a && a.label || "").match(/(\d{1,2})(?::(\d{2}))?\s*([AP]M)/i);
+    if(m){
+      var hh = parseInt(m[1], 10) % 12;
+      if(/PM/i.test(m[3])) hh += 12;
+      d.setHours(hh, parseInt(m[2] || "0", 10), 0, 0);
+    } else d.setMinutes(0, 0, 0);
+  }
+  var out = new Date(d.getTime());
+  out.setMinutes(out.getMinutes() + 30);
+  return out;
+}
+function hrStepTemp(a, b, avg){
+  if(isNaN(avg)) return a && a.temp != null ? a.temp : "";
+  if(typeof (a && a.temp) === "number" && typeof (b && b.temp) === "number") return avg;
+  var unit = (a && a.tempUnit) || (b && b.tempUnit) || "";
+  if(typeof (a && a.temp) === "string"){
+    var suffix = a.temp.replace(/^\s*[+\-]?\d+(?:\.\d+)?\s*/, "");
+    return avg + suffix;
+  }
+  return unit ? avg + "\u00B0" + unit : avg;
+}
+function hrStepDetail(label, wind, dir, gust, temp, pop, score){
+  var read = score >= 85 ? "Smooth \u2014 a great hour to be out." : score >= 70 ? "Good hour \u2014 light chop at most." : score >= 55 ? "Choppy \u2014 smaller boats will feel it." : score >= 40 ? "Rough \u2014 only for boats that handle it." : "Best to wait for a calmer stretch.";
+  var tempText = typeof temp === "number" ? temp + "\u00B0F" : temp;
+  return "<b>" + label + "</b> \u2014 wind " + wind + " mph" + (dir ? " " + dir : "") + (gust > wind ? ", gusting " + gust : "") + (tempText ? " \u00B7 " + tempText : "") + (pop >= 20 ? " \u00B7 rain " + pop + "%" : "") + " \u2014 " + read;
+}
+function hrSteps(hours){
+  var list = Array.isArray(hours) ? hours : [];
+  var steps = [];
+  function avg(x, y, fallback){
+    if(isNaN(x)) return isNaN(y) ? fallback : Math.round(y);
+    if(isNaN(y)) return Math.round(x);
+    return Math.round((x + y) / 2);
+  }
+  list.forEach(function(a, k){
+    steps.push(a);
+    if(k >= list.length - 1) return;
+    var b = list[k + 1];
+    var midDate = hrStepMidDate(a, b);
+    var label = midDate.toLocaleTimeString("en-US", {hour:"numeric", minute:"2-digit"});
+    var wind = avg(hrStepFieldNumber(a, ["windMph", "mph"]), hrStepFieldNumber(b, ["windMph", "mph"]), 0);
+    var gust = avg(hrStepFieldNumber(a, ["gustMph", "gust"]), hrStepFieldNumber(b, ["gustMph", "gust"]), wind);
+    var pop = avg(hrStepFieldNumber(a, ["pop"]), hrStepFieldNumber(b, ["pop"]), 0);
+    var score = avg(hrStepFieldNumber(a, ["score"]), hrStepFieldNumber(b, ["score"]), 0);
+    var tempAvg = avg(hrStepFieldNumber(a, ["tempValue", "temp"]), hrStepFieldNumber(b, ["tempValue", "temp"]), NaN);
+    var temp = hrStepTemp(a, b, tempAvg);
+    var dir = a.dir || a.windDirection || b.dir || b.windDirection || "";
+    var mid = {
+      label: label,
+      startTime: midDate,
+      start: midDate,
+      date: midDate,
+      time: midDate,
+      d: midDate,
+      icon: a.icon || "",
+      fc: a.fc || a.shortForecast || "",
+      temp: temp,
+      tempValue: tempAvg,
+      tempUnit: a.tempUnit || b.tempUnit || "",
+      mph: wind,
+      windMph: wind,
+      dir: dir,
+      windDirection: dir,
+      gust: gust,
+      gustMph: gust,
+      pop: pop,
+      score: score
+    };
+    mid.detail = hrStepDetail(label, wind, dir, gust, temp, pop, score);
+    steps.push(mid);
+  });
+  return steps;
+}
 function hrPick(i){
   var hours = window._hrHours || []; var h = hours[i]; if(!h) return;
   var sl = document.getElementById("hr-slider"); if(sl && +sl.value !== i) sl.value = i;
@@ -6103,10 +6205,11 @@ async function loadHourly(){
     const winds = periods.map(hrWindMph);
     if(take) take.textContent = hrTakeaway(periods, winds);
     const hours = periods.map(function(p, k){
-      return {label:(k === 0 ? "Now" : hrHourLabel(new Date(p.startTime))), mph:winds[k], dir:(p.windDirection || ""), temp:(p.temperature != null ? p.temperature + "\u00B0" + (p.temperatureUnit || "F") : ""), pop:((p.probabilityOfPrecipitation && p.probabilityOfPrecipitation.value) || 0), gust:(p.windGust ? parseInt(p.windGust, 10) || 0 : 0), score:hrScore(p, winds[k])};
+      return {label:(k === 0 ? "Now" : hrHourLabel(new Date(p.startTime))), startTime:p.startTime, date:new Date(p.startTime), icon:hrIcon(p), fc:(p.shortForecast || ""), mph:winds[k], windMph:winds[k], dir:(p.windDirection || ""), windDirection:(p.windDirection || ""), temp:(p.temperature != null ? p.temperature + "\u00B0" + (p.temperatureUnit || "F") : ""), tempValue:(p.temperature != null ? Number(p.temperature) : null), tempUnit:(p.temperatureUnit || "F"), pop:((p.probabilityOfPrecipitation && p.probabilityOfPrecipitation.value) || 0), gust:(p.windGust ? parseInt(p.windGust, 10) || 0 : 0), gustMph:(p.windGust ? parseInt(p.windGust, 10) || 0 : 0), score:hrScore(p, winds[k])};
     });
-    window._hrHours = hours;
-    if(slider){ slider.max = hours.length - 1; slider.value = 0; slider.disabled = false; }
+    const steps = hrSteps(hours);
+    window._hrHours = steps;
+    if(slider){ slider.max = steps.length - 1; slider.value = 0; slider.disabled = false; }
     if(ticks){
       ticks.replaceChildren();
       hours.forEach(function(h, k){

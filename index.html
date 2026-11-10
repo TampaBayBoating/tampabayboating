@@ -1906,7 +1906,14 @@ if(typeof document!=='undefined'){
        <div class="hr-ticks" id="hr-ticks"></div>
        <div class="skill-box" id="skill-hourly"></div>
       <div id="hourly-stamp"></div>
-    </div><div id="week-block" style="margin:7px 0 0;border-top:1px solid rgba(10,37,64,.14);padding-top:6px">
+    </div><div id="wx-hours" style="margin:9px 0 0;border-top:1px solid rgba(10,37,64,.14);padding-top:7px">
+        <div style="display:flex;justify-content:space-between;align-items:baseline;gap:8px"><b style="font-size:.95rem">Hour by Hour &mdash; <span id="wxh-area">Tampa Bay</span></b><span style="font-size:.72rem;color:#445A6A">Slide through the day</span></div>
+        <div id="wxh-read" style="margin-top:5px;font-size:1rem;line-height:1.35"><span class="cond-fallback">Loading the next 24 hours&hellip;</span></div>
+        <input type="range" id="wxh-slider" min="0" max="23" step="1" value="0" oninput="wxhPick(+this.value)" aria-label="Slide through the day's forecast" style="width:100%">
+        <div class="hr-ticks" id="wxh-ticks"></div>
+        <div class="score-track"><div class="score-marker" id="wxh-marker" style="left:50%"></div></div>
+        <div class="score-ends"><span>Perfect day</span><span id="wxh-pct" style="font-weight:800;color:#0a2540">&ndash;</span><span>Stay home</span></div>
+      </div><div id="week-block" style="margin:7px 0 0;border-top:1px solid rgba(10,37,64,.14);padding-top:6px">
         <div class="week-strip" id="week-strip"><p class="cond-fallback">Loading the week&hellip;</p></div>
         <div id="week-detail"></div>
       </div><div class="area-chips" role="group" aria-label="Choose your part of Tampa Bay">
@@ -5829,7 +5836,7 @@ function changeTravelLocation(key){
   document.getElementById("tides-sub").textContent = "Live from NOAA \u0026 the National Weather Service \u00B7 " + loc.label;
   bayKey = (key==="tampa") ? "tampa" : null;
   document.querySelectorAll('.area-chip').forEach((x,i)=>x.classList.toggle('active', key==="tampa" && i===0));
-  loadTides(); loadFutureTides(); loadTideCurve(); loadMarine(); loadWaves(); loadSpot(); loadWeek(); loadHourly();
+  loadTides(); loadFutureTides(); loadTideCurve(); loadMarine(); loadWaves(); loadSpot(); loadWeek(); loadHourly(); loadHourSlider();
 }
 const SPOT_COORDS = { keywest:[24.5551,-81.78], destin:[30.3935,-86.4958], panamacity:[30.1766,-85.8055], stuart:[27.1975,-80.2528], fortmyers:[26.6406,-81.8723], daytona:[29.2108,-81.0228], crystalriver:[29.1386,-83.0351], naples:[26.142,-81.7948], jacksonville:[30.3929,-81.4243] };
 const BAY_AREAS = {
@@ -5865,7 +5872,7 @@ function setBayArea(key, btn){
   const b = BAY_AREAS[key];
   document.getElementById("tides-title").textContent = b.name + " Tides & Marine Forecast";
   document.getElementById("tides-sub").textContent = "Live from NOAA & the National Weather Service \u00B7 " + b.slabel;
-  loadTides(); loadFutureTides(); loadTideCurve(); loadMarine(); loadSpot(); loadWeek(); loadHourly();
+  loadTides(); loadFutureTides(); loadTideCurve(); loadMarine(); loadSpot(); loadWeek(); loadHourly(); loadHourSlider();
 }
 const BAY_ALIASES = {"tampa":"tampa","tampa bay":"tampa","downtown tampa":"tampa","south tampa":"tampa","hyde park":"tampa","davis island":"tampa","davis islands":"tampa","ybor city":"tampa","ybor":"tampa","westshore":"tampa","seminole heights":"tampa","temple terrace":"tampa","carrollwood":"tampa","new tampa":"tampa","lutz":"tampa","land o lakes":"tampa","town n country":"tampa","old tampa bay":"oldtb","safety harbor":"oldtb","oldsmar":"oldtb","westchase":"oldtb","odessa":"oldtb","st petersburg":"stpete","st pete":"stpete","saint petersburg":"stpete","downtown st pete":"stpete","pinellas park":"stpete","kenneth city":"stpete","lealman":"stpete","old northeast":"stpete","coquina key":"stpete","boca ciega":"bocaciega","boca ciega bay":"bocaciega","gulfport":"bocaciega","madeira beach":"bocaciega","treasure island":"bocaciega","st pete beach":"bocaciega","seminole":"bocaciega","largo":"bocaciega","redington beach":"bocaciega","redington shores":"bocaciega","north redington beach":"bocaciega","south pasadena":"bocaciega","pass-a-grille":"bocaciega","pass a grille":"bocaciega","clearwater":"clearwater","clearwater beach":"clearwater","dunedin":"clearwater","palm harbor":"clearwater","tarpon springs":"clearwater","indian rocks beach":"clearwater","belleair":"clearwater","belleair beach":"clearwater","sand key":"clearwater","ruskin":"ruskin","sun city center":"ruskin","sun city":"ruskin","wimauma":"ruskin","apollo beach":"apollo","gibsonton":"apollo","riverview":"riverview","brandon":"riverview","valrico":"riverview","bloomingdale":"riverview","fishhawk":"riverview","lithia":"riverview","plant city":"riverview","palmetto":"palmetto","ellenton":"palmetto","parrish":"palmetto","terra ceia":"palmetto","bradenton":"bradenton","west bradenton":"bradenton","lakewood ranch":"bradenton","egmont key":"egmont","egmont":"egmont","fort de soto":"egmont","fort desoto":"egmont","tierra verde":"egmont","shell key":"egmont","anna maria":"ami","anna maria island":"ami","holmes beach":"ami","bradenton beach":"ami","cortez":"cortez","longboat key":"longboat","longboat":"longboat","sarasota":"sarasota","downtown sarasota":"sarasota","siesta key":"sarasota","osprey":"sarasota","nokomis":"sarasota","venice":"sarasota","englewood":"sarasota","casey key":"sarasota","lido key":"sarasota","bird key":"sarasota"};
 const BAY_ALIAS_KEYS = Object.keys(BAY_ALIASES).sort(function(a, b){ return b.length - a.length; });
@@ -6109,6 +6116,34 @@ async function loadHourly(){
     const pc = document.getElementById("hr-pct"); if(pc) pc.textContent = "\u2013";
     if(slider) slider.disabled = true;
   }
+}
+let wxhHours = [];
+async function loadHourSlider(){
+  const read = document.getElementById("wxh-read"); if(!read) return;
+  const loc = wxLoc();
+  const a = document.getElementById("wxh-area"); if(a) a.textContent = loc.name;
+  try{
+    const periods = (await getHourlyPeriods(loc)).slice(0, 24);
+    if(!periods.length) throw 0;
+    wxhHours = periods.map(function(p, k){
+      const mph = hrWindMph(p);
+      return {label:(k === 0 ? "Now" : hrHourLabel(new Date(p.startTime))), icon:hrIcon(p), fc:(p.shortForecast || ""), temp:(p.temperature != null ? p.temperature + "\u00B0" + (p.temperatureUnit || "F") : ""), mph:mph, dir:(p.windDirection || ""), gust:(p.windGust ? parseInt(p.windGust, 10) || 0 : 0), pop:((p.probabilityOfPrecipitation && p.probabilityOfPrecipitation.value) || 0), score:hrScore(p, mph)};
+    });
+    const sl = document.getElementById("wxh-slider"); if(sl){ sl.max = wxhHours.length - 1; sl.value = 0; sl.disabled = false; }
+    const ticks = document.getElementById("wxh-ticks");
+    if(ticks){ ticks.replaceChildren(); wxhHours.forEach(function(h, k){ if(k % 4 !== 0 && k !== wxhHours.length - 1) return; const t = document.createElement("span"); t.className = "hr-tick"; t.textContent = h.label; ticks.appendChild(t); }); }
+    wxhPick(0);
+  }catch(e){
+    read.innerHTML = '<span class="cond-fallback">Hourly forecast unavailable right now.</span>';
+    const sl = document.getElementById("wxh-slider"); if(sl) sl.disabled = true;
+  }
+}
+function wxhPick(i){
+  const h = wxhHours[i]; if(!h) return;
+  const read = document.getElementById("wxh-read");
+  if(read) read.innerHTML = "<b>" + h.label + "</b> " + h.icon + " " + h.fc + (h.temp ? " \u00B7 " + h.temp : "") + "<br><span style='font-size:.88rem'>Wind " + h.mph + " mph" + (h.dir ? " " + h.dir : "") + (h.gust > h.mph ? ", gusting " + h.gust : "") + (h.pop >= 20 ? " \u00B7 Rain " + h.pop + "%" : "") + "</span>";
+  const mk = document.getElementById("wxh-marker"); if(mk) mk.style.left = Math.max(3, Math.min(97, 100 - h.score)) + "%";
+  const pc = document.getElementById("wxh-pct"); if(pc) pc.textContent = h.score + "%";
 }
 function smartTab(name, btn){
   ["topics","passes"].forEach(function(k){var p=document.getElementById("smart-panel-"+k);if(p)p.style.display=k===name?"":"none";});

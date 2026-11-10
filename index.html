@@ -12,6 +12,8 @@
 <link rel="apple-touch-icon" sizes="180x180" href="assets/app-icon-180.png">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/leaflet-velocity@2.1.4/dist/leaflet-velocity.css">
+<script src="https://unpkg.com/leaflet-velocity@2.1.4/dist/leaflet-velocity.min.js"></script>
 <meta name="theme-color" content="#0a2540">
 <link rel="manifest" href="manifest.json">
 <meta name="mobile-web-app-capable" content="yes">
@@ -2068,6 +2070,52 @@ function twlPlay(btn){
           #tbb-doppler .dop-bar{flex:1;height:8px;border-radius:5px;background:linear-gradient(90deg,#04e9e7,#00f53d,#fff700,#ffb700,#ff7b00,#ff0000,#d600b4)}
           #tbb-doppler .dop-attr{margin-top:8px;font-size:10.5px;color:#7f97ad}
           #tbb-doppler .leaflet-control-attribution{display:none}
+          #tbb-doppler .dop-deck{background:linear-gradient(180deg,rgba(6,24,43,.93),rgba(4,14,28,.98));backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+          #tbb-doppler .dop-strip{display:flex;gap:7px;margin-top:11px;overflow-x:auto;padding-bottom:2px;scrollbar-width:none}
+          #tbb-doppler .dop-strip::-webkit-scrollbar{display:none}
+          #tbb-doppler .dop-qtog{flex:0 0 auto;border:1px solid rgba(125,211,252,.3);background:rgba(10,32,56,.75);color:#cfe8ff;border-radius:999px;padding:8px 13px;font-size:12.5px;font-weight:700;cursor:pointer;white-space:nowrap;font-family:inherit}
+          #tbb-doppler .dop-qtog.on{background:linear-gradient(90deg,rgba(34,211,238,.25),rgba(255,183,3,.25));border-color:#ffb703;color:#fff;box-shadow:0 0 10px rgba(255,183,3,.35)}
+          #tbb-doppler .dop-qtog.all{border-color:#ffb703;color:#ffd76a;margin-left:auto}
+          #tbb-doppler .dop-cap{flex:0 1 auto;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+          #doppler-layers{position:absolute;left:0;right:0;bottom:0;z-index:1300;max-height:56%;overflow-y:auto;background:linear-gradient(180deg,rgba(7,24,44,.94),rgba(3,11,22,.98));border-top:1px solid rgba(56,189,248,.5);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);transform:translateY(106%);transition:transform .32s cubic-bezier(.2,.9,.25,1);padding:8px 14px 16px;color:#e8f2fa}
+          #doppler-layers.open{transform:translateY(0)}
+          #doppler-layers .dop-grab{width:44px;height:4px;border-radius:4px;background:rgba(148,197,255,.4);margin:2px auto 10px}
+          #doppler-layers .dop-sheethead{display:flex;align-items:center;margin-bottom:12px}
+          #doppler-layers .dop-sheethead b{font-size:15px;letter-spacing:1.2px;color:#e8f2fa}
+          #doppler-layers .dop-sheethead b span{color:#22d3ee}
+          #doppler-layers-close{margin-left:auto;width:32px;height:32px;border-radius:50%;border:1px solid rgba(125,211,252,.35);background:rgba(10,32,56,.8);color:#cfe8ff;font-size:15px;cursor:pointer;font-family:inherit;line-height:1}
+          #doppler-layers .dop-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px 10px}
+          #doppler-layers .dop-card{cursor:pointer}
+          #doppler-layers .dop-thumb{position:relative;height:56px;border-radius:12px;border:1px solid rgba(125,211,252,.22);overflow:hidden}
+          #doppler-layers .dop-thumb i{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-style:normal;font-size:23px;color:rgba(255,255,255,.92);text-shadow:0 2px 8px rgba(0,0,0,.6)}
+          #doppler-layers .dop-lab{margin-top:6px;font-size:11.5px;font-weight:600;color:#cfe0f2;text-align:center;line-height:1.25}
+          #doppler-layers .dop-card.on .dop-thumb{border-color:#ffb703;box-shadow:0 0 0 1px #ffb703,0 0 14px rgba(255,183,3,.4)}
+          #doppler-layers .dop-card.on .dop-lab{color:#ffd76a}
+          #doppler-layers .dop-tag{position:absolute;top:5px;right:5px;z-index:2;font-size:8.5px;font-weight:800;letter-spacing:.8px;padding:2px 6px;border-radius:10px;background:rgba(255,183,3,.92);color:#231a00;display:none}
+          #doppler-layers .dop-card.on .dop-tag.live{display:block}
+          #doppler-layers .dop-card.soon{opacity:.42;filter:grayscale(.7)}
+          #doppler-layers .dop-card.soon .dop-tag.soon{display:block;background:rgba(148,163,184,.9);color:#0b1524}
+          #tbb-doppler .t-radar{background:linear-gradient(135deg,#0aff5a,#eaff00 35%,#ff9d00 65%,#ff004c)}
+          #tbb-doppler .t-sat{background:linear-gradient(135deg,#123a6e,#2f6fb4 45%,#cfe8ff)}
+          #tbb-doppler .t-wind{background:linear-gradient(135deg,#065f46,#10b981 50%,#a7f3d0)}
+          #tbb-doppler .t-temp{background:linear-gradient(135deg,#facc15,#f97316 55%,#dc2626)}
+          #tbb-doppler .t-waves{background:linear-gradient(135deg,#312e81,#7c3aed 50%,#2563eb)}
+          #tbb-doppler .t-clouds{background:linear-gradient(135deg,#334155,#94a3b8 55%,#e2e8f0)}
+          #tbb-doppler .t-accum{background:linear-gradient(135deg,#14532d,#22c55e 40%,#eab308 70%,#9333ea)}
+          #tbb-doppler .t-storm{background:linear-gradient(135deg,#1e293b,#7c2d12 60%,#f59e0b)}
+          #tbb-doppler .t-warn{background:linear-gradient(135deg,#7f1d1d,#ef4444 55%,#f97316)}
+          #tbb-doppler .t-gusts{background:linear-gradient(135deg,#134e4a,#14b8a6 50%,#fde68a)}
+          #tbb-doppler .t-vis{background:linear-gradient(135deg,#3f3f46,#a1a1aa 55%,#fde68a)}
+          #tbb-doppler .t-swell{background:linear-gradient(135deg,#082f49,#0284c7 55%,#67e8f9)}
+          #tbb-doppler .t-curr{background:linear-gradient(135deg,#164e63,#06b6d4 55%,#0e7490)}
+          #tbb-doppler .t-snow{background:linear-gradient(135deg,#7dd3fc,#e0f2fe 60%,#ffffff)}
+          #tbb-doppler .vchip{border-radius:999px;padding:3px 8px;font-size:11.5px;font-weight:800;color:#06121f;white-space:nowrap;border:1.5px solid rgba(255,255,255,.85);box-shadow:0 2px 8px rgba(0,0,0,.5);text-align:center}
+          #tbb-doppler .bchip{border-radius:10px;padding:4px 8px;font-size:11.5px;font-weight:800;color:#eaf6ff;white-space:nowrap;background:rgba(6,26,48,.88);border:1.5px solid #ffb703;box-shadow:0 2px 10px rgba(0,0,0,.55);text-align:center}
+          #tbb-doppler .leaflet-popup-content-wrapper{background:rgba(5,20,38,.95);color:#e8f2fa;border:1px solid rgba(56,189,248,.4);border-radius:12px}
+          #tbb-doppler .leaflet-popup-tip{background:rgba(5,20,38,.95)}
+          #tbb-doppler .velocity-control{background:rgba(5,20,38,.85)!important;color:#cfe8ff!important;border:1px solid rgba(56,189,248,.35);border-radius:10px;padding:5px 9px;font-size:12px}
+          #doppler-toast{position:absolute;left:50%;top:54px;transform:translateX(-50%) translateY(-8px);z-index:1400;background:rgba(5,20,38,.94);border:1px solid rgba(255,183,3,.6);color:#ffe9b0;font-size:13px;font-weight:600;padding:10px 16px;border-radius:999px;opacity:0;pointer-events:none;transition:all .25s;white-space:nowrap;max-width:92%;overflow:hidden;text-overflow:ellipsis;box-shadow:0 8px 26px rgba(0,0,0,.5)}
+          #doppler-toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
           #tbb-doppler.dop-full{position:fixed;inset:0;z-index:3000;border-radius:0;display:flex;flex-direction:column}
           #tbb-doppler.dop-full #tbb-doppler-map{flex:1 1 auto;height:auto}
         </style>
@@ -2087,12 +2135,19 @@ function twlPlay(btn){
               <button type="button" class="dop-chip" id="doppler-refresh-chip">&#10227; Refresh</button>
               <span class="dop-opwrap">Radar strength <input id="doppler-opacity" type="range" min="30" max="100" value="85" aria-label="Radar opacity"></span>
             </div>
-            <div class="dop-legend"><span>Light</span><div class="dop-bar"></div><span>Heavy</span></div>
-            <div class="dop-attr">Radar: NOAA / NEXRAD via Iowa State IEM &middot; Map: Esri Ocean &middot; Updates every 5 min</div>
+            <div class="dop-strip" id="doppler-strip"></div>
+            <div class="dop-legend"><span class="dop-cap" id="doppler-legend-cap">Radar &middot; light</span><div class="dop-bar" id="doppler-legend-bar"></div><span id="doppler-legend-hi">heavy</span></div>
+            <div class="dop-attr" id="doppler-attr">Radar: NOAA / NEXRAD via Iowa State IEM &middot; Map: Esri Ocean &middot; Updates every 5 min</div>
           </div>
+          <div id="doppler-layers" role="dialog" aria-label="Map layers">
+            <div class="dop-grab"></div>
+            <div class="dop-sheethead"><b>ALL <span>LAYERS</span></b><button type="button" id="doppler-layers-close" aria-label="Close layers">&#10005;</button></div>
+            <div class="dop-grid" id="doppler-layer-grid"></div>
+          </div>
+          <div id="doppler-toast" role="status"></div>
         </div>
         <!--DOPPLER-END-->
-        <p style="font-size:.78rem;color:#a9c6c5;margin:8px 0 0">Animated NOAA radar &mdash; the loop covers the last hour, centered on the selected area. Drag the time slider to scrub. <a href="https://radar.weather.gov/" target="_blank" rel="noopener" style="color:#fff">Open the full NWS radar &rarr;</a></p>
+        <p style="font-size:.78rem;color:#a9c6c5;margin:8px 0 0">Animated NOAA radar plus live layers &mdash; satellite, clouds, animated wind, gusts, temperature, rain totals, storm warnings and wave buoys. Tap <b>All layers</b> for the full set. Wind, gusts and temperature are Open-Meteo model data, refreshed hourly. Drag the time slider to scrub the radar loop. <a href="https://radar.weather.gov/" target="_blank" rel="noopener" style="color:#fff">Open the full NWS radar &rarr;</a></p>
       </div>
     </div>
     <div class="travel-box">
@@ -6191,6 +6246,8 @@ function dopplerInit(){
     return { mins: mins, layer: layer };
   });
   L.tileLayer("https://services.arcgisonline.com/ArcGIS/rest/services/Ocean/World_Ocean_Reference/MapServer/tile/{z}/{y}/{x}", { maxZoom: 16, zIndex: 20 }).addTo(dopplerMap);
+  dopplerBuildLayers();
+  dopplerBuildLayerUI();
   var playBtn = document.getElementById("doppler-play");
   if(playBtn) playBtn.addEventListener("click", function(){ dopplerPlaying ? dopplerPause() : dopplerPlay(); });
   var scrub = document.getElementById("doppler-scrub");
@@ -6198,9 +6255,9 @@ function dopplerInit(){
   var op = document.getElementById("doppler-opacity");
   if(op) op.addEventListener("input", function(){ dopplerOpacityVal = parseInt(op.value, 10) / 100; dopplerShow(dopplerIdx); });
   var rc = document.getElementById("doppler-radar-chip");
-  if(rc) rc.addEventListener("click", function(){ dopplerRadarOn = !dopplerRadarOn; rc.classList.toggle("on", dopplerRadarOn); dopplerShow(dopplerIdx); });
+  if(rc) rc.addEventListener("click", function(){ dopplerRadarOn = !dopplerRadarOn; dopplerState.radar = dopplerRadarOn; rc.classList.toggle("on", dopplerRadarOn); dopplerShow(dopplerIdx); dopplerSyncChrome(); });
   var rf = document.getElementById("doppler-refresh-chip");
-  if(rf) rf.addEventListener("click", function(){ dopplerFrames.forEach(function(f){ f.layer.redraw(); }); dopplerShow(dopplerIdx); });
+  if(rf) rf.addEventListener("click", function(){ dopplerFrames.forEach(function(f){ f.layer.redraw(); }); dopplerShow(dopplerIdx); if(dopplerState.warnings) dopplerLoadWarnings(); dopplerOmFetch(true); dopplerFetchBuoys(); dopplerToast("Radar refreshed"); });
   var lc = document.getElementById("doppler-loc-chip");
   if(lc) lc.addEventListener("click", function(){
     if(!navigator.geolocation) return;
@@ -6236,6 +6293,9 @@ function dopplerSetView(lat, lng){
   if(lat == null || lng == null || isNaN(lat) || isNaN(lng)) return;
   if(!dopplerInit()) return;
   dopplerMap.setView([lat, lng], Math.max(dopplerMap.getZoom(), 9));
+  dopplerCurLoc = { lat: lat, lng: lng };
+  dopplerOmFetch(false);
+  if(dopplerState.warnings) dopplerLoadWarnings();
 }
 function loadDoppler(){
   var v = document.getElementById("view-tides");
@@ -6246,6 +6306,358 @@ function dopplerOnShow(){
   loadDoppler();
   if(dopplerMap) setTimeout(function(){ dopplerMap.invalidateSize(); }, 250);
 }
+/* ---- Doppler layers v2 (Nov 10, 2026): satellite, clouds, animated wind, gusts, temp, rain total, storm warnings, wave buoys ----
+   Radar stays the live IEM NEXRAD loop above. Wind/gusts/temp are Open-Meteo model data fetched live in the browser and
+   refreshed hourly; buoys try a live NDBC fetch and fall back to the values embedded below (refreshed at build time). */
+var dopplerState = { radar: true, satellite: false, wind: false, waves: false, swell: false, gusts: false, temp: false, clouds: false, rain: false, warnings: false };
+var dopplerCurLoc = null;
+var dopplerSatLayer = null, dopplerCloudLayer = null, dopplerRainLayer = null;
+var dopplerWindLayer = null, dopplerWindFallback = null, dopplerGustGroup = null, dopplerTempGroup = null;
+var dopplerBuoyGroup = null, dopplerWarnGroup = null;
+var dopplerOmOk = false, dopplerOmBusy = false, dopplerOmCenter = null, dopplerOmFetchedAt = 0, dopplerOmTime = "", dopplerOmTimer = null;
+var DOPPLER_BUOYS = [
+  {"id": "42098", "lat": 27.59, "lng": -82.931, "time": "2026-11-10 20:00 UTC", "wvft": 0.7, "dpd": null, "apd": 2.7, "mwd": null, "wdir": null, "wspd_mph": null, "gst_mph": null, "wtmp_f": 77},
+  {"id": "42099", "lat": 27.352, "lng": -84.275, "time": "2026-11-10 19:56 UTC", "wvft": 1.3, "dpd": 3, "apd": 3.0, "mwd": 53, "wdir": null, "wspd_mph": null, "gst_mph": null, "wtmp_f": 82},
+  {"id": "42036", "lat": 28.5, "lng": -84.505, "time": "2026-11-10 18:50 UTC", "wvft": 1.0, "dpd": 4, "apd": 3.0, "mwd": 81, "wdir": 20, "wspd_mph": 7, "gst_mph": 9, "wtmp_f": null},
+  {"id": "41009", "lat": 28.508, "lng": -80.185, "time": "2026-11-10 18:50 UTC", "wvft": 3.9, "dpd": null, "apd": 8.3, "mwd": 82, "wdir": 50, "wspd_mph": 4, "gst_mph": 7, "wtmp_f": null}
+];
+function dopplerGibsTime(lagMin){
+  var d = new Date(Date.now() - lagMin * 60000);
+  d.setUTCMinutes(Math.floor(d.getUTCMinutes() / 10) * 10, 0, 0);
+  return d.toISOString().replace(/\.\d{3}Z$/, "Z");
+}
+function dopplerToast(msg){
+  var t = document.getElementById("doppler-toast");
+  if(!t) return;
+  t.textContent = msg;
+  t.classList.add("show");
+  if(dopplerToast._tm) clearTimeout(dopplerToast._tm);
+  dopplerToast._tm = setTimeout(function(){ t.classList.remove("show"); }, 2600);
+}
+function dopplerBuildLayers(){
+  if(!dopplerMap) return;
+  dopplerSatLayer = L.tileLayer("https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/GOES-East_ABI_GeoColor/default/" + dopplerGibsTime(70) + "/GoogleMapsCompatible_Level7/{z}/{y}/{x}.png", { maxNativeZoom: 7, maxZoom: 16, opacity: 0.95, zIndex: 5 });
+  dopplerCloudLayer = L.tileLayer("https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/GOES-East_ABI_Band13_Clean_Infrared/default/" + dopplerGibsTime(50) + "/GoogleMapsCompatible_Level6/{z}/{y}/{x}.png", { maxNativeZoom: 6, maxZoom: 16, opacity: 0.85, zIndex: 6 });
+  dopplerRainLayer = L.tileLayer(DOPPLER_TILE + "q2-n1p-900913/{z}/{x}/{y}.png", { maxZoom: 16, opacity: 0.85, zIndex: 15 });
+  dopplerGustGroup = L.layerGroup();
+  dopplerTempGroup = L.layerGroup();
+  dopplerWarnGroup = L.layerGroup();
+  dopplerBuildBuoys(DOPPLER_BUOYS);
+  var loc = wxLoc();
+  dopplerCurLoc = { lat: loc.lat, lng: loc.lng };
+  dopplerOmFetch(true);
+  dopplerFetchBuoys();
+  if(dopplerOmTimer) clearInterval(dopplerOmTimer);
+  dopplerOmTimer = setInterval(function(){ dopplerOmFetch(true); dopplerFetchBuoys(); }, 3600000);
+}
+function dopplerBuoyPopup(b){
+  var html = "<b>Buoy " + b.id + "</b><br>Wave height: <b>" + b.wvft.toFixed(1) + " ft</b>";
+  if(b.dpd) html += "<br>Swell period: " + b.dpd + " s";
+  if(b.mwd) html += " &middot; from " + b.mwd + "&deg;";
+  if(b.wspd_mph != null) html += "<br>Wind: " + b.wspd_mph + " mph, gusts " + b.gst_mph + " mph";
+  if(b.wtmp_f) html += "<br>Water temp: " + b.wtmp_f + "&deg;F";
+  html += "<br><span style='color:#8fb8d8'>NOAA buoy obs &middot; " + b.time + "</span>";
+  return html;
+}
+function dopplerBuildBuoys(list){
+  if(!dopplerMap || typeof L === "undefined") return;
+  var wasOn = !!(dopplerBuoyGroup && dopplerMap.hasLayer(dopplerBuoyGroup));
+  if(dopplerBuoyGroup) dopplerMap.removeLayer(dopplerBuoyGroup);
+  dopplerBuoyGroup = L.layerGroup();
+  list.forEach(function(b){
+    var ic = L.divIcon({ className: "", html: '<div class="bchip">\u224b ' + b.wvft.toFixed(1) + ' ft</div>', iconSize: null });
+    dopplerBuoyGroup.addLayer(L.marker([b.lat, b.lng], { icon: ic }).bindPopup(dopplerBuoyPopup(b)));
+  });
+  if(wasOn) dopplerMap.addLayer(dopplerBuoyGroup);
+}
+function dopplerParseBuoy(id, lat, lng, text){
+  function num(x){ return (x === "MM" || x == null) ? null : parseFloat(x); }
+  var lines = String(text || "").split("\n");
+  for(var i = 0; i < lines.length; i++){
+    var ln = lines[i].trim();
+    if(!ln || ln.charAt(0) === "#") continue;
+    var p = ln.split(/\s+/);
+    if(p.length < 15 || p[8] === "MM") continue;
+    var wv = num(p[8]);
+    if(wv == null || isNaN(wv)) continue;
+    var wspd = num(p[6]), gst = num(p[7]), wtmp = num(p[14]);
+    return { id: id, lat: lat, lng: lng,
+      time: p[0] + "-" + p[1] + "-" + p[2] + " " + p[3] + ":" + p[4] + " UTC",
+      wvft: Math.round(wv * 3.28084 * 10) / 10,
+      dpd: num(p[9]), apd: num(p[10]), mwd: num(p[11]), wdir: num(p[5]),
+      wspd_mph: wspd == null ? null : Math.round(wspd * 2.23694),
+      gst_mph: gst == null ? null : Math.round(gst * 2.23694),
+      wtmp_f: wtmp == null ? null : Math.round(wtmp * 9 / 5 + 32) };
+  }
+  return null;
+}
+function dopplerFetchBuoys(){
+  if(typeof fetch === "undefined") return;
+  var meta = [["42098", 27.59, -82.931], ["42099", 27.352, -84.275], ["42036", 28.5, -84.505], ["41009", 28.508, -80.185]];
+  var got = {}, done = 0;
+  meta.forEach(function(m){
+    fetch("https://www.ndbc.noaa.gov/data/realtime2/" + m[0] + ".txt")
+      .then(function(r){ return r.text(); })
+      .then(function(t){ var b = dopplerParseBuoy(m[0], m[1], m[2], t); if(b) got[m[0]] = b; })
+      .catch(function(){})
+      .then(function(){
+        done++;
+        if(done === meta.length){
+          var fresh = meta.map(function(mm){ return got[mm[0]]; }).filter(Boolean);
+          if(fresh.length >= 2) dopplerBuildBuoys(fresh);
+        }
+      });
+  });
+}
+function dopplerLoadWarnings(){
+  if(typeof fetch === "undefined" || typeof L === "undefined" || !dopplerWarnGroup) return;
+  var pt = dopplerCurLoc || { lat: 27.95, lng: -82.55 };
+  fetch("https://api.weather.gov/alerts/active?point=" + pt.lat + "," + pt.lng, { headers: { "Accept": "application/geo+json" } })
+    .then(function(r){ return r.json(); })
+    .then(function(j){
+      dopplerWarnGroup.clearLayers();
+      var feats = (j && j.features) || [];
+      if(!feats.length){ if(dopplerState.warnings) dopplerToast("No active NWS warnings here"); return; }
+      var gj = L.geoJSON(j, {
+        style: function(f){
+          var s = (f.properties && f.properties.severity) || "";
+          var col = (s === "Extreme" || s === "Severe") ? "#ef4444" : (s === "Moderate" ? "#f97316" : "#facc15");
+          return { color: col, weight: 2, fillColor: col, fillOpacity: 0.22 };
+        },
+        onEachFeature: function(f, l){
+          var p = f.properties || {};
+          l.bindPopup("<b>" + (p.event || "Alert") + "</b><br>" + (p.headline || "") +
+            (p.ends ? "<br><span style='color:#8fb8d8'>Until " + new Date(p.ends).toLocaleString() + "</span>" : ""));
+        }
+      });
+      gj.eachLayer(function(l){ dopplerWarnGroup.addLayer(l); });
+      if(dopplerState.warnings) dopplerToast(feats.length + " active warning" + (feats.length > 1 ? "s" : "") + " shown");
+    })
+    .catch(function(){ if(dopplerState.warnings) dopplerToast("Warnings feed unreachable right now"); });
+}
+function dopplerOmGrid(center){
+  var lats = [], lngs = [], i;
+  for(i = 0; i < 7; i++) lats.push(Math.round((center.lat + 0.75 - i * 0.25) * 10000) / 10000);
+  for(i = 0; i < 7; i++) lngs.push(Math.round((center.lng - 0.7 + i * (1.4 / 6)) * 10000) / 10000);
+  return { lats: lats, lngs: lngs };
+}
+function dopplerGustColor(m){ return m < 10 ? "#7dd3fc" : m < 20 ? "#4ade80" : m < 30 ? "#facc15" : m < 40 ? "#fb923c" : "#f87171"; }
+function dopplerTempColor(f){ return f < 60 ? "#38bdf8" : f < 70 ? "#34d399" : f < 80 ? "#fbbf24" : f < 88 ? "#fb923c" : "#f87171"; }
+function dopplerOmFetch(force){
+  if(typeof fetch === "undefined" || !dopplerMap) return;
+  var center = dopplerCurLoc || { lat: 27.95, lng: -82.55 };
+  var moved = !dopplerOmCenter || Math.abs(dopplerOmCenter.lat - center.lat) > 0.05 || Math.abs(dopplerOmCenter.lng - center.lng) > 0.05;
+  if(!force && !moved && dopplerOmOk && (Date.now() - dopplerOmFetchedAt) < 3600000) return;
+  if(dopplerOmBusy) return;
+  dopplerOmBusy = true;
+  var g = dopplerOmGrid(center);
+  var la = [], lo = [], r, c;
+  for(r = 0; r < 7; r++) for(c = 0; c < 7; c++){ la.push(g.lats[r]); lo.push(g.lngs[c]); }
+  var url = "https://api.open-meteo.com/v1/forecast?latitude=" + la.join(",") + "&longitude=" + lo.join(",") +
+    "&current=temperature_2m,wind_speed_10m,wind_direction_10m,wind_gusts_10m&wind_speed_unit=ms&temperature_unit=fahrenheit&forecast_days=1";
+  fetch(url).then(function(resp){ return resp.json(); }).then(function(j){
+    dopplerOmBusy = false;
+    var arr = Array.isArray(j) ? j : [j];
+    if(arr.length !== 49 || !arr[0].current) throw 0;
+    var U = [], V = [], gusts = [], temps = [], i;
+    for(i = 0; i < 49; i++){
+      var cu = arr[i].current || {};
+      var s = cu.wind_speed_10m || 0, d = (cu.wind_direction_10m || 0) * Math.PI / 180;
+      U.push(Math.round(-s * Math.sin(d) * 1000) / 1000);
+      V.push(Math.round(-s * Math.cos(d) * 1000) / 1000);
+      gusts.push(Math.round((cu.wind_gusts_10m || 0) * 2.23694));
+      temps.push(Math.round(cu.temperature_2m || 0));
+    }
+    var hdr = { parameterCategory: 2, parameterUnit: "m.s-1", lo1: g.lngs[0], la1: g.lats[0], lo2: g.lngs[6], la2: g.lats[6], dx: Math.round((g.lngs[6] - g.lngs[0]) / 6 * 10000) / 10000, dy: 0.25, nx: 7, ny: 7, refTime: (arr[0].current.time || "").replace("T", " ") };
+    var windData = [
+      { header: Object.assign({}, hdr, { parameterNumber: 2 }), data: U },
+      { header: Object.assign({}, hdr, { parameterNumber: 3 }), data: V }
+    ];
+    dopplerOmOk = true;
+    dopplerOmCenter = center;
+    dopplerOmFetchedAt = Date.now();
+    dopplerOmTime = arr[0].current.time || "";
+    dopplerOmApply(windData, g, gusts, temps);
+    dopplerSyncChrome();
+  }).catch(function(){
+    dopplerOmBusy = false;
+    if(dopplerOmOk){
+      dopplerOmOk = false;
+      ["wind", "gusts", "temp"].forEach(function(key){
+        if(dopplerState[key]){ dopplerState[key] = false; dopplerApplyLayer(key); }
+      });
+      dopplerSyncChrome();
+    }
+  });
+}
+function dopplerOmApply(windData, g, gusts, temps){
+  if(!dopplerMap || typeof L === "undefined") return;
+  var r, c, idx;
+  var windWas = !!(dopplerWindLayer && dopplerMap.hasLayer(dopplerWindLayer));
+  var fbWas = !!(dopplerWindFallback && dopplerMap.hasLayer(dopplerWindFallback));
+  if(dopplerWindLayer){ dopplerMap.removeLayer(dopplerWindLayer); dopplerWindLayer = null; }
+  if(dopplerWindFallback){ dopplerMap.removeLayer(dopplerWindFallback); dopplerWindFallback = null; }
+  if(typeof L.velocityLayer === "function"){
+    dopplerWindLayer = L.velocityLayer({
+      displayValues: true,
+      displayOptions: { velocityType: "Wind", position: "bottomleft", emptyString: "No wind data", angleConvention: "bearingCW", speedUnit: "mph" },
+      data: windData, maxVelocity: 15, velocityScale: 0.008, particleMultiplier: 1 / 260,
+      colorScale: ["#7dd3fc", "#22d3ee", "#4ade80", "#facc15", "#fb923c", "#f87171"]
+    });
+    if(windWas || dopplerState.wind) dopplerMap.addLayer(dopplerWindLayer);
+  } else {
+    dopplerWindFallback = L.layerGroup();
+    var U = windData[0].data, V = windData[1].data, k = 0;
+    for(r = 0; r < 7; r++) for(c = 0; c < 7; c++){
+      var u = U[k], v = V[k]; k++;
+      var spd = Math.sqrt(u * u + v * v), mph = Math.round(spd * 2.23694);
+      var ang = (Math.atan2(u, v) * 180 / Math.PI + 180) % 360;
+      var ic = L.divIcon({ className: "", html: '<div class="vchip" style="background:#7dd3fc"><span style="display:inline-block;transform:rotate(' + (ang - 90) + 'deg)">\u27a4</span> ' + mph + '</div>', iconSize: null });
+      dopplerWindFallback.addLayer(L.marker([g.lats[r], g.lngs[c]], { icon: ic }));
+    }
+    if(fbWas || dopplerState.wind) dopplerMap.addLayer(dopplerWindFallback);
+  }
+  var gWas = !!(dopplerGustGroup && dopplerMap.hasLayer(dopplerGustGroup));
+  var tWas = !!(dopplerTempGroup && dopplerMap.hasLayer(dopplerTempGroup));
+  if(dopplerGustGroup) dopplerMap.removeLayer(dopplerGustGroup);
+  if(dopplerTempGroup) dopplerMap.removeLayer(dopplerTempGroup);
+  dopplerGustGroup = L.layerGroup();
+  dopplerTempGroup = L.layerGroup();
+  idx = 0;
+  for(r = 0; r < 7; r++) for(c = 0; c < 7; c++){
+    var gv = gusts[idx], tv = temps[idx]; idx++;
+    var gi = L.divIcon({ className: "", html: '<div class="vchip" style="background:' + dopplerGustColor(gv) + '">' + gv + '</div>', iconSize: null });
+    dopplerGustGroup.addLayer(L.marker([g.lats[r], g.lngs[c]], { icon: gi, interactive: false }));
+    var ti = L.divIcon({ className: "", html: '<div class="vchip" style="background:' + dopplerTempColor(tv) + '">' + tv + '\u00b0</div>', iconSize: null });
+    dopplerTempGroup.addLayer(L.marker([g.lats[r], g.lngs[c]], { icon: ti, interactive: false }));
+  }
+  if(gWas || dopplerState.gusts) dopplerMap.addLayer(dopplerGustGroup);
+  if(tWas || dopplerState.temp) dopplerMap.addLayer(dopplerTempGroup);
+}
+var DOPPLER_LEGENDS = {
+  warnings: { cap: "Warnings \u00b7 NWS polygons \u2014 tap for detail", hi: "severe", bar: "linear-gradient(90deg,#facc15,#f97316,#ef4444)" },
+  radar: { cap: "Radar \u00b7 light", hi: "heavy", bar: "linear-gradient(90deg,#04e9e7,#00f53d,#fff700,#ffb700,#ff7b00,#ff0000,#d600b4)" },
+  rain: { cap: "Rain, last 1 hr \u00b7 light", hi: "heavy", bar: "linear-gradient(90deg,#bbf7d0,#22c55e,#eab308,#9333ea)" },
+  waves: { cap: "Waves \u00b7 buoy wave height", hi: "ft", bar: "linear-gradient(90deg,#312e81,#7c3aed,#2563eb)" },
+  swell: { cap: "Swell \u00b7 period + direction in buoy popups", hi: "", bar: "linear-gradient(90deg,#082f49,#0284c7,#67e8f9)" },
+  wind: { cap: "Wind \u00b7 calm", hi: "40+ mph", bar: "linear-gradient(90deg,#7dd3fc,#22d3ee,#4ade80,#facc15,#fb923c,#f87171)" },
+  gusts: { cap: "Gusts \u00b7 chips = peak gust mph", hi: "", bar: "linear-gradient(90deg,#7dd3fc,#4ade80,#facc15,#fb923c,#f87171)" },
+  temp: { cap: "Temperature \u00b7 cool", hi: "hot \u00b0F", bar: "linear-gradient(90deg,#38bdf8,#34d399,#fbbf24,#fb923c,#f87171)" },
+  clouds: { cap: "Clouds \u00b7 infrared \u2014 bright = cold, high tops", hi: "", bar: "linear-gradient(90deg,#1e293b,#64748b,#f8fafc)" },
+  satellite: { cap: "Satellite \u00b7 GOES-East true color (daytime)", hi: "", bar: "linear-gradient(90deg,#123a6e,#2f6fb4,#cfe8ff)" }
+};
+var DOPPLER_PRIORITY = ["warnings", "radar", "rain", "waves", "swell", "wind", "gusts", "temp", "clouds", "satellite"];
+function dopplerSyncChrome(){
+  document.querySelectorAll("[data-dkey]").forEach(function(el){
+    el.classList.toggle("on", !!dopplerState[el.getAttribute("data-dkey")]);
+  });
+  var top = null, i;
+  for(i = 0; i < DOPPLER_PRIORITY.length; i++) if(dopplerState[DOPPLER_PRIORITY[i]]){ top = DOPPLER_PRIORITY[i]; break; }
+  var lg = DOPPLER_LEGENDS[top] || DOPPLER_LEGENDS.radar;
+  var cap = document.getElementById("doppler-legend-cap"), hi = document.getElementById("doppler-legend-hi"), bar = document.getElementById("doppler-legend-bar");
+  if(cap) cap.textContent = lg.cap;
+  if(hi) hi.textContent = lg.hi;
+  if(bar) bar.style.background = lg.bar;
+  var credits = ["NOAA / NEXRAD via Iowa State IEM", "Esri Ocean"];
+  if(dopplerState.satellite || dopplerState.clouds) credits.push("NASA GIBS / GOES-East");
+  if(dopplerState.warnings) credits.push("NWS alerts");
+  if(dopplerState.waves || dopplerState.swell) credits.push("NOAA NDBC buoys");
+  var a = "Radar: " + credits.join(" \u00b7 ");
+  if(dopplerState.wind || dopplerState.gusts || dopplerState.temp){
+    a += "<br>Wind / gusts / temp: Open-Meteo model data" + (dopplerOmTime ? " \u00b7 " + dopplerOmTime.replace("T", " ") + " UTC" : "") + " \u00b7 updates hourly";
+  }
+  var attr = document.getElementById("doppler-attr");
+  if(attr) attr.innerHTML = a;
+}
+function dopplerApplyLayer(key){
+  if(!dopplerMap) return;
+  var on = dopplerState[key];
+  switch(key){
+    case "radar": {
+      dopplerRadarOn = on;
+      var rc = document.getElementById("doppler-radar-chip");
+      if(rc) rc.classList.toggle("on", on);
+      dopplerShow(dopplerIdx);
+      break;
+    }
+    case "satellite": if(dopplerSatLayer){ if(on) dopplerMap.addLayer(dopplerSatLayer); else dopplerMap.removeLayer(dopplerSatLayer); } break;
+    case "clouds": if(dopplerCloudLayer){ if(on) dopplerMap.addLayer(dopplerCloudLayer); else dopplerMap.removeLayer(dopplerCloudLayer); } break;
+    case "rain": if(dopplerRainLayer){ if(on) dopplerMap.addLayer(dopplerRainLayer); else dopplerMap.removeLayer(dopplerRainLayer); } break;
+    case "wind":
+      if(dopplerWindLayer){ if(on) dopplerMap.addLayer(dopplerWindLayer); else dopplerMap.removeLayer(dopplerWindLayer); }
+      else if(dopplerWindFallback){ if(on) dopplerMap.addLayer(dopplerWindFallback); else dopplerMap.removeLayer(dopplerWindFallback); }
+      break;
+    case "gusts": if(dopplerGustGroup){ if(on) dopplerMap.addLayer(dopplerGustGroup); else dopplerMap.removeLayer(dopplerGustGroup); } break;
+    case "temp": if(dopplerTempGroup){ if(on) dopplerMap.addLayer(dopplerTempGroup); else dopplerMap.removeLayer(dopplerTempGroup); } break;
+    case "waves": case "swell":
+      dopplerState.waves = dopplerState.swell = on;
+      if(dopplerBuoyGroup){ if(on) dopplerMap.addLayer(dopplerBuoyGroup); else dopplerMap.removeLayer(dopplerBuoyGroup); }
+      break;
+    case "warnings":
+      if(dopplerWarnGroup){ if(on){ dopplerMap.addLayer(dopplerWarnGroup); dopplerLoadWarnings(); } else dopplerMap.removeLayer(dopplerWarnGroup); }
+      break;
+  }
+  dopplerSyncChrome();
+}
+function dopplerToggleLayer(key){
+  if(key === "currents" || key === "storms" || key === "snow" || key === "vis"){ dopplerToast("Coming soon \u2014 no verified free source yet"); return; }
+  if((key === "wind" || key === "gusts" || key === "temp") && !dopplerState[key] && !dopplerOmOk){
+    dopplerToast("Wind layers unavailable right now");
+    dopplerOmFetch(true);
+    return;
+  }
+  dopplerState[key] = !dopplerState[key];
+  dopplerApplyLayer(key);
+}
+function dopplerBuildLayerUI(){
+  var strip = document.getElementById("doppler-strip");
+  var grid = document.getElementById("doppler-layer-grid");
+  var STRIP = [["radar", "Radar"], ["satellite", "Satellite"], ["wind", "Wind"], ["waves", "Waves"], ["gusts", "Gusts"], ["temp", "Temp"], ["clouds", "Clouds"], ["rain", "Rain total"], ["warnings", "Warnings"]];
+  var GRID = [
+    ["radar", "Weather radar", "t-radar", "\u224b"], ["satellite", "Satellite", "t-sat", "\u25c9"], ["wind", "Wind", "t-wind", "\u27a4"],
+    ["temp", "Temperature", "t-temp", "\u2668"], ["waves", "Waves", "t-waves", "\u2248"], ["vis", "Visibility", "t-vis", "\u25c9", "soon"],
+    ["warnings", "Storm warnings", "t-warn", "\u26a0"], ["clouds", "Clouds", "t-clouds", "\u2601"], ["rain", "Rain accumulation", "t-accum", "\u25a6"],
+    ["storms", "Thunderstorms", "t-storm", "\u03df", "soon"], ["gusts", "Wind gusts", "t-gusts", "\u21af"], ["swell", "Swell", "t-swell", "\u223f"],
+    ["currents", "Currents", "t-curr", "\u21bb", "soon"], ["snow", "Snow", "t-snow", "\u2731", "soon"]
+  ];
+  if(strip && !strip.children.length){
+    STRIP.forEach(function(it){
+      var b = document.createElement("button");
+      b.type = "button";
+      b.className = "dop-qtog";
+      b.setAttribute("data-dkey", it[0]);
+      b.textContent = it[1];
+      b.addEventListener("click", function(){ dopplerToggleLayer(it[0]); });
+      strip.appendChild(b);
+    });
+    var all = document.createElement("button");
+    all.type = "button";
+    all.className = "dop-qtog all";
+    all.textContent = "All layers \u25a6";
+    all.addEventListener("click", function(){
+      var s = document.getElementById("doppler-layers");
+      if(s) s.classList.toggle("open");
+    });
+    strip.appendChild(all);
+  }
+  if(grid && !grid.children.length){
+    GRID.forEach(function(it){
+      var card = document.createElement("div");
+      card.className = "dop-card" + (it[4] === "soon" ? " soon" : "");
+      card.setAttribute("data-dkey", it[0]);
+      card.innerHTML = '<div class="dop-thumb ' + it[2] + '"><span class="dop-tag live">ON</span><span class="dop-tag soon">SOON</span><i>' + it[3] + '</i></div><div class="dop-lab">' + it[1] + '</div>';
+      card.addEventListener("click", function(){ dopplerToggleLayer(it[0]); });
+      grid.appendChild(card);
+    });
+  }
+  var closeBtn = document.getElementById("doppler-layers-close");
+  if(closeBtn) closeBtn.addEventListener("click", function(){
+    var s = document.getElementById("doppler-layers");
+    if(s) s.classList.remove("open");
+  });
+  dopplerSyncChrome();
+}
+
 let wxPeriodCache = {};
 async function getPeriods(loc){
   const key = loc.lat + "," + loc.lng;

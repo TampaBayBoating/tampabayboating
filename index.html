@@ -914,6 +914,12 @@ body.dark .travel-box .travel-note{color:#8fa8bd}
 #hr-slider::-moz-range-thumb{width:22px;height:22px;border-radius:50%;background:#fff;border:3.5px solid #0a2540;box-shadow:0 1px 5px rgba(0,0,0,.35);cursor:pointer}
 .hr-ticks{display:flex;justify-content:space-between;font-size:.74rem;color:#5b6b7c;padding:0 1px}
 .skill-box{margin-top:10px;border-top:1px solid rgba(10,37,64,.14);padding-top:8px}
+.wx-line{font-size:.93rem;color:#33536e;margin-top:6px}
+.wx-line:empty{display:none}
+.wx-sunmoon{font-size:.93rem;color:#dcebf5;margin:8px 2px 2px}
+.wx-sunmoon:empty{display:none}
+#wx-vis{font-size:.93rem;color:#dcebf5;margin:0 0 6px}
+#wx-vis:empty{display:none}
 .skill-head{font-size:.78rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#33506b;margin-bottom:6px}
 .skill-row{display:flex;align-items:center;gap:8px;padding:3px 0}
 .skill-name{flex:0 0 92px;font-size:.88rem;font-weight:600;color:#0a2540}
@@ -1896,7 +1902,7 @@ if(typeof document!=='undefined'){
     <h2 id="tides-title">Tampa Bay Tides &amp; Marine Forecast</h2>
     <div class="sub" id="tides-sub">Live from NOAA &amp; the National Weather Service · East Bay / Tampa Bay</div>
     <div class="cond-link" style="margin:2px 0 10px;font-size:.95rem"><span style="color:#ffd54f;font-weight:800"><svg class=ic aria-hidden=true><use href=#i-star></use></svg> Tampa Bay's top weather pick:</span> <a href="https://spaghettimodels.com/" target="_blank" rel="noopener">Mike's Weather Page</a></div>
-    <div class="verdict-card" id="verdict-card"><div class="v-tabs"><button type="button" class="v-tab on" onclick="verdictTab('today',this)">Today</button><button type="button" class="v-tab" onclick="verdictTab('hourly',this)">Hour by Hour</button></div><div class="v-row" id="v-panel-today"><div class="verdict-dot" id="verdict-dot"><span id="verdict-score">–</span></div><div class="verdict-main"><h3 id="verdict-title">Checking today's conditions…</h3><div class="score-track"><div class="score-marker" id="score-marker" style="left:50%"></div></div><div class="score-ends"><span>Perfect day</span><span>Stay home</span></div><div class="skill-box" id="skill-today"></div><div class="cond-stamp" id="verdict-stamp"></div></div></div><div id="hourly-block" style="display:none">
+    <div class="verdict-card" id="verdict-card"><div class="v-tabs"><button type="button" class="v-tab on" onclick="verdictTab('today',this)">Today</button><button type="button" class="v-tab" onclick="verdictTab('hourly',this)">Hour by Hour</button></div><div class="v-row" id="v-panel-today"><div class="verdict-dot" id="verdict-dot"><span id="verdict-score">–</span></div><div class="verdict-main"><h3 id="verdict-title">Checking today's conditions…</h3><div class="score-track"><div class="score-marker" id="score-marker" style="left:50%"></div></div><div class="score-ends"><span>Perfect day</span><span>Stay home</span></div><div class="skill-box" id="skill-today"></div><div class="wx-line" id="wx-pressure"></div><div class="wx-line" id="wx-uv"></div><div class="cond-stamp" id="verdict-stamp"></div></div></div><div id="hourly-block" style="display:none">
       <div class="hr-head">
         <h3>Hour by Hour — <span id="hourly-area">Tampa Bay</span></h3>
         <span class="hr-unit">Boating score %</span>
@@ -1936,6 +1942,7 @@ if(typeof document!=='undefined'){
     
     
     
+    <div class="wx-sunmoon" id="wx-sunmoon"></div>
     <!--TWL-CARD-START-->
     <div class="cond-card" style="margin:10px 0">
       <h3 style="margin:0 0 6px">⭐ TampaWeatherLady — Our Top Pick</h3>
@@ -1991,6 +1998,7 @@ function twlPlay(btn){
       </div>
       <div class="cond-card">
         <h3 id="spot-title">At This Spot &mdash; Tampa Bay</h3>
+        <div id="wx-vis"></div>
         <div id="spot-body"><p class="cond-fallback">Loading local weather&hellip;</p></div>
       </div>
       <div class="cond-card" id="wave-card">
@@ -5846,7 +5854,7 @@ function changeTravelLocation(key){
   document.getElementById("tides-sub").textContent = "Live from NOAA \u0026 the National Weather Service \u00B7 " + loc.label;
   bayKey = (key==="tampa") ? "tampa" : null;
   document.querySelectorAll('.area-chip').forEach((x,i)=>x.classList.toggle('active', key==="tampa" && i===0));
-  loadTides(); loadFutureTides(); loadTideCurve(); loadMarine(); loadWaves(); loadSpot(); loadWeek(); loadHourly();
+  loadTides(); loadFutureTides(); loadTideCurve(); loadMarine(); loadWaves(); loadSpot(); loadWeek(); loadHourly(); loadPressure(); loadUv(); loadSunMoon(); loadVisibility();
 }
 const SPOT_COORDS = { keywest:[24.5551,-81.78], destin:[30.3935,-86.4958], panamacity:[30.1766,-85.8055], stuart:[27.1975,-80.2528], fortmyers:[26.6406,-81.8723], daytona:[29.2108,-81.0228], crystalriver:[29.1386,-83.0351], naples:[26.142,-81.7948], jacksonville:[30.3929,-81.4243] };
 const BAY_AREAS = {
@@ -5882,7 +5890,7 @@ function setBayArea(key, btn){
   const b = BAY_AREAS[key];
   document.getElementById("tides-title").textContent = b.name + " Tides & Marine Forecast";
   document.getElementById("tides-sub").textContent = "Live from NOAA & the National Weather Service \u00B7 " + b.slabel;
-  loadTides(); loadFutureTides(); loadTideCurve(); loadMarine(); loadSpot(); loadWeek(); loadHourly();
+  loadTides(); loadFutureTides(); loadTideCurve(); loadMarine(); loadSpot(); loadWeek(); loadHourly(); loadPressure(); loadUv(); loadSunMoon(); loadVisibility();
 }
 const BAY_ALIASES = {"tampa":"tampa","tampa bay":"tampa","downtown tampa":"tampa","south tampa":"tampa","hyde park":"tampa","davis island":"tampa","davis islands":"tampa","ybor city":"tampa","ybor":"tampa","westshore":"tampa","seminole heights":"tampa","temple terrace":"tampa","carrollwood":"tampa","new tampa":"tampa","lutz":"tampa","land o lakes":"tampa","town n country":"tampa","old tampa bay":"oldtb","safety harbor":"oldtb","oldsmar":"oldtb","westchase":"oldtb","odessa":"oldtb","st petersburg":"stpete","st pete":"stpete","saint petersburg":"stpete","downtown st pete":"stpete","pinellas park":"stpete","kenneth city":"stpete","lealman":"stpete","old northeast":"stpete","coquina key":"stpete","boca ciega":"bocaciega","boca ciega bay":"bocaciega","gulfport":"bocaciega","madeira beach":"bocaciega","treasure island":"bocaciega","st pete beach":"bocaciega","seminole":"bocaciega","largo":"bocaciega","redington beach":"bocaciega","redington shores":"bocaciega","north redington beach":"bocaciega","south pasadena":"bocaciega","pass-a-grille":"bocaciega","pass a grille":"bocaciega","clearwater":"clearwater","clearwater beach":"clearwater","dunedin":"clearwater","palm harbor":"clearwater","tarpon springs":"clearwater","indian rocks beach":"clearwater","belleair":"clearwater","belleair beach":"clearwater","sand key":"clearwater","ruskin":"ruskin","sun city center":"ruskin","sun city":"ruskin","wimauma":"ruskin","apollo beach":"apollo","gibsonton":"apollo","riverview":"riverview","brandon":"riverview","valrico":"riverview","bloomingdale":"riverview","fishhawk":"riverview","lithia":"riverview","plant city":"riverview","palmetto":"palmetto","ellenton":"palmetto","parrish":"palmetto","terra ceia":"palmetto","bradenton":"bradenton","west bradenton":"bradenton","lakewood ranch":"bradenton","egmont key":"egmont","egmont":"egmont","fort de soto":"egmont","fort desoto":"egmont","tierra verde":"egmont","shell key":"egmont","anna maria":"ami","anna maria island":"ami","holmes beach":"ami","bradenton beach":"ami","cortez":"cortez","longboat key":"longboat","longboat":"longboat","sarasota":"sarasota","downtown sarasota":"sarasota","siesta key":"sarasota","osprey":"sarasota","nokomis":"sarasota","venice":"sarasota","englewood":"sarasota","casey key":"sarasota","lido key":"sarasota","bird key":"sarasota"};
 const BAY_ALIAS_KEYS = Object.keys(BAY_ALIASES).sort(function(a, b){ return b.length - a.length; });
@@ -6157,6 +6165,8 @@ function hrSteps(hours){
     var score = avg(hrStepFieldNumber(a, ["score"]), hrStepFieldNumber(b, ["score"]), 0);
     var tempAvg = avg(hrStepFieldNumber(a, ["tempValue", "temp"]), hrStepFieldNumber(b, ["tempValue", "temp"]), NaN);
     var temp = hrStepTemp(a, b, tempAvg);
+    var dew = avg(hrStepFieldNumber(a, ["dewF"]), hrStepFieldNumber(b, ["dewF"]), NaN);
+    var hum = avg(hrStepFieldNumber(a, ["hum"]), hrStepFieldNumber(b, ["hum"]), NaN);
     var dir = a.dir || a.windDirection || b.dir || b.windDirection || "";
     var mid = {
       label: label,
@@ -6177,7 +6187,9 @@ function hrSteps(hours){
       gust: gust,
       gustMph: gust,
       pop: pop,
-      score: score
+      score: score,
+      dewF: isNaN(dew) ? null : dew,
+      hum: isNaN(hum) ? null : hum
     };
     mid.detail = hrStepDetail(label, wind, dir, gust, temp, pop, score);
     steps.push(mid);
@@ -6191,7 +6203,7 @@ function hrPick(i){
   var read = h.score >= 85 ? "Smooth \u2014 a great hour to be out." : h.score >= 70 ? "Good hour \u2014 light chop at most." : h.score >= 55 ? "Choppy \u2014 smaller boats will feel it." : h.score >= 40 ? "Rough \u2014 only for boats that handle it." : "Best to wait for a calmer stretch.";
   var el = document.getElementById("hr-detail");
   skillRows(document.getElementById("skill-hourly"), h.score);
-  if(el) el.innerHTML = "<b>" + h.label + "</b> \u2014 wind " + h.mph + " mph" + (h.dir ? " " + h.dir : "") + (h.gust > h.mph ? ", gusting " + h.gust : "") + (h.temp ? " \u00B7 " + h.temp : "") + (h.pop >= 20 ? " \u00B7 rain " + h.pop + "%" : "") + " \u2014 " + read;
+  if(el) el.innerHTML = "<b>" + h.label + "</b> \u2014 wind " + h.mph + " mph" + (h.dir ? " " + h.dir : "") + (h.gust > h.mph ? ", gusting " + h.gust : "") + (h.temp ? " \u00B7 " + h.temp : "") + (h.pop >= 20 ? " \u00B7 rain " + h.pop + "%" : "") + (h.dewF != null ? " \u00B7 Dew point " + h.dewF + "\u00B0" : "") + (h.hum != null ? " \u00B7 Humidity " + h.hum + "%" : "") + " \u2014 " + read;
 }
 async function loadHourly(){
   const slider = document.getElementById("hr-slider");
@@ -6206,7 +6218,10 @@ async function loadHourly(){
     const winds = periods.map(hrWindMph);
     if(take) take.textContent = hrTakeaway(periods, winds);
     const hours = periods.map(function(p, k){
-      return {label:(k === 0 ? "Now" : hrHourLabel(new Date(p.startTime))), startTime:p.startTime, date:new Date(p.startTime), icon:hrIcon(p), fc:(p.shortForecast || ""), mph:winds[k], windMph:winds[k], dir:(p.windDirection || ""), windDirection:(p.windDirection || ""), temp:(p.temperature != null ? p.temperature + "\u00B0" + (p.temperatureUnit || "F") : ""), tempValue:(p.temperature != null ? Number(p.temperature) : null), tempUnit:(p.temperatureUnit || "F"), pop:((p.probabilityOfPrecipitation && p.probabilityOfPrecipitation.value) || 0), gust:(p.windGust ? parseInt(p.windGust, 10) || 0 : 0), gustMph:(p.windGust ? parseInt(p.windGust, 10) || 0 : 0), score:hrScore(p, winds[k])};
+      var dewF = null;
+      if(p.dewpoint && p.dewpoint.value != null && !isNaN(+p.dewpoint.value)){ dewF = /degF/i.test(String(p.dewpoint.unitCode || "")) ? Math.round(+p.dewpoint.value) : Math.round(+p.dewpoint.value * 9 / 5 + 32); }
+      var hum = (p.relativeHumidity && p.relativeHumidity.value != null && !isNaN(+p.relativeHumidity.value)) ? Math.round(+p.relativeHumidity.value) : null;
+      return {label:(k === 0 ? "Now" : hrHourLabel(new Date(p.startTime))), startTime:p.startTime, date:new Date(p.startTime), icon:hrIcon(p), fc:(p.shortForecast || ""), mph:winds[k], windMph:winds[k], dir:(p.windDirection || ""), windDirection:(p.windDirection || ""), temp:(p.temperature != null ? p.temperature + "\u00B0" + (p.temperatureUnit || "F") : ""), tempValue:(p.temperature != null ? Number(p.temperature) : null), tempUnit:(p.temperatureUnit || "F"), pop:((p.probabilityOfPrecipitation && p.probabilityOfPrecipitation.value) || 0), gust:(p.windGust ? parseInt(p.windGust, 10) || 0 : 0), gustMph:(p.windGust ? parseInt(p.windGust, 10) || 0 : 0), dewF:dewF, hum:hum, score:hrScore(p, winds[k])};
     });
     const steps = hrSteps(hours);
     window._hrHours = steps;
@@ -6229,6 +6244,156 @@ async function loadHourly(){
     const pc = document.getElementById("hr-pct"); if(pc) pc.textContent = "\u2013";
     if(slider) slider.disabled = true;
   }
+}
+/* ---- Nov 10 top-5 weather additions: pressure + trend, UV peak, sun/moon, visibility ---- */
+function pressureTrendWord(deltaIn){ return deltaIn > 0.02 ? "Rising" : deltaIn < -0.02 ? "Falling" : "Steady"; }
+async function loadPressure(){
+  const el = document.getElementById("wx-pressure"); if(!el) return;
+  const loc = wxLoc();
+  try{
+    const pad = function(n){ return String(n).padStart(2, "0"); };
+    const ymd = function(d){ return d.getFullYear() + pad(d.getMonth() + 1) + pad(d.getDate()); };
+    const end = new Date(); const beg = new Date(end); beg.setDate(beg.getDate() - 1);
+    const r = await fetch("https://api.tidesandcurrents.noaa.gov/api/prod/datagetter?begin_date=" + ymd(beg) + "&end_date=" + ymd(end) + "&station=" + loc.station + "&product=air_pressure&units=metric&time_zone=lst_ldt&format=json");
+    const d = await r.json();
+    const rows = ((d && d.data) || []).filter(function(x){ return x && x.v !== "" && x.v != null && !isNaN(parseFloat(x.v)); });
+    if(!rows.length) throw 0;
+    const parse = function(t){ return new Date(String(t).replace(" ", "T")).getTime(); };
+    const last = rows[rows.length - 1];
+    const target = parse(last.t) - 3 * 3600000;
+    let ref = rows[0];
+    rows.forEach(function(x){ if(Math.abs(parse(x.t) - target) < Math.abs(parse(ref.t) - target)) ref = x; });
+    const nowIn = parseFloat(last.v) * 0.02953;
+    const deltaIn = nowIn - parseFloat(ref.v) * 0.02953;
+    el.textContent = "Pressure " + nowIn.toFixed(2) + " in \u00B7 " + pressureTrendWord(deltaIn);
+  }catch(e){ /* leave empty \u2014 hidden by CSS */ }
+}
+function uvBand(uv){ return uv <= 2 ? "Low" : uv <= 5 ? "Moderate" : uv <= 7 ? "High" : uv <= 10 ? "Very High" : "Extreme"; }
+let wxUvCache = {};
+async function loadUv(){
+  const el = document.getElementById("wx-uv"); if(!el) return;
+  const loc = wxLoc();
+  const key = loc.lat + "," + loc.lng;
+  try{
+    let hit = wxUvCache[key];
+    if(!hit || (Date.now() - hit.t) >= 1800000){
+      const r = await fetch("https://api.open-meteo.com/v1/forecast?latitude=" + loc.lat + "&longitude=" + loc.lng + "&daily=uv_index_max&timezone=America%2FNew_York&forecast_days=1");
+      const d = await r.json();
+      const v = d && d.daily && d.daily.uv_index_max && d.daily.uv_index_max[0];
+      if(v == null || isNaN(+v)) throw 0;
+      hit = {t: Date.now(), v: +v};
+      wxUvCache[key] = hit;
+    }
+    const peak = Math.round(hit.v);
+    el.textContent = "UV " + peak + " \u00B7 " + uvBand(peak);
+  }catch(e){ /* leave empty \u2014 hidden by CSS */ }
+}
+function sunTimesUtc(date, lat, lng){
+  const rad = Math.PI / 180;
+  const start = new Date(date.getFullYear(), 0, 0);
+  const doy = Math.floor((date.getTime() - start.getTime()) / 86400000);
+  const lngHour = lng / 15;
+  function calc(isRise){
+    const t = doy + ((isRise ? 6 : 18) - lngHour) / 24;
+    const M = (0.9856 * t) - 3.289;
+    let L = M + (1.916 * Math.sin(M * rad)) + (0.020 * Math.sin(2 * M * rad)) + 282.634;
+    L = ((L % 360) + 360) % 360;
+    let RA = Math.atan(0.91764 * Math.tan(L * rad)) / rad;
+    RA = ((RA % 360) + 360) % 360;
+    RA += (Math.floor(L / 90) * 90) - (Math.floor(RA / 90) * 90);
+    RA /= 15;
+    const sinDec = 0.39782 * Math.sin(L * rad);
+    const cosDec = Math.cos(Math.asin(sinDec));
+    const cosH = (Math.cos(90.833 * rad) - (sinDec * Math.sin(lat * rad))) / (cosDec * Math.cos(lat * rad));
+    if(cosH > 1 || cosH < -1) return null;
+    let H = Math.acos(cosH) / rad;
+    if(isRise) H = 360 - H;
+    H /= 15;
+    const T = H + RA - (0.06571 * t) - 6.622;
+    const UT = T - lngHour;
+    return ((UT % 24) + 24) % 24;
+  }
+  return {rise: calc(true), set: calc(false)};
+}
+function fmtSunTime(utcHours, date){
+  if(utcHours == null || isNaN(utcHours)) return "";
+  const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()) + utcHours * 3600000);
+  return d.toLocaleTimeString("en-US", {hour: "numeric", minute: "2-digit"});
+}
+function moonInfo(when){
+  const cycle = 29.530588853;
+  let age = ((when.getTime() - Date.UTC(2000, 0, 6, 18, 14)) / 86400000) % cycle;
+  if(age < 0) age += cycle;
+  const illum = Math.round((1 - Math.cos(2 * Math.PI * age / cycle)) / 2 * 100);
+  const names = ["New moon", "Waxing crescent", "First quarter", "Waxing gibbous", "Full moon", "Waning gibbous", "Last quarter", "Waning crescent"];
+  const emojis = ["\uD83C\uDF11", "\uD83C\uDF12", "\uD83C\uDF13", "\uD83C\uDF14", "\uD83C\uDF15", "\uD83C\uDF16", "\uD83C\uDF17", "\uD83C\uDF18"];
+  const idx = Math.floor(((age + cycle / 16) % cycle) / (cycle / 8)) % 8;
+  return {age: age, illum: illum, name: names[idx], emoji: emojis[idx]};
+}
+function loadSunMoon(){
+  const el = document.getElementById("wx-sunmoon"); if(!el) return;
+  try{
+    const loc = wxLoc();
+    const now = new Date();
+    const st = sunTimesUtc(now, loc.lat, loc.lng);
+    const rise = fmtSunTime(st.rise, now), set = fmtSunTime(st.set, now);
+    if(!rise || !set) return;
+    const mi = moonInfo(now);
+    el.textContent = "\u2600 Sunrise " + rise + " \u00B7 Sunset " + set + " \u00B7 " + mi.emoji + " " + mi.name + " \u00B7 Moon " + mi.illum + "% lit";
+  }catch(e){ /* leave empty \u2014 hidden by CSS */ }
+}
+function visDurMs(s){
+  let ms = 0;
+  const dm = /(\d+(?:\.\d+)?)D/.exec(s); if(dm) ms += parseFloat(dm[1]) * 86400000;
+  const tp = String(s).split("T")[1] || "";
+  const hm = /(\d+(?:\.\d+)?)H/.exec(tp); if(hm) ms += parseFloat(hm[1]) * 3600000;
+  const mm = /(\d+(?:\.\d+)?)M/.exec(tp); if(mm) ms += parseFloat(mm[1]) * 60000;
+  const sm = /(\d+(?:\.\d+)?)S/.exec(tp); if(sm) ms += parseFloat(sm[1]) * 1000;
+  return ms;
+}
+function fmtVisMiles(mi){
+  if(mi >= 3) return String(Math.round(mi));
+  const r = Math.round(mi * 2) / 2;
+  const whole = Math.floor(r);
+  const half = (r - whole) === 0.5;
+  if(whole === 0) return half ? "\u00BD" : "0";
+  return whole + (half ? "\u00BD" : "");
+}
+let wxGridCache = {};
+async function loadVisibility(){
+  const el = document.getElementById("wx-vis"); if(!el) return;
+  const loc = wxLoc();
+  const key = loc.lat + "," + loc.lng;
+  try{
+    let gd = wxGridCache[key];
+    if(!gd || (Date.now() - gd.t) >= 180000){
+      const pr = await fetch("https://api.weather.gov/points/" + loc.lat + "," + loc.lng, {headers: {"User-Agent": "tampabayboating.com"}});
+      const pj = await pr.json();
+      const gurl = pj && pj.properties && pj.properties.forecastGridData;
+      if(!gurl) throw 0;
+      const gr = await fetch(gurl, {headers: {"User-Agent": "tampabayboating.com"}});
+      if(!gr.ok) throw 0;
+      gd = {t: Date.now(), json: await gr.json()};
+      wxGridCache[key] = gd;
+    }
+    const vals = (gd.json && gd.json.properties && gd.json.properties.visibility && gd.json.properties.visibility.values) || [];
+    const nowMs = Date.now();
+    let meters = null;
+    for(let i = 0; i < vals.length; i++){
+      const vt = String(vals[i].validTime || "");
+      const slash = vt.indexOf("/");
+      if(slash < 0) continue;
+      const start = new Date(vt.slice(0, slash)).getTime();
+      if(isNaN(start)) continue;
+      if(nowMs >= start && nowMs < start + visDurMs(vt.slice(slash + 1))){ meters = +vals[i].value; break; }
+    }
+    if(meters == null || isNaN(meters)) throw 0;
+    const miles = meters * 0.000621371;
+    let txt = "Visibility " + fmtVisMiles(miles) + " mi";
+    if(miles < 1) txt += " \u2014 fog, go slow";
+    else if(miles < 3) txt += " \u2014 hazy";
+    el.textContent = txt;
+  }catch(e){ /* leave empty \u2014 hidden by CSS */ }
 }
 function smartTab(name, btn){
   ["topics","passes"].forEach(function(k){var p=document.getElementById("smart-panel-"+k);if(p)p.style.display=k===name?"":"none";});
@@ -7413,13 +7578,13 @@ function renderBriefing(){
     }
   }catch(e){}
 }
-["renderGrid","renderDir","updateCartUI","renderCalendar","loadTides","loadFutureTides","loadTideCurve","loadMarine","loadWaves","loadSpot","loadWeek","loadHourly","loadForecastBadges","renderFuel","renderSvc","renderOwner","renderDealers","renderGear","renderBriefing","loadBriefingConditions"].forEach(fn=>{ try{ window[fn](); }catch(e){ console.warn("init "+fn+" failed:", e.message); } });
+["renderGrid","renderDir","updateCartUI","renderCalendar","loadTides","loadFutureTides","loadTideCurve","loadMarine","loadWaves","loadSpot","loadWeek","loadHourly","loadPressure","loadUv","loadSunMoon","loadVisibility","loadForecastBadges","renderFuel","renderSvc","renderOwner","renderDealers","renderGear","renderBriefing","loadBriefingConditions"].forEach(fn=>{ try{ window[fn](); }catch(e){ console.warn("init "+fn+" failed:", e.message); } });
 /* Weather auto-refresh: re-pull every 5 minutes while the page is open (and on return to the tab if stale), so the "Last checked" stamps and the data behind them stay current. */
 let __wxLastRefresh = Date.now();
 function refreshWeather(){
   try{
     marineCache = {}; wxPeriodCache = {}; __wxLastRefresh = Date.now();
-    ["loadTides","loadFutureTides","loadTideCurve","loadMarine","loadWaves","loadSpot","loadWeek","loadHourly","loadForecastBadges","loadBriefingConditions"].forEach(function(fn){ try{ window[fn](); }catch(e){} });
+    ["loadTides","loadFutureTides","loadTideCurve","loadMarine","loadWaves","loadSpot","loadWeek","loadHourly","loadPressure","loadUv","loadSunMoon","loadVisibility","loadForecastBadges","loadBriefingConditions"].forEach(function(fn){ try{ window[fn](); }catch(e){} });
   }catch(e){}
 }
 setInterval(function(){ if(!document.hidden) refreshWeather(); }, 300000);

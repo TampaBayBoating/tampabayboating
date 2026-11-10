@@ -2043,20 +2043,56 @@ function twlPlay(btn){
       </div>
       <div class="cond-card">
         <h3>Doppler Radar</h3>
-        <iframe id="bay-radar" title="Live Doppler radar" loading="lazy" style="width:100%;height:300px;border:0;border-radius:10px;display:block" referrerpolicy="no-referrer-when-downgrade"></iframe>
-        <div class="layer-row" role="group" aria-label="Map layers">
-          <button type="button" class="layer-chip active" onclick="setRadarLayer('radar',this)">Radar</button>
-          <button type="button" class="layer-chip" onclick="setRadarLayer('satellite',this)">Satellite</button>
-          <button type="button" class="layer-chip" onclick="setRadarLayer('wind',this)">Wind</button>
-          <button type="button" class="layer-chip" onclick="setRadarLayer('gust',this)">Gusts</button>
-          <button type="button" class="layer-chip" onclick="setRadarLayer('rain',this)">Rain</button>
-          <button type="button" class="layer-chip" onclick="setRadarLayer('clouds',this)">Clouds</button>
-          <button type="button" class="layer-chip" onclick="setRadarLayer('waves',this)">Waves</button>
-          <button type="button" class="layer-chip" onclick="setRadarLayer('swell1',this)">Swell</button>
-          <button type="button" class="layer-chip" onclick="setRadarLayer('currents',this)">Currents</button>
-          <button type="button" class="layer-chip" onclick="setRadarLayer('temp',this)">Temp</button>
+        <!--DOPPLER-START-->
+        <style>
+          #tbb-doppler{position:relative;border-radius:10px;overflow:hidden;background:#0a2540}
+          #tbb-doppler-map{height:430px;width:100%;z-index:1}
+          #tbb-doppler .dop-top{position:absolute;top:0;left:0;right:0;z-index:1000;display:flex;align-items:center;gap:8px;padding:8px 10px;color:#fff;background:linear-gradient(180deg,rgba(6,24,43,.88),rgba(6,24,43,.45) 80%,transparent);pointer-events:none}
+          #tbb-doppler .dop-live{background:#d7263d;color:#fff;font-size:10.5px;font-weight:800;padding:3px 8px;border-radius:20px;letter-spacing:1px}
+          #tbb-doppler .dop-ftime{margin-left:auto;font-size:12.5px;font-weight:700;background:rgba(6,24,43,.78);padding:4px 10px;border-radius:20px}
+          #tbb-doppler .dop-fsbtn{position:absolute;top:46px;right:10px;z-index:1001;background:rgba(6,24,43,.88);color:#fff;border:1px solid rgba(255,255,255,.4);border-radius:10px;padding:7px 11px;font-weight:700;font-size:13px;cursor:pointer;font-family:inherit}
+          #tbb-doppler .dop-deck{background:rgba(6,24,43,.97);color:#fff;padding:10px 12px 12px;border-top:2px solid #ffb703}
+          #tbb-doppler .dop-row{display:flex;align-items:center;gap:10px}
+          #tbb-doppler-play{flex:0 0 auto;width:52px;height:52px;border-radius:50%;border:0;cursor:pointer;background:#ffb703;color:#0a2540;font-size:21px;line-height:52px;text-align:center;box-shadow:0 4px 14px rgba(0,0,0,.4);padding:0}
+          #tbb-doppler-scrub{flex:1 1 auto;-webkit-appearance:none;appearance:none;height:8px;border-radius:6px;background:linear-gradient(90deg,#2ea44f,#ffd60a 55%,#e63946);outline:none;min-width:0}
+          #tbb-doppler-scrub::-webkit-slider-thumb{-webkit-appearance:none;width:26px;height:26px;border-radius:50%;background:#fff;border:3px solid #0a2540;box-shadow:0 2px 8px rgba(0,0,0,.5);cursor:pointer}
+          #tbb-doppler-scrub::-moz-range-thumb{width:22px;height:22px;border-radius:50%;background:#fff;border:3px solid #0a2540;cursor:pointer}
+          #tbb-doppler .dop-tlabel{flex:0 0 84px;text-align:right;font-weight:800;font-size:15px}
+          #tbb-doppler .dop-tlabel small{display:block;font-weight:600;font-size:11px;color:#bcd}
+          #tbb-doppler .dop-row2{display:flex;align-items:center;gap:8px;margin-top:10px;flex-wrap:wrap}
+          #tbb-doppler .dop-chip{border:1px solid #3d5a76;background:#12314f;color:#dfeaf5;border-radius:20px;padding:7px 12px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit}
+          #tbb-doppler .dop-chip.on{background:#ffb703;color:#0a2540;border-color:#ffb703}
+          #tbb-doppler .dop-opwrap{display:flex;align-items:center;gap:6px;font-size:12px;color:#bcd;margin-left:auto}
+          #tbb-doppler-opacity{width:88px;accent-color:#ffb703}
+          #tbb-doppler .dop-legend{display:flex;align-items:center;gap:8px;margin-top:10px;font-size:11px;color:#bcd}
+          #tbb-doppler .dop-bar{flex:1;height:8px;border-radius:5px;background:linear-gradient(90deg,#04e9e7,#00f53d,#fff700,#ffb700,#ff7b00,#ff0000,#d600b4)}
+          #tbb-doppler .dop-attr{margin-top:8px;font-size:10.5px;color:#7f97ad}
+          #tbb-doppler .leaflet-control-attribution{display:none}
+          #tbb-doppler.dop-full{position:fixed;inset:0;z-index:3000;border-radius:0;display:flex;flex-direction:column}
+          #tbb-doppler.dop-full #tbb-doppler-map{flex:1 1 auto;height:auto}
+        </style>
+        <div id="tbb-doppler">
+          <div id="tbb-doppler-map" role="img" aria-label="Animated NOAA Doppler radar map"></div>
+          <div class="dop-top"><span class="dop-live">LIVE</span><span class="dop-ftime" id="doppler-ftime">Loading radar&hellip;</span></div>
+          <button type="button" class="dop-fsbtn" id="doppler-fs" aria-label="Toggle full screen radar">&#9974; Full screen</button>
+          <div class="dop-deck">
+            <div class="dop-row">
+              <button type="button" id="doppler-play" aria-label="Play or pause the radar loop">&#10074;&#10074;</button>
+              <input id="doppler-scrub" type="range" min="0" max="11" step="1" value="11" aria-label="Radar time scrubber">
+              <div class="dop-tlabel"><span id="doppler-clock">&mdash;</span><small id="doppler-ago">latest</small></div>
+            </div>
+            <div class="dop-row2">
+              <button type="button" class="dop-chip on" id="doppler-radar-chip">Radar</button>
+              <button type="button" class="dop-chip" id="doppler-loc-chip">&#128205; My location</button>
+              <button type="button" class="dop-chip" id="doppler-refresh-chip">&#10227; Refresh</button>
+              <span class="dop-opwrap">Radar strength <input id="doppler-opacity" type="range" min="30" max="100" value="85" aria-label="Radar opacity"></span>
+            </div>
+            <div class="dop-legend"><span>Light</span><div class="dop-bar"></div><span>Heavy</span></div>
+            <div class="dop-attr">Radar: NOAA / NEXRAD via Iowa State IEM &middot; Map: Esri Ocean &middot; Updates every 5 min</div>
+          </div>
         </div>
-        <p style="font-size:.78rem;color:#a9c6c5;margin:8px 0 0">Tap a layer — the map switches. Centered on the selected area &middot; Windy data. <a href="https://radar.weather.gov/" target="_blank" rel="noopener" style="color:#fff">Open the full NWS radar &rarr;</a></p>
+        <!--DOPPLER-END-->
+        <p style="font-size:.78rem;color:#a9c6c5;margin:8px 0 0">Animated NOAA radar &mdash; the loop covers the last hour, centered on the selected area. Drag the time slider to scrub. <a href="https://radar.weather.gov/" target="_blank" rel="noopener" style="color:#fff">Open the full NWS radar &rarr;</a></p>
       </div>
     </div>
     <div class="travel-box">
@@ -2320,6 +2356,10 @@ function twlPlay(btn){
       #fuel-finder .ff-toggle{display:flex;gap:8px;margin-top:10px}
       #fuel-finder .ff-fuel{flex:1;border:1px solid #b8ccd8;background:#fff;color:#0a2e3f;border-radius:999px;padding:7px 0;font-weight:700;font-size:13.5px;cursor:pointer}
       #fuel-finder .ff-fuel.ff-on{background:#0a2e3f;color:#fff;border-color:#0a2e3f}
+      #fuel-finder .ff-rad{display:flex;gap:6px;margin-top:10px;align-items:center;flex-wrap:wrap}
+      #fuel-finder .ff-rad-lab{color:#5b7183;font-size:13px;font-weight:700;margin-right:2px}
+      #fuel-finder .ff-rad-btn{border:1px solid #b8ccd8;background:#fff;color:#0a2e3f;border-radius:999px;padding:7px 13px;font-weight:700;font-size:13.5px;cursor:pointer}
+      #fuel-finder .ff-rad-btn.ff-on{background:#0e7c86;color:#fff;border-color:#0e7c86}
       #fuel-finder .ff-res{margin-top:10px;display:flex;flex-direction:column;gap:6px}
       #fuel-finder .ff-hit{display:flex;align-items:center;gap:10px;width:100%;text-align:left;background:#f4f9fb;border:1px solid #d9e4ea;border-radius:10px;padding:9px 12px;cursor:pointer;font:inherit}
       #fuel-finder .ff-price{flex:0 0 auto;color:#0a2e3f;font-weight:800;font-size:17px}
@@ -2339,8 +2379,16 @@ function twlPlay(btn){
         <button type="button" class="ff-fuel ff-on" data-fuel="e0">Non-ethanol</button>
         <button type="button" class="ff-fuel" data-fuel="diesel">Diesel</button>
       </div>
+      <div class="ff-rad" role="group" aria-label="Search radius in miles">
+        <span class="ff-rad-lab">Within</span>
+        <button type="button" class="ff-rad-btn" data-rad="5">5 mi</button>
+        <button type="button" class="ff-rad-btn" data-rad="10">10 mi</button>
+        <button type="button" class="ff-rad-btn ff-on" data-rad="20">20 mi</button>
+        <button type="button" class="ff-rad-btn" data-rad="40">40 mi</button>
+        <button type="button" class="ff-rad-btn" data-rad="any">Any distance</button>
+      </div>
       <div class="ff-res" id="ff-results"></div>
-      <p class="ff-note">Cheapest first, nearest stations within about 40 miles. Prices from the Wawa stations we check every morning &middot; <span id="ff-date">checked Oct 21</span> on wawa.com &middot; Tap a station to see it on the map.</p>
+      <p class="ff-note">Cheapest first, within the miles you pick above. Prices from the Wawa stations we check every morning &middot; <span id="ff-date">checked Oct 21</span> on wawa.com &middot; Tap a station to see it on the map.</p>
     </div>
     <!-- FUEL-FINDER-END -->
     <!-- FUEL-DEAL-STRIP-END -->
@@ -5994,7 +6042,7 @@ function changeTravelLocation(key){
   document.getElementById("tides-sub").textContent = "Live from NOAA \u0026 the National Weather Service \u00B7 " + loc.label;
   bayKey = (key==="tampa") ? "tampa" : null;
   document.querySelectorAll('.area-chip').forEach((x,i)=>x.classList.toggle('active', key==="tampa" && i===0));
-  loadTides(); loadFutureTides(); loadTideCurve(); loadMarine(); loadWaves(); loadSpot(); loadWeek(); loadHourly(); loadPressure(); loadUv(); loadSunMoon(); loadVisibility();
+  loadTides(); loadFutureTides(); loadTideCurve(); loadMarine(); loadWaves(); loadSpot(); loadDoppler(); loadWeek(); loadHourly(); loadPressure(); loadUv(); loadSunMoon(); loadVisibility();
 }
 const SPOT_COORDS = { keywest:[24.5551,-81.78], destin:[30.3935,-86.4958], panamacity:[30.1766,-85.8055], stuart:[27.1975,-80.2528], fortmyers:[26.6406,-81.8723], daytona:[29.2108,-81.0228], crystalriver:[29.1386,-83.0351], naples:[26.142,-81.7948], jacksonville:[30.3929,-81.4243] };
 const BAY_AREAS = {
@@ -6030,7 +6078,7 @@ function setBayArea(key, btn){
   const b = BAY_AREAS[key];
   document.getElementById("tides-title").textContent = b.name + " Tides & Marine Forecast";
   document.getElementById("tides-sub").textContent = "Live from NOAA & the National Weather Service \u00B7 " + b.slabel;
-  loadTides(); loadFutureTides(); loadTideCurve(); loadMarine(); loadSpot(); loadWeek(); loadHourly(); loadPressure(); loadUv(); loadSunMoon(); loadVisibility();
+  loadTides(); loadFutureTides(); loadTideCurve(); loadMarine(); loadSpot(); loadDoppler(); loadWeek(); loadHourly(); loadPressure(); loadUv(); loadSunMoon(); loadVisibility();
 }
 const BAY_ALIASES = {"tampa":"tampa","tampa bay":"tampa","downtown tampa":"tampa","south tampa":"tampa","hyde park":"tampa","davis island":"tampa","davis islands":"tampa","ybor city":"tampa","ybor":"tampa","westshore":"tampa","seminole heights":"tampa","temple terrace":"tampa","carrollwood":"tampa","new tampa":"tampa","lutz":"tampa","land o lakes":"tampa","town n country":"tampa","old tampa bay":"oldtb","safety harbor":"oldtb","oldsmar":"oldtb","westchase":"oldtb","odessa":"oldtb","st petersburg":"stpete","st pete":"stpete","saint petersburg":"stpete","downtown st pete":"stpete","pinellas park":"stpete","kenneth city":"stpete","lealman":"stpete","old northeast":"stpete","coquina key":"stpete","boca ciega":"bocaciega","boca ciega bay":"bocaciega","gulfport":"bocaciega","madeira beach":"bocaciega","treasure island":"bocaciega","st pete beach":"bocaciega","seminole":"bocaciega","largo":"bocaciega","redington beach":"bocaciega","redington shores":"bocaciega","north redington beach":"bocaciega","south pasadena":"bocaciega","pass-a-grille":"bocaciega","pass a grille":"bocaciega","clearwater":"clearwater","clearwater beach":"clearwater","dunedin":"clearwater","palm harbor":"clearwater","tarpon springs":"clearwater","indian rocks beach":"clearwater","belleair":"clearwater","belleair beach":"clearwater","sand key":"clearwater","ruskin":"ruskin","sun city center":"ruskin","sun city":"ruskin","wimauma":"ruskin","apollo beach":"apollo","gibsonton":"apollo","riverview":"riverview","brandon":"riverview","valrico":"riverview","bloomingdale":"riverview","fishhawk":"riverview","lithia":"riverview","plant city":"riverview","palmetto":"palmetto","ellenton":"palmetto","parrish":"palmetto","terra ceia":"palmetto","bradenton":"bradenton","west bradenton":"bradenton","lakewood ranch":"bradenton","egmont key":"egmont","egmont":"egmont","fort de soto":"egmont","fort desoto":"egmont","tierra verde":"egmont","shell key":"egmont","anna maria":"ami","anna maria island":"ami","holmes beach":"ami","bradenton beach":"ami","cortez":"cortez","longboat key":"longboat","longboat":"longboat","sarasota":"sarasota","downtown sarasota":"sarasota","siesta key":"sarasota","osprey":"sarasota","nokomis":"sarasota","venice":"sarasota","englewood":"sarasota","casey key":"sarasota","lido key":"sarasota","bird key":"sarasota"};
 const BAY_ALIAS_KEYS = Object.keys(BAY_ALIASES).sort(function(a, b){ return b.length - a.length; });
@@ -6057,28 +6105,14 @@ function windToMph(s){
     return ma + " mph";
   });
 }
-let radarOverlay = "radar";
-function windyUrl(loc){
-  return "https://embed.windy.com/embed2.html?lat="+loc.lat+"&lon="+loc.lng+"&detailLat="+loc.lat+"&detailLon="+loc.lng+"&width=650&height=450&zoom=10&level=surface&overlay="+radarOverlay+"&product=ecmwf&menu=&message=&marker=true&calendar=now&pressure=&type=map&location=coordinates&detail=&metricWind=mph&metricTemp=%C2%B0F&metricRain=in&metricWave=ft&radarRange=-1";
-}
-function setRadarLayer(ov, btn){
-  radarOverlay = ov;
-  document.querySelectorAll('.layer-chip').forEach(x=>x.classList.remove('active'));
-  if(btn) btn.classList.add('active');
-  const frame = document.getElementById("bay-radar");
-  if(frame) frame.setAttribute("src", windyUrl(wxLoc()));
-}
+/* Windy embed removed Nov 10, 2026 — replaced by the TBB Doppler (own NOAA/NEXRAD map; see loadDoppler below). */
 async function loadSpot(){
   const body = document.getElementById("spot-body");
   if(!body) return;
   const title = document.getElementById("spot-title");
-  const frame = document.getElementById("bay-radar");
   const loc = wxLoc();
   if(title) title.textContent = "At This Spot \u2014 " + loc.name;
-  if(frame){
-    const src = windyUrl(loc);
-    if(frame.getAttribute("src") !== src) frame.setAttribute("src", src);
-  }
+  if(window.dopplerSetView) dopplerSetView(loc.lat, loc.lng);
   try{
     const ps = (await getPeriods(loc)).slice(0,4);
     if(!ps.length) throw 0;
@@ -6108,6 +6142,107 @@ async function loadSpot(){
   }catch(e){
     body.innerHTML = '<p class="cond-fallback">Local weather unavailable right now.</p>';
   }
+}
+/* ---- TBB Doppler: our own NOAA/NEXRAD radar (replaced the Windy embed Nov 10, 2026) ---- */
+var dopplerMap = null, dopplerFrames = [], dopplerIdx = 11, dopplerPlaying = false, dopplerTimer = null;
+var dopplerRadarOn = true, dopplerOpacityVal = 0.85, dopplerFull = false, dopplerLocMarker = null;
+var DOPPLER_TILE = "https://mesonet.agron.iastate.edu/cache/tile.py/1.0.0/";
+function dopplerFmt(d){ var h = d.getHours(), m = d.getMinutes(), ap = h >= 12 ? "PM" : "AM"; h = h % 12; if(h === 0) h = 12; return h + ":" + (m < 10 ? "0" + m : m) + " " + ap; }
+function dopplerFrameTime(mins){ var d = new Date(Date.now() - mins * 60000); d.setMinutes(Math.floor(d.getMinutes() / 5) * 5, 0, 0); return d; }
+function dopplerShow(i){
+  if(!dopplerFrames.length) return;
+  dopplerIdx = i;
+  dopplerFrames.forEach(function(f, j){ f.layer.setOpacity(j === i && dopplerRadarOn ? dopplerOpacityVal : 0); });
+  var fr = dopplerFrames[i], t = dopplerFrameTime(fr.mins);
+  var clockEl = document.getElementById("doppler-clock"), agoEl = document.getElementById("doppler-ago"), ftEl = document.getElementById("doppler-ftime"), scrub = document.getElementById("doppler-scrub");
+  if(clockEl) clockEl.textContent = dopplerFmt(t);
+  if(agoEl) agoEl.textContent = fr.mins === 0 ? "latest" : fr.mins + " min ago";
+  if(ftEl) ftEl.textContent = "Radar " + dopplerFmt(t);
+  if(scrub && document.activeElement !== scrub) scrub.value = String(i);
+}
+function dopplerTick(){ dopplerShow((dopplerIdx + 1) % dopplerFrames.length); }
+function dopplerPlay(){
+  dopplerPlaying = true;
+  var btn = document.getElementById("doppler-play"); if(btn) btn.innerHTML = "&#10074;&#10074;";
+  if(dopplerTimer) clearInterval(dopplerTimer);
+  dopplerTimer = setInterval(dopplerTick, 850);
+}
+function dopplerPause(){
+  dopplerPlaying = false;
+  var btn = document.getElementById("doppler-play"); if(btn) btn.innerHTML = "&#9654;";
+  if(dopplerTimer) clearInterval(dopplerTimer);
+  dopplerTimer = null;
+}
+function dopplerInit(){
+  if(dopplerMap) return true;
+  var el = document.getElementById("tbb-doppler-map");
+  if(!el || typeof L === "undefined") return false;
+  var loc = wxLoc();
+  dopplerMap = L.map("tbb-doppler-map", { attributionControl: false }).setView([loc.lat, loc.lng], 9);
+  L.control.zoom({ position: "bottomright" }).addTo(dopplerMap);
+  L.tileLayer("https://services.arcgisonline.com/ArcGIS/rest/services/Ocean/World_Ocean_Base/MapServer/tile/{z}/{y}/{x}", { maxZoom: 16 }).addTo(dopplerMap);
+  var steps = [55, 50, 45, 40, 35, 30, 25, 20, 15, 10, 5, 0];
+  dopplerFrames = steps.map(function(mins){
+    var name = mins === 0 ? "nexrad-n0q-900913" : "nexrad-n0q-m" + (mins < 10 ? "0" + mins : mins) + "m-900913";
+    var layer = L.tileLayer(DOPPLER_TILE + name + "/{z}/{x}/{y}.png", { opacity: 0, maxZoom: 16, zIndex: 10 });
+    layer.addTo(dopplerMap);
+    return { mins: mins, layer: layer };
+  });
+  L.tileLayer("https://services.arcgisonline.com/ArcGIS/rest/services/Ocean/World_Ocean_Reference/MapServer/tile/{z}/{y}/{x}", { maxZoom: 16, zIndex: 20 }).addTo(dopplerMap);
+  var playBtn = document.getElementById("doppler-play");
+  if(playBtn) playBtn.addEventListener("click", function(){ dopplerPlaying ? dopplerPause() : dopplerPlay(); });
+  var scrub = document.getElementById("doppler-scrub");
+  if(scrub) scrub.addEventListener("input", function(){ dopplerPause(); dopplerShow(parseInt(scrub.value, 10)); });
+  var op = document.getElementById("doppler-opacity");
+  if(op) op.addEventListener("input", function(){ dopplerOpacityVal = parseInt(op.value, 10) / 100; dopplerShow(dopplerIdx); });
+  var rc = document.getElementById("doppler-radar-chip");
+  if(rc) rc.addEventListener("click", function(){ dopplerRadarOn = !dopplerRadarOn; rc.classList.toggle("on", dopplerRadarOn); dopplerShow(dopplerIdx); });
+  var rf = document.getElementById("doppler-refresh-chip");
+  if(rf) rf.addEventListener("click", function(){ dopplerFrames.forEach(function(f){ f.layer.redraw(); }); dopplerShow(dopplerIdx); });
+  var lc = document.getElementById("doppler-loc-chip");
+  if(lc) lc.addEventListener("click", function(){
+    if(!navigator.geolocation) return;
+    navigator.geolocation.getCurrentPosition(function(p){
+      var ll = [p.coords.latitude, p.coords.longitude];
+      if(dopplerLocMarker) dopplerMap.removeLayer(dopplerLocMarker);
+      dopplerLocMarker = L.circleMarker(ll, { radius: 9, color: "#fff", weight: 3, fillColor: "#2196f3", fillOpacity: 1 }).addTo(dopplerMap);
+      dopplerMap.setView(ll, 10);
+    });
+  });
+  var fs = document.getElementById("doppler-fs");
+  if(fs) fs.addEventListener("click", dopplerToggleFull);
+  dopplerShow(dopplerFrames.length - 1);
+  dopplerPlay();
+  return true;
+}
+function dopplerToggleFull(){
+  var wrap = document.getElementById("tbb-doppler");
+  if(!wrap) return;
+  dopplerFull = !dopplerFull;
+  wrap.classList.toggle("dop-full", dopplerFull);
+  var fs = document.getElementById("doppler-fs");
+  if(fs) fs.innerHTML = dopplerFull ? "&#9974; Exit full screen" : "&#9974; Full screen";
+  document.body.style.overflow = dopplerFull ? "hidden" : "";
+  setTimeout(function(){ if(dopplerMap) dopplerMap.invalidateSize(); }, 120);
+  setTimeout(function(){ if(dopplerMap) dopplerMap.invalidateSize(); }, 450);
+}
+document.addEventListener("keydown", function(e){
+  if(dopplerFull && (e.key === "Escape" || e.key === "Esc")) dopplerToggleFull();
+});
+document.addEventListener("visibilitychange", function(){ if(document.hidden) dopplerPause(); });
+function dopplerSetView(lat, lng){
+  if(lat == null || lng == null || isNaN(lat) || isNaN(lng)) return;
+  if(!dopplerInit()) return;
+  dopplerMap.setView([lat, lng], Math.max(dopplerMap.getZoom(), 9));
+}
+function loadDoppler(){
+  var v = document.getElementById("view-tides");
+  if(v && !v.classList.contains("active")) return;
+  if(dopplerInit() && dopplerMap) setTimeout(function(){ dopplerMap.invalidateSize(); }, 200);
+}
+function dopplerOnShow(){
+  loadDoppler();
+  if(dopplerMap) setTimeout(function(){ dopplerMap.invalidateSize(); }, 250);
 }
 let wxPeriodCache = {};
 async function getPeriods(loc){
@@ -7718,13 +7853,13 @@ function renderBriefing(){
     }
   }catch(e){}
 }
-["renderGrid","renderDir","updateCartUI","renderCalendar","loadTides","loadFutureTides","loadTideCurve","loadMarine","loadWaves","loadSpot","loadWeek","loadHourly","loadPressure","loadUv","loadSunMoon","loadVisibility","loadForecastBadges","renderFuel","renderSvc","renderOwner","renderDealers","renderGear","renderBriefing","loadBriefingConditions"].forEach(fn=>{ try{ window[fn](); }catch(e){ console.warn("init "+fn+" failed:", e.message); } });
+["renderGrid","renderDir","updateCartUI","renderCalendar","loadTides","loadFutureTides","loadTideCurve","loadMarine","loadWaves","loadSpot","loadDoppler","loadWeek","loadHourly","loadPressure","loadUv","loadSunMoon","loadVisibility","loadForecastBadges","renderFuel","renderSvc","renderOwner","renderDealers","renderGear","renderBriefing","loadBriefingConditions"].forEach(fn=>{ try{ window[fn](); }catch(e){ console.warn("init "+fn+" failed:", e.message); } });
 /* Weather auto-refresh: re-pull every 5 minutes while the page is open (and on return to the tab if stale), so the "Last checked" stamps and the data behind them stay current. */
 let __wxLastRefresh = Date.now();
 function refreshWeather(){
   try{
     marineCache = {}; wxPeriodCache = {}; __wxLastRefresh = Date.now();
-    ["loadTides","loadFutureTides","loadTideCurve","loadMarine","loadWaves","loadSpot","loadWeek","loadHourly","loadPressure","loadUv","loadSunMoon","loadVisibility","loadForecastBadges","loadBriefingConditions"].forEach(function(fn){ try{ window[fn](); }catch(e){} });
+    ["loadTides","loadFutureTides","loadTideCurve","loadMarine","loadWaves","loadSpot","loadDoppler","loadWeek","loadHourly","loadPressure","loadUv","loadSunMoon","loadVisibility","loadForecastBadges","loadBriefingConditions"].forEach(function(fn){ try{ window[fn](); }catch(e){} });
   }catch(e){}
 }
 setInterval(function(){ if(!document.hidden) refreshWeather(); }, 300000);
@@ -8047,6 +8182,7 @@ function showView(name){
   document.getElementById('view-'+name).classList.add('active');
   window.scrollTo(0,0);
   if(name==='map'){if(window.tbbMapInit)window.tbbMapInit();setTimeout(function(){if(window.tbbMap)window.tbbMap.invalidateSize();},200);}
+  if(name==='tides'){if(window.dopplerOnShow)window.dopplerOnShow();}
   if(name==='knowbeforeyougo'){if(window.tbbKbgMapInit)window.tbbKbgMapInit();setTimeout(function(){if(window.tbbKbgMap)window.tbbKbgMap.invalidateSize();},200);}
   if(name==='fishing'){if(window.loadBiteChart)window.loadBiteChart();if(window.tbbFishMapInit)window.tbbFishMapInit();setTimeout(function(){if(window.tbbFishMap)window.tbbFishMap.invalidateSize();},200);}
   if(name==='sightseeing'){if(window.tbbSightMapInit)window.tbbSightMapInit();setTimeout(function(){if(window.tbbSightMap)window.tbbSightMap.invalidateSize();},200);}
@@ -8352,6 +8488,7 @@ window.TBB_FUEL_PRICES_DATE = "Nov 10";
 (function(){
   var P = window.TBB_FUEL_PRICES || [];
   var fuel = 'e0';
+  var radius = 20;
   var origin = null;
   var res = document.getElementById('ff-results');
   var dateEl = document.getElementById('ff-date');
@@ -8376,12 +8513,11 @@ window.TBB_FUEL_PRICES_DATE = "Nov 10";
     if(!origin) return;
     var rows = [];
     P.forEach(function(s){ if(s[fuel] != null) rows.push({ s: s, d: distMi(origin.lat, origin.lng, s.lat, s.lng) }); });
-    var near = rows.filter(function(r){ return r.d <= 40; });
-    if(near.length >= 3) rows = near;
+    if(radius !== Infinity) rows = rows.filter(function(r){ return r.d <= radius; });
     rows.sort(function(a, b){ return (a.s[fuel] - b.s[fuel]) || (a.d - b.d); });
     rows = rows.slice(0, 5);
     res.innerHTML = '';
-    if(!rows.length){ msg('No stations with a ' + (fuel === 'e0' ? 'non-ethanol' : 'diesel') + ' price today — check back tomorrow morning.'); return; }
+    if(!rows.length){ msg(radius === Infinity ? 'No stations with a ' + (fuel === 'e0' ? 'non-ethanol' : 'diesel') + ' price today — check back tomorrow morning.' : 'No station we check is within ' + radius + ' miles of you — tap a bigger radius above, or Any distance.'); return; }
     rows.forEach(function(r){
       var b = document.createElement('button'); b.type = 'button'; b.className = 'ff-hit';
       var pr = document.createElement('span'); pr.className = 'ff-price'; pr.textContent = '$' + r.s[fuel].toFixed(3);
@@ -8393,6 +8529,14 @@ window.TBB_FUEL_PRICES_DATE = "Nov 10";
     });
   }
   function setOrigin(lat, lng){ origin = { lat: lat, lng: lng }; render(); }
+  document.querySelectorAll('#fuel-finder .ff-rad-btn').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var v = btn.getAttribute('data-rad');
+      radius = (v === 'any') ? Infinity : parseInt(v, 10);
+      document.querySelectorAll('#fuel-finder .ff-rad-btn').forEach(function(x){ x.classList.toggle('ff-on', x === btn); });
+      render();
+    });
+  });
   document.querySelectorAll('#fuel-finder .ff-fuel').forEach(function(btn){
     btn.addEventListener('click', function(){
       fuel = btn.getAttribute('data-fuel');

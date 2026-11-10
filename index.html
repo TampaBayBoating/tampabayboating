@@ -940,6 +940,24 @@ body.dark .travel-box .travel-note{color:#8fa8bd}
 .tide-row{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.1);font-size:.95rem}
 .tide-row:last-child{border:none}
 .fish-rate{display:inline-block;vertical-align:middle;font-size:.8em;letter-spacing:1px;line-height:1.05;text-align:center}
+.bite-chart{background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:0 1px 3px rgba(10,37,64,.07);padding:14px 16px;margin:14px 0}
+.bite-chart-head{font-weight:800;color:var(--navy);font-size:1.02rem;margin-bottom:6px}
+.bite-chart-head .bite-sub{font-weight:600;color:var(--muted);font-size:.78rem}
+#bite-chart-svg svg{display:block;width:100%;height:auto}
+.bite-hours{display:flex;justify-content:space-between;font-size:.72rem;color:var(--muted);margin-top:2px}
+.bite-chart-read{font-size:.95rem;font-weight:700;color:var(--navy);margin-top:8px}
+.fish-spots-honest{color:var(--muted);font-size:.82rem;font-weight:600;margin:0 0 10px}
+.fish-pin-wrap{background:none;border:none}
+.fish-pin{font-size:15px;line-height:24px;width:26px;height:26px;text-align:center;background:#fff;border:2px solid var(--teal);border-radius:50%;box-shadow:0 1px 4px rgba(10,37,64,.35);cursor:pointer}
+.fish-pin.sel{background:#ffd75e;border-color:var(--navy);transform:scale(1.3)}
+.fish-spot-panel{margin-top:12px}
+.fish-spot-hint{color:var(--muted);font-weight:600;font-size:.9rem}
+.fish-spot-name{font-weight:800;color:var(--navy);font-size:1.05rem}
+.fish-spot-best{font-weight:800;color:var(--navy);margin-top:8px}
+.fish-spot-win{font-weight:700;color:var(--navy);margin-top:4px}
+.fish-spot-why{color:var(--muted);font-weight:600;font-size:.84rem}
+.fish-spot-line{margin-top:7px;font-size:.92rem}
+.fish-spot-note{color:var(--muted)}
 .tide-type{font-weight:800}
 .tide-H{color:#7fd4ff}.tide-L{color:var(--sun)}
 .marine-p{margin-bottom:12px}
@@ -2067,6 +2085,18 @@ function twlPlay(btn){
       <p>Pick your water — saltwater or freshwater. Every fish has a picture and its legal size, so you always know what you caught and what you can keep.</p>
     </div>
     <div class="license-card"><div class="license-ico"><svg class="ic" aria-hidden="true"><use href="#i-doc"/></svg></div><div><h4>Is your Florida fishing license current?</h4><p>FWC checks licenses on the water. Verify yours is still active — or buy or renew in minutes — through Florida's official license system.</p><div class="license-btns"><a class="wub-btn" href="https://gooutdoorsflorida.com/" target="_blank" rel="noopener">Check / renew my license</a><a class="wub-btn" href="https://myfwc.com/license/recreational/saltwater-fishing/" target="_blank" rel="noopener">FWC license requirements</a></div></div></div>
+    <div class="bite-chart" id="bite-chart">
+      <div class="bite-chart-head">Today's Bite \u2014 Tampa Bay <span class="bite-sub">solunar guide \u00b7 East Bay station</span></div>
+      <div id="bite-chart-svg" aria-hidden="true"></div>
+      <div class="bite-hours"><span>12 AM</span><span>6 AM</span><span>12 PM</span><span>6 PM</span><span>11 PM</span></div>
+      <div class="bite-chart-read" id="bite-chart-read">Checking today's bite&hellip;</div>
+    </div>
+    <div class="bite-chart" id="fish-spots-card">
+      <div class="bite-chart-head">Fishing Spots &mdash; where &amp; when they bite</div>
+      <p class="fish-spots-honest">Best windows are tide + moon math for each spot &mdash; a guide, not a guarantee.</p>
+      <div id="fish-map" style="height:300px;border-radius:12px;border:1px solid var(--line);z-index:1"></div>
+      <div class="fish-spot-panel" id="fish-spot-panel"><div class="fish-spot-hint">Tap a fish spot on the map to see when it bites today.</div></div>
+    </div>
     <div class="fw-doors">
       <button class="fw-door sel" id="fw-door-salt" onclick="fwDoor('salt')">🌊 Saltwater<span>Bay, ocean &amp; rivers</span></button>
       <button class="fw-door" id="fw-door-fresh" onclick="fwDoor('fresh')">🎣 Freshwater<span>Lakes &amp; ponds</span></button>
@@ -5834,6 +5864,115 @@ function fishRatingAt(when, slopeFtHr){
   var score = 1 + 5 * (0.45 * flow + 0.30 * phaseFactor + 0.25 * tod);
   return Math.max(1, Math.min(6, Math.round(score)));
 }
+/* ================= TODAY'S BITE CHART (Fishing view) ================= */
+function biteScoreAt(when, slopeFtHr){
+  // Unrounded twin of fishRatingAt: identical inputs and weights, but keeps
+  // the decimals so biteBestWindows can tell near-tied hours apart.
+  var flow = Math.min(1, Math.abs(slopeFtHr || 0) / 0.85);
+  var cycle = 29.530588853;
+  var age = ((when.getTime() - Date.UTC(2000, 0, 6, 18, 14)) / 86400000) % cycle;
+  if(age < 0) age += cycle;
+  var phaseFactor = 0.35 + 0.65 * Math.abs(Math.cos(2 * Math.PI * age / cycle));
+  var mins = when.getHours() * 60 + when.getMinutes();
+  var tod = 0.75;
+  if(Math.abs(mins - 410) <= 100 || Math.abs(mins - 1065) <= 100) tod = 1.0;
+  else if(mins >= 600 && mins <= 900) tod = 0.55;
+  return 1 + 5 * (0.45 * flow + 0.30 * phaseFactor + 0.25 * tod);
+}
+function biteBestWindows(raw){
+  // Pure helper: 24 hourly raw scores -> up to two best feeding windows.
+  // Each window grows from one of the day's strongest hours while the score
+  // stays within 0.8 of that peak, max 5 hours wide; windows keep a gap so
+  // the two picks are two separate feeding stretches, not one long morning.
+  var used = [], i;
+  for(i = 0; i < 24; i++) used.push(false);
+  function blocked(idx){
+    for(var j = idx - 1; j <= idx + 1; j++){ if(j >= 0 && j < 24 && used[j]) return true; }
+    return false;
+  }
+  var wins = [];
+  for(var k = 0; k < 2; k++){
+    var p = -1, pv = -1;
+    for(i = 0; i < 24; i++){
+      if(used[i] || blocked(i)) continue;
+      if(raw[i] > pv){ pv = raw[i]; p = i; }
+    }
+    if(p < 0) break;
+    var lo = p, hi = p, floor = pv - 0.8;
+    while(lo - 1 >= 0 && !blocked(lo - 1) && raw[lo - 1] >= floor && (hi - lo + 1) < 5) lo--;
+    while(hi + 1 < 24 && !blocked(hi + 1) && raw[hi + 1] >= floor && (hi - lo + 1) < 5) hi++;
+    for(var m = lo; m <= hi; m++) used[m] = true;
+    wins.push({ start: lo, end: hi, peak: pv });
+  }
+  wins.sort(function(a, b){ return a.start - b.start; });
+  return wins;
+}
+var BITE_CHART_DONE = false;
+async function loadBiteChart(){
+  if(BITE_CHART_DONE) return;
+  var card = document.getElementById("bite-chart");
+  if(!card) return;
+  BITE_CHART_DONE = true;
+  try{
+    var r = await fetch("https://api.tidesandcurrents.noaa.gov/api/prod/datagetter?date=today&station=8726674&product=predictions&datum=MLLW&time_zone=lst_ldt&units=english&interval=h&format=json");
+    var d = await r.json();
+    var preds = (d.predictions || []).map(function(p){
+      var t = String(p.t || "");
+      return { t: t, h: (+t.slice(11, 13)), v: Number(p.v) };
+    }).filter(function(p){ return p.t && !isNaN(p.v); });
+    if(preds.length < 12) throw 0;
+    preds.sort(function(a, b){ return a.h - b.h; });
+    var raw = [], ratings = [];
+    preds.forEach(function(p, i){
+      var slope = (i < preds.length - 1) ? (preds[i + 1].v - p.v) : (p.v - preds[i - 1].v);
+      var when = new Date(p.t.replace(" ", "T"));
+      raw.push(biteScoreAt(when, slope));
+      ratings.push(fishRatingAt(when, slope));
+    });
+    var wins = biteBestWindows(raw);
+    var now = new Date();
+    var W = 320, H = 108, ml = 6, mr = 6, mt = 36, mb = 6;
+    var pw = W - ml - mr, ph = H - mt - mb;
+    var X = function(m){ return ml + (m / 1440) * pw; };
+    var Y = function(rt){ return mt + (1 - rt / 6.6) * ph; };
+    var svg = "<svg viewBox=\"0 0 " + W + " " + H + "\" role=\"img\" aria-label=\"Today's bite rating by hour for Tampa Bay\">";
+    var dAttr = "";
+    preds.forEach(function(p, i){
+      dAttr += (i ? "L" : "M") + X(p.h * 60).toFixed(1) + " " + Y(ratings[i]).toFixed(1) + " ";
+    });
+    svg += "<path d=\"" + dAttr + "L" + X(23 * 60).toFixed(1) + " " + (mt + ph) + " L" + X(0).toFixed(1) + " " + (mt + ph) + " Z\" fill=\"rgba(43,123,187,.13)\" stroke=\"none\"/>";
+    svg += "<path d=\"" + dAttr + "\" fill=\"none\" stroke=\"#2b7bbb\" stroke-width=\"2\" stroke-linejoin=\"round\" stroke-linecap=\"round\"/>";
+    var nx = X(now.getHours() * 60 + now.getMinutes()).toFixed(1);
+    svg += "<line x1=\"" + nx + "\" y1=\"" + mt + "\" x2=\"" + nx + "\" y2=\"" + (mt + ph) + "\" stroke=\"#c0392b\" stroke-width=\"1\" stroke-dasharray=\"3 3\" opacity=\".7\"/>";
+    wins.forEach(function(w){
+      var peakR = 0, peakH = w.start;
+      for(var i = w.start; i <= w.end; i++){ if(ratings[i] > peakR){ peakR = ratings[i]; peakH = i; } }
+      var midM = (w.start * 60 + (w.end + 1) * 60) / 2;
+      var fx = Math.max(34, Math.min(W - 34, X(midM)));
+      var rowsB = peakR <= 3 ? [peakR] : [Math.ceil(peakR / 2), Math.floor(peakR / 2)];
+      rowsB.forEach(function(rr, ri){
+        svg += "<text x=\"" + fx.toFixed(1) + "\" y=\"" + (15 + ri * 15) + "\" text-anchor=\"middle\" font-size=\"11\">" + "\uD83D\uDC1F".repeat(rr) + "</text>";
+      });
+      svg += "<circle cx=\"" + X(peakH * 60).toFixed(1) + "\" cy=\"" + Y(peakR).toFixed(1) + "\" r=\"3.5\" fill=\"#ffffff\" stroke=\"#0a2540\" stroke-width=\"2\"/>";
+    });
+    svg += "</svg>";
+    document.getElementById("bite-chart-svg").innerHTML = svg;
+    var nowIdx = 0;
+    preds.forEach(function(p, i){ if(p.h === now.getHours()) nowIdx = i; });
+    var nowR = ratings[nowIdx];
+    function fmtH(h){
+      h = ((h % 24) + 24) % 24;
+      var ap = h >= 12 ? "PM" : "AM";
+      var h12 = h % 12 === 0 ? 12 : h % 12;
+      return h12 + " " + ap;
+    }
+    var winTxt = wins.map(function(w){ return fmtH(w.start) + "\u2013" + fmtH(w.end + 1); });
+    var read = document.getElementById("bite-chart-read");
+    if(read) read.textContent = "Bite right now: " + "\uD83D\uDC1F".repeat(nowR) + " (" + nowR + " of 6)" + (winTxt.length ? " \u00B7 Best today: " + winTxt.join(" and ") : "");
+  }catch(e){
+    try{ card.style.display = "none"; }catch(_){}
+  }
+}
 const TRAVEL_LOCATIONS = {
   tampa:      {name:"Tampa Bay", station:"8726674", zone:"GMZ830", label:"East Bay / Tampa Bay"},
   keywest:    {name:"Florida Keys \u2014 Key West", station:"8724580", zone:"GMZ054", label:"Key West Harbor"},
@@ -7723,6 +7862,179 @@ window.tbbSightMapInit = (function(){
     map.fitBounds(pts, {padding:[18,18]});
   };
 })();
+/* ---- Fishing Spots map (Fishing view): where & when they bite ----
+   Spot coords come only from pins/zones already verified on this site;
+   species & bait come only from the Fish Chart, the Bait & Rods guide
+   and the Daily Report. Windows reuse the bite chart's solunar math
+   (biteScoreAt / biteBestWindows / fishRatingAt) per spot station. */
+var FISH_SPOTS = [
+ {name:"Alafia River Mouth \u2014 Williams Park", lat:27.861237, lng:-82.384727, station:"8726614", slabel:"Alafia River \u00B7 Riverview",
+  species:[{n:"Snook", side:"salt", slug:"snook"},{n:"Redfish", side:"salt", slug:"redfish"}],
+  bait:"Live sardines / greenbacks up under the mangroves, fresh cut bait, or a gold spoon across the flats.",
+  note:"Mangrove shorelines and creek mouths on the lower river \u2014 the Bait & Rods guide names the Alafia River mouth for snook & reds. Marker at the Williams Park ramp."},
+ {name:"Hillsborough River \u2014 Lowry Park", lat:28.012589, lng:-82.465216, station:"8726674", slabel:"East Bay / Tampa Bay",
+  species:[{n:"Largemouth Bass", side:"fresh", slug:"bass"},{n:"Bluegill", side:"fresh", slug:"bluegill"}],
+  bait:"Live shiners under a bobber for bass \u2014 the #1 Florida bass bait. Red worms or crickets for bluegill.",
+  note:"The freshwater Hillsborough at the Lowry Park ramp \u2014 fish the shade, docks and fallen trees."},
+ {name:"Little Manatee River Mouth \u2014 Shell Point", lat:27.719297, lng:-82.478999, station:"8726436", slabel:"Little Manatee River \u00B7 Ruskin",
+  species:[{n:"Snook", side:"salt", slug:"snook"},{n:"Redfish", side:"salt", slug:"redfish"}],
+  bait:"Live sardines, pinfish or shrimp around the mouth and mangrove points.",
+  note:"Where the Little Manatee meets the bay \u2014 mangrove points, creek mouths and oyster bars. Marker at Shell Point Marina."},
+ {name:"Skyway Fishing Piers", lat:27.60013, lng:-82.643432, station:"8726347", slabel:"Egmont Key",
+  species:[{n:"Sheepshead", side:"salt", slug:"sheepshead"},{n:"Mangrove Snapper", side:"salt", slug:"mangrove"},{n:"Tarpon", side:"salt", slug:"tarpon"}],
+  bait:"Small live shrimp or fiddler crab tight to the pilings for sheepshead; live pinfish are sold right on the pier.",
+  note:"The old Skyway spans are now fishing piers \u2014 billed as the world\u2019s longest fishing pier, open around the clock."},
+ {name:"John\u2019s Pass", lat:27.7862, lng:-82.7878, station:"8726486", slabel:"Gulfport \u00B7 Boca Ciega Bay",
+  species:[{n:"Spanish Mackerel", side:"salt", slug:"spanish"},{n:"Mangrove Snapper", side:"salt", slug:"mangrove"}],
+  bait:"Live sardines / whitebait while the bait schools hold in the pass.",
+  note:"Swift tidal current pours through the pass \u2014 fish the moving water, and mind the shoals at the corners."},
+ {name:"Weedon Island", lat:27.8477, lng:-82.60708, station:"8726520", slabel:"St. Petersburg",
+  species:[{n:"Redfish", side:"salt", slug:"redfish"},{n:"Spotted Seatrout", side:"salt", slug:"seatrout"}],
+  bait:"Live sardines or fresh cut bait for reds on the shorelines; soft-plastic jigs or live shrimp under a popping cork for trout over the flats.",
+  note:"Grass flats, mangrove shorelines and oyster bars \u2014 the Daily Report\u2019s most-named water."},
+ {name:"Cockroach Bay", lat:27.68, lng:-82.52, station:"8726425", slabel:"Cockroach Bay \u00B7 Apollo Beach",
+  species:[{n:"Redfish", side:"salt", slug:"redfish"},{n:"Snook", side:"salt", slug:"snook"}],
+  bait:"Live sardines / greenbacks or fresh cut bait along the mangrove edges and creek mouths.",
+  note:"Grass flats and mangrove edges where the creeks meet the bay \u2014 work it on a rising tide and go slow over the flats."},
+ {name:"Fort De Soto", lat:27.64802, lng:-82.71538, station:"8726347", slabel:"Egmont Key",
+  species:[{n:"Redfish", side:"salt", slug:"redfish"},{n:"Spotted Seatrout", side:"salt", slug:"seatrout"}],
+  bait:"Soft-plastic jigs or live shrimp under a popping cork for trout in the potholes; live sardines or cut bait for reds.",
+  note:"Grass flats and potholes out front, plus the park\u2019s fishing piers by Bunces Pass."},
+ {name:"Gandy Bridge", lat:27.892485, lng:-82.533037, station:"8726738", slabel:"Safety Harbor \u00B7 Old Tampa Bay",
+  species:[{n:"Sheepshead", side:"salt", slug:"sheepshead"},{n:"Mangrove Snapper", side:"salt", slug:"mangrove"}],
+  bait:"Small live shrimp or fiddler crab, dropped tight to the bridge pilings.",
+  note:"Bridge pilings over Old Tampa Bay. Marker at the Gandy Boat Ramp, at the bridge\u2019s Tampa end."},
+ {name:"Egmont Key", lat:27.58692, lng:-82.76081, station:"8726347", slabel:"Egmont Key",
+  species:[{n:"King Mackerel", side:"salt", slug:"king"},{n:"Cobia", side:"salt", slug:"cobia"},{n:"Tarpon", side:"salt", slug:"tarpon"}],
+  bait:"Live sardines / whitebait. Cobia cruise under rays, buoys and floating structure \u2014 keep a rod ready.",
+  note:"Run offshore of the island for kings, cobia & tarpon (Bait & Rods guide). Boat access only."},
+ {name:"Pass-a-Grille", lat:27.6906, lng:-82.7315, station:"8726486", slabel:"Gulfport \u00B7 Boca Ciega Bay",
+  species:[{n:"Spanish Mackerel", side:"salt", slug:"spanish"}],
+  bait:"Live sardines / whitebait while bait schools hold in the channel.",
+  note:"The dredged run behind Pass-a-Grille \u2014 skinny flats press in on both sides, so hold the markers."},
+ {name:"Clearwater Pass", lat:27.9685, lng:-82.84, station:"8726724", slabel:"Clearwater Beach",
+  species:[{n:"Spanish Mackerel", side:"salt", slug:"spanish"}],
+  bait:"Live sardines / whitebait while bait schools hold in the pass.",
+  note:"A busy dredged entrance \u2014 stay in the marked channel and fish the moving water at the edges."},
+ {name:"Dunedin Causeway", lat:28.06, lng:-82.8, station:"8726724", slabel:"Clearwater Beach",
+  species:[{n:"Spotted Seatrout", side:"salt", slug:"seatrout"},{n:"Sheepshead", side:"salt", slug:"sheepshead"}],
+  bait:"Live shrimp under a popping cork over the flats; small live shrimp by the causeway pilings for sheepshead.",
+  note:"Shallow sandbar flats and causeway pilings on the way out to Honeymoon Island."},
+ {name:"Anclote River Mouth", lat:28.172967, lng:-82.785502, station:"8726724", slabel:"Clearwater Beach",
+  species:[{n:"Snook", side:"salt", slug:"snook"},{n:"Redfish", side:"salt", slug:"redfish"}],
+  bait:"Live sardines, pinfish or shrimp at the mouth and along the mangrove shorelines.",
+  note:"The Anclote River mouth at Anclote Village Marina \u2014 mangrove shorelines and docks upriver."},
+ {name:"Terra Ceia Bay", lat:27.58, lng:-82.58, station:"8726247", slabel:"Manatee River \u00B7 Palmetto",
+  species:[{n:"Redfish", side:"salt", slug:"redfish"},{n:"Snook", side:"salt", slug:"snook"}],
+  bait:"Live sardines / greenbacks or fresh cut bait along the mangrove shorelines and creek mouths.",
+  note:"A quiet, shallow bay off the Manatee River \u2014 aquatic preserve water, all mangrove edges and creeks."}
+];
+var FISH_SPOT_MARKERS = [];
+var FISH_SPOT_TOKEN = 0;
+var FISH_STATION_CACHE = {};
+function fishFmtH(h){ h = ((h % 24) + 24) % 24; var ap = h >= 12 ? "PM" : "AM"; var h12 = h % 12 === 0 ? 12 : h % 12; return h12 + " " + ap; }
+function fishPinIcon(sel){
+  return L.divIcon({ className:"fish-pin-wrap", html:'<div class="fish-pin' + (sel ? " sel" : "") + '">\uD83D\uDC1F</div>', iconSize:[26,26], iconAnchor:[13,13] });
+}
+window.tbbFishMapInit = (function(){
+  var done = false;
+  return function(){
+    if(done) return; done = true;
+    var el = document.getElementById('fish-map');
+    if(!el || typeof L === 'undefined') return;
+    var map = window.tbbFishMap = L.map('fish-map', {scrollWheelZoom:false});
+    tbbMiniBase(map);
+    var pts = [];
+    FISH_SPOTS.forEach(function(s, i){
+      var mk = L.marker([s.lat, s.lng], {icon: fishPinIcon(false)}).addTo(map);
+      mk.on('click', function(){ fishSpotTap(i); });
+      FISH_SPOT_MARKERS.push(mk);
+      pts.push([s.lat, s.lng]);
+    });
+    map.fitBounds(pts, {padding:[18,18]});
+  };
+})();
+function fishInterpHilo(pts, mins){
+  if(!pts.length) return null;
+  if(mins <= pts[0].m) return pts[0].v;
+  if(mins >= pts[pts.length - 1].m) return pts[pts.length - 1].v;
+  for(var i = 0; i < pts.length - 1; i++){
+    var a = pts[i], b = pts[i + 1];
+    if(mins >= a.m && mins <= b.m){
+      var f = (mins - a.m) / (b.m - a.m);
+      return a.v + (b.v - a.v) * (0.5 - 0.5 * Math.cos(Math.PI * f));
+    }
+  }
+  return pts[pts.length - 1].v;
+}
+async function fishStationDay(station){
+  if(FISH_STATION_CACHE[station]) return FISH_STATION_CACHE[station];
+  var pad = function(n){ return String(n).padStart(2, "0"); };
+  var ymd = function(d){ return d.getFullYear() + pad(d.getMonth() + 1) + pad(d.getDate()); };
+  var today = new Date(); today.setHours(0, 0, 0, 0);
+  var heights = null;
+  try{
+    var r = await fetch("https://api.tidesandcurrents.noaa.gov/api/prod/datagetter?date=today&station=" + station + "&product=predictions&datum=MLLW&time_zone=lst_ldt&units=english&interval=h&format=json");
+    var d = await r.json();
+    var preds = (d.predictions || []).map(function(p){ var t = String(p.t || ""); return { h:(+t.slice(11, 13)), v:Number(p.v) }; }).filter(function(p){ return !isNaN(p.v); });
+    if(preds.length >= 12){ preds.sort(function(a, b){ return a.h - b.h; }); heights = preds.map(function(p){ return p.v; }); }
+  }catch(e){}
+  if(!heights){
+    /* Subordinate stations publish hi/lo only: build the hourly curve by
+       cosine interpolation between NOAA's own hi/lo predictions. */
+    var y = new Date(today); y.setDate(y.getDate() - 1);
+    var t2 = new Date(today); t2.setDate(t2.getDate() + 2);
+    var r2 = await fetch("https://api.tidesandcurrents.noaa.gov/api/prod/datagetter?begin_date=" + ymd(y) + "&end_date=" + ymd(t2) + "&station=" + station + "&product=predictions&datum=MLLW&time_zone=lst_ldt&units=english&interval=hilo&format=json");
+    var d2 = await r2.json();
+    var pts = (d2.predictions || []).map(function(p){ var dt = new Date(String(p.t || "").replace(" ", "T")); return { m:(dt - today) / 60000, v:Number(p.v) }; }).filter(function(p){ return !isNaN(p.v); }).sort(function(a, b){ return a.m - b.m; });
+    if(pts.length < 3) throw 0;
+    heights = [];
+    for(var hh = 0; hh < 24; hh++) heights.push(fishInterpHilo(pts, hh * 60));
+  }
+  var slopes = heights.map(function(v, i){ return (i < heights.length - 1) ? (heights[i + 1] - v) : (v - heights[i - 1]); });
+  var raw = [], ratings = [];
+  heights.forEach(function(v, i){
+    var when = new Date(today.getTime() + i * 3600000);
+    raw.push(biteScoreAt(when, slopes[i]));
+    ratings.push(fishRatingAt(when, slopes[i]));
+  });
+  var out = { wins: biteBestWindows(raw), slopes: slopes, ratings: ratings };
+  FISH_STATION_CACHE[station] = out;
+  return out;
+}
+window.fishSpotTap = function(i){
+  var s = FISH_SPOTS[i]; if(!s) return;
+  FISH_SPOT_MARKERS.forEach(function(mk, j){ try{ mk.setIcon(fishPinIcon(j === i)); }catch(_){ } });
+  var panel = document.getElementById('fish-spot-panel');
+  if(!panel) return;
+  var token = ++FISH_SPOT_TOKEN;
+  var jump = s.species[0];
+  var spNames = s.species.map(function(sp){ return sp.n; }).join(", ");
+  panel.innerHTML = '<div class="fish-spot-name">' + s.name + '</div>'
+    + '<div id="fish-spot-wins"><div class="fish-spot-hint">Figuring today\u2019s tides\u2026</div></div>'
+    + (spNames ? '<div class="fish-spot-line"><b>Caught here:</b> ' + spNames + '</div>' : '')
+    + (s.bait ? '<div class="fish-spot-line"><b>Bait:</b> ' + s.bait + '</div>' : '')
+    + (s.note ? '<div class="fish-spot-line fish-spot-note">' + s.note + '</div>' : '')
+    + '<div class="fish-spot-line"><a href="#" onclick="fishGo(\'' + jump.side + '\',\'' + jump.slug + '\');return false;"><b>How to fish them \u2192</b></a></div>';
+  fishStationDay(s.station).then(function(day){
+    if(token !== FISH_SPOT_TOKEN) return;
+    var wEl = document.getElementById('fish-spot-wins');
+    if(!wEl) return;
+    if(!day.wins.length){ wEl.innerHTML = '<div class="fish-spot-hint">Tide windows unavailable right now.</div>'; return; }
+    var parts = day.wins.map(function(w){
+      var peakR = 0, sum = 0;
+      for(var j = w.start; j <= w.end; j++){ peakR = Math.max(peakR, day.ratings[j]); sum += day.slopes[j]; }
+      var avg = sum / (w.end - w.start + 1);
+      var why = avg >= 0 ? "incoming tide \u2014 water moving in" : "outgoing tide \u2014 water moving out";
+      return '<div class="fish-spot-win">' + "\uD83D\uDC1F".repeat(peakR) + ' ' + fishFmtH(w.start) + '\u2013' + fishFmtH(w.end + 1) + '</div><div class="fish-spot-why">' + why + '</div>';
+    });
+    wEl.innerHTML = '<div class="fish-spot-best">Best today:</div>' + parts.join("");
+  }).catch(function(){
+    if(token !== FISH_SPOT_TOKEN) return;
+    var wEl = document.getElementById('fish-spot-wins');
+    if(wEl) wEl.innerHTML = '<div class="fish-spot-hint">Tide windows unavailable right now.</div>';
+  });
+};
 </script>
 <script>
 /* ---- SPA router: approved app-style redesign ---- */
@@ -7735,6 +8047,7 @@ function showView(name){
   window.scrollTo(0,0);
   if(name==='map'){if(window.tbbMapInit)window.tbbMapInit();setTimeout(function(){if(window.tbbMap)window.tbbMap.invalidateSize();},200);}
   if(name==='knowbeforeyougo'){if(window.tbbKbgMapInit)window.tbbKbgMapInit();setTimeout(function(){if(window.tbbKbgMap)window.tbbKbgMap.invalidateSize();},200);}
+  if(name==='fishing'){if(window.loadBiteChart)window.loadBiteChart();if(window.tbbFishMapInit)window.tbbFishMapInit();setTimeout(function(){if(window.tbbFishMap)window.tbbFishMap.invalidateSize();},200);}
   if(name==='sightseeing'){if(window.tbbSightMapInit)window.tbbSightMapInit();setTimeout(function(){if(window.tbbSightMap)window.tbbSightMap.invalidateSize();},200);}
 }
 function route(){

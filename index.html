@@ -1975,7 +1975,7 @@ function twlPlay(btn){
         <h3>Today's Tides</h3>
         <div id="tide-list"><p class="cond-fallback">Loading tides…</p></div>
         <h3 style="margin-top:20px">Future Tides</h3>
-        <p class="ft-note">Predicted tides &mdash; NOAA. Wind and weather can push the actual water higher or lower than predicted. Fish show the fishing rating for that tide — 1 is slow, 8 is the best bite (solunar guide).</p>
+        <p class="ft-note">Predicted tides &mdash; NOAA. Wind and weather can push the actual water higher or lower than predicted. The fish on the tide curve show the fishing rating for that time — 1 is slow, 6 is the best bite (solunar guide).</p>
         <div class="ft-tabs" id="ft-tabs" role="tablist" aria-label="Future tides by day"></div>
         <div id="ft-panels"><p class="cond-fallback">Loading future tides&hellip;</p></div>
         <div class="ft-slide" id="ft-slide" hidden>
@@ -5810,10 +5810,11 @@ function fmtTideTime(t){
   let h = +hm[0]; const ap = h>=12?"PM":"AM"; h = h%12||12;
   return h+":"+hm[1]+" "+ap;
 }
-function fishRatingFor(when, deltaFt){
-  // Solunar-style fishing guide for a tide: moving water (tide height change)
-  // + moon phase + dawn/dusk feeding windows. A guide only — not a guarantee of fish.
-  var flow = Math.min(1, Math.abs(deltaFt || 0) / 3.2);
+function fishRatingAt(when, slopeFtHr){
+  // Solunar-style fishing guide for a moment on the tide curve: moving water
+  // (tide height change per hour) + moon phase + dawn/dusk feeding windows.
+  // A guide only — not a guarantee of fish. Scale: 1 (slow) to 6 (best bite).
+  var flow = Math.min(1, Math.abs(slopeFtHr || 0) / 0.85);
   var cycle = 29.530588853;
   var age = ((when.getTime() - Date.UTC(2000, 0, 6, 18, 14)) / 86400000) % cycle;
   if(age < 0) age += cycle;
@@ -5822,8 +5823,8 @@ function fishRatingFor(when, deltaFt){
   var tod = 0.75;
   if(Math.abs(mins - 410) <= 100 || Math.abs(mins - 1065) <= 100) tod = 1.0;
   else if(mins >= 600 && mins <= 900) tod = 0.55;
-  var score = 1 + 7 * (0.45 * flow + 0.30 * phaseFactor + 0.25 * tod);
-  return Math.max(1, Math.min(8, Math.round(score)));
+  var score = 1 + 5 * (0.45 * flow + 0.30 * phaseFactor + 0.25 * tod);
+  return Math.max(1, Math.min(6, Math.round(score)));
 }
 const TRAVEL_LOCATIONS = {
   tampa:      {name:"Tampa Bay", station:"8726674", zone:"GMZ830", label:"East Bay / Tampa Bay"},
@@ -6378,11 +6379,6 @@ async function loadTides(){
       label.textContent = type === "H" ? "High tide" : "Low tide";
       const details = document.createElement("span");
       details.textContent = fmtTideTime(String(p.t||"")) + " · " + Number(p.v).toFixed(1) + " ft";
-      const deltaFt = i > 0 ? Math.abs(Number(p.v) - Number(all[i-1].v)) : dayRange;
-      const fish = document.createElement("span");
-      fish.className = "fish-rate";
-      fish.textContent = " " + "\uD83D\uDC1F".repeat(fishRatingFor(new Date(String(p.t||"").replace(" ","T")), deltaFt));
-      details.appendChild(fish);
       row.append(label, details);
       box.appendChild(row);
     });
@@ -6458,17 +6454,6 @@ async function loadFutureTides(){
         label.textContent = type === "H" ? "High tide" : "Low tide";
         const details = document.createElement("span");
         details.textContent = fmtTideTime(String(p.t || "")) + " · " + Number(p.v).toFixed(1) + " ft";
-        const gi = preds.indexOf(p);
-        let deltaFt;
-        if(gi > 0) deltaFt = Math.abs(Number(p.v) - Number(preds[gi-1].v));
-        else {
-          const dv = rows.map(q=>Number(q.v)).filter(v=>!isNaN(v));
-          deltaFt = dv.length ? Math.max.apply(null, dv) - Math.min.apply(null, dv) : 0;
-        }
-        const fish = document.createElement("span");
-        fish.className = "fish-rate";
-        fish.textContent = " " + "\uD83D\uDC1F".repeat(fishRatingFor(new Date(String(p.t || "").replace(" ", "T")), deltaFt));
-        details.appendChild(fish);
         row.append(label, details);
         panel.appendChild(row);
       });
@@ -6572,6 +6557,14 @@ function ftSlideDraw(){
   if(cls) t2.className = cls;
   t2.textContent = dir;
   read.append(t1, t2);
+  if(cur){
+    const whenF = new Date(key + "T00:00:00");
+    whenF.setMinutes(mins);
+    const t3 = document.createElement("span");
+    t3.className = "fish-rate";
+    t3.textContent = " \u00B7 " + "\uD83D\uDC1F".repeat(fishRatingAt(whenF, Math.abs(cur.slope || 0)));
+    read.append(t3);
+  }
 }
 async function loadTideCurve(){
   const box = document.getElementById("ft-slide");

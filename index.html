@@ -6892,7 +6892,7 @@ function hrPick(i){
   var read = h.score >= 85 ? "Smooth \u2014 a great hour to be out." : h.score >= 70 ? "Good hour \u2014 light chop at most." : h.score >= 55 ? "Choppy \u2014 smaller boats will feel it." : h.score >= 40 ? "Rough \u2014 only for boats that handle it." : "Best to wait for a calmer stretch.";
   var el = document.getElementById("hr-detail");
   skillRows(document.getElementById("skill-hourly"), h.score);
-  if(el) el.innerHTML = "<b>" + h.label + "</b> \u2014 wind " + h.mph + " mph" + (h.dir ? " " + h.dir : "") + (h.gust > h.mph ? ", gusting " + h.gust : "") + (h.temp ? " \u00B7 " + h.temp : "") + (h.pop >= 20 ? " \u00B7 rain " + h.pop + "%" : "") + (h.dewF != null ? " \u00B7 Dew point " + h.dewF + "\u00B0" : "") + (h.hum != null ? " \u00B7 Humidity " + h.hum + "%" : "") + " \u2014 " + read;
+  if(el) el.innerHTML = "<b>" + h.label + "</b> \u2014 wind " + h.mph + " mph" + (h.dir ? " " + h.dir : "") + (h.gust > h.mph ? ", gusting " + h.gust : "") + (h.temp ? " \u00B7 " + h.temp : "") + (h.pop >= 20 ? " \u00B7 rain " + h.pop + "%" : "") + (h.dewF != null ? " \u00B7 Dew point " + h.dewF + "\u00B0" : "") + (h.hum != null ? " \u00B7 Humidity " + h.hum + "%" : "") + " \u2014 " + read + (h.radarNote ? " \u00B7 " + h.radarNote + " (live radar adjusts Now only)" : "");
 }
 async function loadHourly(){
   const slider = document.getElementById("hr-slider");
@@ -6914,6 +6914,7 @@ async function loadHourly(){
     });
     const steps = hrSteps(hours);
     window._hrHours = steps;
+    window._hrLocKey = loc.lat.toFixed(3) + "," + loc.lng.toFixed(3);
     if(slider){ slider.max = steps.length - 1; slider.value = 0; slider.disabled = false; }
     if(ticks){
       ticks.replaceChildren();
@@ -6924,7 +6925,9 @@ async function loadHourly(){
         ticks.appendChild(t);
       });
     }
+    hrApplyRadar();
     hrPick(0);
+    loadRadarScore(loc);
     const st = document.getElementById("hourly-stamp");
     if(st){ st.replaceChildren(); st.appendChild(stampEl(hourlyIssued(loc))); }
   }catch(e){
@@ -6933,6 +6936,120 @@ async function loadHourly(){
     const pc = document.getElementById("hr-pct"); if(pc) pc.textContent = "\u2013";
     if(slider) slider.disabled = true;
   }
+}
+
+/* ---- Radar-aware score (Nov 10, 2026): the CURRENT hour ("Now") also reacts to live NEXRAD echoes near the spot ----
+   Samples the same IEM nexrad-n0q current frame the Doppler map uses, on an offscreen canvas (IEM serves CORS *),
+   measures echo coverage/intensity within ~10 mi of the spot, and docks only the Now score. Any failure — tile load,
+   CORS, canvas — leaves the forecast score untouched, silently. Future hours stay forecast-only. */
+var radarAdj = null, radarBusy = false;
+function radarPixelClass(r, g, b){
+  if(r >= 170 && g <= 125) return 3;
+  if(r >= 195 && g >= 110) return 2;
+  if(g >= 100) return 1;
+  return 0;
+}
+function radarEchoStats(data, w, h, cx, cy, rPx){
+  var total = 0, echo = 0, light = 0, mod = 0, heavy = 0;
+  var r2 = rPx * rPx;
+  for(var y = 0; y < h; y++){
+    for(var x = 0; x < w; x++){
+      var dx = x - cx, dy = y - cy;
+      if(dx * dx + dy * dy > r2) continue;
+      total++;
+      var i = (y * w + x) * 4;
+      if(data[i + 3] < 40) continue;
+      var cls = radarPixelClass(data[i], data[i + 1], data[i + 2]);
+      if(!cls) continue;
+      echo++;
+      if(cls === 3) heavy++; else if(cls === 2) mod++; else light++;
+    }
+  }
+  return { total: total, echo: echo, cov: total ? echo / total : 0, lightF: total ? light / total : 0, modF: total ? mod / total : 0, heavyF: total ? heavy / total : 0 };
+}
+function radarDockFromStats(st){
+  if(!st || !st.total) return { dock: 0, cap: null, label: "" };
+  if(st.heavyF >= 0.04) return { dock: 35, cap: 45, label: "Storm cell on radar near you" };
+  if(st.heavyF >= 0.015) return { dock: 20, cap: 59, label: "Storm cell on radar near you" };
+  if(st.modF >= 0.12) return { dock: 20, cap: 59, label: "Rain on radar near you" };
+  if(st.cov >= 0.25) return { dock: 8, cap: null, label: "Light rain on radar near you" };
+  return { dock: 0, cap: null, label: "" };
+}
+function hrApplyRadar(){
+  try{
+    var steps = window._hrHours || [];
+    var now = steps[0];
+    if(!now || now.label !== "Now") return false;
+    if(!radarAdj || radarAdj.status !== "ok") return false;
+    if(window._hrLocKey !== radarAdj.key) return false;
+    if(now.fcScore == null) now.fcScore = now.score;
+    var s = now.fcScore - (radarAdj.dock || 0);
+    if(radarAdj.cap != null) s = Math.min(s, radarAdj.cap);
+    now.score = Math.max(3, Math.round(s));
+    now.radarNote = radarAdj.dock > 0 ? radarAdj.label : "";
+    return true;
+  }catch(e){ return false; }
+}
+function radarLoadTile(ctx, url, x, y){
+  return new Promise(function(res){
+    var done = false;
+    function fin(ok){ if(!done){ done = true; res(ok); } }
+    var to = setTimeout(function(){ fin(false); }, 8000);
+    try{
+      var img = new Image();
+      img.crossOrigin = "anonymous";
+      img.onload = function(){ clearTimeout(to); try{ ctx.drawImage(img, x, y); fin(true); }catch(e){ fin(false); } };
+      img.onerror = function(){ clearTimeout(to); fin(false); };
+      img.src = url;
+    }catch(e){ clearTimeout(to); fin(false); }
+  });
+}
+async function loadRadarScore(locArg){
+  try{
+    var loc = locArg || wxLoc();
+    var key = loc.lat.toFixed(3) + "," + loc.lng.toFixed(3);
+    if(radarAdj && radarAdj.key === key && (Date.now() - radarAdj.t) < 300000){
+      if(radarAdj.status === "ok" && hrApplyRadar()){
+        var sl0 = document.getElementById("hr-slider");
+        if(sl0 && +sl0.value === 0) hrPick(0);
+      }
+      return;
+    }
+    if(radarBusy) return;
+    radarBusy = true;
+    try{
+      var z = 11, n = Math.pow(2, z);
+      var latRad = loc.lat * Math.PI / 180;
+      var xf = (loc.lng + 180) / 360 * n;
+      var yf = (1 - Math.log(Math.tan(latRad) + 1 / Math.cos(latRad)) / Math.PI) / 2 * n;
+      var cx = Math.floor(xf), cy = Math.floor(yf);
+      var px = (xf - cx) * 256, py = (yf - cy) * 256;
+      var cv = document.createElement("canvas");
+      cv.width = 768; cv.height = 768;
+      var ctx = cv.getContext("2d", { willReadFrequently: true });
+      if(!ctx) throw 0;
+      var base = "https://mesonet.agron.iastate.edu/cache/tile.py/1.0.0/nexrad-n0q-900913/" + z + "/";
+      var jobs = [];
+      for(var dy = -1; dy <= 1; dy++) for(var dx = -1; dx <= 1; dx++){
+        jobs.push(radarLoadTile(ctx, base + (cx + dx) + "/" + (cy + dy) + ".png", dx * 256 - px + 384, dy * 256 - py + 384));
+      }
+      var results = await Promise.all(jobs);
+      if(!results[4]) throw 0;
+      var data;
+      try{ data = ctx.getImageData(0, 0, 768, 768).data; }catch(e){ throw 0; }
+      var miPerPx = 24901 * Math.cos(latRad) / (256 * n);
+      var stats = radarEchoStats(data, 768, 768, 384, 384, 10 / miPerPx);
+      var d = radarDockFromStats(stats);
+      radarAdj = { status: "ok", key: key, dock: d.dock, cap: d.cap, label: d.label, t: Date.now() };
+      if(hrApplyRadar()){
+        var sl = document.getElementById("hr-slider");
+        if(sl && +sl.value === 0) hrPick(0);
+      }
+    }catch(e){
+      radarAdj = { status: "fail", key: key, dock: 0, cap: null, label: "", t: Date.now() };
+    }
+    radarBusy = false;
+  }catch(e){ radarBusy = false; }
 }
 /* ---- Nov 10 top-5 weather additions: pressure + trend, UV peak, sun/moon, visibility ---- */
 function pressureTrendWord(deltaIn){ return deltaIn > 0.02 ? "Rising" : deltaIn < -0.02 ? "Falling" : "Steady"; }

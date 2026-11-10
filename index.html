@@ -23,7 +23,7 @@
 <meta property="og:url" content="https://tampabayboating.com/">
 <meta property="og:title" content="Tampa Bay Boating — @tampabayboating">
 <meta property="og:description" content="Tampa Bay Boating — live tides and marine forecast, boat fuel prices, boat ramps, daily fishing reports, boating events, dock &amp; dine, and the boater's map for Tampa Bay. We do boat stuff.">
-<meta property="og:image" content="https://tampabayboating.com/assets/og-image.jpg">
+<meta property="og:image" content="assets/og-image.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Sunshine Skyway Bridge at golden hour — Tampa Bay Boating">
@@ -31,7 +31,7 @@
 <meta name="twitter:url" content="https://tampabayboating.com/">
 <meta name="twitter:title" content="Tampa Bay Boating — @tampabayboating">
 <meta name="twitter:description" content="Boating guides, local directories, events calendar, and merch for Tampa Bay boaters. We do boat stuff.">
-<meta name="twitter:image" content="https://tampabayboating.com/assets/og-image.jpg">
+<meta name="twitter:image" content="assets/og-image.jpg">
 <meta name="twitter:image:alt" content="Sunshine Skyway Bridge at golden hour — Tampa Bay Boating">
 <style>
 :root{
@@ -933,6 +933,7 @@ body.dark .travel-box .travel-note{color:#8fa8bd}
 .hr-rn{font-size:.6rem;line-height:1.2;color:#0072B2;height:1.2em;font-weight:700}
 .tide-row{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.1);font-size:.95rem}
 .tide-row:last-child{border:none}
+.fish-rate{font-size:.82em;letter-spacing:1px;white-space:nowrap}
 .tide-type{font-weight:800}
 .tide-H{color:#7fd4ff}.tide-L{color:var(--sun)}
 .marine-p{margin-bottom:12px}
@@ -1974,7 +1975,7 @@ function twlPlay(btn){
         <h3>Today's Tides</h3>
         <div id="tide-list"><p class="cond-fallback">Loading tides…</p></div>
         <h3 style="margin-top:20px">Future Tides</h3>
-        <p class="ft-note">Predicted tides &mdash; NOAA. Wind and weather can push the actual water higher or lower than predicted.</p>
+        <p class="ft-note">Predicted tides &mdash; NOAA. Wind and weather can push the actual water higher or lower than predicted. Fish show the fishing rating for that tide — 1 is slow, 8 is the best bite (solunar guide).</p>
         <div class="ft-tabs" id="ft-tabs" role="tablist" aria-label="Future tides by day"></div>
         <div id="ft-panels"><p class="cond-fallback">Loading future tides&hellip;</p></div>
         <div class="ft-slide" id="ft-slide" hidden>
@@ -5809,6 +5810,21 @@ function fmtTideTime(t){
   let h = +hm[0]; const ap = h>=12?"PM":"AM"; h = h%12||12;
   return h+":"+hm[1]+" "+ap;
 }
+function fishRatingFor(when, deltaFt){
+  // Solunar-style fishing guide for a tide: moving water (tide height change)
+  // + moon phase + dawn/dusk feeding windows. A guide only — not a guarantee of fish.
+  var flow = Math.min(1, Math.abs(deltaFt || 0) / 3.2);
+  var cycle = 29.530588853;
+  var age = ((when.getTime() - Date.UTC(2000, 0, 6, 18, 14)) / 86400000) % cycle;
+  if(age < 0) age += cycle;
+  var phaseFactor = 0.35 + 0.65 * Math.abs(Math.cos(2 * Math.PI * age / cycle));
+  var mins = when.getHours() * 60 + when.getMinutes();
+  var tod = 0.75;
+  if(Math.abs(mins - 410) <= 100 || Math.abs(mins - 1065) <= 100) tod = 1.0;
+  else if(mins >= 600 && mins <= 900) tod = 0.55;
+  var score = 1 + 7 * (0.45 * flow + 0.30 * phaseFactor + 0.25 * tod);
+  return Math.max(1, Math.min(8, Math.round(score)));
+}
 const TRAVEL_LOCATIONS = {
   tampa:      {name:"Tampa Bay", station:"8726674", zone:"GMZ830", label:"East Bay / Tampa Bay"},
   keywest:    {name:"Florida Keys \u2014 Key West", station:"8724580", zone:"GMZ054", label:"Key West Harbor"},
@@ -6244,10 +6260,13 @@ async function loadTides(){
     const tloc = wxLoc();
     const r = await fetch("https://api.tidesandcurrents.noaa.gov/api/prod/datagetter?date=today&station="+tloc.station+"&product=predictions&datum=MLLW&time_zone=lst_ldt&units=english&interval=hilo&format=json");
     const d = await r.json();
-    const preds = (d.predictions||[]).slice(0,4);
+    const all = d.predictions || [];
+    const dayVals = all.map(p=>Number(p.v)).filter(v=>!isNaN(v));
+    const dayRange = dayVals.length ? Math.max.apply(null, dayVals) - Math.min.apply(null, dayVals) : 0;
+    const preds = all.slice(0,4);
     if(!preds.length) throw 0;
     box.replaceChildren();
-    preds.forEach(p=>{
+    preds.forEach((p, i)=>{
       const type = p.type === "H" ? "H" : "L";
       const row = document.createElement("div");
       row.className = "tide-row";
@@ -6256,6 +6275,11 @@ async function loadTides(){
       label.textContent = type === "H" ? "High tide" : "Low tide";
       const details = document.createElement("span");
       details.textContent = fmtTideTime(String(p.t||"")) + " · " + Number(p.v).toFixed(1) + " ft";
+      const deltaFt = i > 0 ? Math.abs(Number(p.v) - Number(all[i-1].v)) : dayRange;
+      const fish = document.createElement("span");
+      fish.className = "fish-rate";
+      fish.textContent = " " + "\uD83D\uDC1F".repeat(fishRatingFor(new Date(String(p.t||"").replace(" ","T")), deltaFt));
+      details.appendChild(fish);
       row.append(label, details);
       box.appendChild(row);
     });
@@ -6331,6 +6355,17 @@ async function loadFutureTides(){
         label.textContent = type === "H" ? "High tide" : "Low tide";
         const details = document.createElement("span");
         details.textContent = fmtTideTime(String(p.t || "")) + " · " + Number(p.v).toFixed(1) + " ft";
+        const gi = preds.indexOf(p);
+        let deltaFt;
+        if(gi > 0) deltaFt = Math.abs(Number(p.v) - Number(preds[gi-1].v));
+        else {
+          const dv = rows.map(q=>Number(q.v)).filter(v=>!isNaN(v));
+          deltaFt = dv.length ? Math.max.apply(null, dv) - Math.min.apply(null, dv) : 0;
+        }
+        const fish = document.createElement("span");
+        fish.className = "fish-rate";
+        fish.textContent = " " + "\uD83D\uDC1F".repeat(fishRatingFor(new Date(String(p.t || "").replace(" ", "T")), deltaFt));
+        details.appendChild(fish);
         row.append(label, details);
         panel.appendChild(row);
       });

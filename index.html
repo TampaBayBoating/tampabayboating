@@ -933,7 +933,7 @@ body.dark .travel-box .travel-note{color:#8fa8bd}
 .hr-rn{font-size:.6rem;line-height:1.2;color:#0072B2;height:1.2em;font-weight:700}
 .tide-row{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.1);font-size:.95rem}
 .tide-row:last-child{border:none}
-.fish-rate{font-size:.82em;letter-spacing:1px;white-space:nowrap}
+.fish-rate{display:inline-block;vertical-align:middle;font-size:.8em;letter-spacing:1px;line-height:1.05;text-align:center}
 .tide-type{font-weight:800}
 .tide-H{color:#7fd4ff}.tide-L{color:var(--sun)}
 .marine-p{margin-bottom:12px}
@@ -6562,8 +6562,18 @@ function ftSlideDraw(){
     whenF.setMinutes(mins);
     const t3 = document.createElement("span");
     t3.className = "fish-rate";
-    t3.textContent = " \u00B7 " + "\uD83D\uDC1F".repeat(fishRatingAt(whenF, Math.abs(cur.slope || 0)));
-    read.append(t3);
+    const nF = fishRatingAt(whenF, Math.abs(cur.slope || 0));
+    const FISH = "\uD83D\uDC1F";
+    if(nF <= 3) t3.textContent = FISH.repeat(nF);
+    else {
+      const topF = Math.ceil(nF / 2);
+      const r1 = document.createElement("span"); r1.textContent = FISH.repeat(topF);
+      const r2 = document.createElement("span"); r2.textContent = FISH.repeat(nF - topF);
+      t3.append(r1, document.createElement("br"), r2);
+    }
+    const sepF = document.createElement("span");
+    sepF.textContent = " \u00B7 ";
+    read.append(sepF, t3);
   }
 }
 async function loadTideCurve(){

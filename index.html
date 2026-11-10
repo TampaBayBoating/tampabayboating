@@ -6541,6 +6541,16 @@ function ftSlideDraw(){
     svg += "<line x1=\"" + mx + "\" y1=\"" + mt + "\" x2=\"" + mx + "\" y2=\"" + (mt + ph) + "\" stroke=\"#ffffff\" stroke-width=\"1\" stroke-dasharray=\"3 3\" opacity=\".65\"/>";
     svg += "<circle cx=\"" + mx + "\" cy=\"" + Y(cur.v).toFixed(1) + "\" r=\"4\" fill=\"#ffffff\" stroke=\"#0a2540\" stroke-width=\"2\"/>";
   }
+  if(cur){
+    const whenF = new Date(key + "T00:00:00");
+    whenF.setMinutes(mins);
+    const nF = fishRatingAt(whenF, Math.abs(cur.slope || 0));
+    const fx = Math.max(34, Math.min(W - 34, X(mins)));
+    const rowsF = nF <= 3 ? [nF] : [Math.ceil(nF / 2), Math.floor(nF / 2)];
+    rowsF.forEach(function(r, ri){
+      svg += "<text x=\"" + fx.toFixed(1) + "\" y=\"" + (20 + ri * 15) + "\" text-anchor=\"middle\" font-size=\"11\">" + "\uD83D\uDC1F".repeat(r) + "</text>";
+    });
+  }
   svg += "</svg>";
   curveBox.innerHTML = svg;
   const h24 = Math.floor(mins / 60), mm2 = mins % 60;
@@ -6557,24 +6567,6 @@ function ftSlideDraw(){
   if(cls) t2.className = cls;
   t2.textContent = dir;
   read.append(t1, t2);
-  if(cur){
-    const whenF = new Date(key + "T00:00:00");
-    whenF.setMinutes(mins);
-    const t3 = document.createElement("span");
-    t3.className = "fish-rate";
-    const nF = fishRatingAt(whenF, Math.abs(cur.slope || 0));
-    const FISH = "\uD83D\uDC1F";
-    if(nF <= 3) t3.textContent = FISH.repeat(nF);
-    else {
-      const topF = Math.ceil(nF / 2);
-      const r1 = document.createElement("span"); r1.textContent = FISH.repeat(topF);
-      const r2 = document.createElement("span"); r2.textContent = FISH.repeat(nF - topF);
-      t3.append(r1, document.createElement("br"), r2);
-    }
-    const sepF = document.createElement("span");
-    sepF.textContent = " \u00B7 ";
-    read.append(sepF, t3);
-  }
 }
 async function loadTideCurve(){
   const box = document.getElementById("ft-slide");

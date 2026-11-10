@@ -1902,7 +1902,7 @@ if(typeof document!=='undefined'){
         <p class="hr-take" id="hourly-take"></p>
       </div>
       <div class="hr-now-row"><span class="hr-pct-circle" id="hr-pct">&ndash;</span><div id="hr-detail"><span class="cond-fallback">Loading the next 24 hours&hellip;</span></div></div>
-       <input type="range" id="hr-slider" min="0" max="23" step="1" value="0" oninput="hrPick(+this.value)" aria-label="Slide through the day">
+       <input type="range" id="hr-slider" min="0" max="11" step="1" value="0" oninput="hrPick(+this.value)" aria-label="Slide through the day">
        <div class="hr-ticks" id="hr-ticks"></div>
        <div class="skill-box" id="skill-hourly"></div>
       <div id="hourly-stamp"></div>
@@ -6082,7 +6082,7 @@ async function loadHourly(){
   if(areaEl) areaEl.textContent = loc.name;
   const take = document.getElementById("hourly-take");
   try{
-    const periods = (await getHourlyPeriods(loc)).slice(0, 24);
+    const periods = (await getHourlyPeriods(loc)).slice(0, 12);
     if(!periods.length) throw 0;
     const winds = periods.map(hrWindMph);
     if(take) take.textContent = hrTakeaway(periods, winds);

@@ -3184,13 +3184,13 @@ document.getElementById('tbbc-save').addEventListener('click', function () {
     <div class="sec-head">
       <span class="sec-kicker">Keep Her Running</span>
       
-      <p>Mechanics, electronics installers, detailers, and canvas shops around Tampa Bay.</p>
+      <p>Mechanics, electronics installers, detailers, and canvas &amp; upholstery shops around Tampa Bay.</p>
     </div>
     <div class="pill-row">
       <button class="pill sel" id="pill-mech" onclick="svcTab('Mechanics')"><svg class=ic aria-hidden=true><use href=#i-wrench></use></svg> Mechanics</button>
       <button class="pill" id="pill-elec" onclick="svcTab('Electronics')"><svg class=ic aria-hidden=true><use href=#i-tower></use></svg> Electronics</button>
       <button class="pill" id="pill-det" onclick="svcTab('Detailing')"><svg class=ic aria-hidden=true><use href=#i-spark></use></svg> Detailing</button>
-      <button class="pill" id="pill-can" onclick="svcTab('Canvas')"><svg class=ic aria-hidden=true><use href=#i-sail></use></svg> Canvas</button>
+      <button class="pill" id="pill-can" onclick="svcTab('Canvas')"><svg class=ic aria-hidden=true><use href=#i-sail></use></svg> Canvas &amp; Upholstery</button>
     </div>
     <div class="search" style="margin:14px 0"><input id="svc-input" type="text" placeholder="Search by name or area..." oninput="renderSvc()"></div>
     <div class="dir-grid" id="svc-grid"></div>
@@ -3210,7 +3210,7 @@ document.getElementById('tbbc-save').addEventListener('click', function () {
     <div class="sec-head">
       <span class="sec-kicker">Fix It Up</span>
       
-      <p>Everywhere to buy boat parts around Tampa Bay — plus the fabricators who build and rebuild. Canvas &amp; upholstery shops live in <a href="#/canvas">Marine Services — Canvas</a>.</p>
+      <p>Everywhere to buy boat parts around Tampa Bay — plus the fabricators who build and rebuild. Canvas &amp; upholstery shops live in <a href="#/canvas">Marine Services — Canvas &amp; Upholstery</a>.</p>
     </div>
     <div class="pill-row" style="text-align:center; margin-bottom:14px">
       <button class="pill sel" id="pill-parts" onclick="partTab('Parts')"><svg class=ic aria-hidden=true><use href=#i-parts></use></svg> Parts Stores</button>
@@ -4441,6 +4441,7 @@ const MAP_PINS = [
 ["West Marine (Sarasota)","parts",27.285724,-82.531792,"4708 S Tamiami Trl, Sarasota","(941) 360-6000","Marine parts & supply store"],
 ["Boat Owners Warehouse","parts",27.244550,-82.511040,"7522 S Tamiami Trl, Sarasota","(941) 233-7777","Marine parts & supply warehouse store"],
 ["Marine Surplus","parts",27.415080,-82.547090,"7070 15th St E, Sarasota","(941) 758-3552","Surplus & OEM boat parts store, since 1983"],
+["ADT Yacht Interiors","service",27.415362,-82.547921,"7050 15th St E, Sarasota","(941) 209-8625","Marine upholstery \u2014 custom boat & yacht upholstery, covers & enclosures"],
 ["Boat Parts and More","parts",27.183947,-82.484697,"830 S Tamiami Trl, Osprey","(941) 966-4320","Boat parts store; outboard service & trolling motor install"],
 ["Innovation Marine Inc","service",27.396832,-82.544027,"8011 15th St E, Sarasota","(941) 355-7852","High-performance engine building & machine shop; Mercury authorized service"],
 ["Davis Bros. Marine Services","service",27.369895,-82.551069,"4023 Royal Palm Ave, Sarasota","(941) 800-5151","Outboard mechanics, maintenance, re-wiring & detailing"],
@@ -5421,6 +5422,7 @@ const SERVICES = [
  ["Harborside Marine Canvas and Upholstery","Palm Harbor","Canvas","Covers, enclosures, biminis, upholstery & repairs — mobile service","(727) 335-9997","https://harborsidemarinecanvas.com/"],
  ["Suncoast Mobile Marine Canvas","Palm Harbor – mobile","Canvas","Covers, enclosures & biminis — since 1982, comes to your boat","(727) 785-2901","https://suncoastmarinecanvas.com/"],
  ["Pasco Boat Tops","Port Richey","Canvas","Biminis, enclosures, covers, upholstery & canvas repair","(727) 373-9492","https://pascoboattop.com/"],
+ ["ADT Yacht Interiors","Sarasota","Canvas","Custom boat & yacht upholstery, covers & enclosures","(941) 209-8625",null],
  ["Best Bargain's Fabric and Upholstery","Sarasota","Canvas","Marine upholstery & reupholstery","(941) 924-5154",null],
  ["Canvas West","Sarasota","Canvas","Boat tops, covers, enclosures & upholstery","(941) 355-0780","https://www.ez2cy.com/"],
  ["Florida Boat Canvas","Sarasota","Canvas","Biminis, enclosures, covers & canvas repair","(941) 539-8855","http://boatcanvas.us/"],
@@ -5452,7 +5454,7 @@ function svcDirCard(b){
   if(b[3])rows.push(b[3]);
   if(b[4])rows.push('<svg class=ic aria-hidden=true><use href=#i-phone></use></svg> <a href="tel:'+String(b[4]).replace(/[^0-9+]/g,'')+'">'+b[4]+'</a>');
   if(b[5])rows.push('<svg class=ic aria-hidden=true><use href=#i-link></use></svg> <a href="'+b[5]+'" target="_blank" rel="noopener">Visit website</a>');
-  return '<div class="dir-card"><div class="city">'+b[1]+'</div><h4>'+b[0]+'</h4><div class="type">'+b[2]+'</div><div class="contact">'+rows.join('<br>')+'</div></div>';
+  return '<div class="dir-card"><div class="city">'+b[1]+'</div><h4>'+b[0]+'</h4><div class="type">'+(b[2]==="Canvas"?"Canvas &amp; Upholstery":b[2])+'</div><div class="contact">'+rows.join('<br>')+'</div></div>';
 }
 function renderSvc(){
   const q = document.getElementById("svc-input").value.trim().toLowerCase();

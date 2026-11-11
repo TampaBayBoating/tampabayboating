@@ -11,7 +11,9 @@
 <link rel="shortcut icon" href="assets/app-icon.ico">
 <link rel="apple-touch-icon" sizes="180x180" href="assets/app-icon-180.png">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<link rel="stylesheet" href="https://unpkg.com/leaflet-velocity@2.1.4/dist/leaflet-velocity.css">
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://unpkg.com/leaflet-velocity@2.1.4/dist/leaflet-velocity.min.js"></script>
 <meta name="theme-color" content="#0a2540">
 <link rel="manifest" href="manifest.json">
 <meta name="mobile-web-app-capable" content="yes">
@@ -2068,6 +2070,84 @@ function twlPlay(btn){
           #tbb-doppler .dop-bar{flex:1;height:8px;border-radius:5px;background:linear-gradient(90deg,#04e9e7,#00f53d,#fff700,#ffb700,#ff7b00,#ff0000,#d600b4)}
           #tbb-doppler .dop-attr{margin-top:8px;font-size:10.5px;color:#7f97ad}
           #tbb-doppler .leaflet-control-attribution{display:none}
+          #tbb-doppler{min-width:0;max-width:100%}
+          #tbb-doppler .dop-deck{min-width:0}
+          #tbb-doppler .dop-strip{display:flex;gap:7px;margin-top:11px;overflow-x:auto;padding-bottom:2px;scrollbar-width:none;min-width:0;max-width:100%;contain:inline-size}
+          #tbb-doppler .dop-strip::-webkit-scrollbar{display:none}
+          #tbb-doppler .dop-qtog{flex:0 0 auto;border:1px solid rgba(125,211,252,.3);background:rgba(10,32,56,.75);color:#cfe8ff;border-radius:999px;padding:8px 13px;font-size:12.5px;font-weight:700;cursor:pointer;font-family:inherit}
+          #tbb-doppler .dop-qtog.on{background:linear-gradient(90deg,rgba(34,211,238,.25),rgba(255,183,3,.25));border-color:#ffb703;color:#fff;box-shadow:0 0 12px rgba(34,211,238,.25)}
+          #tbb-doppler .dop-qtog.all{border-color:#ffb703;color:#ffd76a;margin-left:auto}
+          #doppler-layers{position:absolute;left:0;right:0;bottom:0;z-index:1300;max-height:64%;overflow-y:auto;padding:12px 14px 16px;background:linear-gradient(180deg,rgba(7,24,44,.97),rgba(4,14,28,.99));border-top:1.5px solid rgba(125,211,252,.35);border-radius:14px 14px 0 0;transform:translateY(10px);opacity:0;visibility:hidden;pointer-events:none;transition:transform .22s ease,opacity .22s ease,visibility .22s}
+          #doppler-layers.open{transform:translateY(0);opacity:1;visibility:visible;pointer-events:auto}
+          #doppler-layers .dop-grab{width:44px;height:4px;border-radius:4px;background:rgba(148,197,255,.4);margin:0 auto 10px}
+          #doppler-layers .dop-sheethead{display:flex;align-items:center;margin-bottom:12px}
+          #doppler-layers .dop-sheethead b{font-size:15px;letter-spacing:1.2px;color:#e8f2fa}
+          #doppler-layers .dop-sheethead b span{color:#22d3ee}
+          #doppler-layers-close{margin-left:auto;width:32px;height:32px;border-radius:50%;border:1px solid rgba(125,211,252,.35);background:rgba(10,32,56,.8);color:#cfe8ff;font-size:15px;cursor:pointer;font-family:inherit;line-height:1}
+          #doppler-layers .dop-sec{margin:14px 2px 8px;font-size:10.5px;font-weight:800;letter-spacing:1.6px;color:#7dd3fc;text-transform:uppercase;border-bottom:1px solid rgba(125,211,252,.18);padding-bottom:5px}
+          #doppler-layers .dop-sec:first-of-type{margin-top:2px}
+          #doppler-layers .dop-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px 8px}
+          #doppler-layers .dop-card{cursor:pointer;background:none;border:0;padding:0;font-family:inherit;text-align:center}
+          #doppler-layers .dop-thumb{position:relative;height:50px;border-radius:12px;border:1px solid rgba(125,211,252,.22);overflow:hidden;display:block}
+          #doppler-layers .dop-thumb i{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-style:normal;font-size:21px;color:#fff;text-shadow:0 1px 6px rgba(0,0,0,.5)}
+          #doppler-layers .dop-lab{display:block;margin-top:5px;font-size:11.5px;font-weight:600;color:#cfe0f2;text-align:center;line-height:1.25;min-height:2.5em}
+          #doppler-layers .dop-card.on .dop-thumb{border-color:#ffb703;box-shadow:0 0 0 1px #ffb703,0 0 14px rgba(255,183,3,.4)}
+          #doppler-layers .dop-card.on .dop-lab{color:#ffd76a}
+          #doppler-layers .dop-tag{position:absolute;top:5px;right:5px;z-index:2;font-size:8.5px;font-weight:800;letter-spacing:.8px;padding:2px 6px;border-radius:20px;background:rgba(34,211,238,.92);color:#06121f;display:none}
+          #doppler-layers .dop-card.on .dop-tag{display:block}
+          #tbb-doppler .t-radar{background:linear-gradient(135deg,#0aff5a,#eaff00 35%,#ff9d00 65%,#ff004c)}
+          #tbb-doppler .t-sat{background:linear-gradient(135deg,#123a6e,#2f6fb4 45%,#cfe8ff)}
+          #tbb-doppler .t-wind{background:linear-gradient(135deg,#065f46,#10b981 50%,#a7f3d0)}
+          #tbb-doppler .t-temp{background:linear-gradient(135deg,#facc15,#f97316 55%,#dc2626)}
+          #tbb-doppler .t-waves{background:linear-gradient(135deg,#312e81,#7c3aed 50%,#2563eb)}
+          #tbb-doppler .t-clouds{background:linear-gradient(135deg,#334155,#94a3b8 55%,#e2e8f0)}
+          #tbb-doppler .t-accum{background:linear-gradient(135deg,#14532d,#22c55e 40%,#eab308 70%,#9333ea)}
+          #tbb-doppler .t-storm{background:linear-gradient(135deg,#1e293b,#7c2d12 60%,#f59e0b)}
+          #tbb-doppler .t-gusts{background:linear-gradient(135deg,#134e4a,#14b8a6 50%,#fde68a)}
+          #tbb-doppler .t-pressure{background:linear-gradient(135deg,#4c1d95,#8b5cf6 55%,#c4b5fd)}
+          #tbb-doppler .t-vis{background:linear-gradient(135deg,#3f3f46,#a1a1aa 55%,#fde68a)}
+          #tbb-doppler .t-swell{background:linear-gradient(135deg,#082f49,#0284c7 55%,#67e8f9)}
+          #tbb-doppler .t-tides{background:linear-gradient(135deg,#0c4a6e,#0369a1 55%,#7dd3fc)}
+          #tbb-doppler .vchip{border-radius:999px;padding:3px 8px;font-size:11.5px;font-weight:800;color:#06121f;white-space:nowrap;border:1.5px solid rgba(255,255,255,.75);box-shadow:0 1px 6px rgba(0,0,0,.45)}
+          #tbb-doppler .leaflet-popup-content-wrapper{background:rgba(5,20,38,.95);color:#e8f2fa;border:1px solid rgba(56,189,248,.4);border-radius:12px}
+          #tbb-doppler .leaflet-popup-content a{color:#7dd3fc}
+          #tbb-doppler .leaflet-popup-tip{background:rgba(5,20,38,.95)}
+          #tbb-doppler .velocity-control{background:rgba(5,20,38,.85)!important;color:#cfe8ff!important;border:1px solid rgba(56,189,248,.35);border-radius:10px;padding:5px 9px;font-size:12px}
+          #doppler-toast{position:absolute;left:50%;top:54px;transform:translateX(-50%) translateY(-8px);z-index:1400;background:rgba(5,20,38,.94);border:1px solid rgba(125,211,252,.4);color:#e8f2fa;font-size:12.5px;font-weight:600;padding:8px 14px;border-radius:999px;opacity:0;pointer-events:none;transition:opacity .2s ease,transform .2s ease;max-width:92%;text-align:center}
+          #doppler-toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+          /* v3.2 theme — edgy futuristic chrome, realistic layer art. Colors, shadows,
+             backgrounds and glows ONLY: no size, padding or layout property changes,
+             so the verified 375px phone fit cannot move. */
+          #tbb-doppler{border:1px solid rgba(56,189,248,.38);box-shadow:0 0 0 1px rgba(2,12,24,.6),0 0 22px rgba(34,211,238,.16),0 10px 28px rgba(0,0,0,.45);background:linear-gradient(180deg,#071a30,#04101f)}
+          #tbb-doppler .dop-top{background:linear-gradient(180deg,rgba(3,12,24,.92),rgba(3,12,24,.45) 80%,transparent);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+          #tbb-doppler .dop-live{background:linear-gradient(90deg,#e11d48,#f43f5e);box-shadow:0 0 10px rgba(244,63,94,.75);animation:dopPulse 2.2s ease-in-out infinite}
+          @keyframes dopPulse{0%,100%{box-shadow:0 0 6px rgba(244,63,94,.55)}50%{box-shadow:0 0 14px rgba(244,63,94,.95)}}
+          #tbb-doppler .dop-ftime{background:rgba(3,14,28,.82);border:1px solid rgba(125,211,252,.35);box-shadow:0 0 10px rgba(34,211,238,.18)}
+          #tbb-doppler .dop-fsbtn{background:rgba(3,14,28,.85);border:1px solid rgba(125,211,252,.45);box-shadow:0 0 12px rgba(34,211,238,.22);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+          #tbb-doppler .dop-deck{background:linear-gradient(180deg,rgba(6,22,40,.96),rgba(3,11,22,.99));backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-top:2px solid;border-image:linear-gradient(90deg,#22d3ee,#ffb703 55%,#22d3ee) 1}
+          #tbb-doppler-play{background:radial-gradient(circle at 32% 30%,#ffd76a,#ffb703 58%,#f59e0b);box-shadow:0 0 16px rgba(255,183,3,.5),0 4px 14px rgba(0,0,0,.45)}
+          #tbb-doppler-scrub::-webkit-slider-thumb{box-shadow:0 0 0 3px rgba(34,211,238,.35),0 0 12px rgba(34,211,238,.55),0 2px 8px rgba(0,0,0,.5)}
+          #tbb-doppler .dop-chip{background:rgba(8,28,50,.72);border:1px solid rgba(125,211,252,.32);box-shadow:inset 0 1px 0 rgba(255,255,255,.06)}
+          #tbb-doppler .dop-chip.on{background:linear-gradient(90deg,rgba(34,211,238,.32),rgba(255,183,3,.32));border-color:#ffb703;color:#fff;box-shadow:0 0 12px rgba(255,183,3,.35)}
+          #tbb-doppler .dop-qtog{background:rgba(8,28,50,.72);border:1px solid rgba(125,211,252,.32);box-shadow:inset 0 1px 0 rgba(255,255,255,.06)}
+          #tbb-doppler .dop-qtog.on{background:linear-gradient(90deg,rgba(34,211,238,.32),rgba(255,183,3,.32));border-color:#ffb703;box-shadow:0 0 12px rgba(34,211,238,.4)}
+          #doppler-layers{background:linear-gradient(180deg,rgba(5,18,34,.97),rgba(2,9,19,.99));backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-top:1.5px solid rgba(34,211,238,.5);box-shadow:0 -12px 32px rgba(0,0,0,.5)}
+          #doppler-layers .dop-card.on .dop-thumb{border-color:#22d3ee;box-shadow:0 0 0 1px #22d3ee,0 0 16px rgba(34,211,238,.55)}
+          #doppler-layers .dop-thumb i{text-shadow:0 0 8px rgba(125,211,252,.8),0 1px 6px rgba(0,0,0,.6)}
+          #doppler-layers .dop-tag{background:linear-gradient(90deg,#22d3ee,#67e8f9);box-shadow:0 0 8px rgba(34,211,238,.7)}
+          #tbb-doppler .t-radar{background:radial-gradient(circle at 62% 38%,rgba(255,0,76,.95) 0 8%,rgba(255,157,0,.95) 9% 16%,rgba(234,255,0,.95) 17% 25%,rgba(10,255,90,.9) 26% 40%,rgba(4,40,24,0) 58%),radial-gradient(circle at 30% 70%,rgba(10,255,90,.75) 0 12%,rgba(4,40,24,0) 30%),linear-gradient(135deg,#04140c,#0a2e1a)}
+          #tbb-doppler .t-sat{background:radial-gradient(ellipse 70% 42% at 30% 34%,rgba(255,255,255,.95),rgba(255,255,255,0) 70%),radial-gradient(ellipse 55% 36% at 68% 62%,rgba(240,249,255,.9),rgba(240,249,255,0) 70%),radial-gradient(ellipse 40% 26% at 52% 24%,rgba(255,255,255,.75),rgba(255,255,255,0) 70%),linear-gradient(150deg,#0b2d57,#123a6e 55%,#1d4e79)}
+          #tbb-doppler .t-clouds{background:radial-gradient(ellipse 74% 48% at 36% 40%,rgba(255,255,255,.96),rgba(255,255,255,0) 72%),radial-gradient(ellipse 60% 40% at 70% 66%,rgba(226,232,240,.92),rgba(226,232,240,0) 72%),radial-gradient(ellipse 44% 30% at 58% 26%,rgba(255,255,255,.8),rgba(255,255,255,0) 70%),linear-gradient(150deg,#1e293b,#334155 60%,#475569)}
+          #tbb-doppler .t-wind{background:repeating-linear-gradient(115deg,rgba(167,243,208,.0) 0 7px,rgba(167,243,208,.55) 7px 8.5px,rgba(167,243,208,0) 8.5px 15px),linear-gradient(135deg,#04382a,#065f46 55%,#0d7a5f)}
+          #tbb-doppler .t-waves{background:repeating-linear-gradient(168deg,rgba(186,230,253,.0) 0 9px,rgba(186,230,253,.4) 9px 10.5px,rgba(186,230,253,0) 10.5px 19px),linear-gradient(135deg,#1e1b4b,#3730a3 50%,#1d4ed8)}
+          #tbb-doppler .t-swell{background:repeating-linear-gradient(168deg,rgba(165,243,252,.0) 0 11px,rgba(165,243,252,.45) 11px 12.5px,rgba(165,243,252,0) 12.5px 23px),linear-gradient(135deg,#082f49,#0369a1 60%,#0ea5e9)}
+          #tbb-doppler .t-storm{background:radial-gradient(circle at 50% 30%,rgba(245,158,11,.85),rgba(245,158,11,0) 55%),linear-gradient(150deg,#111827,#3b1302 65%,#7c2d12)}
+          #tbb-doppler .t-temp{background:linear-gradient(135deg,#fef08a,#facc15 30%,#f97316 62%,#dc2626)}
+          #tbb-doppler .t-accum{background:radial-gradient(circle at 30% 60%,rgba(147,51,234,.8),rgba(147,51,234,0) 55%),radial-gradient(circle at 68% 36%,rgba(234,179,8,.85),rgba(234,179,8,0) 52%),linear-gradient(135deg,#052e16,#14532d 45%,#166534)}
+          #tbb-doppler .t-pressure{background:radial-gradient(circle at 50% 42%,rgba(237,233,254,.9),rgba(237,233,254,0) 52%),linear-gradient(135deg,#2e1065,#5b21b6 55%,#7c3aed)}
+          #tbb-doppler .t-vis{background:radial-gradient(ellipse 80% 55% at 50% 45%,rgba(254,249,195,.75),rgba(254,249,195,0) 72%),linear-gradient(135deg,#27272a,#52525b 60%,#71717a)}
+          #tbb-doppler .t-tides{background:repeating-linear-gradient(172deg,rgba(224,242,254,.0) 0 8px,rgba(224,242,254,.4) 8px 9.5px,rgba(224,242,254,0) 9.5px 17px),linear-gradient(135deg,#082f49,#075985 55%,#0284c7)}
+          #tbb-doppler .t-gusts{background:repeating-linear-gradient(115deg,rgba(253,230,138,.0) 0 8px,rgba(253,230,138,.5) 8px 9.5px,rgba(253,230,138,0) 9.5px 17px),linear-gradient(135deg,#04211d,#134e4a 55%,#0f766e)}
           #tbb-doppler.dop-full{position:fixed;inset:0;z-index:3000;border-radius:0;display:flex;flex-direction:column}
           #tbb-doppler.dop-full #tbb-doppler-map{flex:1 1 auto;height:auto}
         </style>
@@ -2087,9 +2167,44 @@ function twlPlay(btn){
               <button type="button" class="dop-chip" id="doppler-refresh-chip">&#10227; Refresh</button>
               <span class="dop-opwrap">Radar strength <input id="doppler-opacity" type="range" min="30" max="100" value="85" aria-label="Radar opacity"></span>
             </div>
+            <div class="dop-strip" role="group" aria-label="Map layers quick toggles">
+              <button type="button" class="dop-qtog" data-d3="sat">&#128752; Satellite</button>
+              <button type="button" class="dop-qtog" data-d3="clouds">&#9729;&#65038; Clouds</button>
+              <button type="button" class="dop-qtog" data-d3="wind">&#127788;&#65038; Wind</button>
+              <button type="button" class="dop-qtog" data-d3="warn">&#9888;&#65038; Warnings</button>
+              <button type="button" class="dop-qtog all" id="doppler-all-layers">&#9776; All layers</button>
+            </div>
             <div class="dop-legend"><span>Light</span><div class="dop-bar"></div><span>Heavy</span></div>
             <div class="dop-attr">Radar: NOAA / NEXRAD via Iowa State IEM &middot; Map: Esri Ocean &middot; Updates every 5 min</div>
           </div>
+          <div id="doppler-layers" role="dialog" aria-label="Map layers">
+            <div class="dop-grab"></div>
+            <div class="dop-sheethead"><b>MAP <span>LAYERS</span></b><button type="button" id="doppler-layers-close" aria-label="Close layers panel">&#10005;</button></div>
+            <div class="dop-sec">Sky</div>
+            <div class="dop-grid">
+              <button type="button" class="dop-card on" data-d3="radar"><span class="dop-thumb t-radar"><i>&#128225;</i><span class="dop-tag">ON</span></span><span class="dop-lab">Radar</span></button>
+              <button type="button" class="dop-card" data-d3="sat"><span class="dop-thumb t-sat"><i>&#128752;</i><span class="dop-tag">ON</span></span><span class="dop-lab">Satellite</span></button>
+              <button type="button" class="dop-card" data-d3="clouds"><span class="dop-thumb t-clouds"><i>&#9729;&#65038;</i><span class="dop-tag">ON</span></span><span class="dop-lab">Clouds</span></button>
+              <button type="button" class="dop-card" data-d3="warn"><span class="dop-thumb t-storm"><i>&#9888;&#65038;</i><span class="dop-tag">ON</span></span><span class="dop-lab">Storm warnings</span></button>
+            </div>
+            <div class="dop-sec">Wind &amp; air</div>
+            <div class="dop-grid">
+              <button type="button" class="dop-card" data-d3="wind"><span class="dop-thumb t-wind"><i>&#127788;&#65038;</i><span class="dop-tag">ON</span></span><span class="dop-lab">Wind flow</span></button>
+              <button type="button" class="dop-card" data-d3="gusts"><span class="dop-thumb t-gusts"><i>&#128168;</i><span class="dop-tag">ON</span></span><span class="dop-lab">Gusts</span></button>
+              <button type="button" class="dop-card" data-d3="temp"><span class="dop-thumb t-temp"><i>&#127777;&#65038;</i><span class="dop-tag">ON</span></span><span class="dop-lab">Air temp</span></button>
+              <button type="button" class="dop-card" data-d3="pressure"><span class="dop-thumb t-pressure"><i>&#129517;</i><span class="dop-tag">ON</span></span><span class="dop-lab">Pressure</span></button>
+              <button type="button" class="dop-card" data-d3="vis"><span class="dop-thumb t-vis"><i>&#127787;&#65038;</i><span class="dop-tag">ON</span></span><span class="dop-lab">Visibility</span></button>
+            </div>
+            <div class="dop-sec">Water</div>
+            <div class="dop-grid">
+              <button type="button" class="dop-card" data-d3="rain"><span class="dop-thumb t-accum"><i>&#127783;&#65038;</i><span class="dop-tag">ON</span></span><span class="dop-lab">Rain total · 1 hr</span></button>
+              <button type="button" class="dop-card" data-d3="waves"><span class="dop-thumb t-waves"><i>&#127754;</i><span class="dop-tag">ON</span></span><span class="dop-lab">Waves · buoys</span></button>
+              <button type="button" class="dop-card" data-d3="swell"><span class="dop-thumb t-swell"><i>&#12316;&#65038;</i><span class="dop-tag">ON</span></span><span class="dop-lab">Swell</span></button>
+              <button type="button" class="dop-card" data-d3="tides"><span class="dop-thumb t-tides"><i>&#128207;</i><span class="dop-tag">ON</span></span><span class="dop-lab">Tide gauges</span></button>
+            </div>
+            <p style="margin:12px 2px 0;font-size:11px;line-height:1.45;color:#8fb0cc">Every layer is live data: NOAA radar, warnings &amp; tide gauges, NASA GOES-East satellite &amp; smoothed infrared clouds, Open-Meteo wind &amp; marine models, Iowa State rain totals. Clouds are smoothed so they read as cloud masses, not satellite pixels.</p>
+          </div>
+          <div id="doppler-toast" role="status"></div>
         </div>
         <!--DOPPLER-END-->
         <p style="font-size:.78rem;color:#a9c6c5;margin:8px 0 0">Animated NOAA radar &mdash; the loop covers the last hour, centered on the selected area. Drag the time slider to scrub. <a href="https://radar.weather.gov/" target="_blank" rel="noopener" style="color:#fff">Open the full NWS radar &rarr;</a></p>
@@ -7866,6 +7981,348 @@ function refreshWeather(){
 }
 setInterval(function(){ if(!document.hidden) refreshWeather(); }, 300000);
 document.addEventListener("visibilitychange", function(){ if(!document.hidden && (Date.now() - __wxLastRefresh) > 180000) refreshWeather(); });
+</script>
+<script>
+/* ---- Doppler layers v3 (Nov 11, 2026): satellite, smoothed clouds, animated wind,
+   gusts, air temp, rain total, storm warnings, waves — every layer real, live-sourced.
+   CONTAINMENT RULE: this block never edits v1 code or shared layout. All UI lives
+   inside #tbb-doppler (position:relative; overflow:hidden). Every entry point is
+   failure-isolated: if anything here throws, the v1 radar keeps working untouched. */
+var d3State = { sat: false, clouds: false, wind: false, gusts: false, temp: false, pressure: false, vis: false, rain: false, warn: false, waves: false, swell: false, tides: false };
+var d3Built = false, d3SatLayer = null, d3CloudLayer = null, d3RainLayer = null;
+var d3WindLayer = null, d3WindFallback = null, d3GustGroup = null, d3TempGroup = null, d3WarnGroup = null, d3WaveGroup = null;
+var d3SwellGroup = null, d3PresGroup = null, d3VisGroup = null, d3TideGroup = null;
+var D3_GAUGES = [
+  { id: "8726520", name: "St. Petersburg", lat: 27.7676, lng: -82.6403 },
+  { id: "8726724", name: "Clearwater Beach", lat: 27.9659, lng: -82.8001 },
+  { id: "8726347", name: "Egmont Key", lat: 27.6017, lng: -82.7614 },
+  { id: "8726486", name: "Gulfport · Boca Ciega Bay", lat: 27.72, lng: -82.70 }
+];
+var d3Loc = null, d3Om = null, d3OmAt = 0, d3OmBusy = false, d3WarnBusy = false;
+var D3_BUOYS = [
+  { id: "42098", name: "Tampa Bay offshore", lat: 27.590, lng: -82.931 },
+  { id: "42099", name: "West Florida Shelf", lat: 27.352, lng: -84.275 },
+  { id: "42036", name: "Eastern Gulf", lat: 28.500, lng: -84.505 },
+  { id: "41009", name: "Canaveral offshore", lat: 28.508, lng: -80.185 }
+];
+function d3Esc(s){ return String(s == null ? "" : s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
+function d3GibsTime(lagMin){
+  var d = new Date(Date.now() - lagMin * 60000);
+  d.setUTCMinutes(Math.floor(d.getUTCMinutes() / 10) * 10, 0, 0);
+  return d.toISOString().replace(/\.\d{3}Z$/, "Z");
+}
+function d3Toast(msg){
+  var t = document.getElementById("doppler-toast");
+  if(!t) return;
+  t.textContent = msg;
+  t.classList.add("show");
+  if(d3Toast._tm) clearTimeout(d3Toast._tm);
+  d3Toast._tm = setTimeout(function(){ t.classList.remove("show"); }, 2600);
+}
+function d3LocNow(){
+  if(d3Loc) return d3Loc;
+  try { var l = wxLoc(); if(l && isFinite(l.lat) && isFinite(l.lng)) return { lat: l.lat, lng: l.lng }; } catch(e){}
+  return { lat: 27.95, lng: -82.55 };
+}
+function d3Smooth(layer, filterCss){
+  /* Smoothing lives on the layer's own tile container only — melts the hard
+     satellite-pixel squares into soft cloud masses (same data, anti-aliased). */
+  try {
+    var c = layer && layer.getContainer ? layer.getContainer() : null;
+    if(c) c.style.filter = filterCss;
+  } catch(e){}
+}
+function d3BuildTiles(){
+  if(!dopplerMap || typeof L === "undefined") return false;
+  if(d3SatLayer && d3CloudLayer && d3RainLayer) return true;
+  try {
+    if(!d3SatLayer){
+      d3SatLayer = L.tileLayer("https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/GOES-East_ABI_GeoColor/default/" + d3GibsTime(70) + "/GoogleMapsCompatible_Level7/{z}/{y}/{x}.png", { maxNativeZoom: 7, maxZoom: 16, opacity: 0.95, zIndex: 5 });
+      d3SatLayer.on("add", function(){ d3Smooth(d3SatLayer, "blur(0.7px) saturate(1.08)"); });
+    }
+    if(!d3CloudLayer){
+      d3CloudLayer = L.tileLayer("https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/GOES-East_ABI_Band13_Clean_Infrared/default/" + d3GibsTime(50) + "/GoogleMapsCompatible_Level6/{z}/{y}/{x}.png", { maxNativeZoom: 6, maxZoom: 16, opacity: 0.82, zIndex: 6 });
+      d3CloudLayer.on("add", function(){ d3Smooth(d3CloudLayer, "blur(1.4px) brightness(1.06) saturate(1.12)"); });
+    }
+    if(!d3RainLayer){
+      d3RainLayer = L.tileLayer(DOPPLER_TILE + "q2-n1p-900913/{z}/{x}/{y}.png", { maxZoom: 16, opacity: 0.85, zIndex: 15 });
+    }
+    if(!d3GustGroup) d3GustGroup = L.layerGroup();
+    if(!d3TempGroup) d3TempGroup = L.layerGroup();
+    if(!d3WarnGroup) d3WarnGroup = L.layerGroup();
+    if(!d3WaveGroup) d3WaveGroup = L.layerGroup();
+    if(!d3SwellGroup) d3SwellGroup = L.layerGroup();
+    if(!d3PresGroup) d3PresGroup = L.layerGroup();
+    if(!d3VisGroup) d3VisGroup = L.layerGroup();
+    if(!d3TideGroup) d3TideGroup = L.layerGroup();
+    return true;
+  } catch(e){ return false; }
+}
+function d3Attr(){
+  var el = document.querySelector("#tbb-doppler .dop-attr");
+  if(!el) return;
+  var src = ["Radar: NOAA / NEXRAD via Iowa State IEM", "Map: Esri Ocean"];
+  if(d3State.sat || d3State.clouds) src.push("Satellite & clouds: NASA GOES-East");
+  if(d3State.wind || d3State.gusts || d3State.temp || d3State.pressure || d3State.vis) src.push("Wind, temp, pressure & visibility: Open-Meteo");
+  if(d3State.warn) src.push("Warnings: National Weather Service");
+  if(d3State.waves || d3State.swell) src.push("Waves & swell: Open-Meteo Marine model");
+  if(d3State.tides) src.push("Tide gauges: NOAA");
+  el.textContent = src.join(" · ") + " · Updates every 5 min";
+}
+function d3SyncChrome(){
+  Object.keys(d3State).forEach(function(k){
+    document.querySelectorAll('[data-d3="' + k + '"]').forEach(function(b){ b.classList.toggle("on", !!d3State[k]); });
+  });
+  var rc = document.querySelector('[data-d3="radar"]');
+  if(rc) rc.classList.toggle("on", !!dopplerRadarOn);
+  d3Attr();
+}
+function d3OmGrid(center){
+  var lats = [], lngs = [], i;
+  for(i = 0; i < 7; i++) lats.push(Math.round((center.lat + 0.75 - i * 0.25) * 10000) / 10000);
+  for(i = 0; i < 7; i++) lngs.push(Math.round((center.lng - 0.7 + i * (1.4 / 6)) * 10000) / 10000);
+  return { lats: lats, lngs: lngs };
+}
+function d3GustColor(m){ return m < 10 ? "#7dd3fc" : m < 20 ? "#4ade80" : m < 30 ? "#facc15" : m < 40 ? "#fb923c" : "#f87171"; }
+function d3TempColor(f){ return f < 60 ? "#38bdf8" : f < 70 ? "#34d399" : f < 80 ? "#fbbf24" : f < 88 ? "#fb923c" : "#f87171"; }
+function d3OmFetch(){
+  if(d3OmBusy || typeof fetch === "undefined") return;
+  var center = d3LocNow();
+  if(d3Om && (Date.now() - d3OmAt) < 3600000 && Math.abs(d3Om.center.lat - center.lat) < 0.05 && Math.abs(d3Om.center.lng - center.lng) < 0.05){ d3OmApply(); return; }
+  d3OmBusy = true;
+  var g = d3OmGrid(center), la = [], lo = [], r, c;
+  for(r = 0; r < 7; r++) for(c = 0; c < 7; c++){ la.push(g.lats[r]); lo.push(g.lngs[c]); }
+  var url = "https://api.open-meteo.com/v1/forecast?latitude=" + la.join(",") + "&longitude=" + lo.join(",") +
+    "&current=temperature_2m,wind_speed_10m,wind_direction_10m,wind_gusts_10m,pressure_msl,visibility&wind_speed_unit=ms&temperature_unit=fahrenheit&forecast_days=1";
+  fetch(url).then(function(resp){ return resp.json(); }).then(function(j){
+    d3OmBusy = false;
+    var arr = Array.isArray(j) ? j : [j];
+    if(arr.length !== 49 || !arr[0].current) throw 0;
+    var U = [], V = [], gusts = [], temps = [], pres = [], vis = [], i;
+    for(i = 0; i < 49; i++){
+      var cu = arr[i].current || {};
+      var s = cu.wind_speed_10m || 0, d = (cu.wind_direction_10m || 0) * Math.PI / 180;
+      U.push(Math.round(-s * Math.sin(d) * 1000) / 1000);
+      V.push(Math.round(-s * Math.cos(d) * 1000) / 1000);
+      gusts.push(Math.round((cu.wind_gusts_10m || 0) * 2.23694));
+      temps.push(Math.round(cu.temperature_2m || 0));
+      pres.push(cu.pressure_msl ? Math.round(cu.pressure_msl * 0.02953 * 100) / 100 : null);
+      vis.push(cu.visibility != null ? Math.round(cu.visibility / 1609.34 * 10) / 10 : null);
+    }
+    var hdr = { parameterCategory: 2, parameterUnit: "m.s-1", lo1: g.lngs[0], la1: g.lats[0], lo2: g.lngs[6], la2: g.lats[6], dx: Math.round((g.lngs[6] - g.lngs[0]) / 6 * 10000) / 10000, dy: 0.25, nx: 7, ny: 7, refTime: (arr[0].current.time || "").replace("T", " ") };
+    d3Om = { center: center, grid: g, gusts: gusts, temps: temps, pres: pres, vis: vis,
+      windData: [ { header: Object.assign({}, hdr, { parameterNumber: 2 }), data: U }, { header: Object.assign({}, hdr, { parameterNumber: 3 }), data: V } ] };
+    d3OmAt = Date.now();
+    d3OmApply();
+  }).catch(function(){
+    d3OmBusy = false;
+    ["wind", "gusts", "temp", "pressure", "vis"].forEach(function(k){ if(d3State[k]){ d3State[k] = false; d3Apply(k); } });
+    d3SyncChrome();
+    d3Toast("Wind data couldn't load — layer off");
+  });
+}
+function d3OmApply(){
+  if(!dopplerMap || typeof L === "undefined" || !d3Om) return;
+  d3BuildTiles();
+  try {
+    if(d3WindLayer){ dopplerMap.removeLayer(d3WindLayer); d3WindLayer = null; }
+    if(d3WindFallback){ dopplerMap.removeLayer(d3WindFallback); d3WindFallback = null; }
+    if(typeof L.velocityLayer === "function"){
+      d3WindLayer = L.velocityLayer({
+        displayValues: true,
+        displayOptions: { velocityType: "Wind", position: "bottomleft", emptyString: "No wind data", angleConvention: "bearingCW", speedUnit: "mph" },
+        data: d3Om.windData, maxVelocity: 15, velocityScale: 0.008, particleMultiplier: 1 / 260,
+        colorScale: ["#7dd3fc", "#22d3ee", "#4ade80", "#facc15", "#fb923c", "#f87171"]
+      });
+    } else {
+      d3WindFallback = L.layerGroup();
+      var U = d3Om.windData[0].data, V = d3Om.windData[1].data, k = 0, r, c;
+      for(r = 0; r < 7; r++) for(c = 0; c < 7; c++){
+        var u = U[k], v = V[k]; k++;
+        var mph = Math.round(Math.sqrt(u * u + v * v) * 2.23694);
+        var ang = (Math.atan2(u, v) * 180 / Math.PI + 180) % 360;
+        var ic = L.divIcon({ className: "", html: '<div class="vchip" style="background:#7dd3fc"><span style="display:inline-block;transform:rotate(' + Math.round(ang) + 'deg)">&#10148;</span> ' + mph + '</div>', iconSize: null });
+        d3WindFallback.addLayer(L.marker([d3Om.grid.lats[r], d3Om.grid.lngs[c]], { icon: ic, interactive: false }));
+      }
+    }
+    if(d3GustGroup){ d3GustGroup.clearLayers(); d3TempGroup.clearLayers(); d3PresGroup.clearLayers(); d3VisGroup.clearLayers();
+      var i = 0, rr, cc;
+      for(rr = 0; rr < 7; rr++) for(cc = 0; cc < 7; cc++){
+        if(rr % 2 === 0 && cc % 2 === 0){
+          var gv = d3Om.gusts[i], tv = d3Om.temps[i], pv = d3Om.pres[i], vv = d3Om.vis[i];
+          var pt = [d3Om.grid.lats[rr], d3Om.grid.lngs[cc]];
+          d3GustGroup.addLayer(L.marker(pt, { icon: L.divIcon({ className: "", html: '<div class="vchip" style="background:' + d3GustColor(gv) + '">G ' + gv + '</div>', iconSize: null }), interactive: false }));
+          d3TempGroup.addLayer(L.marker(pt, { icon: L.divIcon({ className: "", html: '<div class="vchip" style="background:' + d3TempColor(tv) + '">' + tv + '&deg;</div>', iconSize: null }), interactive: false }));
+          if(pv != null) d3PresGroup.addLayer(L.marker(pt, { icon: L.divIcon({ className: "", html: '<div class="vchip" style="background:#c4b5fd">' + pv.toFixed(2) + ' in</div>', iconSize: null }), interactive: false }));
+          if(vv != null) d3VisGroup.addLayer(L.marker(pt, { icon: L.divIcon({ className: "", html: '<div class="vchip" style="background:' + (vv >= 5 ? "#86efac" : vv >= 1 ? "#fde68a" : "#fca5a5") + '">' + vv + ' mi</div>', iconSize: null }), interactive: false }));
+        }
+        i++;
+      }
+    }
+    if(d3State.wind){ var wl = d3WindLayer || d3WindFallback; if(wl) dopplerMap.addLayer(wl); }
+    if(d3State.gusts && d3GustGroup) dopplerMap.addLayer(d3GustGroup);
+    if(d3State.temp && d3TempGroup) dopplerMap.addLayer(d3TempGroup);
+    if(d3State.pressure && d3PresGroup) dopplerMap.addLayer(d3PresGroup);
+    if(d3State.vis && d3VisGroup) dopplerMap.addLayer(d3VisGroup);
+  } catch(e){}
+}
+function d3LoadWarnings(){
+  if(d3WarnBusy || typeof fetch === "undefined" || !d3WarnGroup) return;
+  d3WarnBusy = true;
+  var c = d3LocNow();
+  fetch("https://api.weather.gov/alerts/active?point=" + c.lat + "," + c.lng).then(function(r){ return r.json(); }).then(function(j){
+    d3WarnBusy = false;
+    d3WarnGroup.clearLayers();
+    var feats = (j && j.features) || [], drawn = 0;
+    feats.forEach(function(f){
+      if(!f.geometry) return;
+      try {
+        var ev = (f.properties && f.properties.event) || "Alert";
+        var col = /Warning/i.test(ev) ? "#ef4444" : /Watch/i.test(ev) ? "#fb923c" : "#facc15";
+        var gj = L.geoJSON(f, { style: { color: col, weight: 2, fillColor: col, fillOpacity: 0.18 } });
+        gj.bindPopup("<b>" + d3Esc(ev) + "</b><br>" + d3Esc((f.properties && f.properties.headline) || "") + "<br><small>National Weather Service</small>");
+        d3WarnGroup.addLayer(gj); drawn++;
+      } catch(e){}
+    });
+    if(d3State.warn){ dopplerMap.addLayer(d3WarnGroup); }
+    if(feats.length && !drawn) d3Toast(feats.length + " alert(s) for this area — see weather.gov for the zones");
+    else if(!feats.length) d3Toast("No active warnings for this spot");
+  }).catch(function(){ d3WarnBusy = false; if(d3State.warn){ d3State.warn = false; d3SyncChrome(); } d3Toast("Warnings couldn't load — layer off"); });
+}
+function d3LoadWaves(){
+  if(typeof fetch === "undefined" || !d3WaveGroup) return;
+  var la = D3_BUOYS.map(function(b){ return b.lat; }).join(","), lo = D3_BUOYS.map(function(b){ return b.lng; }).join(",");
+  fetch("https://marine-api.open-meteo.com/v1/marine?latitude=" + la + "&longitude=" + lo + "&current=wave_height,wave_direction,wave_period,swell_wave_height,swell_wave_direction,swell_wave_period&length_unit=imperial").then(function(r){ return r.json(); }).then(function(j){
+    var arr = Array.isArray(j) ? j : [j];
+    d3WaveGroup.clearLayers(); d3SwellGroup.clearLayers();
+    arr.forEach(function(it, i){
+      var b = D3_BUOYS[i]; if(!b || !it || !it.current) return;
+      var ft = it.current.wave_height, per = it.current.wave_period, dir = it.current.wave_direction;
+      if(ft != null){
+        var mk = L.marker([b.lat, b.lng], { icon: L.divIcon({ className: "", html: '<div class="vchip" style="background:#38bdf8">' + (Math.round(ft * 10) / 10) + ' ft</div>', iconSize: null }) });
+        mk.bindPopup("<b>Buoy " + b.id + "</b> (" + d3Esc(b.name) + ")<br>Wave height (model): <b>" + (Math.round(ft * 10) / 10) + " ft</b>" +
+          (per != null ? "<br>Period: " + per + " s" : "") + (dir != null ? "<br>Direction: " + Math.round(dir) + "&deg;" : "") +
+          '<br><a href="https://www.ndbc.noaa.gov/station_page.php?station=' + b.id + '" target="_blank" rel="noopener">Live buoy observations &rarr;</a>');
+        d3WaveGroup.addLayer(mk);
+      }
+      var sf = it.current.swell_wave_height, sp = it.current.swell_wave_period, sd = it.current.swell_wave_direction;
+      if(sf != null){
+        var sm = L.marker([b.lat, b.lng], { icon: L.divIcon({ className: "", html: '<div class="vchip" style="background:#a5b4fc">' + (Math.round(sf * 10) / 10) + ' ft</div>', iconSize: null }) });
+        sm.bindPopup("<b>Buoy " + b.id + "</b> (" + d3Esc(b.name) + ")<br>Swell (model): <b>" + (Math.round(sf * 10) / 10) + " ft</b>" +
+          (sp != null ? "<br>Swell period: " + sp + " s" : "") + (sd != null ? "<br>Swell direction: " + Math.round(sd) + "&deg;" : ""));
+        d3SwellGroup.addLayer(sm);
+      }
+    });
+    if(d3State.waves) dopplerMap.addLayer(d3WaveGroup);
+    if(d3State.swell) dopplerMap.addLayer(d3SwellGroup);
+  }).catch(function(){ ["waves", "swell"].forEach(function(k){ if(d3State[k]) d3State[k] = false; }); d3SyncChrome(); d3Toast("Wave data couldn't load — layer off"); });
+}
+function d3LoadTides(){
+  if(typeof fetch === "undefined" || !d3TideGroup) return;
+  D3_GAUGES.forEach(function(g){
+    fetch("https://api.tidesandcurrents.noaa.gov/api/prod/datagetter?date=latest&station=" + g.id + "&product=water_level&datum=MLLW&units=english&time_zone=lst_ldt&format=json").then(function(r){ return r.json(); }).then(function(j){
+      var d = j && j.data && j.data[0];
+      if(!d || d.v == null) return;
+      var ft = Math.round(parseFloat(d.v) * 100) / 100;
+      if(isNaN(ft)) return;
+      var mk = L.marker([g.lat, g.lng], { icon: L.divIcon({ className: "", html: '<div class="vchip" style="background:#7dd3fc">' + ft.toFixed(2) + ' ft</div>', iconSize: null }) });
+      mk.bindPopup("<b>" + d3Esc(g.name) + "</b><br>NOAA tide gauge " + g.id + "<br>Water level: <b>" + ft.toFixed(2) + " ft</b> (MLLW)<br><small>" + d3Esc(d.t || "") + " local</small>");
+      d3TideGroup.addLayer(mk);
+      if(d3State.tides && dopplerMap) dopplerMap.addLayer(d3TideGroup);
+    }).catch(function(){});
+  });
+}
+function d3Apply(key){
+  if(!dopplerMap || typeof L === "undefined") return;
+  try {
+    if(!d3BuildTiles()) return;
+    var on = !!d3State[key], layer = null;
+    if(key === "sat") layer = d3SatLayer;
+    else if(key === "clouds") layer = d3CloudLayer;
+    else if(key === "rain") layer = d3RainLayer;
+    else if(key === "gusts") layer = d3GustGroup;
+    else if(key === "temp") layer = d3TempGroup;
+    else if(key === "warn") layer = d3WarnGroup;
+    else if(key === "waves") layer = d3WaveGroup;
+    else if(key === "swell") layer = d3SwellGroup;
+    else if(key === "pressure") layer = d3PresGroup;
+    else if(key === "vis") layer = d3VisGroup;
+    else if(key === "tides") layer = d3TideGroup;
+    else if(key === "wind") layer = d3WindLayer || d3WindFallback;
+    if(key === "wind"){ if(d3WindLayer){ dopplerMap.removeLayer(d3WindLayer); } if(d3WindFallback){ dopplerMap.removeLayer(d3WindFallback); } if(on){ var wl = d3WindLayer || d3WindFallback; if(wl) dopplerMap.addLayer(wl); } return; }
+    if(!layer) return;
+    if(on){ if(!dopplerMap.hasLayer(layer)) dopplerMap.addLayer(layer); }
+    else if(dopplerMap.hasLayer(layer)) dopplerMap.removeLayer(layer);
+  } catch(e){}
+}
+function d3Toggle(key){
+  try {
+    if(!dopplerMap){ if(typeof dopplerInit === "function") dopplerInit(); }
+    if(!dopplerMap){ d3Toast("Map is still loading — try again in a moment"); return; }
+    if(key === "radar"){ var chip = document.getElementById("doppler-radar-chip"); if(chip) chip.click(); d3SyncChrome(); return; }
+    d3State[key] = !d3State[key];
+    if(d3State[key]){
+      if(key === "sat" || key === "clouds" || key === "rain"){ if(d3BuildTiles()) d3Apply(key); }
+      else if(key === "wind" || key === "gusts" || key === "temp" || key === "pressure" || key === "vis"){ d3OmFetch(); if(d3Om) d3OmApply(); if(key === "wind" && !d3Om) d3Toast("Loading wind…"); }
+      else if(key === "warn"){ if(d3BuildTiles()){ d3Apply(key); d3LoadWarnings(); } }
+      else if(key === "waves" || key === "swell"){ if(d3BuildTiles()){ d3Apply(key); d3LoadWaves(); } }
+      else if(key === "tides"){ if(d3BuildTiles()){ d3TideGroup.clearLayers(); d3Apply(key); d3LoadTides(); } }
+    } else {
+      if(key === "wind"){ d3Apply("wind"); }
+      else d3Apply(key);
+    }
+    d3SyncChrome();
+  } catch(e){}
+}
+function d3BuildUI(){
+  if(d3Built) return;
+  d3Built = true;
+  try {
+    document.querySelectorAll("[data-d3]").forEach(function(b){
+      b.addEventListener("click", function(){ d3Toggle(b.getAttribute("data-d3")); });
+    });
+    var all = document.getElementById("doppler-all-layers");
+    var sheet = document.getElementById("doppler-layers");
+    if(all && sheet) all.addEventListener("click", function(){ sheet.classList.add("open"); });
+    var close = document.getElementById("doppler-layers-close");
+    if(close && sheet) close.addEventListener("click", function(){ sheet.classList.remove("open"); });
+    var rf = document.getElementById("doppler-refresh-chip");
+    if(rf) rf.addEventListener("click", function(){
+      try {
+        if(d3SatLayer && d3State.sat) d3SatLayer.setUrl("https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/GOES-East_ABI_GeoColor/default/" + d3GibsTime(70) + "/GoogleMapsCompatible_Level7/{z}/{y}/{x}.png");
+        if(d3CloudLayer && d3State.clouds) d3CloudLayer.setUrl("https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/GOES-East_ABI_Band13_Clean_Infrared/default/" + d3GibsTime(50) + "/GoogleMapsCompatible_Level6/{z}/{y}/{x}.png");
+        if(d3State.warn) d3LoadWarnings();
+        if(d3State.waves || d3State.swell) d3LoadWaves();
+        if(d3State.tides){ d3TideGroup.clearLayers(); d3LoadTides(); }
+      } catch(e){}
+    });
+    d3SyncChrome();
+  } catch(e){}
+}
+/* Hook the v1 lifecycle without editing it: build the UI once the map exists,
+   and keep the data layers centered on the visitor's selected area. */
+(function(){
+  try {
+    if(typeof window.dopplerOnShow === "function"){
+      var _onShow = window.dopplerOnShow;
+      window.dopplerOnShow = function(){ _onShow(); try { d3BuildUI(); } catch(e){} };
+    }
+    if(typeof window.dopplerSetView === "function"){
+      var _setView = window.dopplerSetView;
+      window.dopplerSetView = function(lat, lng){
+        _setView(lat, lng);
+        try {
+          d3Loc = { lat: lat, lng: lng };
+          if(d3State.wind || d3State.gusts || d3State.temp) d3OmFetch();
+          if(d3State.warn) d3LoadWarnings();
+        } catch(e){}
+      };
+    }
+    if(document.readyState === "loading") document.addEventListener("DOMContentLoaded", d3BuildUI);
+    else d3BuildUI();
+  } catch(e){}
+})();
+
 </script>
 
 <script>

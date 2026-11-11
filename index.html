@@ -2148,6 +2148,18 @@ function twlPlay(btn){
           #tbb-doppler .t-vis{background:radial-gradient(ellipse 80% 55% at 50% 45%,rgba(254,249,195,.75),rgba(254,249,195,0) 72%),linear-gradient(135deg,#27272a,#52525b 60%,#71717a)}
           #tbb-doppler .t-tides{background:repeating-linear-gradient(172deg,rgba(224,242,254,.0) 0 8px,rgba(224,242,254,.4) 8px 9.5px,rgba(224,242,254,0) 9.5px 17px),linear-gradient(135deg,#082f49,#075985 55%,#0284c7)}
           #tbb-doppler .t-gusts{background:repeating-linear-gradient(115deg,rgba(253,230,138,.0) 0 8px,rgba(253,230,138,.5) 8px 9.5px,rgba(253,230,138,0) 9.5px 17px),linear-gradient(135deg,#04211d,#134e4a 55%,#0f766e)}
+/* Florida Weather Map (added Nov 11, 2026) */
+.wmap-pills{display:flex;gap:6px;overflow-x:auto;padding:2px 0 8px;min-width:0;max-width:100%;contain:inline-size;scrollbar-width:none}
+.wmap-pills::-webkit-scrollbar{display:none}
+.wmap-pill{flex:0 0 auto;border:1.5px solid #7fb2dd;background:transparent;color:#cfe6f7;border-radius:999px;padding:6px 12px;font-size:13.5px;font-weight:700;cursor:pointer;font-family:inherit}
+.wmap-pill.on{background:#0ea5e9;border-color:#0ea5e9;color:#fff}
+.wmap-pill.lo.on{background:#1d6fb8;border-color:#1d6fb8}
+.wmap-pill.hi.on{background:#c2410c;border-color:#c2410c}
+#fl-wxmap{height:440px;border-radius:10px;background:#b8cfe0;min-width:0}
+.wmap-chip{display:flex;align-items:center;justify-content:center;width:31px;height:31px;border-radius:50%;color:#fff;font-weight:800;font-size:12.5px;border:2px solid rgba(255,255,255,.9);text-shadow:0 1px 2px rgba(0,0,0,.55);box-shadow:0 1px 5px rgba(0,0,0,.4)}
+.wmap-foot{margin-top:10px;font-size:.92rem;color:#d7e7f5}
+.wmap-src{margin-top:4px;font-size:.72rem;color:#8fb0cc}
+
           #tbb-doppler.dop-full{position:fixed;inset:0;z-index:3000;border-radius:0;display:flex;flex-direction:column}
           #tbb-doppler.dop-full #tbb-doppler-map{flex:1 1 auto;height:auto}
         </style>
@@ -2210,6 +2222,18 @@ function twlPlay(btn){
         <p style="font-size:.78rem;color:#a9c6c5;margin:8px 0 0">Animated NOAA radar &mdash; the loop covers the last hour, centered on the selected area. Drag the time slider to scrub. <a href="https://radar.weather.gov/" target="_blank" rel="noopener" style="color:#fff">Open the full NWS radar &rarr;</a></p>
       </div>
     </div>
+      <div class="cond-card" id="wxmap-card">
+        <h3>Florida Weather Map</h3>
+        <p style="margin:0 0 8px;font-size:.86rem;color:#a9c6c5">Forecast temperatures across Florida — pick a day, flip between the morning low and the afternoon high.</p>
+        <div class="wmap-pills" id="wmap-mode">
+          <button type="button" class="wmap-pill lo on" data-wmode="lo">🌡 Lows</button>
+          <button type="button" class="wmap-pill hi" data-wmode="hi">☀️ Highs</button>
+        </div>
+        <div class="wmap-pills" id="wmap-days"></div>
+        <div id="fl-wxmap" role="img" aria-label="Map of Florida showing forecast temperatures by town"></div>
+        <div class="wmap-foot" id="wmap-foot">Loading the temperature map…</div>
+        <p class="wmap-src">Forecast: Open-Meteo — refreshes itself daily. Temperatures are the forecast for each town, in °F.</p>
+      </div>
     <div class="travel-box">
       <div class="travel-label"><svg class=ic aria-hidden=true><use href=#i-plane></use></svg> Travel Mode — check another area</div>
       <select id="travel-select" onchange="changeTravelLocation(this.value)" aria-label="Choose a boating destination">
@@ -6260,6 +6284,71 @@ async function loadSpot(){
     body.innerHTML = '<p class="cond-fallback">Local weather unavailable right now.</p>';
   }
 }
+/* ---- Florida Weather Map: statewide forecast temps (Open-Meteo), added Nov 11, 2026 ---- */
+var WMAP_TOWNS = [["Pensacola",30.42,-87.22],["Panama City",30.16,-85.67],["Tallahassee",30.44,-84.28],["Lake City",30.19,-82.64],["Jacksonville",30.33,-81.66],["Gainesville",29.65,-82.32],["Ocala",29.19,-82.14],["Daytona Beach",29.21,-81.02],["Orlando",28.54,-81.38],["Brooksville",28.55,-82.39],["Tampa",27.95,-82.46],["St. Petersburg",27.77,-82.64],["Lakeland",28.04,-81.95],["Sarasota",27.34,-82.53],["Sebring",27.50,-81.44],["Fort Myers",26.64,-81.87],["Naples",26.14,-81.79],["West Palm Beach",26.71,-80.05],["Fort Lauderdale",26.12,-80.14],["Miami",25.76,-80.19],["Key West",24.56,-81.78]];
+var wmapData = null, wmapMode = "lo", wmapDay = -1, wmapMap = null, wmapLayer = null;
+function wmapColor(t){ return t<=32?"#7d3c98":t<=40?"#1a3f9e":t<=50?"#1d6fb8":t<=60?"#1f9e8e":t<=70?"#4da33a":t<=80?"#d9a514":t<=90?"#e67e22":"#c0392b"; }
+function wmapRender(){
+  if(!wmapData || !wmapMap) return;
+  try{
+    wmapLayer.clearLayers();
+    var coldest=null, warmest=null;
+    wmapData.forEach(function(t){
+      var v = t[wmapMode][wmapDay];
+      if(coldest===null||v<coldest.v) coldest={v:v,n:t.name};
+      if(warmest===null||v>warmest.v) warmest={v:v,n:t.name};
+      L.marker([t.lat,t.lng],{icon:L.divIcon({className:"",html:'<div class="wmap-chip" style="background:'+wmapColor(v)+'">'+v+'\u00B0</div>',iconSize:[31,31],iconAnchor:[15,15]}),keyboard:false}).addTo(wmapLayer);
+    });
+    var tpa=null; wmapData.forEach(function(t){ if(t.name==="Tampa") tpa=t; });
+    var parts = wmapData[0].dates[wmapDay].split("-");
+    var dt = new Date(+parts[0], +parts[1]-1, +parts[2]);
+    var dl = dt.toLocaleDateString("en-US",{weekday:"short",month:"short",day:"numeric"});
+    var foot = document.getElementById("wmap-foot");
+    if(foot) foot.innerHTML = wmapMode==="lo"
+      ? "<b>"+dl+" morning:</b> coldest "+coldest.v+"\u00B0 in "+coldest.n+" \u00B7 Tampa "+(tpa?tpa.lo[wmapDay]:"–")+"\u00B0"
+      : "<b>"+dl+":</b> warmest "+warmest.v+"\u00B0 in "+warmest.n+" \u00B7 Tampa "+(tpa?tpa.hi[wmapDay]:"–")+"\u00B0";
+    var pills = document.querySelectorAll("#wmap-days .wmap-pill");
+    for(var i=0;i<pills.length;i++) pills[i].classList.toggle("on", i===wmapDay);
+    var mp = document.querySelectorAll("#wmap-mode .wmap-pill");
+    for(var k=0;k<mp.length;k++) mp[k].classList.toggle("on", mp[k].getAttribute("data-wmode")===wmapMode);
+  }catch(e){}
+}
+function wxMapOnShow(){
+  try{
+    var el = document.getElementById("fl-wxmap");
+    if(!el || typeof L === "undefined") return;
+    if(!wmapMap){
+      wmapMap = L.map("fl-wxmap",{scrollWheelZoom:false}).fitBounds([[24.35,-88.05],[31.15,-79.85]]);
+      L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/Ocean/World_Ocean_Base/MapServer/tile/{z}/{y}/{x}",{maxZoom:12}).addTo(wmapMap);
+      wmapLayer = L.layerGroup().addTo(wmapMap);
+      var mp = document.querySelectorAll("#wmap-mode .wmap-pill");
+      for(var k=0;k<mp.length;k++)(function(b){ b.addEventListener("click", function(){ wmapMode=b.getAttribute("data-wmode"); wmapRender(); }); })(mp[k]);
+      var lats = WMAP_TOWNS.map(function(t){return t[1];}).join(","), lngs = WMAP_TOWNS.map(function(t){return t[2];}).join(",");
+      fetch("https://api.open-meteo.com/v1/forecast?latitude="+lats+"&longitude="+lngs+"&daily=temperature_2m_min,temperature_2m_max&temperature_unit=fahrenheit&timezone=America%2FNew_York&forecast_days=7")
+        .then(function(r){ return r.json(); })
+        .then(function(data){
+          if(!Array.isArray(data)) data=[data];
+          wmapData = data.map(function(d,i){ return {name:WMAP_TOWNS[i][0], lat:WMAP_TOWNS[i][1], lng:WMAP_TOWNS[i][2], dates:d.daily.time, lo:d.daily.temperature_2m_min.map(Math.round), hi:d.daily.temperature_2m_max.map(Math.round)}; });
+          var dr = document.getElementById("wmap-days");
+          wmapData[0].dates.forEach(function(ds,i){
+            var p = ds.split("-"); var dt = new Date(+p[0], +p[1]-1, +p[2]);
+            var b = document.createElement("button"); b.type="button"; b.className="wmap-pill";
+            b.textContent = dt.toLocaleDateString("en-US",{weekday:"short"})+" "+(+p[2]);
+            b.addEventListener("click", function(){ wmapDay=i; wmapRender(); });
+            dr.appendChild(b);
+          });
+          var tpa=null; wmapData.forEach(function(t){ if(t.name==="Tampa") tpa=t; });
+          wmapDay = 0; if(tpa){ var mn=Math.min.apply(null,tpa.lo); wmapDay = tpa.lo.indexOf(mn); }
+          wmapRender();
+        })
+        .catch(function(){ var f=document.getElementById("wmap-foot"); if(f) f.textContent="Couldn't load the temperature map just now — check back shortly."; });
+    }
+    setTimeout(function(){ try{ wmapMap.invalidateSize(); }catch(e){} }, 60);
+    if(wmapData) wmapRender();
+  }catch(e){}
+}
+window.wxMapOnShow = wxMapOnShow;
+
 /* ---- TBB Doppler: our own NOAA/NEXRAD radar (replaced the Windy embed Nov 10, 2026) ---- */
 var dopplerMap = null, dopplerFrames = [], dopplerIdx = 11, dopplerPlaying = false, dopplerTimer = null;
 var dopplerRadarOn = true, dopplerOpacityVal = 0.85, dopplerFull = false, dopplerLocMarker = null;
@@ -8641,7 +8730,7 @@ function showView(name){
   document.getElementById('view-'+name).classList.add('active');
   window.scrollTo(0,0);
   if(name==='map'){if(window.tbbMapInit)window.tbbMapInit();setTimeout(function(){if(window.tbbMap)window.tbbMap.invalidateSize();},200);}
-  if(name==='tides'){if(window.dopplerOnShow)window.dopplerOnShow();}
+  if(name==='tides'){if(window.dopplerOnShow)window.dopplerOnShow();if(window.wxMapOnShow)window.wxMapOnShow();}
   if(name==='knowbeforeyougo'){if(window.tbbKbgMapInit)window.tbbKbgMapInit();setTimeout(function(){if(window.tbbKbgMap)window.tbbKbgMap.invalidateSize();},200);}
   if(name==='fishing'){if(window.loadBiteChart)window.loadBiteChart();if(window.tbbFishMapInit)window.tbbFishMapInit();setTimeout(function(){if(window.tbbFishMap)window.tbbFishMap.invalidateSize();},200);}
   if(name==='sightseeing'){if(window.tbbSightMapInit)window.tbbSightMapInit();setTimeout(function(){if(window.tbbSightMap)window.tbbSightMap.invalidateSize();},200);}

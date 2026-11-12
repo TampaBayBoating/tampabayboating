@@ -5160,7 +5160,7 @@ function renderDir(){
   const list = COMPANIES.filter(c => !q || c.slice(0,5).join(" ").toLowerCase().includes(q));
   document.getElementById("dir-grid").innerHTML = list.length ? list.map(c=>`
     <div class="dir-card">
-      <div class="dir-logo${c[5]&&c[5].includes("sea-screamer")||c[5].includes("canning")?" dark":""}">${c[5]?`<img src="assets/${c[5]}" alt="${c[0]} logo" loading="lazy">`:`<span class="dir-initials">${c[0].split(/\s+/).slice(0,2).map(w=>w[0]).join("")}</span>`}</div>
+      <div class="dir-logo${c[5]&&(c[5].includes("sea-screamer")||c[5].includes("canning"))?" dark":""}">${c[5]?`<img src="assets/${c[5]}" alt="${c[0]} logo" loading="lazy">`:`<span class="dir-initials">${c[0].split(/\s+/).slice(0,2).map(w=>w[0]).join("")}</span>`}</div>
       <div class="city">${c[1]}</div><h4>${c[0]}</h4>
       ${c[6]?`<div class="dir-rating">★ ${c[6]} <span>Google</span></div>`:""}
       <div class="type">${c[2]}</div>

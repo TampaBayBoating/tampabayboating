@@ -813,6 +813,8 @@ footer.tbb-foot a.soc svg{width:15px!important;height:15px!important;fill:#fff!i
 .cal-day.today{background:var(--navy); color:#fff; font-weight:700}
 .cal-day.today.has-ev .dot{background:var(--sun)}
 .day-events{margin-top:14px; display:flex; flex-direction:column; gap:12px}
+.ev-search{width:100%; padding:13px 16px; font-size:1rem; border:2px solid var(--navy); border-radius:12px; margin:4px 0 2px; background:#fff; color:var(--ink,#12212e); box-sizing:border-box}
+.ev-search-note{color:var(--muted); font-size:.9rem; min-height:1.1em; margin:2px 0 10px}
 #upcoming-events{max-height:560px; overflow-y:auto; padding-right:4px}
 .ev-card{background:var(--white); border:1px solid var(--line); border-radius:12px; padding:14px 16px; box-shadow:0 1px 6px rgba(10,37,64,.05)}
 .ev-card.featured{border:2px solid var(--gold); background:linear-gradient(180deg,#fffdf5,var(--white))}
@@ -2409,6 +2411,8 @@ function twlPlay(btn){
       <h2>Boating Events Calendar</h2>
       <p>Boat shows, concerts on the water, tournaments &amp; anything boating-related around Tampa Bay. Every event is listed free — our sponsors keep it that way.</p>
     </div>
+    <input type="search" id="ev-search" class="ev-search" placeholder="Search events — try “parade”, “boat show” or a town name…" oninput="renderUpcoming()" aria-label="Search events">
+    <div class="ev-search-note" id="ev-search-note"></div>
     <div class="cal-wrap">
       <div class="cal-box">
         <div id="calendar"></div>
@@ -6026,9 +6030,21 @@ function showDay(ds){
 function renderUpcoming(){
   const now = new Date();
   const todayStr = now.getFullYear()+"-"+String(now.getMonth()+1).padStart(2,"0")+"-"+String(now.getDate()).padStart(2,"0");
-  const up = EVENTS.filter(e=>e.end>=todayStr).sort((a,b)=>a.start<b.start?-1:1);
+  const qEl = document.getElementById("ev-search");
+  const q = qEl ? qEl.value.trim().toLowerCase() : "";
+  const note = document.getElementById("ev-search-note");
+  let up = EVENTS.filter(e=>e.end>=todayStr).sort((a,b)=>a.start<b.start?-1:1);
+  if(q){
+    const words = q.split(/\s+/);
+    up = up.filter(e=>{ const hay = (e.title+" "+e.when+" "+e.where+" "+e.desc).toLowerCase(); return words.every(w=>hay.indexOf(w)>-1); });
+    if(note) note.textContent = up.length ? up.length + (up.length===1 ? " upcoming event matches \u201C" : " upcoming events match \u201C") + qEl.value.trim() + "\u201D" : "";
+    document.getElementById("upcoming-events").innerHTML =
+      up.length ? up.map(evCard).join("") : "<p style='color:var(--muted)'>No upcoming events match that search \u2014 try \u201Cparade\u201D, \u201Cboat show\u201D or a town name.</p>";
+    return;
+  }
+  if(note) note.textContent = "";
   document.getElementById("upcoming-events").innerHTML =
-    up.length ? up.slice(0,10).map(evCard).join("") + (up.length>10 ? "<p style='color:var(--muted);font-size:.9rem;margin-top:10px'>Everything else is on the calendar above — tap a day to see what's on.</p>" : "") : "<p style='color:var(--muted)'>No upcoming events yet — check back soon.</p>";
+    up.length ? up.slice(0,10).map(evCard).join("") + (up.length>10 ? "<p style='color:var(--muted);font-size:.9rem;margin-top:10px'>Everything else is on the calendar above \u2014 tap a day to see what's on.</p>" : "") : "<p style='color:var(--muted)'>No upcoming events yet \u2014 check back soon.</p>";
 }
 
 /* ================= LIVE CONDITIONS ================= */

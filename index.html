@@ -5130,7 +5130,7 @@ document.addEventListener("keydown", function(e){ if(e.key==="Escape") closeNavM
 let cart = [];
 /* ================= DIRECTORY ================= */
 const COMPANIES = [
- ["Capt. Chris Canning \u2014 Tampa Bay Fishing Company","Ruskin","Inshore & nearshore fishing charters","(863) 838-0577","https://tampabayfishing.co/",null,null],
+ ["Capt. Chris Canning \u2014 Tampa Bay Fishing Company","Ruskin","Inshore & nearshore fishing charters","(863) 838-0577","https://tampabayfishing.co/","charter-logos/canning-letsgo.webp",null],
  ["Shallow Point Tampa Fishing Charters","Tampa","Inshore fishing (tarpon, snook, redfish, trout)","(813) 758-3406","http://www.shallowpointcharters.com/","charter-logos/shallow-point.png","4.9 ★ (249 reviews)"],
  ["Light Tackle Adventures","Tampa","Light tackle & fly fishing, tarpon, scalloping","(813) 917-4989","http://lighttackleadventures.com/","charter-logos/light-tackle-adventures.png","5.0 ★ (8 reviews)"],
  ["Swift Fish Charters","Tampa","Inshore fishing (redfish, trout, snook, tarpon, fly)","(813) 714-0889","https://www.swiftfishcharters.com/","charter-logos/swift-fish.png","5.0 ★ (171 reviews)"],
@@ -5160,7 +5160,7 @@ function renderDir(){
   const list = COMPANIES.filter(c => !q || c.slice(0,5).join(" ").toLowerCase().includes(q));
   document.getElementById("dir-grid").innerHTML = list.length ? list.map(c=>`
     <div class="dir-card">
-      <div class="dir-logo${c[5]&&c[5].includes("sea-screamer")?" dark":""}">${c[5]?`<img src="assets/${c[5]}" alt="${c[0]} logo" loading="lazy">`:`<span class="dir-initials">${c[0].split(/\s+/).slice(0,2).map(w=>w[0]).join("")}</span>`}</div>
+      <div class="dir-logo${c[5]&&c[5].includes("sea-screamer")||c[5].includes("canning")?" dark":""}">${c[5]?`<img src="assets/${c[5]}" alt="${c[0]} logo" loading="lazy">`:`<span class="dir-initials">${c[0].split(/\s+/).slice(0,2).map(w=>w[0]).join("")}</span>`}</div>
       <div class="city">${c[1]}</div><h4>${c[0]}</h4>
       ${c[6]?`<div class="dir-rating">★ ${c[6]} <span>Google</span></div>`:""}
       <div class="type">${c[2]}</div>

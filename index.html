@@ -235,6 +235,7 @@ body.dark .gear-cat{color:#e8eef4}
 .diag-warn{background:#fdf0f0; border:1px solid #f0caca; border-left:5px solid #c0272d; border-radius:10px; padding:12px 14px; font-size:.92rem; color:#333}
 .tbb-loc-btn{width:38px;height:38px;border:1px solid var(--line);background:#fff;border-radius:10px;box-shadow:0 1px 5px rgba(0,0,0,.35);color:var(--navy);cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0}
 .tbb-loc-btn.on{background:#8fd0f0;color:#06263b;border-color:#8fd0f0}
+#bay-leaflet-map:fullscreen{width:100%;height:100%;border-radius:0;background:#0a2540}
 .tbb-loc-msg{position:absolute;left:10px;bottom:10px;z-index:800;background:rgba(6,38,59,.92);color:#fff;font-size:.82rem;padding:8px 12px;border-radius:8px;max-width:78%;display:none}
 
 .regs-table{width:100%; border-collapse:collapse; font-size:.85rem; margin-top:6px}
@@ -4911,6 +4912,20 @@ window.tbbMapInit=(function(){
     return b;
   }});
   map.addControl(new LocBtn());
+  var FsBtn=L.Control.extend({options:{position:'topright'}, onAdd:function(){
+    var b=L.DomUtil.create('button','tbb-loc-btn');
+    b.type='button'; b.title='Full screen'; b.setAttribute('aria-label','Toggle full screen map');
+    b.innerHTML='<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>';
+    L.DomEvent.disableClickPropagation(b);
+    L.DomEvent.on(b,'click',function(){
+      var c=map.getContainer();
+      if(document.fullscreenElement){ if(document.exitFullscreen) document.exitFullscreen(); }
+      else if(c.requestFullscreen){ c.requestFullscreen(); }
+    });
+    return b;
+  }});
+  map.addControl(new FsBtn());
+  document.addEventListener('fullscreenchange', function(){ setTimeout(function(){ if(window.tbbMap) window.tbbMap.invalidateSize(); }, 250); });
   map.on('locationfound', function(e){
     locMsg.style.display='none';
     if(!locDot){

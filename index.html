@@ -4882,11 +4882,12 @@ window.tbbMapInit=(function(){
   L.control.layers({'<svg class=ic aria-hidden=true><use href=#i-map></use></svg> Navigation chart': chartBase, '<svg class=ic aria-hidden=true><use href=#i-road></use></svg> Street map': streetBase, '<svg class=ic aria-hidden=true><use href=#i-map></use></svg> Satellite': satBase, '<svg class=ic aria-hidden=true><use href=#i-anchor></use></svg> NOAA chart (all markers)': noaaChart}, {}, {collapsed: true}).addTo(map);
   const layer = L.layerGroup().addTo(map);
   /* Cooperative touch: one finger scrolls the page, two fingers move the map (touch devices only; mouse drag untouched) */
+  var fsOn=false;
   if(('ontouchstart' in window) || navigator.maxTouchPoints > 0){
     map.dragging.disable();
     var mc = map.getContainer();
-    mc.addEventListener('touchstart', function(e){ if(e.touches.length >= 2) map.dragging.enable(); }, {passive:true});
-    mc.addEventListener('touchend', function(e){ if(e.touches.length < 2) map.dragging.disable(); }, {passive:true});
+    mc.addEventListener('touchstart', function(e){ if(fsOn || e.touches.length >= 2) map.dragging.enable(); }, {passive:true});
+    mc.addEventListener('touchend', function(e){ if(!fsOn && e.touches.length < 2) map.dragging.disable(); }, {passive:true});
     mc.addEventListener('pointerdown', function(e){ if(e.pointerType === 'mouse') map.dragging.enable(); }, true);
   }
   /* Live GPS dot — the visitor's own phone location (Leaflet locate, watch mode) */
@@ -4925,7 +4926,7 @@ window.tbbMapInit=(function(){
     return b;
   }});
   map.addControl(new FsBtn());
-  document.addEventListener('fullscreenchange', function(){ setTimeout(function(){ if(window.tbbMap) window.tbbMap.invalidateSize(); }, 250); });
+  document.addEventListener('fullscreenchange', function(){ fsOn = !!document.fullscreenElement; if(fsOn){ map.dragging.enable(); } else if(('ontouchstart' in window) || navigator.maxTouchPoints > 0){ map.dragging.disable(); } setTimeout(function(){ if(window.tbbMap) window.tbbMap.invalidateSize(); }, 250); });
   map.on('locationfound', function(e){
     locMsg.style.display='none';
     if(!locDot){

@@ -335,6 +335,30 @@ footer .soc svg{width:20px; height:20px}
 .fish-foot{color:var(--muted);font-size:.8rem;line-height:1.5}
 .fish-flash{outline:3px solid var(--amber,#FFB703);outline-offset:2px}
 .knot-img{width:100%;border-radius:10px;display:block;margin:8px 0}
+
+/* Map weather overlays + iPhone fixes (Nov 12, 2026) */
+#bay-leaflet-map.map-full{position:fixed !important;inset:0 !important;width:100% !important;height:100dvh !important;z-index:2000 !important;border-radius:0 !important;border:0 !important}
+.mwx-panel{position:absolute;top:96px;left:10px;z-index:1200;width:238px;max-width:calc(100% - 20px);background:#fff;border-radius:12px;box-shadow:0 8px 28px rgba(0,0,0,.4);padding:10px 12px;display:none;max-height:calc(100% - 130px);overflow-y:auto;box-sizing:border-box}
+.mwx-panel.open{display:block}
+.mwx-panel h4{margin:0 0 2px;font-size:13px;color:#0a2540}
+.mwx-panel .mwx-sub{font-size:10.5px;color:#5a7186;margin:0 0 8px;line-height:1.4}
+.mwx-chips{display:flex;flex-wrap:wrap;gap:6px;min-width:0;max-width:100%;contain:inline-size}
+.mwx-chip{border:1.5px solid #b8d4e8;background:#eef6f9;color:#0b3d62;border-radius:999px;padding:5px 10px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit}
+.mwx-chip.on{background:#0a2540;color:#fff;border-color:#0a2540}
+.mwx-radar{display:none;margin-top:9px;align-items:center;gap:8px}
+.mwx-radar.open{display:flex}
+.mwx-radar button{width:30px;height:30px;border-radius:50%;border:1.5px solid #b8d4e8;background:#eef6f9;color:#0b3d62;cursor:pointer;font-size:11px;line-height:1;padding:0}
+.mwx-radar span{font-size:11.5px;font-weight:700;color:#0b3d62}
+.mwx-mchip{border-radius:999px;padding:3px 8px;font-size:11.5px;font-weight:800;color:#06121f;white-space:nowrap;border:1.5px solid rgba(255,255,255,.75);box-shadow:0 1px 6px rgba(0,0,0,.45)}
+.mwx-toast{display:none;margin-top:8px;background:#fdf3e3;border:1px solid #e8cf9f;color:#7a5a12;border-radius:8px;padding:6px 8px;font-size:11px;line-height:1.4}
+.mwx-attr{font-size:9.5px;color:#7a8fa3;margin:9px 0 0;line-height:1.45}
+@media(max-width:860px){
+.tb-row{flex-wrap:wrap}
+.tb-cond{order:5;flex:1 1 100%;margin:6px 0 2px;justify-content:space-between}
+.tb-cond-card{flex:1;min-width:0;padding:2px 4px}
+.tb-cond-card b{white-space:nowrap}
+.tb-search{margin-left:auto}
+}
 </style>
 <script type="application/ld+json">
 {
@@ -4959,8 +4983,20 @@ window.tbbMapInit=(function(){
     L.DomEvent.disableClickPropagation(b);
     L.DomEvent.on(b,'click',function(){
       var c=map.getContainer();
-      if(document.fullscreenElement){ if(document.exitFullscreen) document.exitFullscreen(); }
-      else if(c.requestFullscreen){ c.requestFullscreen(); }
+      function pseudoFs(){
+        c.classList.add('map-full'); document.body.style.overflow='hidden'; fsOn=true; map.dragging.enable();
+        setTimeout(function(){ map.invalidateSize(); },120); setTimeout(function(){ map.invalidateSize(); },450);
+      }
+      if(document.fullscreenElement){ if(document.exitFullscreen) document.exitFullscreen(); return; }
+      if(c.classList.contains('map-full')){
+        c.classList.remove('map-full'); document.body.style.overflow=''; fsOn=false;
+        if(('ontouchstart' in window) || navigator.maxTouchPoints > 0) map.dragging.disable();
+        setTimeout(function(){ map.invalidateSize(); },150); return;
+      }
+      if(c.requestFullscreen){
+        try { var p=c.requestFullscreen(); if(p && p.catch) p.catch(function(){ pseudoFs(); }); }
+        catch(e){ pseudoFs(); }
+      } else pseudoFs();
     });
     return b;
   }});
@@ -9304,4 +9340,402 @@ function svTab(name, btn){
 }
 renderMuLists();
 </script>
+<script>
+/* ---- Boater's Map weather overlays (Nov 12, 2026): the full Tides Doppler
+   layer set on the Boater's Map, in its OWN control, kept separate from the
+   base-layer switcher. Self-contained and failure-isolated: if anything here
+   throws, the map and pins keep working untouched. Same live sources as the
+   Tides & Forecast radar (RainViewer HD / IEM NEXRAD, NASA GOES-East, Open-Meteo, NWS, NOAA). */
+(function(){
+"use strict";
+var MWX_TILE = "https://mesonet.agron.iastate.edu/cache/tile.py/1.0.0/";
+var MWX_BUOYS = [
+  { id: "42098", name: "Tampa Bay offshore", lat: 27.590, lng: -82.931 },
+  { id: "42099", name: "West Florida Shelf", lat: 27.352, lng: -84.275 },
+  { id: "42036", name: "Eastern Gulf", lat: 28.500, lng: -84.505 },
+  { id: "41009", name: "Canaveral offshore", lat: 28.508, lng: -80.185 }
+];
+var MWX_GAUGES = [
+  { id: "8726520", name: "St. Petersburg", lat: 27.7676, lng: -82.6403 },
+  { id: "8726724", name: "Clearwater Beach", lat: 27.9659, lng: -82.8001 },
+  { id: "8726347", name: "Egmont Key", lat: 27.6017, lng: -82.7614 },
+  { id: "8726486", name: "Gulfport · Boca Ciega Bay", lat: 27.72, lng: -82.70 }
+];
+var MWX_DEFS = [["radar","Radar"],["sat","Satellite"],["clouds","Clouds"],["rain","Rain total"],["wind","Wind"],["gusts","Gusts"],["temp","Air temp"],["pressure","Pressure"],["vis","Visibility"],["warn","Warnings"],["waves","Waves"],["swell","Swell"],["tides","Tide gauges"]];
+var st = { radar:false, sat:false, clouds:false, rain:false, wind:false, gusts:false, temp:false, pressure:false, vis:false, warn:false, waves:false, swell:false, tides:false };
+var built = false, map = null, panel = null;
+var satL = null, cloudL = null, rainL = null, frames = [], fIdx = 11, fTimer = null, fPlaying = false;
+var windL = null, windFb = null, gustG = null, tempG = null, presG = null, visG = null, warnG = null, waveG = null, swellG = null, tideG = null;
+var om = null, omAt = 0, omBusy = false, warnBusy = false;
+function esc(s){ return String(s == null ? "" : s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
+function gibsTime(lagMin){ var d = new Date(Date.now() - lagMin * 60000); d.setUTCMinutes(Math.floor(d.getUTCMinutes() / 10) * 10, 0, 0); return d.toISOString().replace(/\.\d{3}Z$/, "Z"); }
+function fmt(d){ var h = d.getHours(), m = d.getMinutes(), ap = h >= 12 ? "PM" : "AM"; h = h % 12; if(h === 0) h = 12; return h + ":" + (m < 10 ? "0" + m : m) + " " + ap; }
+function frameTime(mins){ var d = new Date(Date.now() - mins * 60000); d.setMinutes(Math.floor(d.getMinutes() / 5) * 5, 0, 0); return d; }
+function toast(msg){
+  var t = document.getElementById("mwx-toast"); if(!t) return;
+  t.textContent = msg; t.style.display = "block";
+  if(toast._tm) clearTimeout(toast._tm);
+  toast._tm = setTimeout(function(){ t.style.display = "none"; }, 2800);
+}
+function center(){ var c = map.getCenter(); return { lat: c.lat, lng: c.lng }; }
+function smooth(layer, filterCss){ try { var c = layer && layer.getContainer ? layer.getContainer() : null; if(c) c.style.filter = filterCss; } catch(e){} }
+function mwxRvLayer(url, opts){
+  /* Placeholder-proof RainViewer tiles — same guard as the Tides Doppler:
+     a first-time tile can arrive as a gray "Zoom Level Not Supported"
+     placeholder (HTTP 200, cached 48h); read its pixels (CORS *), re-ask
+     with a cache buster, and blank the tile if the real one never lands. */
+  var BLANK = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=";
+  var layer = L.tileLayer(url, opts);
+  layer.createTile = function(coords, done){
+    var img = document.createElement("img");
+    img.alt = ""; img.className = "leaflet-tile"; img.crossOrigin = "anonymous";
+    var tileUrl = layer.getTileUrl(coords);
+    var tries = 0;
+    function isPlaceholder(){
+      try {
+        var cv = document.createElement("canvas"); cv.width = 64; cv.height = 64;
+        var cx = cv.getContext("2d", { willReadFrequently: true });
+        cx.drawImage(img, 0, 0, 64, 64);
+        var d = cx.getImageData(14, 22, 36, 20).data, gray = 0, n = 0;
+        for(var i = 0; i < d.length; i += 16){
+          var r = d[i], g = d[i+1], b = d[i+2], a = d[i+3]; n++;
+          if(a > 150 && Math.abs(r-g) < 14 && Math.abs(g-b) < 14 && r > 95 && r < 175) gray++;
+        }
+        return n > 0 && (gray / n) > 0.55;
+      } catch(e){ return false; }
+    }
+    img.onload = function(){
+      if(isPlaceholder()){
+        if(tries < 4){ tries++; setTimeout(function(){ img.src = tileUrl + "?rvtry=" + tries; }, 400 + 500 * tries); return; }
+        img.onload = function(){ done(null, img); };
+        img.onerror = function(){ done(null, img); };
+        img.src = BLANK; return;
+      }
+      done(null, img);
+    };
+    img.onerror = function(){ done(null, img); };
+    img.src = tileUrl;
+    return img;
+  };
+  return layer;
+}
+function hdRadar(){
+  /* HD radar: RainViewer true 512px tiles. If the fetch fails, the IEM
+     frames built above simply stay. */
+  if(typeof fetch === "undefined") return;
+  fetch("https://api.rainviewer.com/public/weather-maps.json").then(function(r){ return r.json(); }).then(function(j){
+    if(!j || !j.radar || !j.radar.past || !j.radar.past.length) return;
+    var host = j.host || "https://tilecache.rainviewer.com";
+    var now = Date.now();
+    var nf = j.radar.past.slice(-12).map(function(p){
+      var layer = mwxRvLayer(host + p.path + "/512/{z}/{x}/{y}/6/1_1.png", { tileSize: 512, zoomOffset: -1, opacity: 0, maxZoom: 18, zIndex: 10 });
+      return { mins: Math.max(0, Math.round((now - p.time * 1000) / 60000)), layer: layer };
+    });
+    if(!nf.length) return;
+    var wasOn = st.radar;
+    frames.forEach(function(f){ if(map && map.hasLayer(f.layer)) map.removeLayer(f.layer); });
+    frames = nf;
+    if(fIdx >= frames.length) fIdx = frames.length - 1;
+    if(wasOn && map){ frames.forEach(function(f){ if(!map.hasLayer(f.layer)) map.addLayer(f.layer); }); showFrame(frames.length - 1); }
+    var at = panel ? panel.querySelector(".mwx-attr") : null;
+    if(at) at.innerHTML = at.innerHTML.replace("via Iowa State IEM", "via RainViewer");
+  }).catch(function(){});
+}
+function buildTiles(){
+  if(satL && cloudL && rainL) return true;
+  try {
+    if(!satL){ satL = L.tileLayer("https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/GOES-East_ABI_GeoColor/default/" + gibsTime(70) + "/GoogleMapsCompatible_Level7/{z}/{y}/{x}.png", { maxNativeZoom: 7, maxZoom: 18, opacity: 0.95, zIndex: 5 }); satL.on("add", function(){ smooth(satL, "blur(0.7px) saturate(1.08)"); }); }
+    if(!cloudL){ cloudL = L.tileLayer("https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/GOES-East_ABI_Band13_Clean_Infrared/default/" + gibsTime(50) + "/GoogleMapsCompatible_Level6/{z}/{y}/{x}.png", { maxNativeZoom: 6, maxZoom: 18, opacity: 0.82, zIndex: 6 }); cloudL.on("add", function(){ smooth(cloudL, "blur(1.4px) brightness(1.06) saturate(1.12)"); }); }
+    if(!rainL){ rainL = L.tileLayer(MWX_TILE + "q2-n1p-900913/{z}/{x}/{y}.png", { maxZoom: 18, opacity: 0.85, zIndex: 15 }); }
+    if(!frames.length){
+      var steps = [55, 50, 45, 40, 35, 30, 25, 20, 15, 10, 5, 0];
+      frames = steps.map(function(mins){
+        var name = mins === 0 ? "nexrad-n0q-900913" : "nexrad-n0q-m" + (mins < 10 ? "0" + mins : mins) + "m-900913";
+        var layer = L.tileLayer(MWX_TILE + name + "/{z}/{x}/{y}.png", { opacity: 0, maxZoom: 18, zIndex: 10 });
+        return { mins: mins, layer: layer };
+      });
+         hdRadar();
+    }
+    if(!gustG) gustG = L.layerGroup();
+    if(!tempG) tempG = L.layerGroup();
+    if(!presG) presG = L.layerGroup();
+    if(!visG) visG = L.layerGroup();
+    if(!warnG) warnG = L.layerGroup();
+    if(!waveG) waveG = L.layerGroup();
+    if(!swellG) swellG = L.layerGroup();
+    if(!tideG) tideG = L.layerGroup();
+    return true;
+  } catch(e){ return false; }
+}
+function showFrame(i){
+  if(!frames.length) return;
+  fIdx = i;
+  frames.forEach(function(f, j){ f.layer.setOpacity(j === i && st.radar ? 0.85 : 0); });
+  var lbl = document.getElementById("mwx-radar-time");
+  if(lbl){ var fr = frames[i]; lbl.textContent = "Radar " + fmt(frameTime(fr.mins)) + (fr.mins === 0 ? " · latest" : " · " + fr.mins + " min ago"); }
+}
+function play(){
+  if(fTimer) return;
+  fPlaying = true;
+  fTimer = setInterval(function(){ showFrame((fIdx + 1) % frames.length); }, 850);
+  var b = document.getElementById("mwx-radar-play"); if(b) b.innerHTML = "&#10074;&#10074;";
+}
+function pause(){
+  fPlaying = false;
+  if(fTimer){ clearInterval(fTimer); fTimer = null; }
+  var b = document.getElementById("mwx-radar-play"); if(b) b.innerHTML = "&#9654;";
+}
+function omGrid(c){
+  var lats = [], lngs = [], i;
+  for(i = 0; i < 7; i++) lats.push(Math.round((c.lat + 0.75 - i * 0.25) * 10000) / 10000);
+  for(i = 0; i < 7; i++) lngs.push(Math.round((c.lng - 0.7 + i * (1.4 / 6)) * 10000) / 10000);
+  return { lats: lats, lngs: lngs };
+}
+function gustColor(m){ return m < 10 ? "#7dd3fc" : m < 20 ? "#4ade80" : m < 30 ? "#facc15" : m < 40 ? "#fb923c" : "#f87171"; }
+function tempColor(f){ return f < 60 ? "#38bdf8" : f < 70 ? "#34d399" : f < 80 ? "#fbbf24" : f < 88 ? "#fb923c" : "#f87171"; }
+function omFetch(){
+  if(omBusy || typeof fetch === "undefined") return;
+  var c = center();
+  if(om && (Date.now() - omAt) < 3600000 && Math.abs(om.center.lat - c.lat) < 0.05 && Math.abs(om.center.lng - c.lng) < 0.05){ omApply(); return; }
+  omBusy = true;
+  var g = omGrid(c), la = [], lo = [], r, cc;
+  for(r = 0; r < 7; r++) for(cc = 0; cc < 7; cc++){ la.push(g.lats[r]); lo.push(g.lngs[cc]); }
+  var url = "https://api.open-meteo.com/v1/forecast?latitude=" + la.join(",") + "&longitude=" + lo.join(",") +
+    "&current=temperature_2m,wind_speed_10m,wind_direction_10m,wind_gusts_10m,pressure_msl,visibility&wind_speed_unit=ms&temperature_unit=fahrenheit&forecast_days=1";
+  fetch(url).then(function(resp){ return resp.json(); }).then(function(j){
+    omBusy = false;
+    var arr = Array.isArray(j) ? j : [j];
+    if(arr.length !== 49 || !arr[0].current) throw 0;
+    var U = [], V = [], gusts = [], temps = [], pres = [], vis = [], i;
+    for(i = 0; i < 49; i++){
+      var cu = arr[i].current || {};
+      var s = cu.wind_speed_10m || 0, d = (cu.wind_direction_10m || 0) * Math.PI / 180;
+      U.push(Math.round(-s * Math.sin(d) * 1000) / 1000);
+      V.push(Math.round(-s * Math.cos(d) * 1000) / 1000);
+      gusts.push(Math.round((cu.wind_gusts_10m || 0) * 2.23694));
+      temps.push(Math.round(cu.temperature_2m || 0));
+      pres.push(cu.pressure_msl ? Math.round(cu.pressure_msl * 0.02953 * 100) / 100 : null);
+      vis.push(cu.visibility != null ? Math.round(cu.visibility / 1609.34 * 10) / 10 : null);
+    }
+    var hdr = { parameterCategory: 2, parameterUnit: "m.s-1", lo1: g.lngs[0], la1: g.lats[0], lo2: g.lngs[6], la2: g.lats[6], dx: Math.round((g.lngs[6] - g.lngs[0]) / 6 * 10000) / 10000, dy: 0.25, nx: 7, ny: 7, refTime: (arr[0].current.time || "").replace("T", " ") };
+    om = { center: c, grid: g, gusts: gusts, temps: temps, pres: pres, vis: vis,
+      windData: [ { header: Object.assign({}, hdr, { parameterNumber: 2 }), data: U }, { header: Object.assign({}, hdr, { parameterNumber: 3 }), data: V } ] };
+    omAt = Date.now();
+    omApply();
+  }).catch(function(){
+    omBusy = false;
+    ["wind", "gusts", "temp", "pressure", "vis"].forEach(function(k){ if(st[k]){ st[k] = false; apply(k); } });
+    syncChips();
+    toast("Wind data couldn't load — layer off");
+  });
+}
+function omApply(){
+  if(!map || typeof L === "undefined" || !om) return;
+  buildTiles();
+  try {
+    if(windL){ map.removeLayer(windL); windL = null; }
+    if(windFb){ map.removeLayer(windFb); windFb = null; }
+    if(typeof L.velocityLayer === "function"){
+      windL = L.velocityLayer({
+        displayValues: true,
+        displayOptions: { velocityType: "Wind", position: "bottomleft", emptyString: "No wind data", angleConvention: "bearingCW", speedUnit: "mph" },
+        data: om.windData, maxVelocity: 15, velocityScale: 0.008, particleMultiplier: 1 / 260,
+        colorScale: ["#7dd3fc", "#22d3ee", "#4ade80", "#facc15", "#fb923c", "#f87171"]
+      });
+    } else {
+      windFb = L.layerGroup();
+      var U = om.windData[0].data, V = om.windData[1].data, k = 0, r, c;
+      for(r = 0; r < 7; r++) for(c = 0; c < 7; c++){
+        var u = U[k], v = V[k]; k++;
+        var mph = Math.round(Math.sqrt(u * u + v * v) * 2.23694);
+        var ang = (Math.atan2(u, v) * 180 / Math.PI + 180) % 360;
+        var ic = L.divIcon({ className: "", html: '<div class="mwx-mchip" style="background:#7dd3fc"><span style="display:inline-block;transform:rotate(' + Math.round(ang) + 'deg)">&#10148;</span> ' + mph + '</div>', iconSize: null });
+        windFb.addLayer(L.marker([om.grid.lats[r], om.grid.lngs[c]], { icon: ic, interactive: false }));
+      }
+    }
+    if(gustG){ gustG.clearLayers(); tempG.clearLayers(); presG.clearLayers(); visG.clearLayers();
+      var i = 0, rr, cc;
+      for(rr = 0; rr < 7; rr++) for(cc = 0; cc < 7; cc++){
+        if(rr % 2 === 0 && cc % 2 === 0){
+          var gv = om.gusts[i], tv = om.temps[i], pv = om.pres[i], vv = om.vis[i];
+          var pt = [om.grid.lats[rr], om.grid.lngs[cc]];
+          gustG.addLayer(L.marker(pt, { icon: L.divIcon({ className: "", html: '<div class="mwx-mchip" style="background:' + gustColor(gv) + '">G ' + gv + '</div>', iconSize: null }), interactive: false }));
+          tempG.addLayer(L.marker(pt, { icon: L.divIcon({ className: "", html: '<div class="mwx-mchip" style="background:' + tempColor(tv) + '">' + tv + '&deg;</div>', iconSize: null }), interactive: false }));
+          if(pv != null) presG.addLayer(L.marker(pt, { icon: L.divIcon({ className: "", html: '<div class="mwx-mchip" style="background:#c4b5fd">' + pv.toFixed(2) + ' in</div>', iconSize: null }), interactive: false }));
+          if(vv != null) visG.addLayer(L.marker(pt, { icon: L.divIcon({ className: "", html: '<div class="mwx-mchip" style="background:' + (vv >= 5 ? "#86efac" : vv >= 1 ? "#fde68a" : "#fca5a5") + '">' + vv + ' mi</div>', iconSize: null }), interactive: false }));
+        }
+        i++;
+      }
+    }
+    if(st.wind){ var wl = windL || windFb; if(wl) map.addLayer(wl); }
+    if(st.gusts && gustG) map.addLayer(gustG);
+    if(st.temp && tempG) map.addLayer(tempG);
+    if(st.pressure && presG) map.addLayer(presG);
+    if(st.vis && visG) map.addLayer(visG);
+  } catch(e){}
+}
+function loadWarnings(){
+  if(warnBusy || typeof fetch === "undefined" || !warnG) return;
+  warnBusy = true;
+  var c = center();
+  fetch("https://api.weather.gov/alerts/active?point=" + c.lat + "," + c.lng).then(function(r){ return r.json(); }).then(function(j){
+    warnBusy = false;
+    warnG.clearLayers();
+    var feats = (j && j.features) || [], drawn = 0;
+    feats.forEach(function(f){
+      if(!f.geometry) return;
+      try {
+        var ev = (f.properties && f.properties.event) || "Alert";
+        var col = /Warning/i.test(ev) ? "#ef4444" : /Watch/i.test(ev) ? "#fb923c" : "#facc15";
+        var gj = L.geoJSON(f, { style: { color: col, weight: 2, fillColor: col, fillOpacity: 0.18 } });
+        gj.bindPopup("<b>" + esc(ev) + "</b><br>" + esc((f.properties && f.properties.headline) || "") + "<br><small>National Weather Service</small>");
+        warnG.addLayer(gj); drawn++;
+      } catch(e){}
+    });
+    if(st.warn){ map.addLayer(warnG); }
+    if(feats.length && !drawn) toast(feats.length + " alert(s) for this area — see weather.gov for the zones");
+    else if(!feats.length) toast("No active warnings for this spot");
+  }).catch(function(){ warnBusy = false; if(st.warn){ st.warn = false; syncChips(); } toast("Warnings couldn't load — layer off"); });
+}
+function loadWaves(){
+  if(typeof fetch === "undefined" || !waveG) return;
+  var la = MWX_BUOYS.map(function(b){ return b.lat; }).join(","), lo = MWX_BUOYS.map(function(b){ return b.lng; }).join(",");
+  fetch("https://marine-api.open-meteo.com/v1/marine?latitude=" + la + "&longitude=" + lo + "&current=wave_height,wave_direction,wave_period,swell_wave_height,swell_wave_direction,swell_wave_period&length_unit=imperial").then(function(r){ return r.json(); }).then(function(j){
+    var arr = Array.isArray(j) ? j : [j];
+    waveG.clearLayers(); swellG.clearLayers();
+    arr.forEach(function(it, i){
+      var b = MWX_BUOYS[i]; if(!b || !it || !it.current) return;
+      var ft = it.current.wave_height, per = it.current.wave_period, dir = it.current.wave_direction;
+      if(ft != null){
+        var mk = L.marker([b.lat, b.lng], { icon: L.divIcon({ className: "", html: '<div class="mwx-mchip" style="background:#38bdf8">' + (Math.round(ft * 10) / 10) + ' ft</div>', iconSize: null }) });
+        mk.bindPopup("<b>Buoy " + b.id + "</b> (" + esc(b.name) + ")<br>Wave height (model): <b>" + (Math.round(ft * 10) / 10) + " ft</b>" +
+          (per != null ? "<br>Period: " + per + " s" : "") + (dir != null ? "<br>Direction: " + Math.round(dir) + "&deg;" : "") +
+          '<br><a href="https://www.ndbc.noaa.gov/station_page.php?station=' + b.id + '" target="_blank" rel="noopener">Live buoy observations &rarr;</a>');
+        waveG.addLayer(mk);
+      }
+      var sf = it.current.swell_wave_height, sp = it.current.swell_wave_period, sd = it.current.swell_wave_direction;
+      if(sf != null){
+        var sm = L.marker([b.lat, b.lng], { icon: L.divIcon({ className: "", html: '<div class="mwx-mchip" style="background:#a5b4fc">' + (Math.round(sf * 10) / 10) + ' ft</div>', iconSize: null }) });
+        sm.bindPopup("<b>Buoy " + b.id + "</b> (" + esc(b.name) + ")<br>Swell (model): <b>" + (Math.round(sf * 10) / 10) + " ft</b>" +
+          (sp != null ? "<br>Swell period: " + sp + " s" : "") + (sd != null ? "<br>Swell direction: " + Math.round(sd) + "&deg;" : ""));
+        swellG.addLayer(sm);
+      }
+    });
+    if(st.waves) map.addLayer(waveG);
+    if(st.swell) map.addLayer(swellG);
+  }).catch(function(){ ["waves", "swell"].forEach(function(k){ if(st[k]) st[k] = false; }); syncChips(); toast("Wave data couldn't load — layer off"); });
+}
+function loadTides(){
+  if(typeof fetch === "undefined" || !tideG) return;
+  MWX_GAUGES.forEach(function(g){
+    fetch("https://api.tidesandcurrents.noaa.gov/api/prod/datagetter?date=latest&station=" + g.id + "&product=water_level&datum=MLLW&units=english&time_zone=lst_ldt&format=json").then(function(r){ return r.json(); }).then(function(j){
+      var d = j && j.data && j.data[0];
+      if(!d || d.v == null) return;
+      var ft = Math.round(parseFloat(d.v) * 100) / 100;
+      if(isNaN(ft)) return;
+      var mk = L.marker([g.lat, g.lng], { icon: L.divIcon({ className: "", html: '<div class="mwx-mchip" style="background:#7dd3fc">' + ft.toFixed(2) + ' ft</div>', iconSize: null }) });
+      mk.bindPopup("<b>" + esc(g.name) + "</b><br>NOAA tide gauge " + g.id + "<br>Water level: <b>" + ft.toFixed(2) + " ft</b> (MLLW)<br><small>" + esc(d.t || "") + " local</small>");
+      tideG.addLayer(mk);
+      if(st.tides && map) map.addLayer(tideG);
+    }).catch(function(){});
+  });
+}
+function apply(key){
+  if(!map || typeof L === "undefined") return;
+  try {
+    if(!buildTiles()) return;
+    var on = !!st[key], layer = null;
+    if(key === "radar"){
+      frames.forEach(function(f){ if(on){ if(!map.hasLayer(f.layer)) map.addLayer(f.layer); } else if(map.hasLayer(f.layer)) map.removeLayer(f.layer); });
+      if(on){ showFrame(frames.length - 1); play(); } else { pause(); showFrame(fIdx); }
+      var row = document.getElementById("mwx-radar-row"); if(row) row.classList.toggle("open", on);
+      return;
+    }
+    if(key === "sat") layer = satL;
+    else if(key === "clouds") layer = cloudL;
+    else if(key === "rain") layer = rainL;
+    else if(key === "gusts") layer = gustG;
+    else if(key === "temp") layer = tempG;
+    else if(key === "warn") layer = warnG;
+    else if(key === "waves") layer = waveG;
+    else if(key === "swell") layer = swellG;
+    else if(key === "pressure") layer = presG;
+    else if(key === "vis") layer = visG;
+    else if(key === "tides") layer = tideG;
+    else if(key === "wind") layer = windL || windFb;
+    if(key === "wind"){
+      if(windL){ map.removeLayer(windL); }
+      if(windFb){ map.removeLayer(windFb); }
+      if(on){ var wl = windL || windFb; if(wl) map.addLayer(wl); }
+      return;
+    }
+    if(!layer) return;
+    if(on){ if(!map.hasLayer(layer)) map.addLayer(layer); }
+    else if(map.hasLayer(layer)) map.removeLayer(layer);
+  } catch(e){}
+}
+function syncChips(){
+  if(!panel) return;
+  MWX_DEFS.forEach(function(d){
+    var b = panel.querySelector('[data-mwx="' + d[0] + '"]');
+    if(b) b.classList.toggle("on", !!st[d[0]]);
+  });
+}
+function toggle(key){
+  try {
+    if(!map){ toast("Map is still loading — try again in a moment"); return; }
+    st[key] = !st[key];
+    if(st[key]){
+      if(key === "radar" || key === "sat" || key === "clouds" || key === "rain"){ if(buildTiles()) apply(key); }
+      else if(key === "wind" || key === "gusts" || key === "temp" || key === "pressure" || key === "vis"){ omFetch(); if(om) omApply(); if(key === "wind" && !om) toast("Loading wind…"); }
+      else if(key === "warn"){ if(buildTiles()){ apply(key); loadWarnings(); } }
+      else if(key === "waves" || key === "swell"){ if(buildTiles()){ apply(key); loadWaves(); } }
+      else if(key === "tides"){ if(buildTiles()){ tideG.clearLayers(); apply(key); loadTides(); } }
+    } else {
+      apply(key);
+    }
+    syncChips();
+  } catch(e){}
+}
+function buildUI(){
+  if(built || !window.tbbMap || typeof L === "undefined") return;
+  built = true;
+  map = window.tbbMap;
+  try {
+    var WxBtn = L.Control.extend({ options: { position: "topleft" }, onAdd: function(){
+      var b = L.DomUtil.create("button", "tbb-loc-btn");
+      b.type = "button"; b.title = "Weather layers"; b.setAttribute("aria-label", "Show weather layers for this map");
+      b.innerHTML = '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M17.5 18.5a4.5 4.5 0 0 0 .42-8.98 6 6 0 0 0-11.7 1.62A4 4 0 0 0 7 18.5h10.5z"/><path d="M4 21.5c1.5 1.2 3.5 1.2 5 0s3.5-1.2 5 0 3.5 1.2 5 0"/></svg>';
+      L.DomEvent.disableClickPropagation(b);
+      L.DomEvent.on(b, "click", function(){ if(panel) panel.classList.toggle("open"); });
+      return b;
+    }});
+    map.addControl(new WxBtn());
+    panel = document.createElement("div");
+    panel.className = "mwx-panel";
+    panel.id = "mwx-panel";
+    var chips = "";
+    MWX_DEFS.forEach(function(d){ chips += '<button type="button" class="mwx-chip" data-mwx="' + d[0] + '">' + d[1] + "</button>"; });
+    panel.innerHTML = "<h4>Weather layers</h4>" +
+      '<p class="mwx-sub">The same live layers as the Tides &amp; Forecast radar — drawn on this map, under the pins.</p>' +
+      '<div class="mwx-chips">' + chips + "</div>" +
+      '<div class="mwx-radar" id="mwx-radar-row"><button type="button" id="mwx-radar-play" aria-label="Play or pause the radar animation">&#10074;&#10074;</button><span id="mwx-radar-time"></span></div>' +
+      '<div class="mwx-toast" id="mwx-toast"></div>' +
+      '<p class="mwx-attr">Radar: NOAA / NEXRAD via Iowa State IEM · Satellite &amp; clouds: NASA GOES-East · Wind, gusts, temp, pressure &amp; visibility: Open-Meteo · Warnings: National Weather Service · Waves &amp; swell: Open-Meteo Marine · Tide gauges: NOAA</p>';
+    map.getContainer().appendChild(panel);
+    panel.querySelectorAll("[data-mwx]").forEach(function(b){
+      b.addEventListener("click", function(){ toggle(b.getAttribute("data-mwx")); });
+    });
+    var pb = document.getElementById("mwx-radar-play");
+    if(pb) pb.addEventListener("click", function(){ if(fPlaying) pause(); else play(); });
+    if(window.L && L.DomEvent){ L.DomEvent.disableClickPropagation(panel); L.DomEvent.disableScrollPropagation(panel); }
+    document.addEventListener("visibilitychange", function(){ if(document.hidden) pause(); });
+  } catch(e){}
+}
+var mwxIv = setInterval(function(){
+  if(window.tbbMap){ buildUI(); if(built) clearInterval(mwxIv); }
+}, 600);
+})();
+</script>
+
 </body></html>

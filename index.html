@@ -2195,7 +2195,7 @@ function twlPlay(btn){
               <button type="button" class="dop-qtog all" id="doppler-all-layers">&#9776; All layers</button>
             </div>
             <div class="dop-legend"><span>Light</span><div class="dop-bar"></div><span>Heavy</span></div>
-            <div class="dop-attr">Radar: NOAA / NEXRAD via Iowa State IEM &middot; Map: Esri Ocean &middot; Updates every 5 min</div>
+            <div class="dop-attr">Radar: NOAA / NEXRAD &middot; Map: Esri Ocean</div>
           </div>
           <div id="doppler-layers" role="dialog" aria-label="Map layers">
             <div class="dop-grab"></div>
@@ -6449,6 +6449,32 @@ function dopplerPause(){
   if(dopplerTimer) clearInterval(dopplerTimer);
   dopplerTimer = null;
 }
+function dopplerHdUpgrade(){
+  /* HD radar upgrade: RainViewer serves true 512px NEXRAD tiles — double the
+     pixels of the 256px IEM frames below. If RainViewer is unreachable, the
+     IEM frames simply stay (fallback). */
+  if(typeof fetch === "undefined") return;
+  fetch("https://api.rainviewer.com/public/weather-maps.json").then(function(r){ return r.json(); }).then(function(j){
+    if(!dopplerMap || !j || !j.radar || !j.radar.past || !j.radar.past.length) return;
+    var host = j.host || "https://tilecache.rainviewer.com";
+    var past = j.radar.past.slice(-12);
+    var now = Date.now();
+    var frames = past.map(function(p){
+      var layer = L.tileLayer(host + p.path + "/512/{z}/{x}/{y}/6/1_1.png", { tileSize: 512, zoomOffset: -1, opacity: 0, maxZoom: 16, zIndex: 10 });
+      layer.addTo(dopplerMap);
+      return { mins: Math.max(0, Math.round((now - p.time * 1000) / 60000)), layer: layer };
+    });
+    if(!frames.length) return;
+    var old = dopplerFrames;
+    dopplerFrames = frames;
+    old.forEach(function(f){ try { dopplerMap.removeLayer(f.layer); } catch(e){} });
+    window.__dopHd = true;
+    window.dopplerRadarSrc = "RainViewer";
+    if(dopplerIdx >= dopplerFrames.length) dopplerIdx = dopplerFrames.length - 1;
+    dopplerShow(dopplerIdx);
+    if(typeof d3Attr === "function") d3Attr();
+  }).catch(function(){});
+}
 function dopplerInit(){
   if(dopplerMap) return true;
   var el = document.getElementById("tbb-doppler-map");
@@ -6464,6 +6490,7 @@ function dopplerInit(){
     layer.addTo(dopplerMap);
     return { mins: mins, layer: layer };
   });
+  dopplerHdUpgrade();
   L.tileLayer("https://services.arcgisonline.com/ArcGIS/rest/services/Ocean/World_Ocean_Reference/MapServer/tile/{z}/{y}/{x}", { maxZoom: 16, zIndex: 20 }).addTo(dopplerMap);
   var playBtn = document.getElementById("doppler-play");
   if(playBtn) playBtn.addEventListener("click", function(){ dopplerPlaying ? dopplerPause() : dopplerPlay(); });
@@ -6474,7 +6501,7 @@ function dopplerInit(){
   var rc = document.getElementById("doppler-radar-chip");
   if(rc) rc.addEventListener("click", function(){ dopplerRadarOn = !dopplerRadarOn; rc.classList.toggle("on", dopplerRadarOn); dopplerShow(dopplerIdx); });
   var rf = document.getElementById("doppler-refresh-chip");
-  if(rf) rf.addEventListener("click", function(){ dopplerFrames.forEach(function(f){ f.layer.redraw(); }); dopplerShow(dopplerIdx); });
+  if(rf) rf.addEventListener("click", function(){ if(window.__dopHd){ dopplerHdUpgrade(); } else { dopplerFrames.forEach(function(f){ f.layer.redraw(); }); } dopplerShow(dopplerIdx); });
   var lc = document.getElementById("doppler-loc-chip");
   if(lc) lc.addEventListener("click", function(){
     if(!navigator.geolocation) return;
@@ -8220,13 +8247,13 @@ function d3BuildTiles(){
 function d3Attr(){
   var el = document.querySelector("#tbb-doppler .dop-attr");
   if(!el) return;
-  var src = ["Radar: NOAA / NEXRAD via Iowa State IEM", "Map: Esri Ocean"];
+  var src = ["Radar: NOAA / NEXRAD via " + (window.dopplerRadarSrc || "Iowa State IEM"), "Map: Esri Ocean"];
   if(d3State.sat || d3State.clouds) src.push("Satellite & clouds: NASA GOES-East");
   if(d3State.wind || d3State.gusts || d3State.temp || d3State.pressure || d3State.vis) src.push("Wind, temp, pressure & visibility: Open-Meteo");
   if(d3State.warn) src.push("Warnings: National Weather Service");
   if(d3State.waves || d3State.swell) src.push("Waves & swell: Open-Meteo Marine model");
   if(d3State.tides) src.push("Tide gauges: NOAA");
-  el.textContent = src.join(" · ") + " · Updates every 5 min";
+  el.textContent = src.join(" · ") + " · Updates every " + (window.dopplerRadarSrc ? "10" : "5") + " min";
 }
 function d3SyncChrome(){
   Object.keys(d3State).forEach(function(k){

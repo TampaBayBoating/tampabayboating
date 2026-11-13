@@ -5624,9 +5624,9 @@ const EVENTS = [
  {start:"2026-12-12", end:"2026-12-12", title:"Sarasota Holiday Boat Parade of Lights", when:"Dec 12, 2026", where:"Sarasota Bay, Bayfront Park / Marina Jack",
   desc:"Lighted boat parade drawing ~5,000 spectators, benefiting Suncoast Charities for Children. Call (941) 365-4232 for entry info.",
   url:"https://suncoastcharitiesforchildren.org/holiday-boat-parade/", featured:false, details: "<b>When:</b> Sat, Dec 12, 2026 (organizer page publishes no start time)\n<b>Where:</b> Sarasota Bay — best viewing from Bayfront Park and Marina Jack\n<b>Cost:</b> Free admission\n<b>The event:</b> Annual parade of holiday-decorated boats on Sarasota Bay, presented by Suncoast Charities for Children and Marina Jack; celebrity judges pick winners in private and corporate classes.\n<b>Good to know:</b> Guests are encouraged to bring an unwrapped toy or book for local children and families in need; Marina Jack restaurant reservations are required in advance and fill up quickly — call 941-365-4232." },
- {start:"2026-12-12", end:"2026-12-12", title:"Madeira Beach Festival of Lights Boat Parade (60th)", when:"Dec 12, 2026", where:"Madeira Beach waterfront / ROC Park",
+ {start:"2026-12-12", end:"2026-12-12", title:"Madeira Beach Festival of Lights Boat Parade (60th)", when:"Dec 12, 2026 \u00b7 6:15\u20139:00pm", where:"ROC Park, Madeira Beach \u2192 John's Pass",
   desc:"The 60th annual — one of Tampa Bay's longest-running lighted boat parades, hosted by the City of Madeira Beach.",
-  url:"https://madeirabeachfl.gov/event/60th-annual-madeira-beach-festival-of-lights-holiday-boat-parade/", featured:false, details: "<b>When:</b> Sat, Dec 12, 2026\n<b>Where:</b> Madeira Beach waterfront / ROC Park, Madeira Beach\n<b>The event:</b> The 60th annual Festival of Lights holiday boat parade, hosted by the City of Madeira Beach — one of Tampa Bay's longest-running lighted boat parades." },
+  url:"https://madeirabeachfl.gov/event/60th-annual-madeira-beach-festival-of-lights-holiday-boat-parade/", featured:false, details: "<b>When:</b> Sat, Dec 12, 2026 \u00b7 6:15\u20139:00pm\n<b>Where:</b> Starts at ROC Park, Madeira Beach and cruises to John's Pass\n<b>The event:</b> The 60th annual Festival of Lights holiday boat parade, hosted by the City of Madeira Beach — one of Tampa Bay's longest-running lighted boat parades." },
  {start:"2026-12-12", end:"2026-12-12", title:"Boca Ciega Yacht Club Christmas Boat Parade (40th)", when:"Dec 12, 2026", where:"Boca Ciega Bay, Gulfport",
   desc:"The yacht club's 40th annual Christmas boat parade, paired with a holiday toy drive.",
   url:"https://sailbcyc.org/ChristmasBoatParade", featured:false, details: "<b>When:</b> Sat, Dec 12, 2026 · Boats gather in the bay ~5:30pm; parade steps off 6:00pm behind the Gulfport Police boat\n<b>Where:</b> Starts at Gulfport Municipal Marina, cruising Boca Ciega Bay past Clam Bayou, Williams Pier, the Gulfport Casino, Town Shores, Isla del Sol and back\n<b>Cost:</b> No entry fee — each skipper is asked to donate two or more new, unwrapped toys\n<b>The event:</b> Boca Ciega Yacht Club's annual lighted boat parade supporting Operation Santa, the Gulfport Police Department's toy drive for local children — the club has partnered on the drive for 24+ years.\n<b>Good to know:</b> Toy donations can be dropped in the Operation Santa collection box at the BCYC clubhouse or at the Gulfport Police Department." },
@@ -6513,12 +6513,14 @@ function dopplerPause(){
   dopplerTimer = null;
 }
 function rvTileLayer(url, opts){
-  /* RainViewer sometimes answers a first-time tile request with a gray
-     "Zoom Level Not Supported" placeholder (HTTP 200) while it generates
-     the real tile, and browsers may cache that placeholder for 48h.
-     Detect it by reading the tile's pixels (their server sends CORS *,
-     so the canvas is readable) and re-ask with a cache buster until the
-     real tile lands; if it never lands, the tile stays clear. */
+  /* RainViewer's 512px radar tiles only exist up to zoom 7. At zoom 8+
+     the server answers HTTP 200 with a mostly-transparent tile carrying
+     dark gray "Zoom Level Not Supported" text, cached for 48h.
+     maxNativeZoom on the layer keeps requests at z7 or below; the pixel
+     check below is the safety net (their server sends CORS *, so the
+     canvas is readable): a tile whose opaque pixels are almost all
+     near-gray is that text tile — re-ask with a cache buster, and if
+     it never clears, blank the tile instead of showing the text. */
   var BLANK = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=";
   var layer = L.tileLayer(url, opts);
   layer.createTile = function(coords, done){
@@ -6533,12 +6535,12 @@ function rvTileLayer(url, opts){
         var cv = document.createElement("canvas"); cv.width = 64; cv.height = 64;
         var cx = cv.getContext("2d", { willReadFrequently: true });
         cx.drawImage(img, 0, 0, 64, 64);
-        var d = cx.getImageData(14, 22, 36, 20).data, gray = 0, n = 0;
-        for(var i = 0; i < d.length; i += 16){
-          var r = d[i], g = d[i+1], b = d[i+2], a = d[i+3]; n++;
-          if(a > 150 && Math.abs(r-g) < 14 && Math.abs(g-b) < 14 && r > 95 && r < 175) gray++;
+        var d = cx.getImageData(0, 0, 64, 64).data, op = 0, gray = 0;
+        for(var i = 0; i < d.length; i += 8){
+          var r = d[i], g = d[i+1], b = d[i+2], a = d[i+3];
+          if(a > 100){ op++; if(Math.abs(r-g) < 16 && Math.abs(g-b) < 16 && r < 210) gray++; }
         }
-        return n > 0 && (gray / n) > 0.55;
+        return op >= 20 && (gray / op) > 0.6;
       } catch(e){ return false; }
     }
     img.onload = function(){
@@ -6572,7 +6574,7 @@ function dopplerHdUpgrade(){
     var past = j.radar.past.slice(-12);
     var now = Date.now();
     var frames = past.map(function(p){
-      var layer = rvTileLayer(host + p.path + "/512/{z}/{x}/{y}/6/1_1.png", { tileSize: 512, zoomOffset: -1, opacity: 0, maxZoom: 16, zIndex: 10 });
+      var layer = rvTileLayer(host + p.path + "/512/{z}/{x}/{y}/6/1_1.png", { tileSize: 512, zoomOffset: -1, maxNativeZoom: 7, opacity: 0, maxZoom: 16, zIndex: 10 });
       layer.addTo(dopplerMap);
       return { mins: Math.max(0, Math.round((now - p.time * 1000) / 60000)), layer: layer };
     });
@@ -9408,9 +9410,10 @@ function center(){ var c = map.getCenter(); return { lat: c.lat, lng: c.lng }; }
 function smooth(layer, filterCss){ try { var c = layer && layer.getContainer ? layer.getContainer() : null; if(c) c.style.filter = filterCss; } catch(e){} }
 function mwxRvLayer(url, opts){
   /* Placeholder-proof RainViewer tiles — same guard as the Tides Doppler:
-     a first-time tile can arrive as a gray "Zoom Level Not Supported"
-     placeholder (HTTP 200, cached 48h); read its pixels (CORS *), re-ask
-     with a cache buster, and blank the tile if the real one never lands. */
+     RainViewer 512px radar tiles stop at zoom 7; zoom 8+ returns a
+     "Zoom Level Not Supported" text tile (HTTP 200, cached 48h).
+     maxNativeZoom clamps requests to z7; the pixel check blanks any
+     text tile that still slips through. */
   var BLANK = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=";
   var layer = L.tileLayer(url, opts);
   layer.createTile = function(coords, done){
@@ -9423,12 +9426,12 @@ function mwxRvLayer(url, opts){
         var cv = document.createElement("canvas"); cv.width = 64; cv.height = 64;
         var cx = cv.getContext("2d", { willReadFrequently: true });
         cx.drawImage(img, 0, 0, 64, 64);
-        var d = cx.getImageData(14, 22, 36, 20).data, gray = 0, n = 0;
-        for(var i = 0; i < d.length; i += 16){
-          var r = d[i], g = d[i+1], b = d[i+2], a = d[i+3]; n++;
-          if(a > 150 && Math.abs(r-g) < 14 && Math.abs(g-b) < 14 && r > 95 && r < 175) gray++;
+        var d = cx.getImageData(0, 0, 64, 64).data, op = 0, gray = 0;
+        for(var i = 0; i < d.length; i += 8){
+          var r = d[i], g = d[i+1], b = d[i+2], a = d[i+3];
+          if(a > 100){ op++; if(Math.abs(r-g) < 16 && Math.abs(g-b) < 16 && r < 210) gray++; }
         }
-        return n > 0 && (gray / n) > 0.55;
+        return op >= 20 && (gray / op) > 0.6;
       } catch(e){ return false; }
     }
     img.onload = function(){
@@ -9455,7 +9458,7 @@ function hdRadar(){
     var host = j.host || "https://tilecache.rainviewer.com";
     var now = Date.now();
     var nf = j.radar.past.slice(-12).map(function(p){
-      var layer = mwxRvLayer(host + p.path + "/512/{z}/{x}/{y}/6/1_1.png", { tileSize: 512, zoomOffset: -1, opacity: 0, maxZoom: 18, zIndex: 10 });
+      var layer = mwxRvLayer(host + p.path + "/512/{z}/{x}/{y}/6/1_1.png", { tileSize: 512, zoomOffset: -1, maxNativeZoom: 7, opacity: 0, maxZoom: 18, zIndex: 10 });
       return { mins: Math.max(0, Math.round((now - p.time * 1000) / 60000)), layer: layer };
     });
     if(!nf.length) return;

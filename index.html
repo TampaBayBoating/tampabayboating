@@ -6449,6 +6449,55 @@ function dopplerPause(){
   if(dopplerTimer) clearInterval(dopplerTimer);
   dopplerTimer = null;
 }
+function rvTileLayer(url, opts){
+  /* RainViewer sometimes answers a first-time tile request with a gray
+     "Zoom Level Not Supported" placeholder (HTTP 200) while it generates
+     the real tile, and browsers may cache that placeholder for 48h.
+     Detect it by reading the tile's pixels (their server sends CORS *,
+     so the canvas is readable) and re-ask with a cache buster until the
+     real tile lands; if it never lands, the tile stays clear. */
+  var BLANK = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=";
+  var layer = L.tileLayer(url, opts);
+  layer.createTile = function(coords, done){
+    var img = document.createElement("img");
+    img.alt = "";
+    img.className = "leaflet-tile";
+    img.crossOrigin = "anonymous";
+    var tileUrl = layer.getTileUrl(coords);
+    var tries = 0;
+    function isPlaceholder(){
+      try {
+        var cv = document.createElement("canvas"); cv.width = 64; cv.height = 64;
+        var cx = cv.getContext("2d", { willReadFrequently: true });
+        cx.drawImage(img, 0, 0, 64, 64);
+        var d = cx.getImageData(14, 22, 36, 20).data, gray = 0, n = 0;
+        for(var i = 0; i < d.length; i += 16){
+          var r = d[i], g = d[i+1], b = d[i+2], a = d[i+3]; n++;
+          if(a > 150 && Math.abs(r-g) < 14 && Math.abs(g-b) < 14 && r > 95 && r < 175) gray++;
+        }
+        return n > 0 && (gray / n) > 0.55;
+      } catch(e){ return false; }
+    }
+    img.onload = function(){
+      if(isPlaceholder()){
+        if(tries < 4){
+          tries++;
+          setTimeout(function(){ img.src = tileUrl + "?rvtry=" + tries; }, 400 + 500 * tries);
+          return;
+        }
+        img.onload = function(){ done(null, img); };
+        img.onerror = function(){ done(null, img); };
+        img.src = BLANK;
+        return;
+      }
+      done(null, img);
+    };
+    img.onerror = function(){ done(null, img); };
+    img.src = tileUrl;
+    return img;
+  };
+  return layer;
+}
 function dopplerHdUpgrade(){
   /* HD radar upgrade: RainViewer serves true 512px NEXRAD tiles — double the
      pixels of the 256px IEM frames below. If RainViewer is unreachable, the
@@ -6460,7 +6509,7 @@ function dopplerHdUpgrade(){
     var past = j.radar.past.slice(-12);
     var now = Date.now();
     var frames = past.map(function(p){
-      var layer = L.tileLayer(host + p.path + "/512/{z}/{x}/{y}/6/1_1.png", { tileSize: 512, zoomOffset: -1, opacity: 0, maxZoom: 16, zIndex: 10 });
+      var layer = rvTileLayer(host + p.path + "/512/{z}/{x}/{y}/6/1_1.png", { tileSize: 512, zoomOffset: -1, opacity: 0, maxZoom: 16, zIndex: 10 });
       layer.addTo(dopplerMap);
       return { mins: Math.max(0, Math.round((now - p.time * 1000) / 60000)), layer: layer };
     });

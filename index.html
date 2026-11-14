@@ -397,6 +397,12 @@ footer .soc svg{width:20px; height:20px}
 .demo-panel{background:#fff;border:1px dashed #bcd9e8;border-radius:12px;padding:14px 16px;color:var(--muted)}
 .demo-note{font-size:.82rem;color:var(--muted);text-align:center;margin:8px 0 0}
 
+#fw-doors-orig{display:none}
+#fw-salt .bt-tabs, #fw-fresh .bt-tabs{display:none}
+.fnav-doors{display:flex;gap:8px;margin-bottom:4px}
+button.cat-card{font:inherit;cursor:pointer;width:100%}
+.cat-card.sel{background:#0a2540;color:#fff;border-color:#0a2540}
+.cat-card.sel i{color:#bcd6ea}
 .temp-line{background:#e8f6f3;border:1px solid #bfe6da;border-radius:8px;padding:7px 9px;font-weight:700;color:#0b5563;margin-bottom:8px;font-size:.92rem}
 /* FISH POSTER GUIDES (Nov 14) */
 .guide{display:none;margin:14px 0 6px;background:#eef3f7;border-radius:14px;overflow:hidden;box-shadow:0 6px 22px rgba(10,37,64,.25);border:1px solid #cfdce8}
@@ -2369,8 +2375,28 @@ function twlPlay(btn){
       <span class="sec-kicker">Tight Lines</span>
       <h2>Tampa Bay Fishing</h2>
       <p>Pick your water — saltwater or freshwater. Every fish has a picture and its legal size, so you always know what you caught and what you can keep.</p>
-    </div>
-    <div class="license-card"><div class="license-ico"><svg class="ic" aria-hidden="true"><use href="#i-doc"/></svg></div><div><h4>Is your Florida fishing license current?</h4><p>FWC checks licenses on the water. Verify yours is still active — or buy or renew in minutes — through Florida's official license system.</p><div class="license-btns"><a class="wub-btn" href="https://gooutdoorsflorida.com/" target="_blank" rel="noopener">Check / renew my license</a><a class="wub-btn" href="https://myfwc.com/license/recreational/saltwater-fishing/" target="_blank" rel="noopener">FWC license requirements</a></div></div></div>
+    </div><div class="fnav-doors">
+<button class="fw-door sel" id="fnav-door-salt" onclick="fnavDoor('salt')">🌊 Saltwater<span>Bay, ocean &amp; rivers</span></button>
+<button class="fw-door" id="fnav-door-fresh" onclick="fnavDoor('fresh')">🎣 Freshwater<span>Lakes &amp; ponds</span></button></div>
+<div class="sec-kicker" style="margin:14px 0 8px">Browse fishing</div>
+<div class="cat-grid" id="fnav-grid">
+<button class="cat-card sel" data-fp="hub" onclick="fnav('hub',this)"><span class="c-ico"><svg class=tic aria-hidden=true><use href=#i-fish></use></svg></span><b>Start Here</b><i>New or expert — pick your path</i></button>
+<button class="cat-card" data-fp="bite" onclick="fnav('bite',this)"><span class="c-ico"><svg class=tic aria-hidden=true><use href=#i-drop></use></svg></span><b>Today's Bite</b><i>When they'll feed</i></button>
+<button class="cat-card" data-fp="spots" onclick="fnav('spots',this)"><span class="c-ico"><svg class=tic aria-hidden=true><use href=#i-pin></use></svg></span><b>Spots</b><i>Piers, bridges &amp; flats</i></button>
+<button class="cat-card" data-fp="start" onclick="fnav('start',this)"><span class="c-ico"><svg class=tic aria-hidden=true><use href=#i-cal></use></svg></span><b>Report</b><i>Today's fishing report</i></button>
+<button class="cat-card" data-fp="chart" onclick="fnav('chart',this)"><span class="c-ico"><svg class=tic aria-hidden=true><use href=#i-clip></use></svg></span><b>Fish Chart</b><i>Every fish, full guide</i></button>
+<button class="cat-card" data-fp="bait" onclick="fnav('bait',this)"><span class="c-ico"><svg class=tic aria-hidden=true><use href=#i-bag></use></svg></span><b>Bait &amp; Rods</b><i>What to throw</i></button>
+<button class="cat-card" data-fp="knots" onclick="fnav('knots',this)"><span class="c-ico"><svg class=tic aria-hidden=true><use href=#i-anchor></use></svg></span><b>Knots</b><i>Tie them right</i></button>
+<button class="cat-card" data-fp="hooks" onclick="fnav('hooks',this)"><span class="c-ico"><svg class=tic aria-hidden=true><use href=#i-hook></use></svg></span><b>Hooks</b><i>Sizes &amp; rigs</i></button>
+<button class="cat-card" data-fp="newbie" onclick="fnav('newbie',this)"><span class="c-ico"><svg class=tic aria-hidden=true><use href=#i-lifebuoy></use></svg></span><b>Newbie</b><i>Start from zero</i></button>
+<button class="cat-card" data-fp="clean" onclick="fnav('clean',this)"><span class="c-ico"><svg class=tic aria-hidden=true><use href=#i-brush></use></svg></span><b>Clean</b><i>Fillet &amp; clean your catch</i></button>
+<button class="cat-card" data-fp="license" onclick="fnav('license',this)"><span class="c-ico"><svg class=tic aria-hidden=true><use href=#i-doc></use></svg></span><b>License &amp; Rules</b><i>Licenses, seasons &amp; limits</i></button>
+<a class="cat-card" href="#/tides"><span class="c-ico"><svg class=tic aria-hidden=true><use href=#i-compass></use></svg></span><b>Tides &amp; Weather</b><i>Tides, radar &amp; forecast</i></a>
+<a class="cat-card" href="#/map"><span class="c-ico"><svg class=tic aria-hidden=true><use href=#i-map></use></svg></span><b>Boater's Map</b><i>Ramps, fuel &amp; sandbars</i></a>
+<a class="cat-card" href="#/charters"><span class="c-ico"><svg class=tic aria-hidden=true><use href=#i-cap></use></svg></span><b>Charters</b><i>Hire a local captain</i></a>
+<a class="cat-card" href="#/events"><span class="c-ico"><svg class=tic aria-hidden=true><use href=#i-star></use></svg></span><b>Events</b><i>Tournaments &amp; meetups</i></a>
+</div>
+    <div id="fp-license" style="display:none"><div class="license-card"><div class="license-ico"><svg class="ic" aria-hidden="true"><use href="#i-doc"/></svg></div><div><h4>Is your Florida fishing license current?</h4><p>FWC checks licenses on the water. Verify yours is still active — or buy or renew in minutes — through Florida's official license system.</p><div class="license-btns"><a class="wub-btn" href="https://gooutdoorsflorida.com/" target="_blank" rel="noopener">Check / renew my license</a><a class="wub-btn" href="https://myfwc.com/license/recreational/saltwater-fishing/" target="_blank" rel="noopener">FWC license requirements</a></div></div></div></div>
     <div class="hub" id="fish-hub">
     <img class="fw-strip" src="assets/skyway-from-water.jpg" alt="Sunshine Skyway Bridge">
     <div class="hub-head">Where do you want to start?</div>
@@ -2401,23 +2427,23 @@ function twlPlay(btn){
       <button class="hub-chip" onclick="fwTab(S,'newbie',document.querySelectorAll('#fw-'+S+' .bt-tab')[0]);document.getElementById('fw-'+S+'-newbie').scrollIntoView({behavior:'smooth',block:'start'})">🌱 New to Fishing</button>
       <button class="hub-chip" onclick="fwTab(S,'clean',document.querySelectorAll('#fw-'+S+' .bt-tab')[6]);document.getElementById('fw-'+S+'-clean').scrollIntoView({behavior:'smooth',block:'start'})">🔪 Clean Your Catch</button>
     </div>
-  </div><script>window.S=window.S||'salt';</script><div class="bite-chart" id="bite-chart">
+  </div><script>window.S=window.S||'salt';</script><div id="fp-bite" style="display:none"><div class="bite-chart" id="bite-chart">
       <div class="bite-chart-head">Today's Bite \u2014 Tampa Bay <span class="bite-sub">solunar guide \u00b7 East Bay station</span></div>
       <div id="bite-chart-svg" aria-hidden="true"></div>
       <div class="bite-hours"><span>12 AM</span><span>6 AM</span><span>12 PM</span><span>6 PM</span><span>11 PM</span></div>
       <div class="bite-chart-read" id="bite-chart-read">Checking today's bite&hellip;</div>
     </div>
-    <div class="bite-chart" id="fish-spots-card">
+    </div><div id="fp-spots" style="display:none"><div class="bite-chart" id="fish-spots-card">
       <div class="bite-chart-head">Fishing Spots &mdash; where &amp; when they bite</div><img class="fw-strip" src="assets/banner-openwater.jpg" alt="Open water in Tampa Bay" loading="lazy" style="margin-top:10px">
       <p class="fish-spots-honest">Best windows are tide + moon math for each spot &mdash; a guide, not a guarantee.</p>
       <div id="fish-map" style="height:300px;border-radius:12px;border:1px solid var(--line);z-index:1"></div>
       <div class="fish-spot-panel" id="fish-spot-panel"><div class="fish-spot-hint">Tap a fish spot on the map to see when it bites today.</div></div>
     </div>
-    <div class="fw-doors">
+    <div class="fw-doors" id="fw-doors-orig">
       <button class="fw-door sel" id="fw-door-salt" onclick="fwDoor('salt')">🌊 Saltwater<span>Bay, ocean &amp; rivers</span></button>
       <button class="fw-door" id="fw-door-fresh" onclick="fwDoor('fresh')">🎣 Freshwater<span>Lakes &amp; ponds</span></button>
     </div>
-    <div id="fw-salt">
+    </div><div id="fw-salt">
       <div class="bt-tabs"><button class="bt-tab" onclick="fwTab('salt','newbie',this)">New to Fishing</button><button class="bt-tab sel" onclick="fwTab('salt','start',this)">Today</button><button class="bt-tab" onclick="fwTab('salt','chart',this)">Fish Chart</button><button class="bt-tab" onclick="fwTab('salt','bait',this)">Bait &amp; Rods</button><button class="bt-tab" onclick="fwTab('salt','knots',this)">Knots</button><button class="bt-tab" onclick="fwTab('salt','hooks',this)">Hooks &amp; Lures</button><button class="bt-tab" onclick="fwTab('salt','clean',this)">Clean &amp; Fillet</button></div>
       <div class="fw-panel" id="fw-salt-start"><img class="fw-strip" src="assets/skyway-from-water.jpg" alt="Sunshine Skyway Bridge from the water" loading="lazy"><div class="dir-grid">                <!-- DAILY-REPORT-START (auto-updated every morning ~6am ET) -->
     <div class="dir-card daily-report" style="border:2px solid var(--teal)">
@@ -5892,6 +5918,46 @@ g.querySelector('.fg-foot').innerHTML=FOOT[side];
 g.classList.add('open');
 setTimeout(function(){g.scrollIntoView({behavior:'smooth',block:'start'});},40);}
 function closeFishGuide(side){var g=document.getElementById('fg-'+side);if(g)g.classList.remove('open');}
+/* ================= FISHING SQUARE-TILE NAV (Nov 14) ================= */
+var fpanel='hub';
+var FIDX={newbie:0,start:1,chart:2,bait:3,knots:4,hooks:5,clean:6};
+function fnav(w,btn){
+  fpanel=w;
+  document.querySelectorAll('#fnav-grid .cat-card').forEach(function(t){t.classList.toggle('sel',t===btn);});
+  ['fp-bite','fp-spots','fp-license'].forEach(function(id){document.getElementById(id).style.display='none';});
+  document.getElementById('fish-hub').style.display='none';
+  if(w==='hub'){document.getElementById('fish-hub').style.display='';document.getElementById('fw-salt').style.display='none';document.getElementById('fw-fresh').style.display='none';}
+  else if(w==='bite'){document.getElementById('fp-bite').style.display='';document.getElementById('fw-salt').style.display='none';document.getElementById('fw-fresh').style.display='none';}
+  else if(w==='spots'){document.getElementById('fp-spots').style.display='';document.getElementById('fw-salt').style.display='none';document.getElementById('fw-fresh').style.display='none';}
+  else if(w==='license'){document.getElementById('fp-license').style.display='';document.getElementById('fw-salt').style.display='none';document.getElementById('fw-fresh').style.display='none';}
+  else{
+    var sd=window.S||'salt';
+    document.getElementById('fw-salt').style.display=sd==='salt'?'':'none';
+    document.getElementById('fw-fresh').style.display=sd==='fresh'?'':'none';
+    var real=document.querySelectorAll('#fw-'+sd+' .bt-tab')[FIDX[w]];
+    fwTab(sd,w,real);
+  }
+  var anchorEl=document.getElementById(w==='hub'?'fnav-grid':(w==='bite'?'fp-bite':(w==='spots'?'fp-spots':(w==='license'?'fp-license':'fw-'+(window.S||'salt')))));
+  if(anchorEl)anchorEl.scrollIntoView({behavior:'smooth',block:'start'});
+}
+function fnavDoor(w){
+  fwDoor(w);
+  document.getElementById('fnav-door-salt').classList.toggle('sel',w==='salt');
+  document.getElementById('fnav-door-fresh').classList.toggle('sel',w==='fresh');
+  if(['start','chart','bait','knots','hooks','newbie','clean'].indexOf(fpanel)>-1){
+    var real=document.querySelectorAll('#fw-'+w+' .bt-tab')[FIDX[fpanel]];
+    fwTab(w,fpanel,real);
+  }
+}
+document.querySelectorAll('#fish-hub .path-step, #fish-hub .hub-chip').forEach(function(b){
+  b.addEventListener('click',function(){
+    var txt=b.textContent;
+    var map={'Fish Chart':'chart','Rods':'bait','Knots':'knots','Hooks':'hooks','New to Fishing':'newbie','Clean':'clean','Daily':'start','report':'start'};
+    for(var k in map){ if(txt.indexOf(k)>-1){ var t=document.querySelector('#fnav-grid .cat-card[data-fp="'+map[k]+'"]'); if(t){document.querySelectorAll('#fnav-grid .cat-card').forEach(function(x){x.classList.toggle('sel',x===t);}); fpanel=map[k]; document.getElementById('fish-hub').style.display='none'; document.getElementById('fw-salt').style.display=(window.S||'salt')==='salt'?'':'none'; document.getElementById('fw-fresh').style.display=(window.S||'salt')==='fresh'?'':'none'; } break; } }
+  });
+});
+(function(){var fs=document.getElementById('fw-salt'),ff=document.getElementById('fw-fresh');if(fs)fs.style.display='none';if(ff)ff.style.display='none';})();
+
 
 function biteTab(which, btn){
   ["ocean","bays","rivers","lakes"].forEach(function(k){ var p=document.getElementById("bt-"+k); if(p) p.style.display = (k===which)?"":"none"; });

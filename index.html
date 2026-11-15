@@ -369,6 +369,11 @@ footer .soc svg{width:20px; height:20px}
 .fw-lures{display:flex;gap:8px}
 .fw-bait-head{font-size:1.06rem;color:#0a2540;margin:20px 0 4px}
 .fw-cat-head{font-size:.98rem;color:#0a2540;margin:14px 0 6px}
+.season-row{display:flex;gap:10px;align-items:center;width:100%;text-align:left;background:#fff;border:1px solid #d7e5ef;border-radius:12px;padding:7px 10px;margin:0 0 7px;cursor:pointer}
+.season-row img{width:52px;height:36px;object-fit:cover;border-radius:8px}
+.season-tx b{display:block;color:#0a2540;font-size:.95rem}
+.season-tx i{font-style:normal;color:#5b7185;font-size:.8rem}
+.season-h{color:#0a2540;margin:14px 0 8px;font-size:1rem}
 .fw-bait-sub{margin:0 0 10px;color:#33566e;font-size:.92rem}
 .fw-lure{flex:1;text-align:center;min-width:0}
 .fw-lure img{width:100%;height:70px;object-fit:cover;border-radius:8px;display:block;border:1px solid #d5e0ea}
@@ -2387,7 +2392,7 @@ function twlPlay(btn){
 <button class="cat-card sel" data-fp="bite" onclick="fnav('bite',this)"><span class="c-ico"><svg class=tic aria-hidden=true><use href=#i-drop></use></svg></span><b>Today's Bite</b><i>When they'll feed</i></button>
 <a class="cat-card" href="#/map" onclick="window.tbbPendingCat='fish'"><span class="c-ico"><svg class=tic aria-hidden=true><use href=#i-pin></use></svg></span><b>Spots</b><i>Fishing spots — on the Boater's Map</i></a>
 <button class="cat-card" data-fp="start" onclick="fnav('start',this)"><span class="c-ico"><svg class=tic aria-hidden=true><use href=#i-cal></use></svg></span><b>Fishing Report</b><i>Today's fishing report</i></button>
-<button class="cat-card" data-fp="chart" onclick="fnav('chart',this)"><span class="c-ico"><svg class=tic aria-hidden=true><use href=#i-clip></use></svg></span><b>Fish Chart</b><i>Every fish, full guide</i></button>
+<button class="cat-card" data-fp="chart" onclick="fnav('chart',this)"><span class="c-ico"><svg class=tic aria-hidden=true><use href=#i-clip></use></svg></span><b>Fish Chart</b><i>Every fish, full guide</i></button> <button class="cat-card" data-fp="season" onclick="fnav('season',this)"><span class="c-ico"><svg class=tic aria-hidden=true><use href=#i-cal></use></svg></span><b>Fish In Season</b><i>What's open right now</i></button>
 <button class="cat-card" data-fp="bait" onclick="fnav('bait',this)"><span class="c-ico"><svg class=tic aria-hidden=true><use href=#i-bag></use></svg></span><b>Bait &amp; Rods</b><i>What to throw</i></button>
 <button class="cat-card" data-fp="knots" onclick="fnav('knots',this)"><span class="c-ico"><svg class=tic aria-hidden=true><use href=#i-anchor></use></svg></span><b>Knots</b><i>Tie them right</i></button>
 <button class="cat-card" data-fp="hooks" onclick="fnav('hooks',this)"><span class="c-ico"><svg class=tic aria-hidden=true><use href=#i-hook></use></svg></span><b>Hooks</b><i>Sizes &amp; rigs</i></button>
@@ -2399,7 +2404,7 @@ function twlPlay(btn){
 <a class="cat-card" href="#/charters"><span class="c-ico"><svg class=tic aria-hidden=true><use href=#i-cap></use></svg></span><b>Charters</b><i>Hire a local captain</i></a>
 <a class="cat-card" href="#/events"><span class="c-ico"><svg class=tic aria-hidden=true><use href=#i-star></use></svg></span><b>Events</b><i>Tournaments &amp; meetups</i></a>
 </div>
-    <div id="fp-license" style="display:none"><div class="license-card"><div class="license-ico"><svg class="ic" aria-hidden="true"><use href="#i-doc"/></svg></div><div><h4>Is your Florida fishing license current?</h4><p>FWC checks licenses on the water. Verify yours is still active — or buy or renew in minutes — through Florida's official license system.</p><div class="license-btns"><a class="wub-btn" href="https://gooutdoorsflorida.com/" target="_blank" rel="noopener">Check / renew my license</a><a class="wub-btn" href="https://myfwc.com/license/recreational/saltwater-fishing/" target="_blank" rel="noopener">FWC license requirements</a></div></div></div></div>
+    <div id="fp-license" style="display:none"><div class="license-card"><div class="license-ico"><svg class="ic" aria-hidden="true"><use href="#i-doc"/></svg></div><div><h4>Is your Florida fishing license current?</h4><p>FWC checks licenses on the water. Verify yours is still active — or buy or renew in minutes — through Florida's official license system.</p><div class="license-btns"><a class="wub-btn" href="https://gooutdoorsflorida.com/" target="_blank" rel="noopener">Check / renew my license</a><a class="wub-btn" href="https://myfwc.com/license/recreational/saltwater-fishing/" target="_blank" rel="noopener">FWC license requirements</a></div></div></div></div><div id="fp-season" style="display:none"><h3 class="fw-bait-head">📅 Fish In Season</h3><p class="fw-note" id="season-sub"></p><div id="season-list"></div><p class="fw-note">Freshwater fish — bass, bluegill, crappie, catfish, bowfin and gar — are open year-round in local waters. Seasons can change by FWC order — check MyFWC.com before you keep a fish.</p></div>
     <script>window.S=window.S||'salt';</script><div id="fp-bite"><div class="bite-chart" id="bite-chart">
       <div class="bite-chart-head">Today's Bite \u2014 Tampa Bay <span class="bite-sub">solunar guide \u00b7 East Bay station</span></div>
       <div id="bite-chart-svg" aria-hidden="true"></div>
@@ -6051,15 +6056,19 @@ g.classList.add('open');
 setTimeout(function(){g.scrollIntoView({behavior:'smooth',block:'start'});},40);}
 function closeBaitGuide(side){var g=document.getElementById('fg-bait-'+side);if(g)g.classList.remove('open');}
 
+/* ================= FISH IN SEASON (Nov 14) ================= */
+var SEASONS={snook:{w:[[3,1,4,30],[9,1,11,30]],label:'Open Mar 1 \u2013 Apr 30 & Sep 1 \u2013 Nov 30 \u00B7 Tampa Bay region'},flounder:{w:[[1,1,10,14],[12,1,12,31]],label:'Open Dec 1 \u2013 Oct 14 \u00B7 Closed Oct 15 \u2013 Nov 30'},triggerfish:{w:[[3,1,5,31],[8,1,12,31]],label:'Open Mar 1 \u2013 May 31 & Aug 1 \u2013 Dec 31 \u00B7 Closed Jun \u2013 Jul & Jan \u2013 Feb'},gag:{check:1,label:'Short fall season, dates set each year \u2014 2026: Sep 1\u201330'},redsnapper:{check:1,label:'Season set each year in blocks \u2014 fall weekends ran through Jan 4, 2027. Check MyFWC for open days'},amberjack:{check:1,label:'Short fall season, dates set each year \u2014 2026: Sep 1 \u2013 Oct 13'},redgrouper:{check:1,label:'Season has been changed by emergency orders \u2014 check MyFWC before you go'},tarpon:{label:'Open year-round \u2014 catch & release'},scamp:{label:'Open year-round in state waters'}};
+function seasonStatus(slug){var sz=SEASONS[slug];if(!sz)return{st:'open',label:'Open year-round'};if(sz.check)return{st:'check',label:sz.label};if(!sz.w)return{st:'open',label:sz.label||'Open year-round'};var now=new Date(),cur=(now.getMonth()+1)*100+now.getDate();var open=sz.w.some(function(r){return cur>=(r[0]*100+r[1])&&cur<=(r[2]*100+r[3]);});return{st:open?'open':'closed',label:sz.label};}
+function renderSeason(){var el=document.getElementById('season-list');if(!el)return;var now=new Date();document.getElementById('season-sub').innerHTML='<b>What\u2019s open today \u2014 '+now.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'})+'.</b> Gulf state waters, Tampa Bay rules. Tap a fish to open its guide.';var groups={open:[],closed:[],check:[]};Object.keys(GUIDES.salt).forEach(function(slug){var st=seasonStatus(slug);groups[st.st].push({slug:slug,name:GUIDES.salt[slug].n,label:st.label,img:GUIDES.salt[slug].img});});function rows(list){return list.map(function(f){return '<button class="season-row" onclick="fishGo(\'salt\',\''+f.slug+'\')"><img src="assets/'+f.img+'" alt="" loading="lazy"><span class="season-tx"><b>'+f.name+'</b><i>'+f.label+'</i></span></button>';}).join('');}el.innerHTML='<h4 class="season-h">\u2705 Open now</h4>'+rows(groups.open)+(groups.closed.length?'<h4 class="season-h">\u274C Closed right now</h4>'+rows(groups.closed):'')+'<h4 class="season-h">\u26A0\uFE0F Dates set each year \u2014 check before you go</h4>'+rows(groups.check);}
 /* ================= FISHING SQUARE-TILE NAV (Nov 14) ================= */
 var fpanel='bite';
 var FIDX={newbie:0,start:1,chart:2,bait:3,knots:4,hooks:5,clean:6,cook:7};
 function fnav(w,btn){
   fpanel=w;
   document.querySelectorAll('#fnav-grid .cat-card').forEach(function(t){t.classList.toggle('sel',t===btn);});
-  ['fp-bite','fp-license'].forEach(function(id){document.getElementById(id).style.display='none';});
+  ['fp-bite','fp-license','fp-season'].forEach(function(id){document.getElementById(id).style.display='none';});
   if(w==='bite'){document.getElementById('fp-bite').style.display='';document.getElementById('fw-salt').style.display='none';document.getElementById('fw-fresh').style.display='none';}
-  else if(w==='license'){document.getElementById('fp-license').style.display='';document.getElementById('fw-salt').style.display='none';document.getElementById('fw-fresh').style.display='none';}
+  else if(w==='license'){document.getElementById('fp-license').style.display='';document.getElementById('fw-salt').style.display='none';document.getElementById('fw-fresh').style.display='none';}else if(w==='season'){document.getElementById('fp-season').style.display='';document.getElementById('fw-salt').style.display='none';document.getElementById('fw-fresh').style.display='none';renderSeason();}
   else{
     var sd=window.S||'salt';
     document.getElementById('fw-salt').style.display=sd==='salt'?'':'none';
@@ -6067,11 +6076,11 @@ function fnav(w,btn){
     var real=document.querySelectorAll('#fw-'+sd+' .bt-tab')[FIDX[w]];
     fwTab(sd,w,real);
   }
-  var anchorEl=document.getElementById(w==='bite'?'fp-bite':(w==='license'?'fp-license':'fw-'+(window.S||'salt')));
+  var anchorEl=document.getElementById(w==='bite'?'fp-bite':(w==='license'?'fp-license':(w==='season'?'fp-season':'fw-'+(window.S||'salt'))));
   if(anchorEl)anchorEl.scrollIntoView({behavior:'smooth',block:'start'});
 }
 function fnavDoor(w){
-  if(['bite','spots','license'].indexOf(fpanel)>-1){
+  if(['bite','spots','license','season'].indexOf(fpanel)>-1){
     window.S=w;
     document.getElementById('fw-door-salt').classList.toggle('sel',w==='salt');
     document.getElementById('fw-door-fresh').classList.toggle('sel',w==='fresh');

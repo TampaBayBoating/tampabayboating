@@ -2390,7 +2390,7 @@ function twlPlay(btn){
 <div class="cat-grid" id="fnav-grid">
 <button class="cat-card" data-fp="cook" onclick="fnav('cook',this)"><span class="c-ico"><svg class=tic aria-hidden=true><use href=#i-dine></use></svg></span><b>Catch &amp; Cook</b><i>Recipes for your catch</i></button>
 <button class="cat-card sel" data-fp="bite" onclick="fnav('bite',this)"><span class="c-ico"><svg class=tic aria-hidden=true><use href=#i-drop></use></svg></span><b>Today's Bite</b><i>When they'll feed</i></button>
-<a class="cat-card" href="#/map" onclick="window.tbbPendingCat='fish'"><span class="c-ico"><svg class=tic aria-hidden=true><use href=#i-pin></use></svg></span><b>Spots</b><i>Fishing spots — on the Boater's Map</i></a>
+
 <button class="cat-card" data-fp="start" onclick="fnav('start',this)"><span class="c-ico"><svg class=tic aria-hidden=true><use href=#i-cal></use></svg></span><b>Fishing Report</b><i>Today's fishing report</i></button>
 <button class="cat-card" data-fp="chart" onclick="fnav('chart',this)"><span class="c-ico"><svg class=tic aria-hidden=true><use href=#i-clip></use></svg></span><b>Fish Chart</b><i>Every fish, full guide</i></button> <button class="cat-card" data-fp="season" onclick="fnav('season',this)"><span class="c-ico"><svg class=tic aria-hidden=true><use href=#i-cal></use></svg></span><b>Fish In Season</b><i>What's open right now</i></button>
 <button class="cat-card" data-fp="bait" onclick="fnav('bait',this)"><span class="c-ico"><svg class=tic aria-hidden=true><use href=#i-bag></use></svg></span><b>Bait &amp; Tackle</b><i>Bait, hooks, knots &amp; cast nets</i></button>
@@ -6081,7 +6081,7 @@ function fnav(w,btn){
   if(anchorEl)anchorEl.scrollIntoView({behavior:'smooth',block:'start'});
 }
 function fnavDoor(w){
-  if(['bite','spots','license','season'].indexOf(fpanel)>-1){
+  if(['bite','license','season'].indexOf(fpanel)>-1){
     window.S=w;
     document.getElementById('fw-door-salt').classList.toggle('sel',w==='salt');
     document.getElementById('fw-door-fresh').classList.toggle('sel',w==='fresh');

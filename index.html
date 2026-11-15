@@ -2387,22 +2387,19 @@ function twlPlay(btn){
 <button class="fw-door sel" id="fnav-door-salt" onclick="fnavDoor('salt')">🌊 Saltwater<span>Bay, ocean &amp; rivers</span></button>
 <button class="fw-door" id="fnav-door-fresh" onclick="fnavDoor('fresh')">🎣 Freshwater<span>Lakes &amp; ponds</span></button></div>
 <div class="sec-kicker" style="margin:14px 0 8px">Browse fishing</div>
-<div class="cat-grid" id="fnav-grid"><button class="cat-card" data-fp="chart" onclick="fnav('chart',this)"><span class="c-ico"><svg class=tic aria-hidden=true><use href=#i-clip></use></svg></span><b>Fish Chart</b><i>Every fish, full guide</i></button>
-<button class="cat-card" data-fp="cook" onclick="fnav('cook',this)"><span class="c-ico"><svg class=tic aria-hidden=true><use href=#i-dine></use></svg></span><b>Catch &amp; Cook</b><i>Recipes for your catch</i></button>
-<button class="cat-card sel" data-fp="bite" onclick="fnav('bite',this)"><span class="c-ico"><svg class=tic aria-hidden=true><use href=#i-drop></use></svg></span><b>Today's Bite</b><i>When they'll feed</i></button>
-
+<div class="cat-grid" id="fnav-grid">
+<button class="cat-card" data-fp="chart" onclick="fnav('chart',this)"><span class="c-ico"><svg class=tic aria-hidden=true><use href=#i-clip></use></svg></span><b>Fish Chart</b><i>Every fish, full guide</i></button>
 <button class="cat-card" data-fp="start" onclick="fnav('start',this)"><span class="c-ico"><svg class=tic aria-hidden=true><use href=#i-cal></use></svg></span><b>Fishing Report</b><i>Today's fishing report</i></button>
- <button class="cat-card" data-fp="season" onclick="fnav('season',this)"><span class="c-ico"><svg class=tic aria-hidden=true><use href=#i-cal></use></svg></span><b>Fish In Season</b><i>What's open right now</i></button>
+<button class="cat-card" data-fp="season" onclick="fnav('season',this)"><span class="c-ico"><svg class=tic aria-hidden=true><use href=#i-cal></use></svg></span><b>Fish In Season</b><i>What's open right now</i></button>
 <button class="cat-card" data-fp="bait" onclick="fnav('bait',this)"><span class="c-ico"><svg class=tic aria-hidden=true><use href=#i-bag></use></svg></span><b>Bait &amp; Tackle</b><i>Bait, hooks, knots &amp; cast nets</i></button>
-
-
-<button class="cat-card" data-fp="newbie" onclick="fnav('newbie',this)"><span class="c-ico"><svg class=tic aria-hidden=true><use href=#i-lifebuoy></use></svg></span><b>Newbie</b><i>Start from zero</i></button>
-<button class="cat-card" data-fp="clean" onclick="fnav('clean',this)"><span class="c-ico"><svg class=tic aria-hidden=true><use href=#i-brush></use></svg></span><b>Clean</b><i>Fillet &amp; clean your catch</i></button>
+<button class="cat-card sel" data-fp="bite" onclick="fnav('bite',this)"><span class="c-ico"><svg class=tic aria-hidden=true><use href=#i-drop></use></svg></span><b>Today's Bite</b><i>When they'll feed</i></button>
 <button class="cat-card" data-fp="license" onclick="fnav('license',this)"><span class="c-ico"><svg class=tic aria-hidden=true><use href=#i-doc></use></svg></span><b>License &amp; Rules</b><i>Licenses, seasons &amp; limits</i></button>
-<a class="cat-card" href="#/tides"><span class="c-ico"><svg class=tic aria-hidden=true><use href=#i-compass></use></svg></span><b>Tides &amp; Weather</b><i>Tides, radar &amp; forecast</i></a>
 <a class="cat-card" href="#/map"><span class="c-ico"><svg class=tic aria-hidden=true><use href=#i-map></use></svg></span><b>Boater's Map</b><i>Ramps, fuel &amp; sandbars</i></a>
+<a class="cat-card" href="#/tides"><span class="c-ico"><svg class=tic aria-hidden=true><use href=#i-compass></use></svg></span><b>Tides &amp; Weather</b><i>Tides, radar &amp; forecast</i></a>
 <a class="cat-card" href="#/charters"><span class="c-ico"><svg class=tic aria-hidden=true><use href=#i-cap></use></svg></span><b>Charters</b><i>Hire a local captain</i></a>
-<a class="cat-card" href="#/events"><span class="c-ico"><svg class=tic aria-hidden=true><use href=#i-star></use></svg></span><b>Events</b><i>Tournaments &amp; meetups</i></a>
+<button class="cat-card" data-fp="clean" onclick="fnav('clean',this)"><span class="c-ico"><svg class=tic aria-hidden=true><use href=#i-brush></use></svg></span><b>Clean</b><i>Fillet &amp; clean your catch</i></button>
+<button class="cat-card" data-fp="cook" onclick="fnav('cook',this)"><span class="c-ico"><svg class=tic aria-hidden=true><use href=#i-dine></use></svg></span><b>Catch &amp; Cook</b><i>Recipes for your catch</i></button>
+<button class="cat-card" data-fp="newbie" onclick="fnav('newbie',this)"><span class="c-ico"><svg class=tic aria-hidden=true><use href=#i-lifebuoy></use></svg></span><b>Newbie</b><i>Start from zero</i></button>
 </div>
     <div id="fp-license" style="display:none"><div class="license-card"><div class="license-ico"><svg class="ic" aria-hidden="true"><use href="#i-doc"/></svg></div><div><h4>Is your Florida fishing license current?</h4><p>FWC checks licenses on the water. Verify yours is still active — or buy or renew in minutes — through Florida's official license system.</p><div class="license-btns"><a class="wub-btn" href="https://gooutdoorsflorida.com/" target="_blank" rel="noopener">Check / renew my license</a><a class="wub-btn" href="https://myfwc.com/license/recreational/saltwater-fishing/" target="_blank" rel="noopener">FWC license requirements</a></div></div></div></div><div id="fp-season" style="display:none"><h3 class="fw-bait-head">📅 Fish In Season</h3><p class="fw-note" id="season-sub"></p><div id="season-list"></div><p class="fw-note">Freshwater fish — bass, bluegill, crappie, catfish, bowfin and gar — are open year-round in local waters. Seasons can change by FWC order — check MyFWC.com before you keep a fish.</p></div>
     <script>window.S=window.S||'salt';</script><div id="fp-bite"><div class="bite-chart" id="bite-chart">

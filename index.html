@@ -983,9 +983,21 @@ body.dark .area-chip.active{background:#8fd0f0;color:#0a2540;border-color:#8fd0f
 .day-btn .db-num{display:block;font-weight:800;font-size:1.15rem;line-height:1.25;margin-top:2px}
 .day-btn.active{background:#8fd0f0;border-color:#8fd0f0}
 .day-btn.active .db-dow{background:rgba(10,37,64,.15)}
+.day-btn .db-ico{display:block;width:32px;height:32px;margin:3px auto 1px;border-radius:6px}
+.day-btn .pop{display:block;font-size:.62rem;font-weight:700;color:#0369a1}
+.day-btn .pop.none{color:#94a3b8}
+.day-btn .db-hi{display:block;font-weight:800;font-size:1rem;line-height:1.15;margin-top:2px}
+.day-btn .db-lo{display:block;font-size:.78rem;color:#64748b;line-height:1.1}
+.day-btn .db-night{display:flex;align-items:center;justify-content:center;gap:2px;margin-top:5px;padding-top:5px;border-top:1px solid #e2e8f0}
+.day-btn .db-night .db-ico-s{width:18px;height:18px;border-radius:4px}
+.day-btn .db-night .pop{display:inline;font-size:.58rem}
 body.dark .day-btn{background:#16202e;border-color:#2a3a4f;color:#e8eef4}
 body.dark .day-btn .db-dow{background:#22344c}
 body.dark .day-btn.active{background:#8fd0f0;color:#0a2540;border-color:#8fd0f0}
+body.dark .day-btn .pop{color:#7dd3fc}
+body.dark .day-btn .pop.none{color:#5b7186}
+body.dark .day-btn .db-lo{color:#9fb3c8}
+body.dark .day-btn .db-night{border-top-color:#2a3a4f}
 .layer-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
 .layer-chip{border:2px solid #b8d4e8;background:#fff;color:#0a2540;font-weight:700;font-size:.8rem;padding:6px 12px;border-radius:999px;cursor:pointer;font-family:inherit}
 .layer-chip.active{background:#8fd0f0;border-color:#8fd0f0}
@@ -7612,6 +7624,29 @@ async function loadWeek(){
       const num = document.createElement("span"); num.className = "db-num";
       num.textContent = wd.date.getDate();
       btn.append(dow, num);
+      const dp = wd.day, np = wd.night, ip = dp || np;
+      const ico = document.createElement("img"); ico.className = "db-ico";
+      if(ip && ip.icon){ ico.src = ip.icon; ico.alt = ip.shortForecast || ""; } else { ico.style.display = "none"; }
+      const pop = document.createElement("span"); pop.className = "pop";
+      const pv = dp && dp.probabilityOfPrecipitation ? dp.probabilityOfPrecipitation.value : null;
+      pop.textContent = pv == null ? "\u{1F4A7}\u2014" : "\u{1F4A7}" + pv + "%";
+      if(pv == null) pop.classList.add("none");
+      const hi = document.createElement("span"); hi.className = "db-hi";
+      hi.textContent = dp && dp.temperature != null ? dp.temperature + "\u00B0" : "\u2014";
+      const lo = document.createElement("span"); lo.className = "db-lo";
+      lo.textContent = np && np.temperature != null ? np.temperature + "\u00B0" : "\u2014";
+      btn.append(ico, pop, hi, lo);
+      if(np){
+        const nrow = document.createElement("span"); nrow.className = "db-night";
+        const nico = document.createElement("img"); nico.className = "db-ico-s";
+        if(np.icon){ nico.src = np.icon; nico.alt = np.shortForecast || ""; } else { nico.style.display = "none"; }
+        const npop = document.createElement("span"); npop.className = "pop";
+        const nv = np.probabilityOfPrecipitation ? np.probabilityOfPrecipitation.value : null;
+        npop.textContent = nv == null ? "\u{1F4A7}\u2014" : "\u{1F4A7}" + nv + "%";
+        if(nv == null) npop.classList.add("none");
+        nrow.append(nico, npop);
+        btn.appendChild(nrow);
+      }
       strip.appendChild(btn);
     });
     let wstamp = document.getElementById("week-stamp");

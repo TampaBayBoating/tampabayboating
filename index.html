@@ -1934,7 +1934,7 @@ if(typeof document!=='undefined'){
   
 <div class="cat-grid">
     <a class="cat-card" href="#/fishing"><span class="c-ico"><svg class=tic aria-hidden=true><use href=#i-fish></use></svg></span><b>Fishing</b><i>Rods, bait, spots &amp; rules &mdash; everything to start</i></a>
-<a class="cat-card" href="#/map"><span class="c-ico"><svg class=tic aria-hidden=true><use href=#i-map></use></svg></span><b>Boater's Map</b><i>Ramps, fuel prices &amp; sandbars</i></a><a class="cat-card" href="#/tripcost"><span class="c-ico"><svg class=tic aria-hidden=true><use href=#i-fuel></use></svg></span><b>Trip Cost Calculator</b><i>Fuel &amp; cost for any run</i></a>
+<a class="cat-card" href="#/map"><span class="c-ico"><svg class=tic aria-hidden=true><use href=#i-map></use></svg></span><b>Boater's Map</b><i>Ramps, fuel prices &amp; sandbars</i></a><a class="cat-card" href="#/savings"><span class="c-ico"><svg class=tic aria-hidden=true><use href=#i-fuel></use></svg></span><b>Trip Cost Calculator</b><i>Fuel &amp; cost for any run</i></a>
 <a class="cat-card" href="#/events"><span class="c-ico"><svg class=tic aria-hidden=true><use href=#i-cal></use></svg></span><b>Events Calendar</b><i>Parades, boat shows &amp; what's on</i></a><a class="cat-card" href="#/meetups"><span class="c-ico"><svg class=tic aria-hidden=true><use href=#i-talk></use></svg></span><b>Meetups</b><i>Gheenoe, paddle, jet ski &amp; sandbar</i></a>
 <a class="cat-card" href="/visiting.html"><span class="c-ico"><svg class=tic aria-hidden=true><use href=#i-pin></use></svg></span><b>Places to Go</b><i>The best of the bay, from the water</i></a>
 <a class="cat-card" href="#/local"><span class="c-ico"><svg class=tic aria-hidden=true><use href=#i-pin></use></svg></span><b>Find Local</b><i>Local business lists</i></a>
@@ -2060,8 +2060,9 @@ if(typeof document!=='undefined'){
 .tc-trackbig{font-size:2.4rem;font-weight:800;text-align:center;color:#fff}
 .tc-tracksub{text-align:center;color:#b9d2e4;font-size:.9rem}
 </style>
-<div class="view" id="view-tripcost"><div class="wrap"><a class="back-link" href="#/">&#8249; All categories</a></div><div class="hub-head"><h2>Trip Cost Calculator</h2><p>What will the run cost in fuel? Three steps: your boat&rsquo;s fuel economy, your distance, your fuel price.</p></div><div class="wrap"><div class="tc-tool">
-  <div class="tc-step"><div class="tc-num">1</div><h3>Your boat&rsquo;s fuel economy</h3></div>
+<div class="view" id="view-savings"><div class="wrap"><a class="back-link" href="#/">&#8249; All categories</a></div><div class="hub-head"><h2>Save Money Boating</h2><p>Everything on Tampa Bay Boating is free for boaters — always. These are the passes, freebies and numbers that save you real money, verified Oct 29, 2026.</p></div><div class="wrap"><div id="tcSaveSlot"><div id="tcRoot">
+<h3 style="margin:4px 0 10px;font-size:1.25rem">⛽ Trip Cost Calculator</h3>
+<div class="tc-step"><div class="tc-num">1</div><h3>Your boat&rsquo;s fuel economy</h3></div>
   <div class="tc-card">
     <div id="tcPickWrap">
       <label for="tcSize">Choose the size of your boat</label>
@@ -2212,8 +2213,7 @@ if(typeof document!=='undefined'){
     <p class="tc-math" id="tcMath"></p>
   </div>
   <p class="tc-note">An estimate, not a promise — load, wind, current and throttle all move your real burn. When in doubt, plan on the high side and carry reserve.</p>
-</div></div></div>
-<div class="view" id="view-savings"><div class="wrap"><a class="back-link" href="#/">&#8249; All categories</a></div><div class="hub-head"><h2>Save Money Boating</h2><p>Everything on Tampa Bay Boating is free for boaters — always. These are the passes, freebies and numbers that save you real money, verified Oct 29, 2026.</p></div><div class="wrap"><a href="#/tripcost" style="display:block;margin:0 0 16px;padding:14px 16px;background:#0b3d62;border-radius:12px;color:#fff;text-decoration:none"><b>⛽ Trip Cost Calculator</b><span style="display:block;font-size:.85rem;color:#bcd7ea;margin-top:2px">Figure the fuel — and the dollars — for any run before you leave the dock ›</span></a></div><div class="wrap"><div class="bt-tabs" id="sv-tabs"><button type="button" class="bt-tab sel" onclick="svTab('deals',this)">Passes &amp; Deals</button><button type="button" class="bt-tab" onclick="svTab('apps',this)">Free Apps</button></div><div id="sv-panel-deals"><div class="dir-grid">
+</div></div></div><div class="wrap"><div class="bt-tabs" id="sv-tabs"><button type="button" class="bt-tab sel" onclick="svTab('deals',this)">Passes &amp; Deals</button><button type="button" class="bt-tab" onclick="svTab('apps',this)">Free Apps</button></div><div id="sv-panel-deals"><div class="dir-grid">
       <div class="dir-card">
         <div class="city">Pinellas County</div><h4><svg class=ic aria-hidden=true><use href=#i-ticket></use></svg> Fort De Soto Passes</h4>
         <div class="type">Annual <b>Beach Pass $95</b> · Annual <b>Boat Pass $140</b> — good at Fort De Soto, Sand Key &amp; Fred Howard Park.<br>• Daily parking is $6 through Nov 30, then $3.50/hr (max $12/day); ramp parking $6/day through Nov 30, $12/day from Dec 1<br>• The boat pass pays for itself in about <b>23 ramp days</b> at today's $6 rate — about 12 once the $12 rate starts Dec 1; the beach pass in about <b>16 full days</b> at today's $6 rate — about 8 once the Dec 1 rates start<br>• Buy at explore.pinellas.gov or the Parks office, 12520 Ulmerton Rd</div>
@@ -2956,7 +2956,7 @@ function twlPlay(btn){
       <h2 style="font-size:1.45rem;margin:0 0 3px">Tampa Bay Boater's Map</h2>
       
     </div>
-    <a href="#/tripcost" style="display:flex;align-items:center;gap:10px;background:#FFB703;border-radius:12px;padding:12px 14px;margin:0 0 10px;color:#0a2540;text-decoration:none;font-weight:800;font-size:1rem">⛽ Trip Cost Calculator<span style="font-weight:600;font-size:.85rem">Figure the fuel &amp; cost for any run — measure it on a map ›</span></a><div id="bay-leaflet-map" style="height:480px; border-radius:14px; border:1px solid var(--line); z-index:1"></div>
+    <div id="bay-leaflet-map" style="height:480px; border-radius:14px; border:1px solid var(--line); z-index:1"></div><div id="tcMapSlot" style="margin-top:16px"></div>
     <div class="map-filters" id="ramp-fee-filters" style="text-align:center; margin-bottom:10px; display:none">
       <button class="map-filter" id="fee-btn-free" onclick="rampFeeFilter('free')">Free Launches</button>
       <button class="map-filter" id="fee-btn-paid" onclick="rampFeeFilter('paid')">Paid Launches</button>
@@ -9808,12 +9808,14 @@ const ID2VIEW = {conditions:'tides',fishing:'fishing',newtofishing:'fishing',eve
 const VIEWS = ['home','local','smart','newboater','maintenance','diagnostics','history','registration','rentals','springs','shopc','tides','fishing','newtofishing','events','dining','stay','map','paddling','ramps','bridges','logbook','tripcost','savings','charters','fuel','services','parts','storage','boat-clubs','navigation','tips','safety','stopped','etiquette','courses','hurricane','insurance','shop','boatsales','listyourboat','listthanks','gear','videos','cams','music','seasonal','meetups','news','advertise','contact','about','privacy','terms','card'];
 function showView(name){
   if(name==='meetups'){ name='events'; setTimeout(function(){ if(window.evTab) evTab('meetups'); },80); }
+  if(name==='tripcost'){ name='savings'; }
   if(VIEWS.indexOf(name)<0) name='home';
   document.querySelectorAll('.view').forEach(function(v){v.classList.remove('active');});
   document.getElementById('view-'+name).classList.add('active');
   window.scrollTo(0,0);
   if(name==='map'){if(window.tbbMapInit)window.tbbMapInit();setTimeout(function(){if(window.tbbMap)window.tbbMap.invalidateSize();},200);if(window.tbbPendingCat){var pc=window.tbbPendingCat;window.tbbPendingCat=null;setTimeout(function(){var b=document.querySelector('.map-filter[data-cat="'+pc+'"]');if(window.mapFilter)window.mapFilter(pc,b);},280);}}
-  if(name==='tripcost'){if(window.tcInit)window.tcInit();}
+  if(name==='map'){if(window.tcPlace)window.tcPlace('map');}
+  if(name==='savings'){if(window.tcPlace)window.tcPlace('savings');}
   if(name==='tides'){if(window.dopplerOnShow)window.dopplerOnShow();if(window.wxMapOnShow)window.wxMapOnShow();}
   if(name==='knowbeforeyougo'){if(window.tbbKbgMapInit)window.tbbKbgMapInit();setTimeout(function(){if(window.tbbKbgMap)window.tbbKbgMap.invalidateSize();},200);}
   if(name==='fishing'){if(window.loadBiteChart)window.loadBiteChart();if(window.tbbFishMapInit)window.tbbFishMapInit();setTimeout(function(){if(window.tbbFishMap)window.tbbFishMap.invalidateSize();},200);}
@@ -10893,7 +10895,16 @@ var mwxIv = setInterval(function(){
       setTimeout(function(){ tcMap.invalidateSize(); }, 120);
     }
   };
-  if ((location.hash || '') === '#/tripcost') window.tcInit();
+  window.tcPlace = function (where) {
+    var root = document.getElementById('tcRoot'); if (!root) return;
+    var slot = document.getElementById(where === 'map' ? 'tcMapSlot' : 'tcSaveSlot');
+    if (slot && root.parentNode !== slot) slot.appendChild(root);
+    window.tcInit();
+    setTimeout(function () { if (tcMap) tcMap.invalidateSize(); }, 250);
+  };
+  var _h0 = location.hash || '';
+  if (_h0 === '#/map') window.tcPlace('map');
+  else if (_h0 === '#/savings' || _h0 === '#/tripcost') window.tcPlace('savings');
 })();
 
 </script>

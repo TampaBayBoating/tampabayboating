@@ -1934,7 +1934,7 @@ if(typeof document!=='undefined'){
   
 <div class="cat-grid">
     <a class="cat-card" href="#/fishing"><span class="c-ico"><svg class=tic aria-hidden=true><use href=#i-fish></use></svg></span><b>Fishing</b><i>Rods, bait, spots &amp; rules &mdash; everything to start</i></a>
-<a class="cat-card" href="#/map"><span class="c-ico"><svg class=tic aria-hidden=true><use href=#i-map></use></svg></span><b>Boater's Map</b><i>Ramps, fuel prices &amp; sandbars</i></a>
+<a class="cat-card" href="#/map"><span class="c-ico"><svg class=tic aria-hidden=true><use href=#i-map></use></svg></span><b>Boater's Map</b><i>Ramps, fuel prices &amp; sandbars</i></a><a class="cat-card" href="#/tripcost"><span class="c-ico"><svg class=tic aria-hidden=true><use href=#i-fuel></use></svg></span><b>Trip Cost Calculator</b><i>Fuel &amp; cost for any run</i></a>
 <a class="cat-card" href="#/events"><span class="c-ico"><svg class=tic aria-hidden=true><use href=#i-cal></use></svg></span><b>Events Calendar</b><i>Parades, boat shows &amp; what's on</i></a><a class="cat-card" href="#/meetups"><span class="c-ico"><svg class=tic aria-hidden=true><use href=#i-talk></use></svg></span><b>Meetups</b><i>Gheenoe, paddle, jet ski &amp; sandbar</i></a>
 <a class="cat-card" href="/visiting.html"><span class="c-ico"><svg class=tic aria-hidden=true><use href=#i-pin></use></svg></span><b>Places to Go</b><i>The best of the bay, from the water</i></a>
 <a class="cat-card" href="#/local"><span class="c-ico"><svg class=tic aria-hidden=true><use href=#i-pin></use></svg></span><b>Find Local</b><i>Local business lists</i></a>
@@ -2018,7 +2018,145 @@ if(typeof document!=='undefined'){
       </div>
     </div>
   </div>
-</div><div style="max-width:1180px;margin:0 auto;padding:0 20px"><a href="#/advertise" style="display:block;margin:26px 0 34px;padding:16px 20px;background:#0b3d62;border-radius:14px;color:#fff;text-decoration:none;text-align:center"><b style="font-size:1rem;letter-spacing:1px">ADVERTISE WITH TAMPA BAY BOATING</b><span style="display:block;font-size:.82rem;color:#bcd7ea;margin-top:3px">For businesses — reach local boaters ›</span></a></div></div><div class="view" id="view-savings"><div class="wrap"><a class="back-link" href="#/">&#8249; All categories</a></div><div class="hub-head"><h2>Save Money Boating</h2><p>Everything on Tampa Bay Boating is free for boaters — always. These are the passes, freebies and numbers that save you real money, verified Oct 29, 2026.</p></div><div class="wrap"><div class="bt-tabs" id="sv-tabs"><button type="button" class="bt-tab sel" onclick="svTab('deals',this)">Passes &amp; Deals</button><button type="button" class="bt-tab" onclick="svTab('apps',this)">Free Apps</button></div><div id="sv-panel-deals"><div class="dir-grid">
+</div><div style="max-width:1180px;margin:0 auto;padding:0 20px"><a href="#/advertise" style="display:block;margin:26px 0 34px;padding:16px 20px;background:#0b3d62;border-radius:14px;color:#fff;text-decoration:none;text-align:center"><b style="font-size:1rem;letter-spacing:1px">ADVERTISE WITH TAMPA BAY BOATING</b><span style="display:block;font-size:.82rem;color:#bcd7ea;margin-top:3px">For businesses — reach local boaters ›</span></a></div></div><!-- trip-calc-nov18 -->
+<style>
+.tc-tool{background:linear-gradient(120deg,#0a2540,#103a5f);color:#fff;border-radius:16px;padding:18px 14px 20px;margin-bottom:26px}
+.tc-tool .tc-step{display:flex;align-items:center;gap:9px;margin:18px 0 8px}
+.tc-tool .tc-step:first-child{margin-top:0}
+.tc-num{flex:0 0 auto;width:26px;height:26px;border-radius:50%;background:#FFB703;color:#0a2540;font-weight:800;display:flex;align-items:center;justify-content:center;font-size:.95rem}
+.tc-tool .tc-step h3{font-size:1.08rem;color:#fff}
+.tc-card{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);border-radius:14px;padding:16px}
+.tc-tool label{display:block;font-size:.78rem;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:#8fd0f0;margin:12px 0 5px}
+.tc-tool label:first-child{margin-top:0}
+.tc-tool select,.tc-tool input[type=number]{width:100%;padding:11px 12px;border-radius:10px;border:1.5px solid rgba(185,210,228,.45);background:#0E2A3F;color:#fff;font-size:1rem;font-family:inherit}
+.tc-hint{font-size:.8rem;color:#a9c6c5;margin-top:4px}
+.tc-tool table{width:100%;border-collapse:collapse;margin-top:10px;font-size:.93rem}
+.tc-tool th{font-size:.72rem;letter-spacing:1.2px;text-transform:uppercase;color:#8fb0c9;text-align:right;padding:5px 6px;border-bottom:1px solid rgba(185,210,228,.3)}
+.tc-tool th:first-child{text-align:left}
+.tc-tool td{padding:7px 6px;text-align:right;border-bottom:1px solid rgba(185,210,228,.12);white-space:nowrap;color:#fff}
+.tc-tool td:first-child{text-align:left;font-weight:700}
+.tc-tool tbody tr{cursor:pointer}
+.tc-tool tbody tr.sel{background:rgba(255,183,3,.18)}
+.tc-tool tbody tr.sel td:first-child{color:#FFB703}
+.tc-best{font-size:.68rem;background:#1e9e6a;color:#fff;border-radius:99px;padding:1px 7px;margin-left:6px;vertical-align:middle}
+.tc-cruiseline{margin-top:10px;font-size:.93rem;color:#dcebf5}
+.tc-cruiseline b{color:#FFB703}
+.tc-tabs{display:flex;gap:6px;margin-bottom:12px}
+.tc-tab{flex:1;padding:9px 4px;border-radius:10px;border:1px solid rgba(185,210,228,.45);background:transparent;color:#dcebf5;font-weight:700;font-size:.86rem;cursor:pointer;font-family:inherit}
+.tc-tab.on{background:#8fd0f0;color:#0a2540;border-color:#8fd0f0}
+.tc-panel[hidden]{display:none}
+#tcMap{height:320px;border-radius:12px;border:1px solid rgba(255,255,255,.16);background:#0d2f4d}
+.tc-mapbar{display:flex;gap:8px;align-items:center;margin-top:10px;flex-wrap:wrap}
+.tc-mbtn{padding:8px 14px;border-radius:999px;border:1.5px solid rgba(185,210,228,.45);background:transparent;color:#dcebf5;font-weight:700;font-size:.85rem;cursor:pointer;font-family:inherit}
+.tc-mbtn.gold{background:#FFB703;border-color:#FFB703;color:#0a2540}
+.tc-result{background:#0E2A3F;border:2px solid #FFB703;border-radius:14px;padding:16px}
+.tc-big{font-size:2rem;font-weight:800;line-height:1.1;color:#fff}
+.tc-big small{font-size:.95rem;font-weight:600;color:#b9d2e4}
+.tc-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px 14px;margin-top:12px;font-size:.95rem}
+.tc-grid span{color:#b9d2e4}
+.tc-grid b{color:#fff}
+.tc-math{font-size:.82rem;color:#8fb0c9;margin-top:12px;border-top:1px dashed rgba(185,210,228,.3);padding-top:10px}
+.tc-note{font-size:.83rem;color:#a9c6c5;text-align:center;margin-top:12px}
+.tc-trackbig{font-size:2.4rem;font-weight:800;text-align:center;color:#fff}
+.tc-tracksub{text-align:center;color:#b9d2e4;font-size:.9rem}
+</style>
+<div class="view" id="view-tripcost"><div class="wrap"><a class="back-link" href="#/">&#8249; All categories</a></div><div class="hub-head"><h2>Trip Cost Calculator</h2><p>What will the run cost in fuel? Three steps: your boat&rsquo;s fuel economy, your distance, your fuel price.</p></div><div class="wrap"><div class="tc-tool">
+  <div class="tc-step"><div class="tc-num">1</div><h3>Your boat&rsquo;s fuel economy</h3></div>
+  <div class="tc-card">
+    <label for="tcBoat">Boat &amp; motor</label>
+    <select id="tcBoat">
+      <option value="bay150">Bay boat 21 ft · single 150 hp</option>
+      <option value="cc250" selected>Center console 24 ft · single 250 hp</option>
+      <option value="cc300twin">Center console 30 ft · twin 250 hp</option>
+      <option value="pontoon115">Pontoon 24 ft · single 115 hp</option>
+      <option value="cruiser">Cruiser 30 ft · twin gas</option>
+      <option value="custom">My own numbers</option>
+    </select>
+    <div id="tcRpmWrap">
+      <table>
+        <thead><tr><th>RPM</th><th>Speed</th><th>Burn</th><th>Economy</th></tr></thead>
+        <tbody id="tcRpmBody"></tbody>
+      </table>
+      <p class="tc-hint">Tap the row you cruise at — that row&rsquo;s economy runs the math. Averages for this setup from typical published tests; your boat will vary with load and conditions.</p>
+    </div>
+    <div id="tcCustomWrap" style="display:none">
+      <label for="tcMyMph">Your cruise speed (mph)</label>
+      <input type="number" id="tcMyMph" value="25" min="1" step="0.5">
+      <label for="tcMyMpg">Your economy at cruise (mpg)</label>
+      <input type="number" id="tcMyMpg" value="2.5" min="0.1" step="0.1">
+    </div>
+    <p class="tc-cruiseline" id="tcCruiseLine"></p>
+  </div>
+
+  <div class="tc-step"><div class="tc-num">2</div><h3>Your distance</h3></div>
+  <div class="tc-tabs">
+    <button type="button" class="tc-tab" id="tcTab-trips" onclick="tcShowTab('trips')">Popular Trips</button>
+    <button type="button" class="tc-tab on" id="tcTab-measure" onclick="tcShowTab('measure')">Measure on Map</button>
+    <button type="button" class="tc-tab" id="tcTab-track" onclick="tcShowTab('track')">Track My Day</button>
+  </div>
+  <div class="tc-panel" id="tcPanel-trips" hidden>
+    <div class="tc-card">
+      <label for="tcRoute">Your trip</label>
+      <select id="tcRoute">
+        <option value="50.1">Riverview Civic Center → 357 12th Ave, Indian Rocks Beach</option>
+        <option value="41.6">Riverview Civic Center → Treasure Island</option>
+        <option value="18.1">Apollo Beach → St. Pete Pier</option>
+        <option value="29.8">Davis Islands → Clearwater Beach</option>
+        <option value="21.9">Ruskin → Egmont Key</option>
+        <option value="29.6">Alafia River Mouth → Anna Maria Island</option>
+      </select>
+      <p class="tc-hint">Distances measured along the channels — the way you actually drive the boat, not a straight line.</p>
+    </div>
+  </div>
+  <div class="tc-panel" id="tcPanel-measure">
+    <div class="tc-card">
+      <p style="font-size:.92rem">Tap the map to drop points along your course — out the river, down the channel, anywhere. The line measures itself as you go.</p>
+      <div id="tcMap" style="margin-top:10px"></div>
+      <div class="tc-mapbar">
+        <span>Course: <b id="tcMapMiles">0.0 mi</b></span>
+        <button type="button" class="tc-mbtn" onclick="tcUndoPt()">Undo point</button>
+        <button type="button" class="tc-mbtn" onclick="tcClearPts()">Clear</button>
+        <button type="button" class="tc-mbtn gold" onclick="tcUseMapMiles()">Use this distance ↓</button>
+      </div>
+    </div>
+  </div>
+  <div class="tc-panel" id="tcPanel-track" hidden>
+    <div class="tc-card">
+      <div class="tc-trackbig"><span id="tcTrackMiles">0.00</span> mi</div>
+      <p class="tc-tracksub" id="tcTrackState">Not tracking. Hit Start at the ramp and your phone logs the day — then send the miles to the calculator to see what the day cost.</p>
+      <div class="tc-mapbar" style="justify-content:center;margin-top:12px">
+        <button type="button" class="tc-mbtn gold" id="tcTrackBtn" onclick="tcToggleTrack()">Start tracking</button>
+        <button type="button" class="tc-mbtn" onclick="tcUseTrackMiles()">Use these miles ↓</button>
+      </div>
+      <p class="tc-hint" style="text-align:center">Your track stays on your phone — nothing is uploaded or shared. Tracking runs while this page is open; a locked screen can pause it.</p>
+    </div>
+  </div>
+  <div class="tc-card" style="margin-top:14px">
+    <label for="tcMiles">Trip miles (one way)</label>
+    <input type="number" id="tcMiles" value="50.1" min="0" step="0.1">
+  </div>
+
+  <div class="tc-step"><div class="tc-num">3</div><h3>Your fuel price</h3></div>
+  <div class="tc-card">
+    <label for="tcPrice">Price per gallon ($)</label>
+    <input type="number" id="tcPrice" value="3.83" min="0" step="0.01">
+    <p class="tc-hint" id="tcPriceHint">Prefilled with the lowest verified non-ethanol price on our Fuel page. Enter what you actually paid.</p>
+  </div>
+
+  <div class="tc-step"><div class="tc-num">✓</div><h3>What the trip costs</h3></div>
+  <div class="tc-result">
+    <div class="tc-big"><span id="tcCostRT">$137</span> <small>round trip</small></div>
+    <div class="tc-grid">
+      <span>Distance one way</span><b id="tcDistOut">50.1 mi</b>
+      <span>Fuel one way</span><b id="tcGalOW">17.9 gal</b>
+      <span>Cost one way</span><b id="tcCostOW">$69</b>
+      <span>Fuel round trip</span><b id="tcGalRT">35.8 gal</b>
+    </div>
+    <p class="tc-math" id="tcMath"></p>
+  </div>
+  <p class="tc-note">An estimate, not a promise — load, wind, current and throttle all move your real burn. When in doubt, plan on the high side and carry reserve.</p>
+</div></div></div>
+<div class="view" id="view-savings"><div class="wrap"><a class="back-link" href="#/">&#8249; All categories</a></div><div class="hub-head"><h2>Save Money Boating</h2><p>Everything on Tampa Bay Boating is free for boaters — always. These are the passes, freebies and numbers that save you real money, verified Oct 29, 2026.</p></div><div class="wrap"><a href="#/tripcost" style="display:block;margin:0 0 16px;padding:14px 16px;background:#0b3d62;border-radius:12px;color:#fff;text-decoration:none"><b>⛽ Trip Cost Calculator</b><span style="display:block;font-size:.85rem;color:#bcd7ea;margin-top:2px">Figure the fuel — and the dollars — for any run before you leave the dock ›</span></a></div><div class="wrap"><div class="bt-tabs" id="sv-tabs"><button type="button" class="bt-tab sel" onclick="svTab('deals',this)">Passes &amp; Deals</button><button type="button" class="bt-tab" onclick="svTab('apps',this)">Free Apps</button></div><div id="sv-panel-deals"><div class="dir-grid">
       <div class="dir-card">
         <div class="city">Pinellas County</div><h4><svg class=ic aria-hidden=true><use href=#i-ticket></use></svg> Fort De Soto Passes</h4>
         <div class="type">Annual <b>Beach Pass $95</b> · Annual <b>Boat Pass $140</b> — good at Fort De Soto, Sand Key &amp; Fred Howard Park.<br>• Daily parking is $6 through Nov 30, then $3.50/hr (max $12/day); ramp parking $6/day through Nov 30, $12/day from Dec 1<br>• The boat pass pays for itself in about <b>23 ramp days</b> at today's $6 rate — about 12 once the $12 rate starts Dec 1; the beach pass in about <b>16 full days</b> at today's $6 rate — about 8 once the Dec 1 rates start<br>• Buy at explore.pinellas.gov or the Parks office, 12520 Ulmerton Rd</div>
@@ -2674,7 +2812,7 @@ function twlPlay(btn){
     
   </div>
 </section></div>
-<div class="view" id="view-map"><div class="wrap"><a class="back-link" href="#/">&#8249; All categories</a></div><section id="baymap">
+<div class="view" id="view-map"><div class="wrap"><a class="back-link" href="#/">&#8249; All categories</a></div><div class="wrap" style="margin-top:8px"><a href="#/tripcost" style="font-weight:700">⛽ Trip Cost Calculator — figure the fuel for the run ›</a></div><section id="baymap">
   <div class="wrap">
     <!-- FUEL-DEAL-STRIP-START -->
     <style>
@@ -9610,7 +9748,7 @@ window.fishSpotTap = function(i){
 <script>
 /* ---- SPA router: approved app-style redesign ---- */
 const ID2VIEW = {conditions:'tides',fishing:'fishing',newtofishing:'fishing',events:'events',dining:'dining',baymap:'map',paddling:'paddling',ramps:'ramps',bridges:'bridges',logbook:'logbook',charters:'charters',fuel:'fuel',services:'services',detailing:'services',parts:'parts',storage:'storage','boat-clubs':'boat-clubs',navigation:'navigation',tips:'tips',safety:'safety',stopped:'stopped',manatee:'manatee',courses:'courses',hurricane:'hurricane',insurance:'insurance',shop:'shop',boatsales:'boatsales',listyourboat:'listyourboat',listthanks:'listthanks',gear:'gear',videos:'videos',meetups:'meetups',news:'news',newsletter:'home',advertise:'advertise',contact:'contact','nav-charts':'navigation'};
-const VIEWS = ['home','local','smart','newboater','maintenance','diagnostics','history','registration','rentals','springs','shopc','tides','fishing','newtofishing','events','dining','stay','map','paddling','ramps','bridges','logbook','savings','charters','fuel','services','parts','storage','boat-clubs','navigation','tips','safety','stopped','etiquette','courses','hurricane','insurance','shop','boatsales','listyourboat','listthanks','gear','videos','cams','music','seasonal','meetups','news','advertise','contact','about','privacy','terms','card'];
+const VIEWS = ['home','local','smart','newboater','maintenance','diagnostics','history','registration','rentals','springs','shopc','tides','fishing','newtofishing','events','dining','stay','map','paddling','ramps','bridges','logbook','tripcost','savings','charters','fuel','services','parts','storage','boat-clubs','navigation','tips','safety','stopped','etiquette','courses','hurricane','insurance','shop','boatsales','listyourboat','listthanks','gear','videos','cams','music','seasonal','meetups','news','advertise','contact','about','privacy','terms','card'];
 function showView(name){
   if(name==='meetups'){ name='events'; setTimeout(function(){ if(window.evTab) evTab('meetups'); },80); }
   if(VIEWS.indexOf(name)<0) name='home';
@@ -9618,6 +9756,7 @@ function showView(name){
   document.getElementById('view-'+name).classList.add('active');
   window.scrollTo(0,0);
   if(name==='map'){if(window.tbbMapInit)window.tbbMapInit();setTimeout(function(){if(window.tbbMap)window.tbbMap.invalidateSize();},200);if(window.tbbPendingCat){var pc=window.tbbPendingCat;window.tbbPendingCat=null;setTimeout(function(){var b=document.querySelector('.map-filter[data-cat="'+pc+'"]');if(window.mapFilter)window.mapFilter(pc,b);},280);}}
+  if(name==='tripcost'){if(window.tcInit)window.tcInit();}
   if(name==='tides'){if(window.dopplerOnShow)window.dopplerOnShow();if(window.wxMapOnShow)window.wxMapOnShow();}
   if(name==='knowbeforeyougo'){if(window.tbbKbgMapInit)window.tbbKbgMapInit();setTimeout(function(){if(window.tbbKbgMap)window.tbbKbgMap.invalidateSize();},200);}
   if(name==='fishing'){if(window.loadBiteChart)window.loadBiteChart();if(window.tbbFishMapInit)window.tbbFishMapInit();setTimeout(function(){if(window.tbbFishMap)window.tbbFishMap.invalidateSize();},200);}
@@ -10444,4 +10583,154 @@ var mwxIv = setInterval(function(){
 })();
 </script>
 
+<script>
+/* trip-calc-nov18 */
+(function(){
+  var BOATS = {
+    bay150:    {rows:[[1000,4.5,0.9],[2000,7.5,2.6],[2500,12,3.8],[3000,19,5.2],[3500,24,6.8],[4000,28,9.0],[4500,32,12.0],[5000,36,15.5],[5600,41,20.6]]},
+    cc250:     {rows:[[1000,5,1.6],[2000,8,3.4],[2500,11,5.4],[3000,21,7.5],[3500,26,9.8],[4000,30,12.6],[4500,35,16.8],[5000,40,22.0],[5800,47,27.6]]},
+    cc300twin: {rows:[[1000,6,3.0],[2000,9,6.5],[2500,13,10.5],[3000,24,16.5],[3500,29,21.0],[4000,34,26.5],[4500,39,34.0],[5000,44,43.0],[5800,52,55.0]]},
+    pontoon115:{rows:[[1000,4,0.8],[2000,7,1.9],[2500,10,2.9],[3000,14,4.1],[3500,17,5.6],[4000,20,7.8],[4500,22,10.5],[5000,24,14.0],[5600,26,17.5]]},
+    cruiser:   {rows:[[1000,5,2.6],[2000,8,6.0],[2500,11,10.0],[3000,17,16.0],[3500,22,22.5],[4000,26,30.0],[4500,30,39.0]]}
+  };
+  var selRpm = null, inited = false, tcMap = null, tcLine = null, tcDots = null;
+  var pts = [
+    [27.866,-82.323],[27.862,-82.355],[27.855,-82.380],[27.850,-82.402],
+    [27.825,-82.430],[27.790,-82.465],[27.745,-82.520],[27.700,-82.575],
+    [27.660,-82.625],[27.618,-82.657],[27.660,-82.700],[27.690,-82.735],
+    [27.720,-82.745],[27.750,-82.760],[27.785,-82.785],[27.805,-82.790],
+    [27.830,-82.797],[27.855,-82.810],[27.875,-82.825],[27.892,-82.834],[27.895,-82.840]
+  ];
+  function $(id){ return document.getElementById(id); }
+  function fmt(n, d){ return n.toLocaleString("en-US",{minimumFractionDigits:d, maximumFractionDigits:d}); }
+  function cruise(){
+    if ($("tcBoat").value === "custom") return [null, parseFloat($("tcMyMph").value) || 0, parseFloat($("tcMyMpg").value) || 0];
+    return selRpm || [0,0,0];
+  }
+  function markSel(){
+    var tb = $("tcRpmBody"); if (!tb) return;
+    var key = $("tcBoat").value;
+    for (var i = 0; i < tb.children.length; i++) tb.children[i].classList.remove("sel");
+    if (!selRpm || !BOATS[key]) return;
+    BOATS[key].rows.forEach(function(r, i){ if (r[0] === selRpm[0] && tb.children[i]) tb.children[i].classList.add("sel"); });
+  }
+  function updateCruiseLine(){
+    var c = cruise(), el = $("tcCruiseLine"); if (!el) return;
+    el.innerHTML = c[0]
+      ? "Your cruise: <b>" + c[0].toLocaleString() + " RPM</b> · " + c[1] + " mph · <b>" + c[2].toFixed(1) + " mpg</b> — this economy runs the trip math below."
+      : "Your cruise: <b>" + c[1] + " mph</b> · <b>" + c[2].toFixed(1) + " mpg</b> — this economy runs the trip math below.";
+  }
+  function renderBoat(){
+    var key = $("tcBoat").value, custom = (key === "custom");
+    $("tcRpmWrap").style.display = custom ? "none" : "block";
+    $("tcCustomWrap").style.display = custom ? "block" : "none";
+    if (custom) { updateCruiseLine(); calc(); return; }
+    var rows = BOATS[key].rows, best = 0, bestMpg = 0;
+    rows.forEach(function(r, i){ var m = r[1]/r[2]; if (r[1] >= 15 && m > bestMpg) { bestMpg = m; best = i; } });
+    var tb = $("tcRpmBody"); tb.innerHTML = "";
+    rows.forEach(function(r, i){
+      var mpg = r[1]/r[2];
+      var tr = document.createElement("tr");
+      tr.innerHTML = "<td>" + r[0].toLocaleString() + (i === best ? '<span class="tc-best">BEST</span>' : "") + "</td><td>" + r[1] + " mph</td><td>" + r[2].toFixed(1) + " gph</td><td>" + mpg.toFixed(1) + " mpg</td>";
+      tr.addEventListener("click", function(){ selRpm = [r[0], r[1], mpg]; markSel(); updateCruiseLine(); calc(); });
+      tb.appendChild(tr);
+    });
+    var b = rows[best];
+    selRpm = [b[0], b[1], b[1]/b[2]];
+    markSel(); updateCruiseLine();
+  }
+  function calc(){
+    var milesEl = $("tcMiles"); if (!milesEl) return;
+    var miles = parseFloat(milesEl.value) || 0;
+    var c = cruise(), mph = c[1], mpg = c[2];
+    var price = parseFloat($("tcPrice").value) || 0;
+    if (miles <= 0 || mpg <= 0) return;
+    var gal = miles / mpg, cost = gal * price;
+    $("tcDistOut").textContent = fmt(miles,1) + " mi";
+    $("tcGalOW").textContent = fmt(gal,1) + " gal";
+    $("tcCostOW").textContent = "$" + fmt(cost,0);
+    $("tcGalRT").textContent = fmt(gal*2,1) + " gal";
+    $("tcCostRT").textContent = "$" + fmt(cost*2,0);
+    var math = miles.toFixed(1) + " mi ÷ " + mpg.toFixed(1) + " mpg" + (c[0] ? " at " + c[0].toLocaleString() + " RPM" : "") + " = " + gal.toFixed(1) + " gal · × $" + price.toFixed(2) + "/gal = $" + cost.toFixed(2) + " one way";
+    if (mph > 0) {
+      var hrs = miles / mph, h = Math.floor(hrs), m = Math.round((hrs - h) * 60);
+      math += " · About " + (h ? h + " hr " : "") + m + " min of running at " + mph + " mph (no-wake zones add time).";
+    }
+    $("tcMath").textContent = math;
+  }
+  function redraw(){
+    if (!tcMap) return 0;
+    tcLine.setLatLngs(pts);
+    tcDots.clearLayers();
+    pts.forEach(function(p){ L.circleMarker(p, {radius:4, color:"#0a2540", weight:2, fillColor:"#FFB703", fillOpacity:1}).addTo(tcDots); });
+    var d = 0;
+    for (var i = 1; i < pts.length; i++) d += tcMap.distance(pts[i-1], pts[i]);
+    $("tcMapMiles").textContent = (d / 1609.344).toFixed(1) + " mi";
+    return d / 1609.344;
+  }
+  window.tcShowTab = function(name){
+    ["trips","measure","track"].forEach(function(t){
+      $("tcPanel-"+t).hidden = (t !== name);
+      $("tcTab-"+t).classList.toggle("on", t === name);
+    });
+    if (name === "measure" && tcMap) setTimeout(function(){ tcMap.invalidateSize(); }, 50);
+  };
+  window.tcUndoPt = function(){ pts.pop(); redraw(); };
+  window.tcClearPts = function(){ pts = []; redraw(); };
+  window.tcUseMapMiles = function(){ var d = redraw(); if (d > 0) { $("tcMiles").value = d.toFixed(1); calc(); } };
+  var tracking = false, watchId = null, lastPos = null, trackD = 0;
+  window.tcToggleTrack = function(){
+    var btn = $("tcTrackBtn"), st = $("tcTrackState");
+    if (!tracking) {
+      if (!navigator.geolocation) { st.textContent = "This phone's browser doesn't offer location — tracking can't start."; return; }
+      tracking = true; btn.textContent = "Stop tracking";
+      st.textContent = "Tracking… keep this page open while you're out.";
+      watchId = navigator.geolocation.watchPosition(function(pos){
+        var p = [pos.coords.latitude, pos.coords.longitude];
+        if (lastPos) {
+          var R = 3958.8, la1 = lastPos[0]*Math.PI/180, la2 = p[0]*Math.PI/180;
+          var dla = (p[0]-lastPos[0])*Math.PI/180, dlo = (p[1]-lastPos[1])*Math.PI/180;
+          var a = Math.sin(dla/2)*Math.sin(dla/2) + Math.cos(la1)*Math.cos(la2)*Math.sin(dlo/2)*Math.sin(dlo/2);
+          var seg = 2 * R * Math.asin(Math.sqrt(a));
+          if (seg > 0.01) { trackD += seg; $("tcTrackMiles").textContent = trackD.toFixed(2); }
+        }
+        lastPos = p;
+      }, function(){ st.textContent = "Location permission is off — allow it to track your day."; }, {enableHighAccuracy:true});
+    } else {
+      tracking = false; btn.textContent = "Start tracking";
+      if (watchId !== null) navigator.geolocation.clearWatch(watchId);
+      st.textContent = "Day logged: " + trackD.toFixed(2) + " miles on the water.";
+    }
+  };
+  window.tcUseTrackMiles = function(){ if (trackD > 0) { $("tcMiles").value = trackD.toFixed(1); calc(); } };
+  window.tcInit = function(){
+    if (inited) { if (tcMap) setTimeout(function(){ tcMap.invalidateSize(); }, 60); return; }
+    inited = true;
+    var deal = window.TBB_FUEL_DEAL;
+    if (deal && deal.price) {
+      $("tcPrice").value = Number(deal.price).toFixed(2);
+      $("tcPriceHint").textContent = "Prefilled with the lowest verified non-ethanol price on our Fuel page — " + deal.where + " (" + deal.reported + "). Enter what you actually paid.";
+    }
+    renderBoat();
+    ["tcMiles","tcPrice","tcMyMph","tcMyMpg"].forEach(function(id){
+      $(id).addEventListener("input", function(){ updateCruiseLine(); calc(); });
+    });
+    $("tcBoat").addEventListener("change", function(){ renderBoat(); calc(); });
+    $("tcRoute").addEventListener("change", function(){ $("tcMiles").value = this.value; calc(); });
+    calc();
+    if (window.L) {
+      tcMap = L.map("tcMap").setView([27.80,-82.55], 9);
+      L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}", {maxZoom: 18, attribution: "Esri World Imagery"}).addTo(tcMap);
+      tcLine = L.polyline(pts, {color:"#FFB703", weight:3}).addTo(tcMap);
+      tcDots = L.layerGroup().addTo(tcMap);
+      tcMap.on("click", function(e){ pts.push([e.latlng.lat, e.latlng.lng]); redraw(); });
+      redraw();
+      tcMap.fitBounds(tcLine.getBounds(), {padding:[12,12]});
+      setTimeout(function(){ tcMap.invalidateSize(); }, 120);
+    }
+  };
+  if ((location.hash || '') === '#/tripcost') window.tcInit();
+})();
+
+</script>
 </body></html>

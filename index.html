@@ -2030,10 +2030,10 @@ if(typeof document!=='undefined'){
 .tc-tool label:first-child{margin-top:0}
 .tc-tool select,.tc-tool input[type=number]{width:100%;padding:11px 12px;border-radius:10px;border:1.5px solid rgba(185,210,228,.45);background:#0E2A3F;color:#fff;font-size:1rem;font-family:inherit}
 .tc-hint{font-size:.8rem;color:#a9c6c5;margin-top:4px}
-.tc-tool table{width:100%;border-collapse:collapse;margin-top:10px;font-size:.93rem}
+.tc-tool table{width:100%;border-collapse:collapse;margin-top:10px;font-size:.88rem}
 .tc-tool th{font-size:.72rem;letter-spacing:1.2px;text-transform:uppercase;color:#8fb0c9;text-align:right;padding:5px 6px;border-bottom:1px solid rgba(185,210,228,.3)}
 .tc-tool th:first-child{text-align:left}
-.tc-tool td{padding:7px 6px;text-align:right;border-bottom:1px solid rgba(185,210,228,.12);white-space:nowrap;color:#fff}
+.tc-tool td{padding:7px 4px;text-align:right;border-bottom:1px solid rgba(185,210,228,.12);white-space:nowrap;color:#fff}
 .tc-tool td:first-child{text-align:left;font-weight:700}
 .tc-tool tbody tr{cursor:pointer}
 .tc-tool tbody tr.sel{background:rgba(255,183,3,.18)}
@@ -2065,11 +2065,36 @@ if(typeof document!=='undefined'){
   <div class="tc-card">
     <label for="tcBoat">Boat &amp; motor</label>
     <select id="tcBoat">
-      <option value="bay150">Bay boat 21 ft · single 150 hp</option>
-      <option value="cc250" selected>Center console 24 ft · single 250 hp</option>
-      <option value="cc300twin">Center console 30 ft · twin 250 hp</option>
-      <option value="pontoon115">Pontoon 24 ft · single 115 hp</option>
-      <option value="cruiser">Cruiser 30 ft · twin gas</option>
+      <optgroup label="Factory-tested (Yamaha bulletins)">
+        <option value="cobia240cc" selected>Cobia 240 CC · Yamaha 300 4-stroke</option>
+        <option value="cobia240dc">Cobia 240 DC · Yamaha 300 4-stroke</option>
+      </optgroup>
+      <optgroup label="Bay boats &amp; skiffs">
+        <option value="flats115">Flats skiff 17 ft · single 115 hp</option>
+        <option value="bay115">Bay boat 20 ft · single 115 hp</option>
+        <option value="bay150">Bay boat 21 ft · single 150 hp</option>
+        <option value="bay200">Bay boat 22 ft · single 200 hp</option>
+        <option value="bay250">Bay boat 24 ft · single 250 hp</option>
+      </optgroup>
+      <optgroup label="Center consoles">
+        <option value="cc150">Center console 21 ft · single 150 hp</option>
+        <option value="cc200">Center console 23 ft · single 200 hp</option>
+        <option value="cc250">Center console 24 ft · single 250 hp</option>
+        <option value="cc300">Center console 25 ft · single 300 hp</option>
+        <option value="cc28twin200">Center console 28 ft · twin 200 hp</option>
+        <option value="cc300twin">Center console 30 ft · twin 250 hp</option>
+        <option value="cc34trip300">Center console 34 ft · triple 300 hp</option>
+      </optgroup>
+      <optgroup label="Pontoons &amp; deck boats">
+        <option value="pontoon90">Pontoon 22 ft · single 90 hp</option>
+        <option value="pontoon115">Pontoon 24 ft · single 115 hp</option>
+        <option value="pontoon150">Pontoon 26 ft · single 150 hp</option>
+        <option value="deck200">Deck boat 24 ft · single 200 hp</option>
+      </optgroup>
+      <optgroup label="Cruisers">
+        <option value="cruiser">Cruiser 30 ft · twin gas</option>
+        <option value="cruiser35twin">Cruiser 35 ft · twin gas</option>
+      </optgroup>
       <option value="custom">My own numbers</option>
     </select>
     <div id="tcRpmWrap">
@@ -2077,7 +2102,7 @@ if(typeof document!=='undefined'){
         <thead><tr><th>RPM</th><th>Speed</th><th>Burn</th><th>Economy</th></tr></thead>
         <tbody id="tcRpmBody"></tbody>
       </table>
-      <p class="tc-hint">Tap the row you cruise at — that row&rsquo;s economy runs the math. Averages for this setup from typical published tests; your boat will vary with load and conditions.</p>
+      <p class="tc-hint" id="tcSrcHint"></p>
     </div>
     <div id="tcCustomWrap" style="display:none">
       <label for="tcMyMph">Your cruise speed (mph)</label>
@@ -2098,12 +2123,12 @@ if(typeof document!=='undefined'){
     <div class="tc-card">
       <label for="tcRoute">Your trip</label>
       <select id="tcRoute">
-        <option value="50.1">Riverview Civic Center → 357 12th Ave, Indian Rocks Beach</option>
-        <option value="41.6">Riverview Civic Center → Treasure Island</option>
-        <option value="18.1">Apollo Beach → St. Pete Pier</option>
-        <option value="29.8">Davis Islands → Clearwater Beach</option>
-        <option value="21.9">Ruskin → Egmont Key</option>
-        <option value="29.6">Alafia River Mouth → Anna Maria Island</option>
+        <option value="50.1" data-wake="4">Riverview Civic Center → 357 12th Ave, Indian Rocks Beach</option>
+        <option value="41.6" data-wake="3.5">Riverview Civic Center → Treasure Island</option>
+        <option value="18.1" data-wake="1">Apollo Beach → St. Pete Pier</option>
+        <option value="29.8" data-wake="2.5">Davis Islands → Clearwater Beach</option>
+        <option value="21.9" data-wake="0.5">Ruskin → Egmont Key</option>
+        <option value="29.6" data-wake="0.5">Alafia River Mouth → Anna Maria Island</option>
       </select>
       <p class="tc-hint">Distances measured along the channels — the way you actually drive the boat, not a straight line.</p>
     </div>
@@ -2134,6 +2159,9 @@ if(typeof document!=='undefined'){
   <div class="tc-card" style="margin-top:14px">
     <label for="tcMiles">Trip miles (one way)</label>
     <input type="number" id="tcMiles" value="50.1" min="0" step="0.1">
+    <label for="tcWakeMiles">No-wake / idle-speed miles</label>
+    <input type="number" id="tcWakeMiles" value="4" min="0" step="0.1">
+    <p class="tc-hint">Slow zones burn less fuel per mile but eat time. Listed trips come with an estimate — change it to match your run.</p>
   </div>
 
   <div class="tc-step"><div class="tc-num">3</div><h3>Your fuel price</h3></div>
@@ -10587,11 +10615,26 @@ var mwxIv = setInterval(function(){
 /* trip-calc-nov18 */
 (function(){
   var BOATS = {
-    bay150:    {rows:[[1000,4.5,0.9],[2000,7.5,2.6],[2500,12,3.8],[3000,19,5.2],[3500,24,6.8],[4000,28,9.0],[4500,32,12.0],[5000,36,15.5],[5600,41,20.6]]},
-    cc250:     {rows:[[1000,5,1.6],[2000,8,3.4],[2500,11,5.4],[3000,21,7.5],[3500,26,9.8],[4000,30,12.6],[4500,35,16.8],[5000,40,22.0],[5800,47,27.6]]},
-    cc300twin: {rows:[[1000,6,3.0],[2000,9,6.5],[2500,13,10.5],[3000,24,16.5],[3500,29,21.0],[4000,34,26.5],[4500,39,34.0],[5000,44,43.0],[5800,52,55.0]]},
-    pontoon115:{rows:[[1000,4,0.8],[2000,7,1.9],[2500,10,2.9],[3000,14,4.1],[3500,17,5.6],[4000,20,7.8],[4500,22,10.5],[5000,24,14.0],[5600,26,17.5]]},
-    cruiser:   {rows:[[1000,5,2.6],[2000,8,6.0],[2500,11,10.0],[3000,17,16.0],[3500,22,22.5],[4000,26,30.0],[4500,30,39.0]]}
+    cobia240cc: {src:"factory", rows:[[1000,5.5,1.3],[1500,7.4,2.3],[2000,8.3,3.6],[2500,11.4,5.5],[3000,15.0,6.7],[3500,27.3,9.1],[4000,33.3,12.2],[4500,37.9,15.4],[5000,42.7,20.3],[5500,46.4,24.7],[5850,49.3,26.2]]},
+    cobia240dc: {src:"factory", rows:[[1000,4.8,1.2],[1500,6.9,2.0],[2000,8.5,3.1],[2500,9.5,5.1],[3000,11.7,6.5],[3500,16.3,8.2],[4000,29.2,11.2],[4500,33.2,14.1],[5000,37.7,17.2],[5500,42.0,22.2],[6000,45.7,25.9]]},
+    flats115:   {src:"typical", rows:[[1000,4,0.7],[2000,7,1.6],[2500,11,2.4],[3000,18,3.4],[3500,23,4.6],[4000,27,6.2],[4500,31,8.4],[5000,35,11.2],[5600,39,14.8]]},
+    bay115:     {src:"typical", rows:[[1000,4.5,0.8],[2000,7,2.0],[2500,11,3.0],[3000,17,4.3],[3500,21,5.8],[4000,25,7.9],[4500,28,10.6],[5000,31,13.8],[5600,34,17.2]]},
+    bay150:     {src:"typical", rows:[[1000,4.5,0.9],[2000,7.5,2.6],[2500,12,3.8],[3000,19,5.2],[3500,24,6.8],[4000,28,9.0],[4500,32,12.0],[5000,36,15.5],[5600,41,20.6]]},
+    bay200:     {src:"typical", rows:[[1000,5,1.1],[2000,7.5,2.8],[2500,12,4.2],[3000,20,5.9],[3500,25,7.9],[4000,29,10.6],[4500,33,14.2],[5000,37,18.6],[5600,41,23.4]]},
+    bay250:     {src:"typical", rows:[[1000,5,1.5],[2000,8,3.3],[2500,11,5.2],[3000,20,7.6],[3500,25,9.9],[4000,29,12.8],[4500,33,16.9],[5000,37,22.0],[5700,42,26.8]]},
+    cc150:      {src:"typical", rows:[[1000,4.5,0.9],[2000,7.5,2.7],[2500,12,4.0],[3000,18,5.6],[3500,23,7.4],[4000,27,9.8],[4500,31,13.0],[5000,34,16.8],[5600,38,21.0]]},
+    cc200:      {src:"typical", rows:[[1000,5,1.2],[2000,8,3.0],[2500,11.5,4.6],[3000,20,6.4],[3500,25,8.6],[4000,29,11.5],[4500,33,15.4],[5000,37,20.0],[5600,41,24.6]]},
+    cc250:      {src:"typical", rows:[[1000,5,1.6],[2000,8,3.4],[2500,11,5.4],[3000,21,7.5],[3500,26,9.8],[4000,30,12.6],[4500,35,16.8],[5000,40,22.0],[5800,47,27.6]]},
+    cc300:      {src:"typical", rows:[[1000,5.5,1.4],[2000,8.5,3.5],[2500,12,5.6],[3000,22,8.0],[3500,27,10.4],[4000,31,13.6],[4500,36,18.0],[5000,40,23.4],[5800,46,28.6]]},
+    cc28twin200:{src:"typical", rows:[[1000,5.5,2.2],[2000,8.5,4.8],[2500,12,7.6],[3000,23,11.8],[3500,28,15.4],[4000,32,20.0],[4500,36,26.0],[5000,40,33.0],[5700,45,40.5]]},
+    cc300twin:  {src:"typical", rows:[[1000,6,3.0],[2000,9,6.5],[2500,13,10.5],[3000,24,16.5],[3500,29,21.0],[4000,34,26.5],[4500,39,34.0],[5000,44,43.0],[5800,52,55.0]]},
+    cc34trip300:{src:"typical", rows:[[1000,6,3.4],[2000,9,7.4],[2500,14,12.0],[3000,26,19.0],[3500,31,25.0],[4000,36,32.5],[4500,41,42.0],[5000,46,54.0],[5800,53,72.0]]},
+    pontoon90:  {src:"typical", rows:[[1000,4,0.7],[2000,6.5,1.6],[2500,9,2.5],[3000,12,3.6],[3500,15,5.0],[4000,17,6.8],[4500,19,9.2],[5000,21,12.0],[5600,22,14.6]]},
+    pontoon115: {src:"typical", rows:[[1000,4,0.8],[2000,7,1.9],[2500,10,2.9],[3000,14,4.1],[3500,17,5.6],[4000,20,7.8],[4500,22,10.5],[5000,24,14.0],[5600,26,17.5]]},
+    pontoon150: {src:"typical", rows:[[1000,4.5,0.9],[2000,7,2.1],[2500,10,3.2],[3000,14,4.6],[3500,18,6.4],[4000,21,8.8],[4500,23,12.0],[5000,25,15.6],[5600,27,19.4]]},
+    deck200:    {src:"typical", rows:[[1000,4.5,1.1],[2000,7.5,2.7],[2500,11,4.2],[3000,18,6.2],[3500,23,8.4],[4000,27,11.4],[4500,30,15.4],[5000,33,20.0],[5600,36,24.8]]},
+    cruiser:    {src:"typical", rows:[[1000,5,2.6],[2000,8,6.0],[2500,11,10.0],[3000,17,16.0],[3500,22,22.5],[4000,26,30.0],[4500,30,39.0]]},
+    cruiser35twin:{src:"typical", rows:[[1000,5,3.2],[2000,8,7.4],[2500,11,12.5],[3000,16,20.0],[3500,21,28.0],[4000,25,37.0],[4500,28,47.0]]}
   };
   var selRpm = null, inited = false, tcMap = null, tcLine = null, tcDots = null;
   var pts = [
@@ -10622,6 +10665,9 @@ var mwxIv = setInterval(function(){
   }
   function renderBoat(){
     var key = $("tcBoat").value, custom = (key === "custom");
+    if (!custom && BOATS[key]) $("tcSrcHint").textContent = (BOATS[key].src === "factory")
+      ? "Tap the row you cruise at — that row's economy runs the math. Factory test data — Yamaha Performance Bulletin for this exact boat & motor, run light on a test boat; your real numbers will vary."
+      : "Tap the row you cruise at — that row's economy runs the math. Averages for this setup from typical published tests; your boat will vary with load and conditions.";
     $("tcRpmWrap").style.display = custom ? "none" : "block";
     $("tcCustomWrap").style.display = custom ? "block" : "none";
     if (custom) { updateCruiseLine(); calc(); return; }
@@ -10639,22 +10685,37 @@ var mwxIv = setInterval(function(){
     selRpm = [b[0], b[1], b[1]/b[2]];
     markSel(); updateCruiseLine();
   }
+  function idleRow(){
+    var key = $("tcBoat").value;
+    if (key === "custom" || !BOATS[key]) return null;
+    var r = BOATS[key].rows[0];
+    return [r[1], r[1]/r[2]]; // [idle mph, idle mpg]
+  }
   function calc(){
     var milesEl = $("tcMiles"); if (!milesEl) return;
     var miles = parseFloat(milesEl.value) || 0;
     var c = cruise(), mph = c[1], mpg = c[2];
     var price = parseFloat($("tcPrice").value) || 0;
     if (miles <= 0 || mpg <= 0) return;
-    var gal = miles / mpg, cost = gal * price;
+    var wake = Math.min(parseFloat($("tcWakeMiles").value) || 0, miles);
+    var cruiseMi = miles - wake;
+    var idle = idleRow();
+    var idleMph = idle ? idle[0] : 5, idleMpg = idle ? idle[1] : mpg;
+    var gal = (cruiseMi / mpg) + (wake / idleMpg), cost = gal * price;
     $("tcDistOut").textContent = fmt(miles,1) + " mi";
     $("tcGalOW").textContent = fmt(gal,1) + " gal";
     $("tcCostOW").textContent = "$" + fmt(cost,0);
     $("tcGalRT").textContent = fmt(gal*2,1) + " gal";
     $("tcCostRT").textContent = "$" + fmt(cost*2,0);
-    var math = miles.toFixed(1) + " mi ÷ " + mpg.toFixed(1) + " mpg" + (c[0] ? " at " + c[0].toLocaleString() + " RPM" : "") + " = " + gal.toFixed(1) + " gal · × $" + price.toFixed(2) + "/gal = $" + cost.toFixed(2) + " one way";
+    var math;
+    if (wake > 0) {
+      math = cruiseMi.toFixed(1) + " mi at cruise (" + mpg.toFixed(1) + " mpg" + (c[0] ? ", " + c[0].toLocaleString() + " RPM" : "") + ") + " + wake.toFixed(1) + " mi no-wake at idle (" + idleMpg.toFixed(1) + " mpg) = " + gal.toFixed(1) + " gal · × $" + price.toFixed(2) + "/gal = $" + cost.toFixed(2) + " one way";
+    } else {
+      math = miles.toFixed(1) + " mi ÷ " + mpg.toFixed(1) + " mpg" + (c[0] ? " at " + c[0].toLocaleString() + " RPM" : "") + " = " + gal.toFixed(1) + " gal · × $" + price.toFixed(2) + "/gal = $" + cost.toFixed(2) + " one way";
+    }
     if (mph > 0) {
-      var hrs = miles / mph, h = Math.floor(hrs), m = Math.round((hrs - h) * 60);
-      math += " · About " + (h ? h + " hr " : "") + m + " min of running at " + mph + " mph (no-wake zones add time).";
+      var hrs = (cruiseMi / mph) + (wake / idleMph), h = Math.floor(hrs), m = Math.round((hrs - h) * 60);
+      math += " · About " + (h ? h + " hr " : "") + m + " min on the water" + (wake > 0 ? ", counting the slow zones" : "") + ".";
     }
     $("tcMath").textContent = math;
   }
@@ -10712,11 +10773,11 @@ var mwxIv = setInterval(function(){
       $("tcPriceHint").textContent = "Prefilled with the lowest verified non-ethanol price on our Fuel page — " + deal.where + " (" + deal.reported + "). Enter what you actually paid.";
     }
     renderBoat();
-    ["tcMiles","tcPrice","tcMyMph","tcMyMpg"].forEach(function(id){
+    ["tcMiles","tcWakeMiles","tcPrice","tcMyMph","tcMyMpg"].forEach(function(id){
       $(id).addEventListener("input", function(){ updateCruiseLine(); calc(); });
     });
     $("tcBoat").addEventListener("change", function(){ renderBoat(); calc(); });
-    $("tcRoute").addEventListener("change", function(){ $("tcMiles").value = this.value; calc(); });
+    $("tcRoute").addEventListener("change", function(){ $("tcMiles").value = this.value; var w = this.options[this.selectedIndex].getAttribute("data-wake"); if (w !== null) $("tcWakeMiles").value = w; calc(); });
     calc();
     if (window.L) {
       tcMap = L.map("tcMap").setView([27.80,-82.55], 9);

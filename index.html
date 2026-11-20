@@ -1938,6 +1938,7 @@ if(typeof document!=='undefined'){
 <a class="cat-card" href="#/events"><span class="c-ico"><svg class=tic aria-hidden=true><use href=#i-cal></use></svg></span><b>Events Calendar</b><i>Parades, boat shows &amp; what's on</i></a><a class="cat-card" href="#/meetups"><span class="c-ico"><svg class=tic aria-hidden=true><use href=#i-talk></use></svg></span><b>Meetups</b><i>Gheenoe, paddle, jet ski &amp; sandbar</i></a>
 <a class="cat-card" href="/visiting.html"><span class="c-ico"><svg class=tic aria-hidden=true><use href=#i-pin></use></svg></span><b>Places to Go</b><i>The best of the bay, from the water</i></a>
 <a class="cat-card" href="#/local"><span class="c-ico"><svg class=tic aria-hidden=true><use href=#i-pin></use></svg></span><b>Find Local</b><i>Local business lists</i></a>
+<a class="cat-card" href="#/services"><span class="c-ico"><svg class=tic aria-hidden=true><use href=#i-wrench></use></svg></span><b>Boat Services</b><i>Repair, electronics &amp; detail</i></a>
 <a class="cat-card" href="#/shop"><span class="c-ico"><svg class=tic aria-hidden=true><use href=#i-bag></use></svg></span><b>Merch</b><i>Wear Tampa Bay Boating</i></a>
 <a class="cat-card" href="#/smart"><span class="c-ico"><svg class=tic aria-hidden=true><use href=#i-lifebuoy></use></svg></span><b>Boat Smart</b><i>Safety, nav &amp; local know-how</i></a>
 <a class="cat-card" href="/manatee-zones.html"><span class="c-ico"><svg class=tic aria-hidden=true><use href=#i-waves></use></svg></span><b>Manatee Zones</b><i>Where to slow down — and when</i></a>
@@ -5926,7 +5927,8 @@ const SERVICES = [
  ["BoatCanvaz","Tampa — by appointment","Canvas","Enclosures, covers, upholstery & canvas repairs","(813) 540-2628","https://www.boatcanvaz.com/"],
  ["Seamore's Canvas Shop","Tampa","Canvas","Biminis, covers, enclosures & upholstery — family-owned","(813) 237-2660","http://www.seamorescanvasshop.com/"],
  ["Adriatic Lux","Tarpon Springs","Canvas","Biminis, enclosures, covers, upholstery & repairs","(727) 218-7157","https://adriaticlux.me/"],
- ["Seebird Canvas","Tarpon Springs","Canvas","Biminis, covers, enclosures & cushions — since 1985","(727) 938-7152",null]
+ ["Seebird Canvas","Tarpon Springs","Canvas","Biminis, covers, enclosures & cushions — since 1985","(727) 938-7152",null],
+ ["FL Plastic Fabrication","Lutz","Canvas","Custom acrylic boat windshields & windows \u2014 panels, enclosures & hatches, acrylic & polycarbonate","(727) 203-1741","https://flplasticfabrication.com/"]
 ];
 let svcMode = "Mechanics";
 function svcTab(m){ svcMode=m; ["Mechanics","Electronics","Detailing","Canvas"].forEach(c=>{ const el=document.getElementById("pill-"+(c==="Mechanics"?"mech":c==="Electronics"?"elec":c==="Detailing"?"det":"can")); if(el) el.classList.toggle("sel",c===m); }); renderSvc(); }

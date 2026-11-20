@@ -5931,7 +5931,14 @@ const SERVICES = [
  ["Seamore's Canvas Shop","Tampa","Canvas","Biminis, covers, enclosures & upholstery — family-owned","(813) 237-2660","http://www.seamorescanvasshop.com/"],
  ["Adriatic Lux","Tarpon Springs","Canvas","Biminis, enclosures, covers, upholstery & repairs","(727) 218-7157","https://adriaticlux.me/"],
  ["Seebird Canvas","Tarpon Springs","Canvas","Biminis, covers, enclosures & cushions — since 1985","(727) 938-7152",null],
- ["FL Plastic Fabrication","Lutz","Fabrication","Custom acrylic boat windshields & windows \u2014 panels, enclosures & hatches, acrylic & polycarbonate","(727) 203-1741","https://flplasticfabrication.com/"]
+ ["FL Plastic Fabrication","Lutz","Fabrication","Custom acrylic boat windshields & windows \u2014 panels, enclosures & hatches, acrylic & polycarbonate","(727) 203-1741","https://flplasticfabrication.com/"],
+ ["Quality T-Tops & Boat Accessories","Tarpon Springs","Fabrication","Custom T-tops, half towers & console towers \u2014 custom aluminum fabrication, rigging & fuel tanks","(727) 942-4397","https://www.qualityttops.com/"],
+ ["T-Top Welding LLC","Tampa","Fabrication","Custom T-tops, towers & railings \u2014 aluminum & stainless TIG welding; mobile install & repair","(813) 498-9391","https://www.ttopweldingtampa.com/"],
+ ["Aqua Shade / T-Tops for Sale","Sarasota","Fabrication","Custom T-tops, bay & half towers, hardtops & baitwells \u2014 plus in-house canvas","(941) 266-0903","https://www.ttopsforsale.com/"],
+ ["Southern Quality Fabricators","Tarpon Springs","Fabrication","Boat T-tops, towers, leaning posts, rod racks, fuel tanks & swim platforms","(727) 935-4186","https://www.southernqualityfabricators.com/"],
+ ["Custom Marine Fabrication","Palmetto","Fabrication","Towers, mini towers, leaning posts & T-tops \u2014 custom aluminum fabrication & repairs","(941) 773-8283",null],
+ ["SRQ Welding & Marine Fabrication","North Venice","Fabrication","Custom T-tops, leaning posts, poling platforms & towers \u2014 anodized aluminum welding","(941) 275-9942","https://srqwelding.com/"],
+ ["Tampa Bay Marine Center","Seminole","Fabrication","Custom dash panels & metal work, rigging, rewires, paint & wraps","(727) 313-1577","https://www.tbmarinecenter.com/"]
 ];
 let svcMode = "Mechanics";
 function svcTab(m){ svcMode=m; ["Mechanics","Electronics","Detailing","Canvas","Fabrication"].forEach(c=>{ const el=document.getElementById("pill-"+(c==="Mechanics"?"mech":c==="Electronics"?"elec":c==="Detailing"?"det":c==="Canvas"?"can":"fab")); if(el) el.classList.toggle("sel",c===m); }); renderSvc(); }

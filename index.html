@@ -254,6 +254,8 @@ body.dark .gear-cat{color:#e8eef4}
 .dir-rating span{color:var(--muted); font-weight:400; font-size:.78rem}
 .pill-row{display:flex; gap:10px; flex-wrap:wrap; margin-bottom:4px}
 .pill{background:#fff; border:2px solid var(--line); border-radius:999px; padding:10px 20px; font-weight:700; font-size:.92rem; color:var(--navy); cursor:pointer}
+#view-services .pill-row{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+#view-services .pill{width:100%; text-align:center; padding:10px 4px; font-size:.86rem; white-space:nowrap}
 .pill.sel{border-color:var(--teal); background:#eef7f5}
 .dir-note{text-align:center; color:var(--muted); font-size:.88rem; margin-top:16px}
 .phase-note{background:#fff8e8; border:1px dashed var(--sun); border-radius:12px; padding:16px 20px; margin-bottom:24px; text-align:center; color:#7a5b16}
@@ -3631,13 +3633,14 @@ document.getElementById('tbbc-save').addEventListener('click', function () {
     <div class="sec-head">
       <span class="sec-kicker">Keep Her Running</span>
       
-      <p>Mechanics, electronics installers, detailers, and canvas &amp; upholstery shops around Tampa Bay.</p>
+      <p>Mechanics, electronics installers, detailers, canvas &amp; upholstery shops, and fabricators around Tampa Bay.</p>
     </div>
     <div class="pill-row">
       <button class="pill sel" id="pill-mech" onclick="svcTab('Mechanics')"><svg class=ic aria-hidden=true><use href=#i-wrench></use></svg> Mechanics</button>
       <button class="pill" id="pill-elec" onclick="svcTab('Electronics')"><svg class=ic aria-hidden=true><use href=#i-tower></use></svg> Electronics</button>
       <button class="pill" id="pill-det" onclick="svcTab('Detailing')"><svg class=ic aria-hidden=true><use href=#i-spark></use></svg> Detailing</button>
       <button class="pill" id="pill-can" onclick="svcTab('Canvas')"><svg class=ic aria-hidden=true><use href=#i-sail></use></svg> Canvas &amp; Upholstery</button>
+      <button class="pill" id="pill-fab" onclick="svcTab('Fabrication')"><svg class=ic aria-hidden=true><use href=#i-gear></use></svg> Fabrication</button>
     </div>
     <div class="search" style="margin:14px 0"><input id="svc-input" type="text" placeholder="Search by name or area..." oninput="renderSvc()"></div>
     <div class="dir-grid" id="svc-grid"></div>
@@ -5928,10 +5931,10 @@ const SERVICES = [
  ["Seamore's Canvas Shop","Tampa","Canvas","Biminis, covers, enclosures & upholstery — family-owned","(813) 237-2660","http://www.seamorescanvasshop.com/"],
  ["Adriatic Lux","Tarpon Springs","Canvas","Biminis, enclosures, covers, upholstery & repairs","(727) 218-7157","https://adriaticlux.me/"],
  ["Seebird Canvas","Tarpon Springs","Canvas","Biminis, covers, enclosures & cushions — since 1985","(727) 938-7152",null],
- ["FL Plastic Fabrication","Lutz","Canvas","Custom acrylic boat windshields & windows \u2014 panels, enclosures & hatches, acrylic & polycarbonate","(727) 203-1741","https://flplasticfabrication.com/"]
+ ["FL Plastic Fabrication","Lutz","Fabrication","Custom acrylic boat windshields & windows \u2014 panels, enclosures & hatches, acrylic & polycarbonate","(727) 203-1741","https://flplasticfabrication.com/"]
 ];
 let svcMode = "Mechanics";
-function svcTab(m){ svcMode=m; ["Mechanics","Electronics","Detailing","Canvas"].forEach(c=>{ const el=document.getElementById("pill-"+(c==="Mechanics"?"mech":c==="Electronics"?"elec":c==="Detailing"?"det":"can")); if(el) el.classList.toggle("sel",c===m); }); renderSvc(); }
+function svcTab(m){ svcMode=m; ["Mechanics","Electronics","Detailing","Canvas","Fabrication"].forEach(c=>{ const el=document.getElementById("pill-"+(c==="Mechanics"?"mech":c==="Electronics"?"elec":c==="Detailing"?"det":c==="Canvas"?"can":"fab")); if(el) el.classList.toggle("sel",c===m); }); renderSvc(); }
 function svcDirCard(b){
   var rows=[];
   if(b[3])rows.push(b[3]);
@@ -9830,6 +9833,7 @@ function route(){
   var h=location.hash||'#/';
   if(h==='#/detailing'){showView('services');if(window.svcTab)window.svcTab('Detailing');return;}
   if(h==='#/canvas'){showView('services');if(window.svcTab)window.svcTab('Canvas');return;}
+  if(h==='#/fabrication'){showView('services');if(window.svcTab)window.svcTab('Fabrication');return;}
   if(h==='#/newtofishing'){showView('fishing');return;}
   if(h==='#/knowbeforeyougo'){showView('smart');if(window.smartTab)window.smartTab('passes');return;}
   if(h==='#/manatee'){location.replace('/manatee-zones.html');return;}

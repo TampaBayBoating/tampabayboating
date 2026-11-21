@@ -5600,18 +5600,18 @@ document.addEventListener("keydown", function(e){ if(e.key==="Escape") closeNavM
 let cart = [];
 /* ================= DIRECTORY ================= */
 const COMPANIES = [
- ["Capt. Chris Canning \u2014 Tampa Bay Fishing Company","Ruskin","Inshore & nearshore fishing charters","(863) 838-0577","https://tampabayfishing.co/","charter-logos/canning-letsgo.webp",null],
+ ["Capt. Chris Canning \u2014 Tampa Bay Fishing Company","Ruskin","Inshore & nearshore fishing charters","(863) 838-0577","https://tampabayfishing.co/","charter-logos/canning-letsgo.webp","5.0 ★ (192 reviews)"],
  ["My Time Fishing Charters","Tampa","Inshore & nearshore fishing (snook, redfish, trout, tarpon)","(813) 469-2610","https://www.mytimefishing.com/","charter-logos/logo-mytimefishing.png","5.0 ★ (78 reviews)"],
  ["Shallow Point Tampa Fishing Charters","Tampa","Inshore fishing (tarpon, snook, redfish, trout)","(813) 758-3406","http://www.shallowpointcharters.com/","charter-logos/shallow-point.png","4.9 ★ (249 reviews)"],
  ["Light Tackle Adventures","Tampa","Light tackle & fly fishing, tarpon, scalloping","(813) 917-4989","http://lighttackleadventures.com/","charter-logos/light-tackle-adventures.png","5.0 ★ (8 reviews)"],
  ["Swift Fish Charters","Tampa","Inshore fishing (redfish, trout, snook, tarpon, fly)","(813) 714-0889","https://www.swiftfishcharters.com/","charter-logos/swift-fish.png","5.0 ★ (171 reviews)"],
  ["Tampa Flats Fishing Charters","Tampa","Flats & inshore fishing","(813) 477-3814","",null,"4.9 ★ (12 reviews)"],
  ["Mad Red Fishing Charters","Tampa","Inshore fishing","(813) 997-5968","https://www.madredcharters.com/","charter-logos/mad-red.webp","5.0 ★ (33 reviews)"],
- ["FinSanity Charters","Tampa","Inshore fishing","(813) 918-8356","http://www.fin-sanitycharters.com/","charter-logos/finsanity.png","5.0 ★ (17 reviews)"],
+ ["FinSanity Charters","Tampa","Inshore fishing","(813) 918-8356","http://www.fin-sanitycharters.com/","charter-logos/finsanity.png","5.0 ★ (53 reviews)"],
  ["Afishionado Guide Services","Tampa","Inshore fishing guide","(813) 286-3474","http://afishionado.com/","charter-logos/afishionado.jpg","5.0 ★ (1 review)"],
- ["Fish This Inshore Charters","Apollo Beach","Inshore fishing","(813) 459-2521","http://fishthisinshorecharters.com/",null,"5.0 ★ (21 reviews)"],
+ ["Fish This Inshore Charters","Apollo Beach","Inshore fishing","(813) 459-2521","http://fishthisinshorecharters.com/",null,"5.0 ★ (63 reviews)"],
  ["Sarasota Fishing Tours","Sarasota","Family-friendly inshore fishing","(941) 587-6150","",null,"5.0 ★ (18 reviews)"],
- ["SeaSpree","Palmetto","Fishing, sunset & dolphin tours, private charters","(402) 613-4717","https://SeaSpree.com/","charter-logos/seaspree.jpg",null],
+ ["SeaSpree","Palmetto","Fishing, sunset & dolphin tours, private charters","(402) 613-4717","https://SeaSpree.com/","charter-logos/seaspree.jpg","5.0 ★ (43 reviews)"],
  ["The Pelican St. Pete","St. Petersburg","Egmont Key ferry, sunset cruises, private charters","(866) 434-6668","http://thepelicanstpete.com/","charter-logos/pelican-st-pete.png","4.8 ★ (371 reviews)"],
  ["Island Time Tours FL","St. Petersburg","Private charters, sunset cruises","(727) 420-6045","https://www.islandtimetoursfl.com/",null,"5.0 ★ (32 reviews)"],
  ["Tampa Bay Sunset Sail","St. Petersburg","Sunset sailing (up to 6 guests)","(813) 738-3702","https://www.tampabaysunsetsail.com/","charter-logos/tampa-bay-sunset-sail.png","5.0 ★ (113 reviews)"],
@@ -5620,10 +5620,10 @@ const COMPANIES = [
  ["Ships Ahoy Charter","St. Petersburg","Private charters, boat rental","(727) 692-6596","http://shipsahoycharter.com/","charter-logos/ships-ahoy.jpg","5.0 ★ (136 reviews)"],
  ["Fox Tale Charters","St. Petersburg","Private charters","(941) 217-8486","http://foxtalecharters.com/","charter-logos/fox-tale.png",null],
  ["Sea Screamer","Clearwater","Speedboat dolphin tours","(727) 447-7200","http://www.seascreamer.com/","charter-logos/sea-screamer.png","4.8 ★ (322 reviews)"],
- ["Little Toot Dolphin Adventure","Clearwater","Dolphin & sightseeing tours","(727) 446-5503","http://www.littletoot.us/",null,"4.9 ★ (665 reviews)"],
- ["Calypso Queen","Clearwater","Dinner, dance & buffet cruises","(727) 461-3113","https://www.starlitecruises.com/","charter-logos/calypso-queen.png","4.3 ★ (1,174 reviews)"],
+ ["Little Toot Dolphin Adventure","Clearwater","Dolphin & sightseeing tours","(727) 446-5503","http://www.littletoot.us/",null,"4.9 ★ (2,876 reviews)"],
+ ["Calypso Queen","Clearwater","Dinner, dance & buffet cruises","(727) 461-3113","https://www.starlitecruises.com/","charter-logos/calypso-queen.png","4.3 ★ (1,357 reviews)"],
  ["Miss John's Pass Charter Boat","Treasure Island","Sightseeing charter boat","(727) 742-4041","http://www.missjohnspass.com/",null,"3.9 ★ (8 reviews)"],
- ["Captain Fin's Sightseeing and Boat Tours","Bradenton Beach","Dolphin tours, sunset cruises, Egmont Key, shelling","(941) 920-2573","http://www.captainfins.net/",null,"5.0 ★ (52 reviews)"],
+ ["Captain Fin's Sightseeing and Boat Tours","Bradenton Beach","Dolphin tours, sunset cruises, Egmont Key, shelling","(941) 920-2573","http://www.captainfins.net/",null,"4.8 ★ (41 reviews)"],
  ["Local Guide AMI","Bradenton / Anna Maria Island","Private charters: dolphins, sunset, sandbar, Egmont Key, fishing","Online booking","https://localguideami.com/","charter-logos/local-guide-ami.png",null]
 ];
 /* Directory social links (researched Nov 21, 2026 — see directory-socials-research-nov21.md). Keyed by exact COMPANIES name; only verified profiles. */

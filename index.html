@@ -195,6 +195,10 @@ body.dark .gear-cat{color:#e8eef4}
 .dir-card .city{font-size:.8rem; text-transform:uppercase; letter-spacing:1px; color:var(--teal); font-weight:700}
 .dir-card .type{font-size:.92rem; color:var(--muted); margin:6px 0}
 .dir-card .contact{font-size:.9rem}
+.dir-socials{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+.dir-soc{display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:999px;background:#0a2540;color:#fff;text-decoration:none;flex:none}
+.dir-soc svg{width:19px;height:19px}
+.dir-soc:active{opacity:.85}
 .dir-price{font-size:1.25rem; font-weight:800; color:var(--navy); margin:6px 0}
 .map-filter{border:1px solid var(--line); background:#fff; border-radius:999px; padding:5px 12px; margin:2px; font-size:.85rem; cursor:pointer; display:inline-flex; align-items:center; gap:7px}
 .map-filter .dot{width:10px; height:10px; border-radius:50%; background:var(--c,#999); flex:none; box-shadow:inset 0 0 0 1px rgba(0,0,0,.18)}
@@ -1217,6 +1221,10 @@ body.dark body.dark /* ---- Tampa Bay Boating Shop ---- */
   <path d="M12 16h4" />
   <path d="M8 11h.01" />
   <path d="M8 16h.01" /></symbol>
+<symbol id="i-ig" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></symbol>
+<symbol id="i-fb" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></symbol>
+<symbol id="i-yt" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17"/><path d="m10 15 5-3-5-3z"/></symbol>
+<symbol id="i-tt" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"/></symbol>
 <symbol id="i-phone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384" /></symbol>
 <symbol id="i-warn" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3" />
   <path d="M12 9v4" />
@@ -5593,19 +5601,19 @@ let cart = [];
 /* ================= DIRECTORY ================= */
 const COMPANIES = [
  ["Capt. Chris Canning \u2014 Tampa Bay Fishing Company","Ruskin","Inshore & nearshore fishing charters","(863) 838-0577","https://tampabayfishing.co/","charter-logos/canning-letsgo.webp",null],
- ["My Time Fishing Charters","Tampa","Inshore & nearshore fishing (snook, redfish, trout, tarpon)","(813) 469-2610","https://www.mytimefishing.com/",null,null],
+ ["My Time Fishing Charters","Tampa","Inshore & nearshore fishing (snook, redfish, trout, tarpon)","(813) 469-2610","https://www.mytimefishing.com/","charter-logos/logo-mytimefishing.png",null],
  ["Shallow Point Tampa Fishing Charters","Tampa","Inshore fishing (tarpon, snook, redfish, trout)","(813) 758-3406","http://www.shallowpointcharters.com/","charter-logos/shallow-point.png","4.9 ★ (249 reviews)"],
  ["Light Tackle Adventures","Tampa","Light tackle & fly fishing, tarpon, scalloping","(813) 917-4989","http://lighttackleadventures.com/","charter-logos/light-tackle-adventures.png","5.0 ★ (8 reviews)"],
  ["Swift Fish Charters","Tampa","Inshore fishing (redfish, trout, snook, tarpon, fly)","(813) 714-0889","https://www.swiftfishcharters.com/","charter-logos/swift-fish.png","5.0 ★ (171 reviews)"],
  ["Tampa Flats Fishing Charters","Tampa","Flats & inshore fishing","(813) 477-3814","",null,"4.9 ★ (12 reviews)"],
- ["Mad Red Fishing Charters","Tampa","Inshore fishing","(813) 997-5968","https://www.madredcharters.com/","charter-logos/mad-red.webp",null],
+ ["Mad Red Fishing Charters","Tampa","Inshore fishing","(813) 997-5968","https://www.madredcharters.com/","charter-logos/mad-red.webp","5.0 ★ (33 reviews)"],
  ["FinSanity Charters","Tampa","Inshore fishing","(813) 918-8356","http://www.fin-sanitycharters.com/","charter-logos/finsanity.png","5.0 ★ (17 reviews)"],
  ["Afishionado Guide Services","Tampa","Inshore fishing guide","(813) 286-3474","http://afishionado.com/","charter-logos/afishionado.jpg","5.0 ★ (1 review)"],
  ["Fish This Inshore Charters","Apollo Beach","Inshore fishing","(813) 459-2521","http://fishthisinshorecharters.com/",null,"5.0 ★ (21 reviews)"],
  ["Sarasota Fishing Tours","Sarasota","Family-friendly inshore fishing","(941) 587-6150","",null,"5.0 ★ (18 reviews)"],
  ["SeaSpree","Palmetto","Fishing, sunset & dolphin tours, private charters","(402) 613-4717","https://SeaSpree.com/","charter-logos/seaspree.jpg",null],
  ["The Pelican St. Pete","St. Petersburg","Egmont Key ferry, sunset cruises, private charters","(866) 434-6668","http://thepelicanstpete.com/","charter-logos/pelican-st-pete.png","4.8 ★ (371 reviews)"],
- ["Island Time Tours FL","St. Petersburg","Private charters, sunset cruises","(727) 420-6045","https://www.islandtimetoursfl.com/",null,null],
+ ["Island Time Tours FL","St. Petersburg","Private charters, sunset cruises","(727) 420-6045","https://www.islandtimetoursfl.com/",null,"5.0 ★ (32 reviews)"],
  ["Tampa Bay Sunset Sail","St. Petersburg","Sunset sailing (up to 6 guests)","(813) 738-3702","https://www.tampabaysunsetsail.com/","charter-logos/tampa-bay-sunset-sail.png","5.0 ★ (113 reviews)"],
  ["Totally Tiki Tours","St. Petersburg","Tiki boat tours","(727) 377-0700","https://www.totallytikitours.com/","charter-logos/totally-tiki-tours.webp","5.0 ★ (951 reviews)"],
  ["St. Pete Boat Tours","St. Petersburg","Sightseeing boat tours","(727) 420-1435","https://www.stpeteboattour.com/","charter-logos/st-pete-boat-tours.png","4.9 ★ (72 reviews)"],
@@ -5614,10 +5622,29 @@ const COMPANIES = [
  ["Sea Screamer","Clearwater","Speedboat dolphin tours","(727) 447-7200","http://www.seascreamer.com/","charter-logos/sea-screamer.png","4.8 ★ (322 reviews)"],
  ["Little Toot Dolphin Adventure","Clearwater","Dolphin & sightseeing tours","(727) 446-5503","http://www.littletoot.us/",null,"4.9 ★ (665 reviews)"],
  ["Calypso Queen","Clearwater","Dinner, dance & buffet cruises","(727) 461-3113","https://www.starlitecruises.com/","charter-logos/calypso-queen.png","4.3 ★ (1,174 reviews)"],
- ["Miss John's Pass Charter Boat","Treasure Island","Sightseeing charter boat","(727) 742-4041","http://www.missjohnspass.com/",null,null],
+ ["Miss John's Pass Charter Boat","Treasure Island","Sightseeing charter boat","(727) 742-4041","http://www.missjohnspass.com/",null,"3.9 ★ (8 reviews)"],
  ["Captain Fin's Sightseeing and Boat Tours","Bradenton Beach","Dolphin tours, sunset cruises, Egmont Key, shelling","(941) 920-2573","http://www.captainfins.net/",null,"5.0 ★ (52 reviews)"],
  ["Local Guide AMI","Bradenton / Anna Maria Island","Private charters: dolphins, sunset, sandbar, Egmont Key, fishing","Online booking","https://localguideami.com/","charter-logos/local-guide-ami.png",null]
 ];
+/* Directory social links (researched Nov 21, 2026 — see directory-socials-research-nov21.md). Keyed by exact COMPANIES name; only verified profiles. */
+const DIR_SOCIALS = {
+ "Capt. Chris Canning \u2014 Tampa Bay Fishing Company": {ig:"https://www.instagram.com/triple_c12/", fb:"https://www.facebook.com/chris.canning.94/", yt:"https://www.youtube.com/@CaptChrisCanning", tt:"https://www.tiktok.com/@canning12"},
+ "My Time Fishing Charters": {ig:"https://www.instagram.com/capt.nickgonzalez", yt:"https://www.youtube.com/@MyTimeFishing"},
+ "Light Tackle Adventures": {ig:"https://www.instagram.com/captjimlemke", fb:"https://www.facebook.com/jim.lemke.37"},
+ "Swift Fish Charters": {fb:"https://www.facebook.com/swiftfishcharters"},
+ "Afishionado Guide Services": {ig:"https://www.instagram.com/afishionadoguideservices/", fb:"https://www.facebook.com/AfishionadoGuideServices", yt:"https://www.youtube.com/user/4afishionado"},
+ "The Pelican St. Pete": {ig:"https://www.instagram.com/thepelicanstpeteboat"},
+ "Totally Tiki Tours": {tt:"https://www.tiktok.com/@totallytikitours"},
+ "Sea Screamer": {ig:"https://www.instagram.com/seascreamer"},
+ "Little Toot Dolphin Adventure": {fb:"https://www.facebook.com/LittleTootDolphin/"},
+ "Calypso Queen": {ig:"https://www.instagram.com/starlite.cruises", fb:"https://www.facebook.com/StarLiteCruises"}
+};
+function dirSocialsHtml(name){
+  const s = DIR_SOCIALS[name]; if(!s) return "";
+  const defs = [["ig","#i-ig","Instagram"],["yt","#i-yt","YouTube"],["tt","#i-tt","TikTok"],["fb","#i-fb","Facebook"]];
+  const btns = defs.filter(d=>s[d[0]]).map(d=>`<a class="dir-soc" href="${s[d[0]]}" target="_blank" rel="noopener" aria-label="${name} on ${d[2]}" title="${d[2]}"><svg aria-hidden="true"><use href="${d[1]}"></use></svg></a>`).join("");
+  return btns ? `<div class="dir-socials">${btns}</div>` : "";
+}
 function renderDir(){
   const q = document.getElementById("dir-input").value.trim().toLowerCase();
   const list = COMPANIES.filter(c => !q || c.slice(0,5).join(" ").toLowerCase().includes(q));
@@ -5628,6 +5655,7 @@ function renderDir(){
       ${c[6]?`<div class="dir-rating">★ ${c[6]} <span>Google</span></div>`:""}
       <div class="type">${c[2]}</div>
       <div class="contact"><svg class=ic aria-hidden=true><use href=#i-phone></use></svg> ${c[3]}<br><svg class=ic aria-hidden=true><use href=#i-link></use></svg> <a href="${c[4]}" target="_blank" rel="noopener">Visit website</a></div>
+      ${dirSocialsHtml(c[0])}
     </div>`).join("")
     : '<div class="no-results">No charters match your search.</div>';
 }

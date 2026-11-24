@@ -5647,6 +5647,7 @@ const COMPANIES = [
 /* Directory social links (researched Nov 21, 2026 — see directory-socials-research-nov21.md). Keyed by exact COMPANIES name; only verified profiles. */
 const DIR_SOCIALS = {
  "Capt. Chris Canning \u2014 Tampa Bay Fishing Company": {ig:"https://www.instagram.com/triple_c12/", fb:"https://www.facebook.com/chris.canning.94/", yt:"https://www.youtube.com/@CaptChrisCanning", tt:"https://www.tiktok.com/@canning12"},
+ "Triton's Marine": {ig:"https://www.instagram.com/tritonsmarine/", tt:"https://www.tiktok.com/@tritonsmarine"},
  "My Time Fishing Charters": {ig:"https://www.instagram.com/capt.nickgonzalez", yt:"https://www.youtube.com/@MyTimeFishing", tt:"https://www.tiktok.com/@mytimefishing"},
  "Light Tackle Adventures": {ig:"https://www.instagram.com/captjimlemke", fb:"https://www.facebook.com/jim.lemke.37"},
  "Swift Fish Charters": {fb:"https://www.facebook.com/swiftfishcharters"},
@@ -5920,6 +5921,7 @@ function renderFuel(){
 /* ================= MARINE SERVICES ================= */
 const SERVICES = [
  ["Poseidon Mobile Marine Mechanic","Ruskin – serves all Tampa Bay","Mechanics","Mobile outboard/inboard repair, 24/7 emergency","(813) 743-7748","https://poseidonmarine.com/"],
+ ["Triton's Marine","Wesley Chapel – mobile, serves Pinellas, Hillsborough, Pasco & Manatee","Mechanics","Mobile boat repair — outboard, inboard, electronics & trailers, done on site","(813) 648-8306",null],
  ["Repair Boat Services","Tampa","Mechanics","Service & repair shop","(813) 836-5637","https://boatservices.us/"],
  ["T.A. Mahoney Co.","Tampa – E Adamo Dr","Mechanics","Parts, rigging & service — trailer parts & repair specialist, family-run since 1946","(813) 241-6500","http://tamahoney.com/"],
  ["Pass-A-Grille Marina Service Dept","St. Pete Beach","Mechanics","Yamaha warranty center, repower",null,null],
@@ -5995,7 +5997,7 @@ function svcDirCard(b){
   if(b[3])rows.push(b[3]);
   if(b[4])rows.push('<svg class=ic aria-hidden=true><use href=#i-phone></use></svg> <a href="tel:'+String(b[4]).replace(/[^0-9+]/g,'')+'">'+b[4]+'</a>');
   if(b[5])rows.push('<svg class=ic aria-hidden=true><use href=#i-link></use></svg> <a href="'+b[5]+'" target="_blank" rel="noopener">Visit website</a>');
-  return '<div class="dir-card"><div class="city">'+b[1]+'</div><h4>'+b[0]+'</h4><div class="type">'+(b[2]==="Canvas"?"Canvas &amp; Upholstery":b[2])+'</div><div class="contact">'+rows.join('<br>')+'</div></div>';
+  return '<div class="dir-card"><div class="city">'+b[1]+'</div><h4>'+b[0]+'</h4><div class="type">'+(b[2]==="Canvas"?"Canvas &amp; Upholstery":b[2])+'</div><div class="contact">'+rows.join('<br>')+'</div>' + dirSocialsHtml(b[0]) + '</div>';
 }
 function renderSvc(){
   const q = document.getElementById("svc-input").value.trim().toLowerCase();

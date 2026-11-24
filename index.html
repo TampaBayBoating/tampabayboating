@@ -1025,27 +1025,24 @@ body.dark .area-chip{background:#16202e;border-color:#2a3a4f;color:#e8eef4}
 body.dark .area-chip.active{background:#8fd0f0;color:#0a2540;border-color:#8fd0f0}
 .spot-row{display:flex;justify-content:space-between;gap:10px;padding:7px 0;border-bottom:1px solid rgba(140,170,190,.25)}
 .spot-row:last-of-type{border-bottom:none}
-.week-strip{display:flex;gap:6px;padding:2px 0 6px}
-.day-btn{flex:1 1 0;min-width:42px;border:2px solid #b8d4e8;background:#fff;color:#0a2540;border-radius:10px;padding:0 0 6px;cursor:pointer;font-family:inherit;text-align:center;overflow:hidden}
-.day-btn .db-dow{display:block;background:#dcebf5;font-weight:800;font-size:.62rem;letter-spacing:.5px;text-transform:uppercase;padding:3px 0 2px}
-.day-btn .db-num{display:block;font-weight:800;font-size:1.15rem;line-height:1.25;margin-top:2px}
-.day-btn.active{background:#8fd0f0;border-color:#8fd0f0}
-.day-btn.active .db-dow{background:rgba(10,37,64,.15)}
-.day-btn .db-ico{display:block;width:32px;height:32px;margin:3px auto 1px;border-radius:6px}
-.day-btn .pop{display:block;font-size:.62rem;font-weight:700;color:#0369a1}
-.day-btn .pop.none{color:#94a3b8}
-.day-btn .db-hi{display:block;font-weight:800;font-size:1rem;line-height:1.15;margin-top:2px}
-.day-btn .db-lo{display:block;font-size:.78rem;color:#64748b;line-height:1.1}
-.day-btn .db-night{display:flex;align-items:center;justify-content:center;gap:2px;margin-top:5px;padding-top:5px;border-top:1px solid #e2e8f0}
-.day-btn .db-night .db-ico-s{width:18px;height:18px;border-radius:4px}
-.day-btn .db-night .pop{display:inline;font-size:.58rem}
-body.dark .day-btn{background:#16202e;border-color:#2a3a4f;color:#e8eef4}
-body.dark .day-btn .db-dow{background:#22344c}
-body.dark .day-btn.active{background:#8fd0f0;color:#0a2540;border-color:#8fd0f0}
-body.dark .day-btn .pop{color:#7dd3fc}
-body.dark .day-btn .pop.none{color:#5b7186}
-body.dark .day-btn .db-lo{color:#9fb3c8}
-body.dark .day-btn .db-night{border-top-color:#2a3a4f}
+.week-strip{display:flex;padding:2px 0 6px}
+/* wx-accu-nov24: AccuWeather-style forecast columns (David's pick, Nov 24, 2026) */
+.wx-col{flex:1 1 0;min-width:0;background:none;border:0;border-left:1px solid rgba(255,255,255,.14);color:#fff;border-radius:10px;padding:6px 1px 8px;cursor:pointer;font-family:inherit;text-align:center}
+.wx-col:first-child{border-left:0}
+.wx-col.sel{background:rgba(255,255,255,.09)}
+.wx-col .wx-dow{display:block;font-size:.72rem;font-weight:600;color:#c7d8e6;letter-spacing:.4px}
+.wx-col .wx-num{display:flex;align-items:center;justify-content:center;width:30px;height:30px;margin:3px auto 2px;font-size:1.02rem;font-weight:600;border-radius:50%}
+.wx-col .wx-num.today{background:#fff;color:#0a2540;font-weight:800}
+.wx-col .wx-ico{display:block;width:36px;height:36px;margin:2px auto;border-radius:6px}
+.wx-col .wx-pop{display:block;font-size:.66rem;font-weight:700;color:#8fd0f0}
+.wx-col .wx-pop.none{color:#5f7d94}
+.wx-col .wx-hi{display:block;font-weight:700;font-size:1.28rem;margin-top:7px}
+.wx-col .wx-range{display:block;position:relative;height:108px;margin:2px 0}
+.wx-col .wx-bar{position:absolute;left:50%;transform:translateX(-50%);width:15px;border-radius:8px;background:linear-gradient(180deg,#fdfefe,#a9bfd2);box-shadow:inset 0 0 3px rgba(10,37,64,.35)}
+.wx-col .wx-lo{display:block;font-size:1.02rem;color:#dbe7f1}
+.wx-col .wx-night{display:flex;align-items:center;justify-content:center;gap:2px;margin-top:9px;min-height:19px}
+.wx-col .wx-night .wx-ico-s{width:19px;height:19px;border-radius:4px}
+.wx-col .wx-night .wx-pop{display:inline;font-size:.6rem}
 .layer-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
 .layer-chip{border:2px solid #b8d4e8;background:#fff;color:#0a2540;font-weight:700;font-size:.8rem;padding:6px 12px;border-radius:999px;cursor:pointer;font-family:inherit}
 .layer-chip.active{background:#8fd0f0;border-color:#8fd0f0}
@@ -7895,49 +7892,67 @@ async function loadWeek(){
     weekDays = groupWeek(periods);
     if(!weekDays.length) throw 0;
     strip.replaceChildren();
+    let wHi = -999, wLo = 999;
+    weekDays.forEach(wd=>{
+      if(wd.day && wd.day.temperature != null) wHi = Math.max(wHi, wd.day.temperature);
+      if(wd.night && wd.night.temperature != null) wLo = Math.min(wLo, wd.night.temperature);
+    });
+    if(wHi <= wLo){ wHi = 90; wLo = 50; }
+    const wSpan = wHi - wLo, WXTRACK = 108;
+    const nowD = new Date();
+    const todayKey = nowD.getFullYear() + "-" + (nowD.getMonth() + 1) + "-" + nowD.getDate();
     weekDays.forEach((wd, i)=>{
       const btn = document.createElement("button");
-      btn.type = "button"; btn.className = "day-btn";
+      btn.type = "button"; btn.className = "wx-col";
       btn.setAttribute("onclick", "selectDay(" + i + ",this)");
       const full = wd.date.toLocaleDateString("en-US", {weekday:"long"}) + ", " + wd.date.toLocaleDateString("en-US", {month:"long"}) + " " + ordDay(wd.date.getDate());
       btn.title = full + " forecast";
       btn.setAttribute("aria-label", full + " forecast");
-      const dow = document.createElement("span"); dow.className = "db-dow";
-      dow.textContent = wd.date.toLocaleDateString("en-US", {weekday:"short"});
-      const num = document.createElement("span"); num.className = "db-num";
+      const dow = document.createElement("span"); dow.className = "wx-dow";
+      dow.textContent = wd.date.toLocaleDateString("en-US", {weekday:"short"}).charAt(0);
+      const num = document.createElement("span"); num.className = "wx-num";
       num.textContent = wd.date.getDate();
+      if((wd.date.getFullYear() + "-" + (wd.date.getMonth() + 1) + "-" + wd.date.getDate()) === todayKey) num.classList.add("today");
       btn.append(dow, num);
       const dp = wd.day, np = wd.night, ip = dp || np;
-      const ico = document.createElement("img"); ico.className = "db-ico";
+      const ico = document.createElement("img"); ico.className = "wx-ico";
       if(ip && ip.icon){ ico.src = ip.icon; ico.alt = ip.shortForecast || ""; } else { ico.style.display = "none"; }
-      const pop = document.createElement("span"); pop.className = "pop";
+      const pop = document.createElement("span"); pop.className = "wx-pop";
       const pv = dp && dp.probabilityOfPrecipitation ? dp.probabilityOfPrecipitation.value : null;
       pop.textContent = pv == null ? "\u{1F4A7}\u2014" : "\u{1F4A7}" + pv + "%";
       if(pv == null) pop.classList.add("none");
-      const hi = document.createElement("span"); hi.className = "db-hi";
+      const hi = document.createElement("span"); hi.className = "wx-hi";
       hi.textContent = dp && dp.temperature != null ? dp.temperature + "\u00B0" : "\u2014";
-      const lo = document.createElement("span"); lo.className = "db-lo";
+      const range = document.createElement("span"); range.className = "wx-range";
+      if(dp && dp.temperature != null){
+        const bar = document.createElement("span"); bar.className = "wx-bar";
+        const top = (wHi - dp.temperature) / wSpan * WXTRACK;
+        const hgt = np && np.temperature != null ? Math.max(16, (dp.temperature - np.temperature) / wSpan * WXTRACK) : WXTRACK - top;
+        bar.style.top = top + "px"; bar.style.height = hgt + "px";
+        range.appendChild(bar);
+      }
+      const lo = document.createElement("span"); lo.className = "wx-lo";
       lo.textContent = np && np.temperature != null ? np.temperature + "\u00B0" : "\u2014";
-      btn.append(ico, pop, hi, lo);
+      btn.append(ico, pop, hi, range, lo);
+      const nrow = document.createElement("span"); nrow.className = "wx-night";
       if(np){
-        const nrow = document.createElement("span"); nrow.className = "db-night";
-        const nico = document.createElement("img"); nico.className = "db-ico-s";
+        const nico = document.createElement("img"); nico.className = "wx-ico-s";
         if(np.icon){ nico.src = np.icon; nico.alt = np.shortForecast || ""; } else { nico.style.display = "none"; }
-        const npop = document.createElement("span"); npop.className = "pop";
+        const npop = document.createElement("span"); npop.className = "wx-pop";
         const nv = np.probabilityOfPrecipitation ? np.probabilityOfPrecipitation.value : null;
         npop.textContent = nv == null ? "\u{1F4A7}\u2014" : "\u{1F4A7}" + nv + "%";
         if(nv == null) npop.classList.add("none");
         nrow.append(nico, npop);
-        btn.appendChild(nrow);
       }
+      btn.appendChild(nrow);
       strip.appendChild(btn);
     });
     let wstamp = document.getElementById("week-stamp");
     if(!wstamp){ wstamp = document.createElement("p"); wstamp.className = "cond-stamp"; wstamp.id = "week-stamp"; if(strip.parentNode) strip.parentNode.appendChild(wstamp); }
     wstamp.textContent = tbbStamp(periodsIssued(loc));
     if(openDay >= 0 && weekDays[openDay]){
-      const btns = strip.querySelectorAll('.day-btn');
-      if(btns[openDay]) btns[openDay].classList.add('active');
+      const btns = strip.querySelectorAll('.wx-col');
+      if(btns[openDay]) btns[openDay].classList.add('sel');
       renderDayDetail(openDay);
     }
   }catch(e){
@@ -7949,14 +7964,14 @@ let openDay = -1;
 function selectDay(i, btn){
   if(openDay === i){
     openDay = -1;
-    document.querySelectorAll('.day-btn').forEach(x=>x.classList.remove('active'));
+    document.querySelectorAll('.wx-col').forEach(x=>x.classList.remove('sel'));
     const det = document.getElementById("week-detail"); if(det) det.replaceChildren();
     refreshMarine();
     return;
   }
   openDay = i;
-  document.querySelectorAll('.day-btn').forEach(x=>x.classList.remove('active'));
-  if(btn) btn.classList.add('active');
+  document.querySelectorAll('.wx-col').forEach(x=>x.classList.remove('sel'));
+  if(btn) btn.classList.add('sel');
   renderDayDetail(i);
   refreshMarine();
 }

@@ -2325,21 +2325,7 @@ if(typeof document!=='undefined'){
         <button type="button" onclick="baySearch()" style="padding:10px 20px;border-radius:999px;border:2px solid #0b2a4a;background:#FFB703;color:#0b2a4a;font-weight:800;font-size:1rem;cursor:pointer">Go</button>
       </div>
       <div id="bay-q-msg" role="status" style="flex:1 1 100%;grid-column:1 / -1;width:100%;font-size:.92rem;min-height:1.1em;color:#ffd54f"></div>
-      <button type="button" class="area-chip active" onclick="setBayArea('tampa',this)">Tampa Bay</button>
-      <button type="button" class="area-chip" onclick="setBayArea('oldtb',this)">Old Tampa Bay</button>
-      <button type="button" class="area-chip" onclick="setBayArea('stpete',this)">St. Petersburg</button>
-      <button type="button" class="area-chip" onclick="setBayArea('bocaciega',this)">Boca Ciega Bay</button>
-      <button type="button" class="area-chip" onclick="setBayArea('clearwater',this)">Clearwater</button>
-      <button type="button" class="area-chip" onclick="setBayArea('ruskin',this)">Ruskin</button>
-      <button type="button" class="area-chip" onclick="setBayArea('apollo',this)">Apollo Beach</button>
-      <button type="button" class="area-chip" onclick="setBayArea('riverview',this)">Riverview</button>
-      <button type="button" class="area-chip" onclick="setBayArea('palmetto',this)">Palmetto</button>
-      <button type="button" class="area-chip" onclick="setBayArea('bradenton',this)">Bradenton</button>
-      <button type="button" class="area-chip" onclick="setBayArea('egmont',this)">Egmont Key</button>
-      <button type="button" class="area-chip" onclick="setBayArea('ami',this)">Anna Maria Island</button>
-      <button type="button" class="area-chip" onclick="setBayArea('cortez',this)">Cortez</button>
-      <button type="button" class="area-chip" onclick="setBayArea('longboat',this)">Longboat Key</button>
-      <button type="button" class="area-chip" onclick="setBayArea('sarasota',this)">Sarasota</button>
+      <div style="flex:1 1 100%;grid-column:1 / -1;width:100%;margin:2px 0 0"><button type="button" onclick="tbbUseMyLocation()" style="padding:8px 16px;border-radius:999px;border:2px solid #b8d4e8;background:transparent;color:#dcebf5;font-weight:700;font-size:.88rem;cursor:pointer;font-family:inherit">&#8982; Use my location</button></div>
     </div></div>
     
     
@@ -7151,11 +7137,38 @@ function baySearch(){
   if(!key && raw && BAY_ALIASES[raw]) key = BAY_ALIASES[raw];
   if(!key && raw){ for(const k in BAY_AREAS){ if(BAY_AREAS[k].name.toLowerCase() === raw){ key = k; break; } } }
   if(!key && raw.length >= 3){ for(let i = 0; i < BAY_ALIAS_KEYS.length; i++){ const a = BAY_ALIAS_KEYS[i]; if(a.indexOf(raw) === 0 || (raw.length >= 4 && raw.indexOf(a) >= 0)){ key = BAY_ALIASES[a]; break; } } }
-  if(!key){ if(msg) msg.textContent = "We don't cover that spot yet \u2014 pick the closest area below."; return; }
+  if(!key){ if(msg) msg.textContent = "We don't cover that spot yet \u2014 try a nearby city or ZIP, or tap Use my location."; return; }
   const chip = Array.prototype.slice.call(document.querySelectorAll(".area-chip")).filter(function(c){ return (c.getAttribute("onclick") || "").indexOf("'" + key + "'") >= 0; })[0];
   setBayArea(key, chip || null);
   if(msg) msg.textContent = "Showing: " + BAY_AREAS[key].name + ((raw && raw !== BAY_AREAS[key].name.toLowerCase()) ? " (closest match for " + typed + ")" : "");
 }
+/* area-slim-nov24: GPS location for the tides area (David, Nov 24, 2026) */
+function tbbNearestBayArea(lat, lng){
+  let best = "tampa", bd = Infinity;
+  for(const k in BAY_AREAS){ const b = BAY_AREAS[k]; const dLat = (b.lat - lat) * 69, dLng = (b.lng - lng) * 54.6; const d = dLat * dLat + dLng * dLng; if(d < bd){ bd = d; best = k; } }
+  return best;
+}
+function tbbApplyGpsPosition(pos){
+  const key = tbbNearestBayArea(pos.coords.latitude, pos.coords.longitude);
+  if(key === bayKey) return;
+  setBayArea(key, null);
+  const msg = document.getElementById("bay-q-msg");
+  if(msg) msg.textContent = "Showing: " + BAY_AREAS[key].name + " \u2014 closest area to your location";
+}
+function tbbUseMyLocation(){
+  const msg = document.getElementById("bay-q-msg");
+  if(!navigator.geolocation){ if(msg) msg.textContent = "Your browser doesn't share location \u2014 type your city or ZIP instead."; return; }
+  if(msg) msg.textContent = "Finding your location\u2026";
+  navigator.geolocation.getCurrentPosition(tbbApplyGpsPosition, function(){ if(msg) msg.textContent = "Location didn't come through \u2014 type your city or ZIP instead."; }, {timeout: 10000, maximumAge: 600000});
+}
+window.addEventListener("load", function(){
+  try{
+    if(sessionStorage.getItem("tbbGpsTried")) return;
+    sessionStorage.setItem("tbbGpsTried", "1");
+    if(!navigator.geolocation) return;
+    navigator.geolocation.getCurrentPosition(tbbApplyGpsPosition, function(){}, {timeout: 8000, maximumAge: 600000});
+  }catch(e){}
+});
 function windToMph(s){
   return String(s||"").replace(/(\d+)\s*(?:to\s*(\d+))?\s*(?:knots|kt)\b/gi, function(m, a, b){
     const ma = Math.round(parseInt(a,10)*1.15078);

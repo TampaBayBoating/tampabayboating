@@ -5634,6 +5634,7 @@ const DIR_SOCIALS = {
  "Capt. Chris Canning \u2014 Tampa Bay Fishing Company": {ig:"https://www.instagram.com/triple_c12/", fb:"https://www.facebook.com/chris.canning.94/", yt:"https://www.youtube.com/@CaptChrisCanning", tt:"https://www.tiktok.com/@canning12"},
  "Triton's Marine": {ig:"https://www.instagram.com/tritonsmarine/", tt:"https://www.tiktok.com/@tritonsmarine"},
  "Vision Marine Electronics": {ig:"https://www.instagram.com/vision_marine_electronics/", tt:"https://www.tiktok.com/@visionmarineelectronics"},
+ "Meduza Marine LLC": {fb:"https://www.facebook.com/meduzamarinefl", tt:"https://www.tiktok.com/@meduzamarine"},
  "My Time Fishing Charters": {ig:"https://www.instagram.com/capt.nickgonzalez", yt:"https://www.youtube.com/@MyTimeFishing", tt:"https://www.tiktok.com/@mytimefishing"},
  "Light Tackle Adventures": {ig:"https://www.instagram.com/captjimlemke", fb:"https://www.facebook.com/jim.lemke.37"},
  "Swift Fish Charters": {fb:"https://www.facebook.com/swiftfishcharters"},
@@ -5929,6 +5930,7 @@ const SERVICES = [
  ["Green Marine Boat Detailing","Tampa Bay – mobile","Detailing","Eco-friendly wash & wax","727-470-0602","https://www.greenmarineboatdetailing.com/"],
  ["Top Dog Mobile Detailing South","Tampa Bay – mobile","Detailing","$15/ft, ceramic certified",null,"https://www.topdogmobiledetailingsouth.com/boat-detailing"],
  ["New Wave Mobile Detail","Tampa – mobile","Detailing","Exterior wash & protection, interior deep cleaning, paint protection & polishing · mobile — comes to you","(813) 412-9074","https://www.instagram.com/new_wave_detail/"],
+ ["Meduza Marine LLC","Sarasota, FL — fully mobile, serves Sarasota, Bradenton & Palmetto","Detailing","Boat & RV detailing. Boat wash, wash & wax, full detail and oxidation removal, plus RV wash and full detail. Fully insured. Se habla español.","(939) 419-8706","https://meduzamarine.com","meduza-logo.webp"],
  ["Nauti Upholstery","Riverview","Canvas","\u2b50 Top Pick for Riverview \u2014 I\u2019ve used Tim myself; his work is phenomenal. Custom boat cushions & marine upholstery \u2014 custom seating, reskins & stock replacements; ships nationwide","(813) 918-0321","https://www.nautiupholstery.com/"],
  ["Nauti-Needle Marine Canvas","Apollo Beach","Canvas","Biminis, T-tops, covers, enclosures & upholstery","(813) 205-1646","https://www.thenauti-needle.com/"],
  ["Manatee Auto & Marine Upholstery","Bradenton","Canvas","Marine upholstery & canvas work","(941) 747-4050",null],
@@ -5982,7 +5984,7 @@ function svcDirCard(b){
   if(b[3])rows.push(b[3]);
   if(b[4])rows.push('<svg class=ic aria-hidden=true><use href=#i-phone></use></svg> <a href="tel:'+String(b[4]).replace(/[^0-9+]/g,'')+'">'+b[4]+'</a>');
   if(b[5])rows.push('<svg class=ic aria-hidden=true><use href=#i-link></use></svg> <a href="'+b[5]+'" target="_blank" rel="noopener">Visit website</a>');
-  return '<div class="dir-card"><div class="city">'+b[1]+'</div><h4>'+b[0]+'</h4><div class="type">'+(b[2]==="Canvas"?"Canvas &amp; Upholstery":b[2])+'</div><div class="contact">'+rows.join('<br>')+'</div>' + dirSocialsHtml(b[0]) + '</div>';
+  return '<div class="dir-card">'+(b[6]?'<div class="dir-logo"><img src="assets/'+b[6]+'" alt="'+b[0]+' logo" loading="lazy"></div>':'')+'<div class="city">'+b[1]+'</div><h4>'+b[0]+'</h4><div class="type">'+(b[2]==="Canvas"?"Canvas &amp; Upholstery":b[2])+'</div><div class="contact">'+rows.join('<br>')+'</div>' + dirSocialsHtml(b[0]) + '</div>';
 }
 function renderSvc(){
   const q = document.getElementById("svc-input").value.trim().toLowerCase();

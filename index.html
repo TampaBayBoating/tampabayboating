@@ -722,6 +722,8 @@ body.dark #verdict-card .area-label{color:#e8eef4}
 #conditions .hr-ticks{color:#b9d2e4}
 #conditions .hr-hr{color:#b9d2e4}
 #conditions .hr-col.now .hr-hr{color:#8fd0f0}
+#conditions .day-best{color:#eaf3fa;background:rgba(143,208,240,.22);border-color:rgba(143,208,240,.55)}
+#conditions .day-best b{color:#ffffff}
 body.dark .brief-card{background:#0E2A3F}
 body.dark .cat-card{background:#0E2A3F}
 .wave-grid{display:flex;gap:14px;flex-wrap:wrap;margin:8px 0 10px}
@@ -7781,7 +7783,21 @@ function hrPick(i){
   var read = h.score >= 85 ? "Smooth \u2014 a great hour to be out." : h.score >= 70 ? "Good hour \u2014 light chop at most." : h.score >= 55 ? "Choppy \u2014 smaller boats will feel it." : h.score >= 40 ? "Rough \u2014 only for boats that handle it." : "Best to wait for a calmer stretch.";
   var el = document.getElementById("hr-detail");
   skillRows(document.getElementById("skill-hourly"), h.score);
-  if(el) el.innerHTML = "<b>" + h.label + "</b> \u2014 wind " + h.mph + " mph" + (h.dir ? " " + h.dir : "") + (h.gust > h.mph ? ", gusting " + h.gust : "") + (h.temp ? " \u00B7 " + h.temp : "") + (h.pop >= 20 ? " \u00B7 rain " + h.pop + "%" : "") + (h.dewF != null ? " \u00B7 Dew point " + h.dewF + "\u00B0" : "") + (h.hum != null ? " \u00B7 Humidity " + h.hum + "%" : "") + " \u2014 " + read;
+  if(el) el.innerHTML = "<b>" + h.label + "</b> \u2014 wind " + h.mph + " mph" + (h.dir ? " " + h.dir : "") + (h.gust > h.mph ? ", gusting " + h.gust : "") + (h.temp ? " \u00B7 " + h.temp : "") + (h.pop >= 20 ? " \u00B7 rain " + h.pop + "%" : "") + (h.dewF != null ? " \u00B7 Dew point " + h.dewF + "\u00B0" : "") + (h.hum != null ? " \u00B7 Humidity " + h.hum + "%" : "") + " \u2014 " + read + (h.adv ? " <b>" + h.adv + " on the bay this hour.</b>" : "");
+}
+async function hrAdvWindows(zone){
+  const wins = [];
+  try{
+    const ar = await fetch("https://api.weather.gov/alerts/active?zone=" + zone, {headers:{"User-Agent":"tampabayboating.com"}});
+    const aj = await ar.json();
+    (aj.features || []).forEach(function(f){
+      const pr = f.properties || {};
+      if(!/small craft advisory|gale warning|storm warning/i.test(String(pr.event || ""))) return;
+      const ex = pr.expires ? Date.parse(pr.expires) : (pr.ends ? Date.parse(pr.ends) : 0);
+      if(ex) wins.push({from: pr.onset ? Date.parse(pr.onset) : 0, to: ex, event: String(pr.event)});
+    });
+  }catch(e){}
+  return wins;
 }
 async function loadHourly(){
   const slider = document.getElementById("hr-slider");
@@ -7791,10 +7807,16 @@ async function loadHourly(){
   if(areaEl) areaEl.textContent = loc.name;
   const take = document.getElementById("hourly-take");
   try{
-    const periods = (await getHourlyPeriods(loc)).slice(0, 12);
+    const periods = (await getHourlyPeriods(loc)).filter(function(p){ return !p.endTime || (new Date(p.endTime)).getTime() > Date.now(); }).slice(0, 12);
     if(!periods.length) throw 0;
     const winds = periods.map(hrWindMph);
+    const advWins = await hrAdvWindows(loc.zone);
     if(take) take.textContent = hrTakeaway(periods, winds);
+    if(take && advWins.length){
+      const w0 = advWins[0];
+      const firstT = new Date(periods[0].startTime).getTime();
+      if(firstT < w0.to && (firstT + 3600000) > w0.from) take.textContent += " " + w0.event + " on the bay until " + hrHourLabel(new Date(w0.to)) + " \u2014 bay waters rougher than this shoreline forecast shows.";
+    }
     const hours = periods.map(function(p, k){
       var dewF = null;
       if(p.dewpoint && p.dewpoint.value != null && !isNaN(+p.dewpoint.value)){ dewF = /degF/i.test(String(p.dewpoint.unitCode || "")) ? Math.round(+p.dewpoint.value) : Math.round(+p.dewpoint.value * 9 / 5 + 32); }
@@ -7802,6 +7824,11 @@ async function loadHourly(){
       return {label:(k === 0 ? "Now" : hrHourLabel(new Date(p.startTime))), startTime:p.startTime, date:new Date(p.startTime), icon:hrIcon(p), fc:(p.shortForecast || ""), mph:winds[k], windMph:winds[k], dir:(p.windDirection || ""), windDirection:(p.windDirection || ""), temp:(p.temperature != null ? p.temperature + "\u00B0" + (p.temperatureUnit || "F") : ""), tempValue:(p.temperature != null ? Number(p.temperature) : null), tempUnit:(p.temperatureUnit || "F"), pop:((p.probabilityOfPrecipitation && p.probabilityOfPrecipitation.value) || 0), gust:(p.windGust ? parseInt(p.windGust, 10) || 0 : 0), gustMph:(p.windGust ? parseInt(p.windGust, 10) || 0 : 0), dewF:dewF, hum:hum, score:hrScore(p, winds[k])};
     });
     const steps = hrSteps(hours);
+    steps.forEach(function(h){
+      const t = new Date(h.startTime).getTime();
+      const w = advWins.find(function(a){ return t >= a.from && t < a.to; });
+      if(w){ h.adv = w.event; if(h.score > 69) h.score = 69; }
+    });
     window._hrHours = steps;
     if(slider){ slider.max = steps.length - 1; slider.value = 0; slider.disabled = false; }
     if(ticks){
@@ -8164,6 +8191,13 @@ async function fillDayBest(date){
       if(isToday && d.getTime() < now.getTime() - 1800000) return;
       rows.push({d: d, mph: hrWindMph(p), score: hrScore(p, hrWindMph(p))});
     });
+    if(isToday){
+      const wins = await hrAdvWindows(wxLoc().zone);
+      rows.forEach(function(r){
+        const t = r.d.getTime();
+        if(wins.some(function(a){ return t >= a.from && t < a.to; }) && r.score > 69) r.score = 69;
+      });
+    }
     if(rows.length < 2){ el.remove(); return; }
     const win = Math.min(4, rows.length);
     let bi = 0, ba = -1;

@@ -8530,6 +8530,7 @@ function renderVerdict(ps, label, isToday){
   title.textContent = band;
   const scoreEl = document.getElementById("verdict-score");
   if(scoreEl) scoreEl.textContent = s + "%";
+  skillRows(document.getElementById("skill-today"), s);
   if(isToday) setHeroScore(s);
   const marker = document.getElementById("score-marker");
   if(marker) marker.style.left = Math.max(2, Math.min(98, 100 - s)) + "%";
@@ -8585,7 +8586,7 @@ async function loadBriefingConditions(){
       scoreEl.classList.remove("ds-go","ds-good","ds-caution","ds-rough","ds-stay");
       scoreEl.classList.add(bb2.cls);
       if(zd){ zd.style.left = Math.max(3, Math.min(97, 100 - v.score)) + "%";
-    skillRows(document.getElementById("skill-today"), v.score); zd.classList.remove("ds-go","ds-good","ds-caution","ds-rough","ds-stay"); zd.classList.add("on", bb2.cls); }
+    zd.classList.remove("ds-go","ds-good","ds-caution","ds-rough","ds-stay"); zd.classList.add("on", bb2.cls); }
       let whyUse = v.why;
       if(zoneId === "GMZ830"){
         const t0 = String((ps[0] && ps[0].detailedForecast) || "");

@@ -1581,7 +1581,8 @@ body.dark body.dark /* ---- Tampa Bay Boating Shop ---- */
     return { lat: 27.9506, lng: -82.4572, station: '8726674' };
   }
   var obsStationCache = {};
-  function applyObs(pr){
+  function applyObs(pr, run){
+    if (run !== tbRunSeq) return;
     var tC = pr.temperature && pr.temperature.value;
     var wVal = pr.windSpeed && pr.windSpeed.value;
     var wUnit = (pr.windSpeed && pr.windSpeed.unitCode) || '';
@@ -1592,13 +1593,13 @@ body.dark body.dark /* ---- Tampa Bay Boating Shop ---- */
       set('tbWind', compass(wDeg) + Math.round(mph));
     }
   }
-  function loadObs(loc){
+  function loadObs(loc, run){
     var key = loc.lat + ',' + loc.lng;
     var sid = obsStationCache[key];
     if (sid){
       fetch('https://api.weather.gov/stations/' + sid + '/observations/latest', {headers:{'Accept':'application/geo+json'}})
         .then(function(r){ return r.json(); })
-        .then(function(d){ applyObs(d.properties || {}); })
+        .then(function(d){ applyObs(d.properties || {}, run); })
         .catch(function(){});
       return;
     }
@@ -1618,14 +1619,15 @@ body.dark body.dark /* ---- Tampa Bay Boating Shop ---- */
         return fetch('https://api.weather.gov/stations/' + id + '/observations/latest', {headers:{'Accept':'application/geo+json'}});
       })
       .then(function(r){ return r.json(); })
-      .then(function(d){ applyObs(d.properties || {}); })
+      .then(function(d){ applyObs(d.properties || {}, run); })
       .catch(function(){});
   }
-  function loadTideState(loc){
+  function loadTideState(loc, run){
     function ymd(d){ return d.getFullYear() + String(d.getMonth()+1).padStart(2,'0') + String(d.getDate()).padStart(2,'0'); }
     var now0 = new Date(), yd = new Date(now0); yd.setDate(yd.getDate()-1); var td = new Date(now0); td.setDate(td.getDate()+1);
     var url = 'https://api.tidesandcurrents.noaa.gov/api/prod/datagetter?begin_date='+ymd(yd)+'&end_date='+ymd(td)+'&station='+loc.station+'&product=predictions&datum=MLLW&time_zone=lst_ldt&units=english&interval=hilo&format=json';
     fetch(url).then(function(r){ return r.json(); }).then(function(d){
+      if (run !== tbRunSeq) return;
       var preds = (d.predictions||[]).map(function(p){ return { t: new Date(p.t.replace(' ','T')), type: p.type }; });
       var now = new Date(), prev = null, next = null;
       preds.forEach(function(p){ if (p.t <= now) prev = p; else if (!next) next = p; });
@@ -1646,17 +1648,20 @@ body.dark body.dark /* ---- Tampa Bay Boating Shop ---- */
       if (u) u.setAttribute('href', up ? '#i-tide-up' : '#i-tide-down');
     }).catch(function(){});
   }
-  function loadWater(loc){
+  var tbRunSeq = 0;
+  function loadWater(loc, run){
     fetch('https://api.tidesandcurrents.noaa.gov/api/prod/datagetter?date=latest&station='+loc.station+'&product=water_temperature&units=english&time_zone=lst_ldt&format=json')
       .then(function(r){ return r.json(); })
       .then(function(d){
+        if (run !== tbRunSeq) return;
         if (d.data && d.data[0] && d.data[0].v) set('tbWater', Math.round(parseFloat(d.data[0].v)) + '\u00B0');
       }).catch(function(){});
   }
   function loadTopbar(){
+    var run = ++tbRunSeq;
     var loc = areaLoc();
     set('tbAir', '--\u00B0'); set('tbWater', '--\u00B0'); set('tbWind', '--'); set('tbTide', '--');
-    loadObs(loc); loadTideState(loc); loadWater(loc);
+    loadObs(loc, run); loadTideState(loc, run); loadWater(loc, run);
   }
   window.loadTopbar = loadTopbar;
   loadTopbar();
@@ -7842,7 +7847,7 @@ function hrPick(i){
   var read = h.score >= 85 ? "Smooth \u2014 a great hour to be out." : h.score >= 70 ? "Good hour \u2014 light chop at most." : h.score >= 55 ? "Choppy \u2014 smaller boats will feel it." : h.score >= 40 ? "Rough \u2014 only for boats that handle it." : "Best to wait for a calmer stretch.";
   var el = document.getElementById("hr-detail");
   skillRows(document.getElementById("skill-hourly"), h.score);
-  if(el) el.innerHTML = "<b>" + h.label + "</b> \u2014 wind " + h.mph + " mph" + (h.dir ? " " + h.dir : "") + (h.gust > h.mph ? ", gusting " + h.gust : "") + (h.temp ? " \u00B7 " + h.temp : "") + (h.pop >= 20 ? " \u00B7 rain " + h.pop + "%" : "") + (h.dewF != null ? " \u00B7 Dew point " + h.dewF + "\u00B0" : "") + (h.hum != null ? " \u00B7 Humidity " + h.hum + "%" : "") + " \u2014 " + read + (h.adv ? " <b>" + h.adv + " on the bay this hour.</b>" : "");
+  if(el) el.innerHTML = "<b>" + h.label + "</b> \u2014 wind " + h.mph + " mph" + (h.dir ? " " + h.dir : "") + (h.gust > h.mph ? ", gusting " + h.gust : "") + (h.temp ? " \u00B7 " + h.temp : "") + (h.pop >= 20 ? " \u00B7 rain " + h.pop + "%" : "") + (h.dewF != null ? " \u00B7 Dew point " + h.dewF + "\u00B0" : "") + (h.hum != null ? " \u00B7 Humidity " + h.hum + "%" : "") + " \u2014 " + read + (h.adv ? " <b>" + h.adv + " on the bay this hour.</b>" : "") + (h.marineCap ? " <b>Bay waters are rougher this hour \u2014 this score follows the bay forecast.</b>" : "");
 }
 async function hrAdvWindows(zone){
   const wins = [];
@@ -7888,6 +7893,26 @@ async function loadHourly(){
       const w = advWins.find(function(a){ return t >= a.from && t < a.to; });
       if(w){ h.adv = w.event; if(h.score > 69) h.score = 69; }
     });
+    /* Unified scoring (Nov 27, David: "Today and hour by hour should match"):
+       cap each step by the SAME marine bucket verdict that drives the Today tab
+       for the bucket the step falls in, so the two tabs never tell opposite
+       stories for the same hours. The marine picture governs when it is worse. */
+    let marineCapped = false;
+    try{
+      const mps = await getMarinePeriods(loc.zone);
+      const bkts = groupMarine(mps);
+      const bScores = bkts.map(function(b){ const bp = [b.day, b.night].filter(Boolean); return bp.length ? tbbVerdict(bp).score : null; });
+      /* Zone forecast periods carry no timestamps: bucket 0 is the local day of
+         the first hourly step, bucket 1 the next day, and so on. */
+      const day0 = new Date(steps[0].startTime); day0.setHours(0, 0, 0, 0);
+      steps.forEach(function(h){
+        const d = new Date(h.startTime); d.setHours(0, 0, 0, 0);
+        const bi = Math.round((d - day0) / 86400000);
+        const cs = (bi >= 0 && bi < bScores.length) ? bScores[bi] : null;
+        if(cs != null && h.score > cs){ h.score = cs; h.marineCap = true; marineCapped = true; }
+      });
+      if(take && marineCapped) take.textContent += " On the water it's rougher than this shoreline forecast \u2014 these scores follow the bay forecast.";
+    }catch(e){}
     window._hrHours = steps;
     if(slider){ slider.max = steps.length - 1; slider.value = 0; slider.disabled = false; }
     if(ticks){
@@ -10234,6 +10259,8 @@ document.addEventListener('click',function(e){ var p=document.getElementById('tr
     .then(d=>{
       const feats=(d.features||[]).filter(f=>{
         const ev=(f.properties&&f.properties.event)||'';
+        const endT=(f.properties&&(f.properties.ends||f.properties.expires))?Date.parse(f.properties.ends||f.properties.expires):0;
+        if(endT && endT <= Date.now()) return false;
         return /small craft|gale|storm|hurricane|tropical|marine|thunderstorm|tornado|waterspout|wind|surge|flood/i.test(ev);
       });
       const esc=s=>String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/\n/g,'<br>');

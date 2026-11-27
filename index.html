@@ -1506,6 +1506,7 @@ body.dark body.dark /* ---- Tampa Bay Boating Shop ---- */
 <symbol id="i-anchor" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22V8" />
   <path d="M5 12H2a10 10 0 0 0 20 0h-3" />
   <circle cx="12" cy="5" r="3" /></symbol>
+<symbol id="i-wc" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="4" r="2" /><path d="M12 7v7" /><path d="M8.5 21 10 14h4l1.5 7" /><path d="M7 10.5h10" /></symbol>
 
 
 
@@ -2976,6 +2977,7 @@ function twlPlay(btn){
         <button class="map-filter" data-cat="ice" style="--c:#22d3ee" onclick="mapFilter('ice',this)"><span class="dot"></span><svg class=ic aria-hidden=true><use href=#i-ice></use></svg> Ice</button>
         <button class="map-filter" data-cat="dine" style="--c:#8b5cf6" onclick="mapFilter('dine',this)"><span class="dot"></span><svg class=ic aria-hidden=true><use href=#i-dine></use></svg> Dock &amp; Dine</button>
         <button class="map-filter" data-cat="ramp" style="--c:#4f46e5" onclick="mapFilter('ramp',this)"><span class="dot"></span><svg class=ic aria-hidden=true><use href=#i-anchor></use></svg> Boat Ramps</button>
+        <button class="map-filter" data-cat="restroom" style="--c:#6d28d9" onclick="mapFilter('restroom',this)"><span class="dot"></span><svg class=ic aria-hidden=true><use href=#i-wc></use></svg> Restrooms</button>
         <button class="map-filter" data-cat="cam" style="--c:#e02424" onclick="mapFilter('cam',this)"><span class="dot"></span><svg class=ic aria-hidden=true><use href=#i-video></use></svg> Live Cams</button>
         <button class="map-filter" data-cat="tricky" style="--c:#991b1b" onclick="mapFilter('tricky',this)"><span class="dot"></span><svg class=ic aria-hidden=true><use href=#i-siren></use></svg> Tricky Water</button>
       </div>
@@ -5292,13 +5294,87 @@ const MAP_PINS = [
 ["Southwest Channel", "tricky", 27.578, -82.76, "South of Egmont Key, Tampa Bay entrance", "", "Tricky water: the quieter second way into the bay crosses a bar that loves to shoal. It is lightly marked, breakers can stand near Passage Key, and old wrecks sit in the entrance - work the sounder and take it slow."],
 ["Pass-a-Grille Channel", "tricky", 27.6906, -82.7315, "Between Pass-a-Grille and Tierra Verde", "", "Tricky water: the dredged run behind Pass-a-Grille looks wide open, but skinny flats press in on both sides. Hold the markers, especially at low water - outside the cut it shallows up fast."],
 ["The Narrows in Boca Ciega Bay", "tricky", 27.852, -82.822, "Intracoastal Waterway, Indian Shores to Seminole", "", "Tricky water: a tight, walled-in stretch of the Intracoastal with rocks hiding under the surface near the south end. Favor the east bank, hold your line, and expect close-quarters passes."],
-["Cockroach Bay & the Little Manatee Mouth", "tricky", 27.7, -82.528, "Ruskin, south shore of Tampa Bay", "", "Tricky water: a broad, skinny bay of grass flats and mangrove edges where the river meets the bay. Water that looks plenty deep often is not - work the creeks on a rising tide and go slow over the flats."]
+["Cockroach Bay & the Little Manatee Mouth", "tricky", 27.7, -82.528, "Ruskin, south shore of Tampa Bay", "", "Tricky water: a broad, skinny bay of grass flats and mangrove edges where the river meets the bay. Water that looks plenty deep often is not - work the creeks on a rising tide and go slow over the flats."],
+/* Restroom pins — added Nov 26, 2026: triple-verified dockside restrooms, see preview/bathroom-pins-nov26/REPORT.md */
+["Gandy Boat Ramp","restroom",27.892485,-82.533037,"5108 W Gandy Blvd, Tampa","(813) 987-6240","Restrooms at the boat ramp"],
+["Ballast Point Park","restroom",27.888982,-82.48123,"5300 Interbay Blvd, Tampa","(813) 274-8615","Public restrooms in the park by the boat ramp and dock"],
+["Picnic Island Boat Ramp","restroom",27.85781,-82.551535,"7409 Picnic Island Blvd, Tampa","(813) 274-8615","Restrooms in the park by the boat ramp"],
+["Lowry Park Boat Ramp","restroom",28.012589,-82.465216,"1204 W Flora St, Tampa","(813) 274-8211","Restrooms at the boat ramp"],
+["E.G. Simmons Conservation Park","restroom",27.739063,-82.466147,"2401 19th Ave NW, Ruskin","(813) 675-3385","Restrooms and showers in the park by the boat ramp"],
+["Williams Park Boat Ramp","restroom",27.861237,-82.384727,"9425 US Hwy 41 S, Riverview","","Restrooms at the boat ramp"],
+["Riverview Civic Center and Boat Ramp","restroom",27.866277,-82.318862,"11020 Park Dr, Riverview","(813) 672-1120","Restrooms at the ramp and dock"],
+["John B. Sargeant Sr. Park","restroom",28.079923,-82.285522,"12702 US-301, Thonotosassa","(813) 987-6208","Restrooms in the park by the boat ramp"],
+["Morris Bridge Park","restroom",28.097155,-82.313212,"13630 Morris Bridge Rd, Thonotosassa","(813) 987-6209","Restrooms in the park by the boat ramp"],
+["Riverhills Boat Ramp","restroom",28.021325,-82.38778,"329 S Riverhills Dr, Temple Terrace","(813) 506-6400","Restrooms at the boat ramp"],
+["Rotary Riverfront Park","restroom",28.05492,-82.363676,"8000 E Fowler Ave, Temple Terrace","(813) 987-6840","Restrooms at the boat ramp"],
+["Rick's on the River","restroom",27.96348,-82.47418,"2305 N Willow Ave, Tampa","(813) 251-0369","Restrooms at the restaurant \u2014 free docking while dining"],
+["Apollo Beach Marina","restroom",27.784172,-82.424766,"1485 Apollo Beach Blvd, Apollo Beach","(813) 645-0720","Restrooms and showers at the marina \u2014 transient slips and a public ramp"],
+["Fort De Soto Boat Ramp","restroom",27.645532,-82.71726,"3500 Pinellas Bayway S, St. Petersburg","(727) 582-2267","Restrooms at the boat ramp"],
+["Belleair Causeway Boat Ramp","restroom",27.917349,-82.826728,"3900 W Bay Dr, Belleair Bluffs","(727) 582-2100","Portable restrooms at the boat ramp"],
+["Park Boulevard Boat Ramp","restroom",27.841944,-82.839084,"18651 Gulf Blvd, Indian Shores","(727) 582-2100","Restrooms at the boat ramp"],
+["Sutherland Bayou Boat Ramp","restroom",28.086541,-82.770515,"2119 US-19 ALT, Palm Harbor","(727) 582-2100","Restrooms at the boat ramp"],
+["Philippe Park Boat Ramp","restroom",28.013937,-82.682631,"2525 Philippe Pkwy, Safety Harbor","(727) 669-1947","Restrooms in the park by the boat ramp"],
+["A.L. Anderson Park","restroom",28.132884,-82.738943,"39699 US-19 N, Tarpon Springs","(727) 582-2100","Restrooms in the park by the boat ramp"],
+["John Chesnut Sr. Park","restroom",28.088579,-82.701474,"2200 East Lake Rd, Palm Harbor","(727) 582-2100","Restrooms in the park by the boat ramp"],
+["Lake Seminole Boat Ramp","restroom",27.844646,-82.77768,"10015 Park Blvd, Seminole","(727) 549-6156","Restrooms in the park by the boat ramp"],
+["Seminole Boat Ramp","restroom",27.974292,-82.80234,"201 Seminole St, Clearwater","(727) 562-4955","Restrooms at the boat ramp"],
+["Egan Park Boat Ramp","restroom",27.753835,-82.757252,"9250 Captiva Cir, St. Pete Beach","(727) 363-9245","Restrooms at the boat ramp"],
+["Maximo Park","restroom",27.709369,-82.681766,"Pinellas Point Dr S & Sunshine Skyway Ln S, St. Petersburg","(727) 893-7441","Restrooms in the park by the boat ramps"],
+["Bay Vista Park","restroom",27.70453,-82.641214,"7000 4th St S, St. Petersburg","(727) 893-7441","Restrooms in the park by the boat ramp"],
+["Crisp Park","restroom",27.804092,-82.62715,"620 37th Ave NE, St. Petersburg","(727) 893-7441","Restrooms in the park by the boat ramps"],
+["Lake Maggiore Park","restroom",27.732521,-82.647166,"3601 Dr. Martin Luther King Jr. St. S., St. Petersburg","(727) 893-7441","Restrooms in the park by the boat ramp"],
+["Gulfport Municipal Marina","restroom",27.740622,-82.696136,"4630 29th Ave S, Gulfport","(727) 893-1071","Restrooms and showers in the ship store \u2014 guest/transient dock at the marina"],
+["Madeira Beach Marina","restroom",27.804082,-82.796026,"503 150th Ave, Madeira Beach","(727) 399-2631","Restrooms and showers at the marina \u2014 transient slips"],
+["O'Neill's Marina","restroom",27.707498,-82.679841,"6701 Sunshine Skyway Ln S, St. Petersburg","(727) 867-2585","Restrooms at the marina \u2014 public boat ramp on site"],
+["Safety Harbor Marina Boat Launch","restroom",27.989203,-82.686914,"110 Veterans Memorial Ln, Safety Harbor","(727) 724-1572","Restrooms at the marina park boat ramp"],
+["Kingfish Boat Ramp","restroom",27.497596,-82.702522,"752 Manatee Ave, Holmes Beach","(941) 742-5923","Portable toilet at the ramp \u2014 no full restroom"],
+["Coquina South Boat Ramp","restroom",27.447852,-82.688821,"1465 Gulf Dr S, Bradenton Beach","","Restrooms at the boat ramp"],
+["Warner's Bayou Boat Ramp","restroom",27.509639,-82.618237,"5800 Riverview Blvd, Bradenton","(941) 742-5923","Restrooms at the boat ramp"],
+["State Road 64 Boat Ramp","restroom",27.495798,-82.526532,"3020 Manatee Ave E, Bradenton","(941) 748-4501","Portable toilet at the ramp \u2014 no full restroom"],
+["Riverside Park Boat Ramp","restroom",27.512064,-82.573949,"801 Riverside Dr, Palmetto","(941) 723-4580","Restrooms at the boat ramp"],
+["Fort Hamer Park Boat Ramp","restroom",27.525265,-82.430184,"1605 Fort Hamer Rd, Parrish","(941) 742-5923","Portable toilet at the ramp \u2014 no full restroom"],
+["Jiggs Landing Boat Ramp","restroom",27.432217,-82.480896,"6106 63rd St E, Bradenton","(941) 727-4181","Restrooms at the boat ramp"],
+["Centennial Park","restroom",27.34718,-82.54844,"1059 N Tamiami Trl, Sarasota","(941) 263-6386","Restrooms at the boat ramp"],
+["Ken Thompson Boat Ramp","restroom",27.33373,-82.5746,"1708 Ken Thompson Pkwy, Sarasota","(941) 263-6386","Restrooms at the boat ramp"],
+["Turtle Beach Public Boat Ramp","restroom",27.21801,-82.51622,"8701 Blind Pass Rd, Sarasota","(941) 861-5000","Restrooms at the boat ramp"],
+["Blackburn Point Park Boat Ramp","restroom",27.1796,-82.49212,"421 Blackburn Point Rd, Osprey","(941) 861-5000","Restrooms in the park by the boat ramp"],
+["Higel Marine Park","restroom",27.108,-82.46185,"1330 Tarpon Center Dr, Venice","(941) 486-2626","Restrooms in the park by the boat ramp and city dock"],
+["Nokomis Beach","restroom",27.1237,-82.47039,"100 Casey Key Rd, Nokomis","(941) 861-5000","Portable toilets by the bayside boat ramp; full restrooms on the beach side"],
+["Indian Mound Park","restroom",26.9568,-82.3634,"210 Winson Ave, Englewood","(941) 861-5000","Restrooms in the park by the boat ramp"],
+["Manasota Key Beach","restroom",27.01061,-82.41225,"8570 Manasota Key Rd, Englewood","","Restrooms in the park by the boat ramp"],
+["Marina Park and Boat Ramp","restroom",27.10216,-82.44126,"301 E Venice Ave, Venice","","Restrooms in the park by the boat ramp"],
+["Marina Park","restroom",27.0336,-82.24972,"7030 Chancellor Blvd, North Port","(941) 429-7275","Restrooms in the park by the boat ramp"],
+["Lake Manatee State Park Boat Ramp","restroom",27.478451,-82.337249,"20007 State Road 64 E, Bradenton","(941) 741-3028","Restrooms in the park by the boat ramp"],
+["Snook Haven Park Boat Ramp","restroom",27.10083,-82.33521,"4076 E Venice Ave, Venice","(941) 485-7221","Portable toilet at the boat ramp"],
+["Anclote River Park Boat Ramp","restroom",28.176225,-82.788635,"1119 Baillies Bluff Road, Holiday","(727) 938-2598","Restrooms in the park by the boat ramp and floating dock"],
+["Nick's Park Boat Ramp","restroom",28.272454,-82.726022,"7917 Bayview St, Port Richey","","Restrooms in the park by the boat ramp"],
+["Sims Park Boat Ramp","restroom",28.250576,-82.723242,"6346 River Rd, New Port Richey","(727) 841-4560","Public restrooms at the boat ramp"],
+["Robert J. Strickland Memorial Park","restroom",28.362749,-82.709985,"6345 Clark St, Hudson","(727) 861-3010","Restrooms in the park by the boat ramp"],
+["St. Petersburg Municipal Marina","restroom",27.76938,-82.6297,"Downtown St. Pete","(727) 893-7329","Restrooms and showers for transient boaters at the marina"],
+["Marjorie Park Yacht Basin","restroom",27.93325,-82.45588,"115 Columbia Dr, Davis Islands, Tampa","(813) 259-1604","Restrooms and showers at the marina \u2014 hourly transient slips"],
+["John's Pass Marina","restroom",27.78349,-82.78015,"12795 Kingfish Dr, Treasure Island","(727) 592-1992","Restrooms and showers at the marina \u2014 transient slips"],
+["The Harborage at Waterview Marinas","restroom",27.75905,-82.63661,"Downtown St. Pete","(727) 821-6347","Restrooms and showers at the marina \u2014 transient dockage"],
+["Maximo Marina (IGY)","restroom",27.72507,-82.68223,"St. Petersburg, Boca Ciega Bay","(727) 867-1102","Restrooms and showers at the marina \u2014 transient slips"],
+["Tierra Verde Marina","restroom",27.69215,-82.72033,"Tierra Verde, FL","(727) 866-0255","Restrooms at the marina \u2014 transient docking"],
+["Marker 1 Marina","restroom",28.05074,-82.78681,"Dunedin, FL","(727) 733-9324","Restrooms and showers at the marina \u2014 transient dockage"],
+["Loggerhead Marina \\u2013 St. Petersburg","restroom",27.71392,-82.6782,"5821 32nd Way S, St. Pete","(727) 867-2600","Restrooms and showers at the marina \u2014 transient slips"],
+["Port32 Tampa","restroom",27.88621,-82.5338,"5200 W Tyson Ave, Tampa","(813) 831-1200","Restrooms at the marina \u2014 transient slips"],
+["Shell Point Marina","restroom",27.7183,-82.48,"3340 W Shell Point Rd, Ruskin","(813) 645-1313","Restrooms and showers at the marina \u2014 transient slips"],
+["Little Harbor Marinas","restroom",27.725983,-82.471267,"Ruskin, FL","(813) 645-2288","Restrooms and showers at the marina \u2014 transient slips"],
+["Twin Dolphin Marina","restroom",27.50012,-82.57308,"Bradenton, FL","(941) 747-8300","Restrooms and showers at the marina \u2014 transient slips"],
+["Safe Harbor Regatta Pointe","restroom",27.51186,-82.57562,"Palmetto, FL","(941) 729-6021","Restrooms and showers at the marina \u2014 transient slips"],
+["Marina Jack Yacht Basin","restroom",27.333,-82.54612,"2 Marina Plaza, Sarasota","(941) 955-9488","Restrooms and showers at the marina \u2014 transient slips"],
+["Bradenton Beach Marina","restroom",27.46779,-82.69711,"402 Church St N, Bradenton Beach","(941) 778-2288","Restrooms and showers at the marina \u2014 transient dockage open to the public"],
+["Galati Yacht Basin","restroom",27.527438,-82.721529,"900 S Bay Blvd, Anna Maria","(941) 778-0755","Restrooms and showers at the marina \u2014 transient slips"],
+["Crow's Nest Marina","restroom",27.11171,-82.46392,"1968 Tarpon Center Dr, Venice","(941) 484-9551","Restrooms and showers at the marina \u2014 transient dockage"],
+["Fisherman's Wharf Marina","restroom",27.10515,-82.445081,"465 N Tamiami Trail, Venice","(941) 486-0500","Restrooms and showers at the marina \u2014 open to the public, overnight dockage"],
+["Longboat Key Club Moorings","restroom",27.371117,-82.618663,"2630 Harbourside Dr, Longboat Key","(941) 383-8383","Restrooms and showers for transient slip guests at the marina"]
 ];
 const RAMP_CLASS = {"Gandy Boat Ramp": "PAID", "Causeway Boat Ramp": "PAID", "Picnic Island Boat Ramp": "FREE", "Egan Park Boat Ramp": "MIXED", "Treasure Island Boat Ramp": "FREE", "Maximo Park": "FREE", "Bay Vista Park": "FREE", "Demens Landing Boat Ramp": "FREE", "Jungle Prada Boat Ramp": "FREE", "Crisp Park": "FREE", "Coffee Pot Park": "FREE", "Grandview Park": "FREE", "Lake Maggiore Park": "FREE", "Sunlit Cove Boat Ramp": "FREE", "Kingfish Boat Ramp": "FREE", "Captain Scott Moore Boat Ramp": "FREE", "Coquina South Boat Ramp": "FREE", "Warner's Bayou Boat Ramp": "FREE", "State Road 64 Boat Ramp": "FREE", "Riverside Park Boat Ramp": "FREE", "Fort Hamer Park Boat Ramp": "FREE", "63rd Street Boat Ramp": "FREE", "Bishop Harbor Boat Ramp": "FREE", "Turtle Beach Public Boat Ramp": "FREE", "Blackburn Point Park Boat Ramp": "FREE", "Higel Marine Park": "FREE", "Nokomis Beach": "FREE", "Indian Mound Park": "FREE", "Manasota Key Beach": "FREE", "Marina Park and Boat Ramp": "FREE", "Marina Park": "FREE", "Nick's Park Boat Ramp": "FREE", "Sims Park Boat Ramp": "FREE", "Snook Haven Park Boat Ramp": "FREE", "Safety Harbor Marina Boat Launch": "FREE", "Davis Island Boat Ramp": "FREE", "Ballast Point Park": "FREE", "Lowry Park Boat Ramp": "FREE", "Cockroach Bay Boat Ramp": "PAID", "Williams Park Boat Ramp": "PAID", "Domino Park Boat Ramp": "PAID", "Wildcat Park Boat Ramp": "PAID", "Baker Creek Boat Ramp": "PAID", "Harney Park Boat Ramp": "PAID", "Brandon Boat Ramp": "PAID", "Seminole Boat Ramp": "PAID", "Ken Thompson Boat Ramp": "FREE", "Apollo Beach Marina": "PAID", "Rick's on the River": "PAID", "Madeira Beach Marina": "PAID", "O'Neill's Marina": "PAID", "Clearwater Beach Public Boat Ramp": "MIXED", "Dunedin Marina": "PAID", "Jiggs Landing Boat Ramp": "MIXED", "Gulfport Municipal Marina": "MIXED", "E.G. Simmons Conservation Park": "PAID", "Fort De Soto Boat Ramp": "PAID", "Bay Pines Boat Ramp": "PAID", "Belleair Causeway Boat Ramp": "PAID", "Park Boulevard Boat Ramp": "PAID", "Sutherland Bayou Boat Ramp": "PAID", "Anclote River Park Boat Ramp": "PAID", "Robert J. Strickland Memorial Park": "PAID", "Lake Myakka Boat Ramp": "PAID", "Lake Manatee State Park Boat Ramp": "PAID", "Commongood Boat Ramp": "PAID", "John B. Sargeant Sr. Park": "PAID", "Centennial Park": "PAID", "Morris Bridge Park": "PAID"};
 window.tbbFeeMode=null;
 /* MAP_PINS_PENDING retired 2026-10-10: 201 pins re-verified and restored. 4 rejected (stay off map): Anclote River Sandbar (play, wrong location), The Club at Treasure Island (fuel, no fuel dock), The Landing at Tarpon Springs Marina (fuel, dupe), Carefree Boat Club Tierra Verde (club, 2 sources only). Marjorie Park Yacht Basin restored 2026-10-25: fuel dock reopened, triple-verified in marjorie-park-fuel-reverify-oct25.md. See map-research/reverify-*.md */
 const MAP_PINS_PENDING = [];
-const MAP_COLORS = {charter:"#0a2540", fuel:"#e25822",  bait:"#2e9e5b", tackle:"#0d9488", dine:"#8b5cf6", play:"#0e7490", club:"#d946ef", storage:"#f59e0b", stay:"#2563eb", rentv:"#eab308", rentl:"#475569", dealer:"#e11d48", trailer:"#92400e", parts:"#65a30d", service:"#64748b", detail:"#0891b2", ramp:"#4f46e5", cam:"#e02424", fish:"#0e7a5f", rent:"#0284c7", ice:"#22d3ee", springs:"#db2777", sights:"#9333ea", tricky:"#991b1b"};
+const MAP_COLORS = {charter:"#0a2540", fuel:"#e25822",  bait:"#2e9e5b", tackle:"#0d9488", dine:"#8b5cf6", play:"#0e7490", club:"#d946ef", storage:"#f59e0b", stay:"#2563eb", rentv:"#eab308", rentl:"#475569", dealer:"#e11d48", trailer:"#92400e", parts:"#65a30d", service:"#64748b", detail:"#0891b2", ramp:"#4f46e5", restroom:"#6d28d9", cam:"#e02424", fish:"#0e7a5f", rent:"#0284c7", ice:"#22d3ee", springs:"#db2777", sights:"#9333ea", tricky:"#991b1b"};
 window.mapFilter=function(cat,btn){
   document.querySelectorAll('.map-filter').forEach(x => x.classList.remove('active'));
   if(btn) btn.classList.add('active');

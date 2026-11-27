@@ -7888,15 +7888,28 @@ async function loadHourly(){
       return {label:(k === 0 ? "Now" : hrHourLabel(new Date(p.startTime))), startTime:p.startTime, date:new Date(p.startTime), icon:hrIcon(p), fc:(p.shortForecast || ""), mph:winds[k], windMph:winds[k], dir:(p.windDirection || ""), windDirection:(p.windDirection || ""), temp:(p.temperature != null ? p.temperature + "\u00B0" + (p.temperatureUnit || "F") : ""), tempValue:(p.temperature != null ? Number(p.temperature) : null), tempUnit:(p.temperatureUnit || "F"), pop:((p.probabilityOfPrecipitation && p.probabilityOfPrecipitation.value) || 0), gust:(p.windGust ? parseInt(p.windGust, 10) || 0 : 0), gustMph:(p.windGust ? parseInt(p.windGust, 10) || 0 : 0), dewF:dewF, hum:hum, score:hrScore(p, winds[k])};
     });
     const steps = hrSteps(hours);
+    /* Pre-cap score, kept so the marine anchor below measures every step on
+       the same scale even when an advisory cap lands on the anchor step. */
+    steps.forEach(function(h){ h.rawScore = h.score; });
     steps.forEach(function(h){
       const t = new Date(h.startTime).getTime();
       const w = advWins.find(function(a){ return t >= a.from && t < a.to; });
       if(w){ h.adv = w.event; if(h.score > 69) h.score = 69; }
     });
-    /* Unified scoring (Nov 27, David: "Today and hour by hour should match"):
-       cap each step by the SAME marine bucket verdict that drives the Today tab
-       for the bucket the step falls in, so the two tabs never tell opposite
-       stories for the same hours. The marine picture governs when it is worse. */
+    /* Unified scoring (Nov 27, David: "Today and hour by hour should match";
+       refined the same day: "Hr by hr score should change with condition"):
+       each step is governed by the SAME marine bucket verdict that drives the
+       Today tab for the bucket the step falls in — but as an anchor, not a
+       pin. When the verdict is worse than the bucket's first step (the bay
+       picture governs), that first step sits exactly on the verdict — so the
+       Now step always matches Today — and every other step keeps half of its
+       raw distance from that anchor step, so the curve still rises as the
+       wind falls and dips as it builds. When the verdict is not worse than
+       the anchor (bay calmer than the shoreline), the verdict stays a plain
+       ceiling, as before. Distances are measured from each step's pre-cap
+       rawScore, so an advisory cap sitting on the bucket's first step cannot
+       flatten the rest of the bucket. This block only ever lowers a step's
+       score, so the advisory caps applied above are never raised. */
     let marineCapped = false;
     try{
       const mps = await getMarinePeriods(loc.zone);
@@ -7905,11 +7918,21 @@ async function loadHourly(){
       /* Zone forecast periods carry no timestamps: bucket 0 is the local day of
          the first hourly step, bucket 1 the next day, and so on. */
       const day0 = new Date(steps[0].startTime); day0.setHours(0, 0, 0, 0);
-      steps.forEach(function(h){
+      const bIdx = steps.map(function(h){
         const d = new Date(h.startTime); d.setHours(0, 0, 0, 0);
-        const bi = Math.round((d - day0) / 86400000);
+        return Math.round((d - day0) / 86400000);
+      });
+      const anchor = {};
+      steps.forEach(function(h, i){ const bi = bIdx[i]; if(bi >= 0 && anchor[bi] == null) anchor[bi] = h.rawScore; });
+      steps.forEach(function(h, i){
+        const bi = bIdx[i];
         const cs = (bi >= 0 && bi < bScores.length) ? bScores[bi] : null;
-        if(cs != null && h.score > cs){ h.score = cs; h.marineCap = true; marineCapped = true; }
+        if(cs == null) return;
+        const ra = anchor[bi];
+        if(ra != null && cs < ra){
+          const gov = Math.max(3, Math.round(cs + 0.5 * (h.rawScore - ra)));
+          if(h.score > gov){ h.score = gov; h.marineCap = true; marineCapped = true; }
+        } else if(h.score > cs){ h.score = cs; h.marineCap = true; marineCapped = true; }
       });
       if(take && marineCapped) take.textContent += " On the water it's rougher than this shoreline forecast \u2014 these scores follow the bay forecast.";
     }catch(e){}

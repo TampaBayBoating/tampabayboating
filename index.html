@@ -678,17 +678,17 @@ body.dark .verdict-card h3{color:#ffffff}
 body.dark .verdict-card p{color:#b9d2e4}
 body.dark .verdict-card .v-tab{border-color:rgba(185,210,228,.45);color:#dcebf5}
 body.dark .verdict-card .v-tab.on{background:#8fd0f0;color:#0a2540;border-color:#8fd0f0}
-body.dark .verdict-card .score-ends{color:#8fb0c9}
+body.dark .verdict-card .score-ends{color:#a1bdd2}
 body.dark .verdict-card .skill-box{border-top-color:rgba(185,210,228,.25)}
 body.dark .verdict-card .skill-head{color:#b9d2e4}
 body.dark .verdict-card .skill-name{color:#eaf3fa}
 body.dark .verdict-card .skill-pct{color:#ffffff}
-body.dark .verdict-card .c-stay{color:#ff6b5e}
-body.dark .verdict-card .c-risky{color:#f08a3c}
+body.dark .verdict-card .c-stay{color:#ffa098}
+body.dark .verdict-card .c-risky{color:#f4a86f}
 body.dark .verdict-card .c-caution{color:#e3c008}
-body.dark .verdict-card .c-go{color:#35c37d}
+body.dark .verdict-card .c-go{color:#59ce94}
 body.dark .verdict-card .wx-line{color:#b9d2e4}
-body.dark .verdict-card .cond-stamp{color:#8fb0c9}
+body.dark .verdict-card .cond-stamp{color:#a1bdd2}
 body.dark #verdict-card #week-detail{color:#eaf3fa;background:rgba(255,255,255,.05);border-color:rgba(185,210,228,.25)}
 body.dark #verdict-card .week-part{border-bottom-color:rgba(185,210,228,.2)}
 body.dark #verdict-card #bay-q-msg{color:#e3c008}
@@ -699,17 +699,17 @@ body.dark #verdict-card .area-label{color:#e8eef4}
 #conditions .verdict-card p{color:#b9d2e4}
 #conditions .verdict-card .v-tab{border-color:rgba(185,210,228,.45);color:#dcebf5}
 #conditions .verdict-card .v-tab.on{background:#8fd0f0;color:#0a2540;border-color:#8fd0f0}
-#conditions .verdict-card .score-ends{color:#8fb0c9}
+#conditions .verdict-card .score-ends{color:#a1bdd2}
 #conditions .verdict-card .skill-box{border-top-color:rgba(185,210,228,.25)}
 #conditions .verdict-card .skill-head{color:#b9d2e4}
 #conditions .verdict-card .skill-name{color:#eaf3fa}
 #conditions .verdict-card .skill-pct{color:#ffffff}
-#conditions .verdict-card .c-stay{color:#ff6b5e}
-#conditions .verdict-card .c-risky{color:#f08a3c}
+#conditions .verdict-card .c-stay{color:#ffa098}
+#conditions .verdict-card .c-risky{color:#f4a86f}
 #conditions .verdict-card .c-caution{color:#e3c008}
-#conditions .verdict-card .c-go{color:#35c37d}
+#conditions .verdict-card .c-go{color:#59ce94}
 #conditions .verdict-card .wx-line{color:#b9d2e4}
-#conditions .verdict-card .cond-stamp{color:#8fb0c9}
+#conditions .verdict-card .cond-stamp{color:#a1bdd2}
 #conditions #verdict-card #week-detail{color:#eaf3fa;background:rgba(255,255,255,.05);border-color:rgba(185,210,228,.25)}
 #conditions #verdict-card .week-part{border-bottom-color:rgba(185,210,228,.2)}
 #conditions #verdict-card #bay-q-msg{color:#e3c008}
@@ -729,7 +729,7 @@ body.dark .cat-card{background:#0E2A3F}
 .wave-grid{display:flex;gap:14px;flex-wrap:wrap;margin:8px 0 10px}
 .wave-stat{flex:1;min-width:150px;background:#eef5fb;border:1px solid #d7e6f2;border-radius:12px;padding:12px 14px}
 .wave-num{font-size:1.5rem;font-weight:800;color:#0a2540;line-height:1.15}
-.wave-lbl{font-size:.8rem;color:#5b7a94;font-weight:600;margin-top:2px}
+.wave-lbl{font-size:.8rem;color:#547088;font-weight:600;margin-top:2px}
 .wave-detail{font-size:.85rem;color:#33536e;font-weight:600;margin-top:4px}
 .wave-rating{font-size:1.02rem;font-weight:700;color:#ffffff;margin:2px 0 8px;line-height:1.45}
 .cond-stamp{font-size:.74rem;opacity:.72;margin-top:10px;letter-spacing:.2px}
@@ -780,7 +780,7 @@ body.dark .cat-card{background:#0E2A3F}
 .wv-chips{display:flex;flex-wrap:wrap;gap:6px}
 .wv-chip{border:1px solid rgba(185,210,228,.5);background:transparent;color:#dcebf5;border-radius:999px;padding:5px 11px;font-size:.8rem;font-weight:600;cursor:pointer;font-family:inherit}
 .wv-chip.on{background:#8fd0f0;color:#0a2540;border-color:#8fd0f0}
-.wv-anote{font-size:.78rem;color:#8fa8bd;margin-top:4px}
+.wv-anote{font-size:.78rem;color:#a8bbcc;margin-top:4px}
 .wv-plain{margin:10px 0 4px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);border-radius:12px;padding:12px 14px}
 .wv-plain h4{margin:0 0 6px;font-size:.78rem;letter-spacing:2px;text-transform:uppercase;color:var(--sun)}
 .wv-plain p{margin:0;font-size:.95rem;line-height:1.55;color:#eaf3fa}
@@ -1564,7 +1564,11 @@ body.dark body.dark /* ---- Tampa Bay Boating Shop ---- */
     <button class="tb-lang" id="lang-btn" aria-label="Translate this page" title="Translate"><svg class=ic aria-hidden=true><use href=#i-globe></use></svg> Language</button>
   </div>
   <script>
-/* Topbar live conditions: air temp + wind (NWS KTPA) + water temp (NOAA 8726674) */
+/* Topbar live conditions: air temp + wind from the selected area's nearest NWS
+   observation station, water temp + tide state from the area's own NOAA station.
+   Follows the selected area: re-run on every area change and on the 5-minute
+   weather refresh via window.loadTopbar. Chips reset to "--" on each run, so a
+   previous area's values never linger; wind is converted to mph (site rule). */
 (function(){
   function set(id, txt){ var el = document.getElementById(id); if (el) el.textContent = txt; }
   function compass(deg){
@@ -1572,26 +1576,55 @@ body.dark body.dark /* ---- Tampa Bay Boating Shop ---- */
     var dirs = ['N','NNE','NE','ENE','E','ESE','SE','SSE','S','SSW','SW','WSW','W','WNW','NW','NNW'];
     return dirs[Math.round(deg / 22.5) % 16] + ' ';
   }
-  // NWS air temp + wind
-  fetch('https://api.weather.gov/stations/KTPA/observations/latest', {headers:{'Accept':'application/geo+json'}})
-    .then(function(r){ return r.json(); })
-    .then(function(d){
-      var pr = d.properties || {};
-      var tC = pr.temperature && pr.temperature.value;
-      var wVal = pr.windSpeed && pr.windSpeed.value;
-      var wUnit = (pr.windSpeed && pr.windSpeed.unitCode) || '';
-      var wDeg = pr.windDirection && pr.windDirection.value;
-      if (tC != null) set('tbAir', Math.round(tC * 9/5 + 32) + '\u00B0');
-      if (wVal != null) {
-        var kt = wUnit.indexOf('km_h-1') !== -1 ? wVal / 1.852 : wVal * 1.944;
-        set('tbWind', compass(wDeg) + Math.round(kt));
-      }
-    }).catch(function(){});
-  // NOAA tide state (High / Low / Rising / Falling) from station 8726674
-  (function(){
+  function areaLoc(){
+    if (typeof wxLoc === 'function'){ try { return wxLoc(); } catch(e){} }
+    return { lat: 27.9506, lng: -82.4572, station: '8726674' };
+  }
+  var obsStationCache = {};
+  function applyObs(pr){
+    var tC = pr.temperature && pr.temperature.value;
+    var wVal = pr.windSpeed && pr.windSpeed.value;
+    var wUnit = (pr.windSpeed && pr.windSpeed.unitCode) || '';
+    var wDeg = pr.windDirection && pr.windDirection.value;
+    if (tC != null) set('tbAir', Math.round(tC * 9/5 + 32) + '\u00B0');
+    if (wVal != null) {
+      var mph = wUnit.indexOf('m_s-1') !== -1 ? wVal * 2.23694 : wUnit.indexOf('km_h-1') !== -1 ? wVal * 0.621371 : wVal * 1.15078;
+      set('tbWind', compass(wDeg) + Math.round(mph));
+    }
+  }
+  function loadObs(loc){
+    var key = loc.lat + ',' + loc.lng;
+    var sid = obsStationCache[key];
+    if (sid){
+      fetch('https://api.weather.gov/stations/' + sid + '/observations/latest', {headers:{'Accept':'application/geo+json'}})
+        .then(function(r){ return r.json(); })
+        .then(function(d){ applyObs(d.properties || {}); })
+        .catch(function(){});
+      return;
+    }
+    fetch('https://api.weather.gov/points/' + loc.lat + ',' + loc.lng, {headers:{'User-Agent':'tampabayboating.com'}})
+      .then(function(r){ return r.json(); })
+      .then(function(d){
+        var su = d && d.properties && d.properties.observationStations;
+        if (!su) throw 0;
+        return fetch(su, {headers:{'User-Agent':'tampabayboating.com'}});
+      })
+      .then(function(r){ return r.json(); })
+      .then(function(d){
+        var f = (d.features || [])[0];
+        var id = f && f.properties && f.properties.stationIdentifier;
+        if (!id) throw 0;
+        obsStationCache[key] = id;
+        return fetch('https://api.weather.gov/stations/' + id + '/observations/latest', {headers:{'Accept':'application/geo+json'}});
+      })
+      .then(function(r){ return r.json(); })
+      .then(function(d){ applyObs(d.properties || {}); })
+      .catch(function(){});
+  }
+  function loadTideState(loc){
     function ymd(d){ return d.getFullYear() + String(d.getMonth()+1).padStart(2,'0') + String(d.getDate()).padStart(2,'0'); }
     var now0 = new Date(), yd = new Date(now0); yd.setDate(yd.getDate()-1); var td = new Date(now0); td.setDate(td.getDate()+1);
-    var url = 'https://api.tidesandcurrents.noaa.gov/api/prod/datagetter?begin_date='+ymd(yd)+'&end_date='+ymd(td)+'&station=8726674&product=predictions&datum=MLLW&time_zone=lst_ldt&units=english&interval=hilo&format=json';
+    var url = 'https://api.tidesandcurrents.noaa.gov/api/prod/datagetter?begin_date='+ymd(yd)+'&end_date='+ymd(td)+'&station='+loc.station+'&product=predictions&datum=MLLW&time_zone=lst_ldt&units=english&interval=hilo&format=json';
     fetch(url).then(function(r){ return r.json(); }).then(function(d){
       var preds = (d.predictions||[]).map(function(p){ return { t: new Date(p.t.replace(' ','T')), type: p.type }; });
       var now = new Date(), prev = null, next = null;
@@ -1612,13 +1645,21 @@ body.dark body.dark /* ---- Tampa Bay Boating Shop ---- */
       var u = document.getElementById('tbTideUse');
       if (u) u.setAttribute('href', up ? '#i-tide-up' : '#i-tide-down');
     }).catch(function(){});
-  })();
-  // NOAA water temp
-  fetch('https://api.tidesandcurrents.noaa.gov/api/prod/datagetter?date=latest&station=8726674&product=water_temperature&units=english&time_zone=lst_ldt&format=json')
-    .then(function(r){ return r.json(); })
-    .then(function(d){
-      if (d.data && d.data[0] && d.data[0].v) set('tbWater', Math.round(parseFloat(d.data[0].v)) + '\u00B0');
-    }).catch(function(){});
+  }
+  function loadWater(loc){
+    fetch('https://api.tidesandcurrents.noaa.gov/api/prod/datagetter?date=latest&station='+loc.station+'&product=water_temperature&units=english&time_zone=lst_ldt&format=json')
+      .then(function(r){ return r.json(); })
+      .then(function(d){
+        if (d.data && d.data[0] && d.data[0].v) set('tbWater', Math.round(parseFloat(d.data[0].v)) + '\u00B0');
+      }).catch(function(){});
+  }
+  function loadTopbar(){
+    var loc = areaLoc();
+    set('tbAir', '--\u00B0'); set('tbWater', '--\u00B0'); set('tbWind', '--'); set('tbTide', '--');
+    loadObs(loc); loadTideState(loc); loadWater(loc);
+  }
+  window.loadTopbar = loadTopbar;
+  loadTopbar();
 })();
 </script>
 <div class="tb-search-panel" id="search-panel">
@@ -7178,6 +7219,7 @@ function changeTravelLocation(key){
   bayKey = (key==="tampa") ? "tampa" : null;
   document.querySelectorAll('.area-chip').forEach((x,i)=>x.classList.toggle('active', key==="tampa" && i===0));
   loadTides(); loadFutureTides(); loadTideCurve(); loadMarine(); loadWaves(); loadSpot(); loadDoppler(); loadWeek(); loadHourly(); loadPressure(); loadUv(); loadSunMoon(); loadVisibility();
+  if(window.loadTopbar) window.loadTopbar();
 }
 const SPOT_COORDS = { keywest:[24.5551,-81.78], destin:[30.3935,-86.4958], panamacity:[30.1766,-85.8055], stuart:[27.1975,-80.2528], fortmyers:[26.6406,-81.8723], daytona:[29.2108,-81.0228], crystalriver:[29.1386,-83.0351], naples:[26.142,-81.7948], jacksonville:[30.3929,-81.4243] };
 const BAY_AREAS = {
@@ -7214,6 +7256,7 @@ function setBayArea(key, btn){
   document.getElementById("tides-title").textContent = b.name + " Tides & Marine Forecast";
   document.getElementById("tides-sub").textContent = "Live from NOAA & the National Weather Service \u00B7 " + b.slabel;
   loadTides(); loadFutureTides(); loadTideCurve(); loadMarine(); loadSpot(); loadDoppler(); loadWeek(); loadHourly(); loadPressure(); loadUv(); loadSunMoon(); loadVisibility();
+  if(window.loadTopbar) window.loadTopbar();
 }
 const BAY_ALIASES = {"tampa":"tampa","tampa bay":"tampa","downtown tampa":"tampa","south tampa":"tampa","hyde park":"tampa","davis island":"tampa","davis islands":"tampa","ybor city":"tampa","ybor":"tampa","westshore":"tampa","seminole heights":"tampa","temple terrace":"tampa","carrollwood":"tampa","new tampa":"tampa","lutz":"tampa","land o lakes":"tampa","town n country":"tampa","old tampa bay":"oldtb","safety harbor":"oldtb","oldsmar":"oldtb","westchase":"oldtb","odessa":"oldtb","st petersburg":"stpete","st pete":"stpete","saint petersburg":"stpete","downtown st pete":"stpete","pinellas park":"stpete","kenneth city":"stpete","lealman":"stpete","old northeast":"stpete","coquina key":"stpete","boca ciega":"bocaciega","boca ciega bay":"bocaciega","gulfport":"bocaciega","madeira beach":"bocaciega","treasure island":"bocaciega","st pete beach":"bocaciega","seminole":"bocaciega","largo":"bocaciega","redington beach":"bocaciega","redington shores":"bocaciega","north redington beach":"bocaciega","south pasadena":"bocaciega","pass-a-grille":"bocaciega","pass a grille":"bocaciega","clearwater":"clearwater","clearwater beach":"clearwater","dunedin":"clearwater","palm harbor":"clearwater","tarpon springs":"clearwater","indian rocks beach":"clearwater","belleair":"clearwater","belleair beach":"clearwater","sand key":"clearwater","ruskin":"ruskin","sun city center":"ruskin","sun city":"ruskin","wimauma":"ruskin","apollo beach":"apollo","gibsonton":"apollo","riverview":"riverview","brandon":"riverview","valrico":"riverview","bloomingdale":"riverview","fishhawk":"riverview","lithia":"riverview","plant city":"riverview","palmetto":"palmetto","ellenton":"palmetto","parrish":"palmetto","terra ceia":"palmetto","bradenton":"bradenton","west bradenton":"bradenton","lakewood ranch":"bradenton","egmont key":"egmont","egmont":"egmont","fort de soto":"egmont","fort desoto":"egmont","tierra verde":"egmont","shell key":"egmont","anna maria":"ami","anna maria island":"ami","holmes beach":"ami","bradenton beach":"ami","cortez":"cortez","longboat key":"longboat","longboat":"longboat","sarasota":"sarasota","downtown sarasota":"sarasota","siesta key":"sarasota","osprey":"sarasota","nokomis":"sarasota","venice":"sarasota","englewood":"sarasota","casey key":"sarasota","lido key":"sarasota","bird key":"sarasota"};
 const BAY_ALIAS_KEYS = Object.keys(BAY_ALIASES).sort(function(a, b){ return b.length - a.length; });
@@ -7570,12 +7613,28 @@ function ordDay(n){ const s=["th","st","nd","rd"]; const v=n%100; return n + (s[
 let weekDays = [];
 function groupWeek(periods){
   const days = []; const byKey = {};
+  function bucket(key, d){
+    if(!byKey[key]){ byKey[key] = {date: d, day: null, night: null}; days.push(byKey[key]); }
+    return byKey[key];
+  }
   periods.forEach(p=>{
     const d = new Date(p.startTime);
     if(isNaN(d)) return;
-    const key = d.getFullYear() + "-" + (d.getMonth()+1) + "-" + d.getDate();
-    if(!byKey[key]){ byKey[key] = {date: d, day: null, night: null}; days.push(byKey[key]); }
-    if(p.isDaytime) byKey[key].day = p; else if(!byKey[key].night) byKey[key].night = p;
+    if(p.isDaytime){
+      const key = d.getFullYear() + "-" + (d.getMonth()+1) + "-" + d.getDate();
+      const b = bucket(key, d);
+      if(!b.day) b.day = p;
+      return;
+    }
+    /* A night period belongs to the evening it starts. One that starts after
+       midnight is the tail of the previous evening's night: attach it to that
+       day's bucket if one exists, but never let it pose as tonight. */
+    const nd = new Date(d.getTime());
+    const tail = nd.getHours() < 12;
+    if(tail) nd.setDate(nd.getDate() - 1);
+    const key = nd.getFullYear() + "-" + (nd.getMonth()+1) + "-" + nd.getDate();
+    const b = tail ? byKey[key] : bucket(key, nd);
+    if(b && !b.night) b.night = p;
   });
   return days.slice(0,7);
 }
@@ -7855,6 +7914,9 @@ function pressureTrendWord(deltaIn){ return deltaIn > 0.02 ? "Rising" : deltaIn 
 async function loadPressure(){
   const el = document.getElementById("wx-pressure"); if(!el) return;
   const loc = wxLoc();
+  /* Clear first: a station with no barometer (e.g. Riverview 8726614) must never
+     leave the previous area's reading on screen — empty is hidden by CSS. */
+  el.textContent = "";
   try{
     const pad = function(n){ return String(n).padStart(2, "0"); };
     const ymd = function(d){ return d.getFullYear() + pad(d.getMonth() + 1) + pad(d.getDate()); };
@@ -8243,12 +8305,6 @@ async function loadTides(){
       row.append(label, details);
       box.appendChild(row);
     });
-    try{
-      const now = new Date();
-      const upcoming = (d.predictions||[]).map(p=>({ts:String(p.t||""), dt:new Date(String(p.t).replace(" ","T")), type:p.type, v:p.v})).filter(p=>p.ts && !isNaN(p.dt) && p.dt>now)[0];
-      const fb = document.querySelector("#fb-tide b");
-      if(fb && upcoming) fb.textContent = (upcoming.type==="H"?"High ":"Low ") + fmtTideTime(upcoming.ts) + " · " + Number(upcoming.v).toFixed(1) + " ft";
-    }catch(_){}
     const station = document.createElement("div");
     station.style.cssText = "font-size:.78rem;color:#a9c6c5;margin-top:8px";
     station.textContent = "Station: " + tloc.label + " \u00B7 NOAA";
@@ -8504,6 +8560,14 @@ function setHeroScore(s){
   if(!el) return;
   el.textContent = (s == null || isNaN(s)) ? "\u2013" : s + "%";
 }
+function setTbScore(s){
+  const dotEl = document.getElementById("tbScoreDot"), pctEl = document.getElementById("tbScorePct");
+  if(!dotEl || !pctEl) return;
+  if(s == null || isNaN(s)){ pctEl.textContent = "--%"; dotEl.classList.remove("on"); return; }
+  pctEl.textContent = s + "%";
+  dotEl.style.left = Math.max(3, Math.min(97, 100 - s)) + "%";
+  dotEl.classList.add("on");
+}
 function renderVerdict(ps, label, isToday){
   const card = document.getElementById("verdict-card");
   const title = document.getElementById("verdict-title");
@@ -8512,7 +8576,7 @@ function renderVerdict(ps, label, isToday){
     card.classList.remove("v-go","v-good","v-caution","v-rough","v-stay");
     title.textContent = "Beyond the marine forecast range";
     const sEl0 = document.getElementById("verdict-score"); if(sEl0) sEl0.textContent = "\u2013";
-    if(isToday) setHeroScore(null);
+    if(isToday){ setHeroScore(null); setTbScore(null); }
     const mk0 = document.getElementById("score-marker"); if(mk0) mk0.style.left = "50%";
     skillRows(document.getElementById("skill-today"), null);
     return;
@@ -8531,7 +8595,7 @@ function renderVerdict(ps, label, isToday){
   const scoreEl = document.getElementById("verdict-score");
   if(scoreEl) scoreEl.textContent = s + "%";
   skillRows(document.getElementById("skill-today"), s);
-  if(isToday) setHeroScore(s);
+  if(isToday){ setHeroScore(s); setTbScore(s); }
   const marker = document.getElementById("score-marker");
   if(marker) marker.style.left = Math.max(2, Math.min(98, 100 - s)) + "%";
   const vstamp = document.getElementById("verdict-stamp"); if(vstamp) vstamp.textContent = tbbStamp(marineIssuedISO);
@@ -8602,12 +8666,6 @@ async function loadBriefingConditions(){
           bandEl.textContent = bb.label;
           cardEl.classList.remove("ds-go","ds-good","ds-caution","ds-rough","ds-stay");
           cardEl.classList.add(bb.cls);
-        }
-        const dotEl = document.getElementById("tbScoreDot"), pctEl = document.getElementById("tbScorePct");
-        if(dotEl && pctEl){
-          pctEl.textContent = v.score + "%";
-          dotEl.style.left = Math.max(3, Math.min(97, 100 - v.score)) + "%";
-          dotEl.classList.add("on");
         }
       }
       const parts = [];
@@ -9165,24 +9223,6 @@ function shopFilter(){
 }
 
 
-async function loadForecastBadges(){
-  try{
-    const r = await fetch("https://api.weather.gov/points/27.94,-82.48", {headers:{"User-Agent":"tampabayboating.com"}});
-    const d = await r.json();
-    const fr = await fetch(d.properties.forecast, {headers:{"User-Agent":"tampabayboating.com"}});
-    const fd = await fr.json();
-    const p = (fd.properties.periods||[])[0];
-    if(!p) throw 0;
-    const wx = document.querySelector("#fb-wx b");
-    if(wx) wx.textContent = p.temperature + "\u00B0" + p.temperatureUnit + " " + p.shortForecast;
-    const wind = document.querySelector("#fb-wind b");
-    if(wind) wind.textContent = p.windSpeed + " " + p.windDirection;
-  }catch(e){
-    const wx = document.querySelector("#fb-wx b"); if(wx) wx.textContent = "Unavailable";
-    const wind = document.querySelector("#fb-wind b"); if(wind) wind.textContent = "Unavailable";
-  }
-}
-
 /* ---- init ---- */
 /* ---- Today's Briefing (home): conditions + real fishing content ---- */
 function renderBriefing(){
@@ -9275,13 +9315,13 @@ function renderBriefing(){
     }
   }catch(e){}
 }
-["renderGrid","renderDir","updateCartUI","renderCalendar","loadTides","loadFutureTides","loadTideCurve","loadMarine","loadWaves","loadSpot","loadDoppler","loadWeek","loadHourly","loadPressure","loadUv","loadSunMoon","loadVisibility","loadForecastBadges","renderFuel","renderSvc","renderOwner","renderDealers","renderGear","renderBriefing","loadBriefingConditions"].forEach(fn=>{ try{ window[fn](); }catch(e){ console.warn("init "+fn+" failed:", e.message); } });
+["renderGrid","renderDir","updateCartUI","renderCalendar","loadTides","loadFutureTides","loadTideCurve","loadMarine","loadWaves","loadSpot","loadDoppler","loadWeek","loadHourly","loadPressure","loadUv","loadSunMoon","loadVisibility","renderFuel","renderSvc","renderOwner","renderDealers","renderGear","renderBriefing","loadBriefingConditions"].forEach(fn=>{ try{ window[fn](); }catch(e){ console.warn("init "+fn+" failed:", e.message); } });
 /* Weather auto-refresh: re-pull every 5 minutes while the page is open (and on return to the tab if stale), so the "Last checked" stamps and the data behind them stay current. */
 let __wxLastRefresh = Date.now();
 function refreshWeather(){
   try{
     marineCache = {}; wxPeriodCache = {}; __wxLastRefresh = Date.now();
-    ["loadTides","loadFutureTides","loadTideCurve","loadMarine","loadWaves","loadSpot","loadDoppler","loadWeek","loadHourly","loadPressure","loadUv","loadSunMoon","loadVisibility","loadForecastBadges","loadBriefingConditions"].forEach(function(fn){ try{ window[fn](); }catch(e){} });
+    ["loadTides","loadFutureTides","loadTideCurve","loadMarine","loadWaves","loadSpot","loadDoppler","loadWeek","loadHourly","loadPressure","loadUv","loadSunMoon","loadVisibility","loadBriefingConditions","loadTopbar","loadAlertBar"].forEach(function(fn){ try{ window[fn](); }catch(e){} });
   }catch(e){}
 }
 setInterval(function(){ if(!document.hidden) refreshWeather(); }, 300000);
@@ -10181,11 +10221,14 @@ document.addEventListener('click',function(e){ var p=document.getElementById('tr
     document.getElementById('wx-alert-sub').textContent=sub;
     document.getElementById('wx-alert-detail').innerHTML=detailHTML;
     document.getElementById('wx-alert-bar').classList.add('show');
-    document.getElementById('wx-alert-link').addEventListener('click',function(e){
-      e.preventDefault();e.stopPropagation();
-      document.getElementById('wx-alert-bar').classList.toggle('open');
-    });
+    if(!showBar.wired){ showBar.wired=true;
+      document.getElementById('wx-alert-link').addEventListener('click',function(e){
+        e.preventDefault();e.stopPropagation();
+        document.getElementById('wx-alert-bar').classList.toggle('open');
+      });
+    }
   }
+  window.loadAlertBar = function(){
   fetch('https://api.weather.gov/alerts/active?point=27.9,-82.6')
     .then(r=>r.json())
     .then(d=>{
@@ -10195,7 +10238,8 @@ document.addEventListener('click',function(e){ var p=document.getElementById('tr
       });
       const esc=s=>String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/\n/g,'<br>');
       if(!feats.length){
-        /* No NWS alerts — bar stays hidden */
+        /* No NWS alerts — hide the bar (also clears a stale bar on refresh) */
+        document.getElementById('wx-alert-bar').classList.remove('show','open');
         return;
       }
       feats.sort((a,b)=>rank(a.properties.event)-rank(b.properties.event));
@@ -10247,6 +10291,8 @@ document.addEventListener('click',function(e){ var p=document.getElementById('tr
     .catch(()=>{
       /* NWS fetch failed — bar stays hidden */
     });
+  };
+  window.loadAlertBar();
 })();
 </script>
 <script>
